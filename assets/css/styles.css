@@ -14,8 +14,8 @@
   --body-font: "Poppins", sans-serif;
   --big-font-size: 2rem;
   --h2-font-size: 1.25rem;
-  --normal-font-size: .938rem;
-  --smaller-font-size: .75rem;
+  --normal-font-size: 0.938rem;
+  --smaller-font-size: 0.75rem;
   /*===== Margenes =====*/
   --mb-2: 1rem;
   --mb-4: 2rem;
@@ -30,12 +30,14 @@
     --big-font-size: 3.5rem;
     --h2-font-size: 2rem;
     --normal-font-size: 1rem;
-    --smaller-font-size: .875rem;
+    --smaller-font-size: 0.875rem;
   }
 }
 
 /*===== BASE =====*/
-*, ::before, ::after {
+*,
+::before,
+::after {
   box-sizing: border-box;
 }
 
@@ -50,7 +52,9 @@ body {
   color: var(--second-color);
 }
 
-h1, h2, p {
+h1,
+h2,
+p {
   margin: 0;
 }
 
@@ -489,4 +493,59 @@ img {
   .home__img {
     width: 450px;
   }
+}
+
+.diagonal-banner {
+  position: fixed;
+  top: 20px;
+  left: -50px;
+  width: 200px;
+  background: linear-gradient(45deg, #e74c3c, #c0392b);
+  color: white;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 16px;
+  font-weight: bold;
+  transform: rotate(-45deg);
+  z-index: 9999;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.diagonal-banner:hover {
+  background: linear-gradient(45deg, #c0392b, #a93226);
+  transform: rotate(-45deg) scale(1.1);
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .diagonal-banner {
+    width: 150px;
+    font-size: 10px;
+    padding: 8px 0;
+    top: 15px;
+    right: -40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .diagonal-banner {
+    width: 120px;
+    font-size: 9px;
+    padding: 6px 0;
+    top: 10px;
+    right: -35px;
+  }
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+.content {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
