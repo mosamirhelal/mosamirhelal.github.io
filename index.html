@@ -1,21 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
   <head>
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-VJE9JMTR99"
-    ></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-VJE9JMTR99");
-    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="manifest" href="/site.webmanifest" />
     <title>let me cook</title>
 
     <style>
@@ -25,58 +12,47 @@
         box-sizing: border-box;
       }
 
-      /* === (تعديل 1) === 
-        استخدمنا Grid عشان نحط الصورتين فوق بعض
-      */
       body {
-        display: grid; /* اتغيرت من flex */
-        place-items: center; /* بديل justify-content و align-items */
+        display: grid;
+        place-items: center;
         min-height: 100vh;
         background-color: #ffffff;
-        transition: background-color 0.3s ease;
+        
+        /* === (تعديل 1) === 
+           غيرنا المدة والسرعة عشان تبقى زي الصورة
+        */
+        transition: background-color 0.4s ease-in-out; 
       }
 
-      /* === (تعديل 2) === 
-        هنا بنظبط الصورتين عشان يبقوا فوق بعض 
-        وبنديلهم الأنيميشن
-      */
       img.responsive-center {
         max-width: 100%;
         max-height: 100vh;
         height: auto;
-        
-        /* السطر ده بيخليهم هما الاتنين في نفس المكان (فوق بعض) */
-        grid-area: 1 / 1; 
+        grid-area: 1 / 1;
 
-        /* ده الأنيميشن بتاع الشفافية */
-        transition: opacity 0.3s ease-in-out; 
+        /* === (تعديل 2) === 
+           بطأنا السرعة شوية عشان تبقى مريحة للعين
+        */
+        transition: opacity 0.4s ease-in-out;
       }
 
       body.dark-mode {
         background-color: #000000;
       }
 
-      /* === (تعديل 3) === 
-        ده الكود الجديد بدل display: none 
-      */
-
-      /* الوضع الافتراضي (النهاري) */
+      /* (باقي كود الـ CSS زي ما هو متغيرش) */
       #light-image {
-        opacity: 1; /* الصورة الفاتحة ظاهرة */
+        opacity: 1;
       }
       #dark-image {
-        opacity: 0; /* الصورة الغامقة مخفية */
+        opacity: 0;
       }
-
-      /* الوضع الليلي */
       body.dark-mode #light-image {
-        opacity: 0; /* الصورة الفاتحة تختفي بالتدريج */
+        opacity: 0;
       }
       body.dark-mode #dark-image {
-        opacity: 1; /* الصورة الغامقة تظهر بالتدريج */
+        opacity: 1;
       }
-      
-      /* ... (باقي كود الزرار زي ما هو متغيرش) ... */
       #theme-toggle {
         position: fixed;
         bottom: 20px;
