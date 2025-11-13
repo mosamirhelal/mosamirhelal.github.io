@@ -15,22 +15,19 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="shortcut" href="/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="apple-mobile-web-app-title" content="mosamirhelal" />
     <link rel="manifest" href="/site.webmanifest" />
     <title>let me cook</title>
 
     <style>
+      /* ... كل أكواد الـ CSS زي ما هي بالظبط ...
+      (تنسيق الـ body، والصور، والزرار، والـ hover)
+      ...
+      */
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
-
-      /* الوضع الافتراضي (النهاري) */
       body {
         display: flex;
         justify-content: center;
@@ -39,44 +36,29 @@
         background-color: #ffffff;
         transition: background-color 0.3s ease;
       }
-
       img.responsive-center {
         max-width: 100%;
         max-height: 100vh;
         height: auto;
       }
-
-      /* التنسيق لما الـ body ياخد كلاس .dark-mode */
       body.dark-mode {
         background-color: #000000;
       }
-
-      /* === (تعديل 1) === */
-      /* هنا بنحل مشكلة تهنيج الصور.
-        بنخفي الصورة الغامقة في الوضع العادي
-      */
       #dark-image {
         display: none;
       }
-      /* ولما الوضع يتغير، بنخفي الفاتحة ونظهر الغامقة */
       body.dark-mode #light-image {
         display: none;
       }
       body.dark-mode #dark-image {
         display: block;
       }
-
-      /* === (تعديل 2) === */
-      /* تنسيق الزرار العايم (الجديد) */
       #theme-toggle {
         position: fixed;
         bottom: 20px;
         right: 20px;
-
-        /* عكسنا الألوان: بقى غامق في الوضع النهاري */
         background-color: #333;
         color: #ffffff;
-        
         border: none;
         border-radius: 50%;
         width: 50px;
@@ -84,31 +66,17 @@
         font-size: 24px;
         cursor: pointer;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        
-        /* إضافة أنيميشن للـ transform عشان يكبر ويصغر */
         transition: background-color 0.3s ease, color 0.3s ease,
           transform 0.2s ease;
-        
-        /* عشان نضمن إنه فوق الصورة */
         z-index: 1000;
       }
-
-      /* === (تعديل 3) === */
-      /* أنيميشن لما تقف عليه بالماوس */
       #theme-toggle:hover {
-        transform: scale(1.1); /* هيكبر 10% */
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        transform: scale(1.1);
       }
-
-      /* أنيميشن لما تضغط عليه */
       #theme-toggle:active {
-        transform: scale(0.9); /* هيصغر 10% */
-        transition-duration: 0.1s; /* سرعة الضغطة */
+        transform: scale(0.9);
       }
-
-      /* شكل الزرار في الوضع الليلي (الجديد) */
       body.dark-mode #theme-toggle {
-        /* عكسنا الألوان: بقى فاتح في الوضع الليلي */
         background-color: #eee;
         color: #000000;
       }
@@ -118,58 +86,57 @@
   <body>
     <img
       src="شايفك-يا-حرامي-يا-الي-رايح-تنزل-الصورة-بتاعتي-وعايز-تعمل-ميم-بيها.jpg"
-      alt="شايفك يا حرامي يا الي رايح تنزل الصورة وعايز تعمل ميم بيها"
+      alt="light mode image"
       class="responsive-center"
       id="light-image"
     />
     <img
-      src="dark.jpg" alt="صورة الوضع الليلي"
+      src="dark.jpg"
+      alt="dark mode image"
       class="responsive-center"
       id="dark-image"
     />
-
-    <button id="theme-toggle" title="تفعيل الوضع الليلي">🌙</button>
+    <button id="theme-toggle" title="تغيير الوضع">🌙</button>
 
     <script>
-      // 1. عرف العناصر اللي هنستخدمها
+      // 1. عرف العناصر
       const toggleBtn = document.getElementById('theme-toggle');
       const body = document.body;
-      // مبقناش محتاجين نجيب الصور هنا خلاص
 
-      // 3. الدالة (Function) اللي بتغير الوضع
-      function setTheme(theme) {
+      // 2. دالة "تطبيق" الثيم (بتغير الـ CSS بس)
+      function applyTheme(theme) {
         if (theme === 'dark') {
           body.classList.add('dark-mode');
           toggleBtn.textContent = '☀️';
-          toggleBtn.title = 'تفعيل الوضع النهاري'; // غيرنا الـ tooltip
-          localStorage.setItem('theme', 'dark');
+          toggleBtn.title = 'تفعيل الوضع النهاري';
         } else {
           body.classList.remove('dark-mode');
           toggleBtn.textContent = '🌙';
-          toggleBtn.title = 'تفعيل الوضع الليلي'; // غيرنا الـ tooltip
-          localStorage.setItem('theme', 'light');
+          toggleBtn.title = 'تفعيل الوضع الليلي';
         }
       }
 
-      // 4. لما الزرار يتضغط (زي ما هو)
-      toggleBtn.addEventListener('click', () => {
-        const isDarkMode = body.classList.contains('dark-mode');
-        setTheme(isDarkMode ? 'light' : 'dark');
+      // 3. "مراقب" وضع المتصفح
+      const prefersDarkMatcher = window.matchMedia(
+        '(prefers-color-scheme: dark)'
+      );
+
+      // 4. "المستمع" (بيشتغل لما وضع المتصفح يتغير لايف)
+      // ده دايماً شغال وهيكسب في الآخر
+      prefersDarkMatcher.addEventListener('change', (e) => {
+        applyTheme(e.matches ? 'dark' : 'light');
       });
 
-      // 5. لما الصفحة تحمل (زي ما هو)
-      const savedTheme = localStorage.getItem('theme');
-      const prefersDark = window.matchMedia(
-        '(prefers-color-scheme: dark)'
-      ).matches;
+      // 5. لما الزرار يتضغط (اختيار يدوي مؤقت)
+      toggleBtn.addEventListener('click', () => {
+        // اقلب الوضع اللي موجود حالياً
+        const isDarkMode = body.classList.contains('dark-mode');
+        applyTheme(isDarkMode ? 'light' : 'dark');
+      });
 
-      if (savedTheme) {
-        setTheme(savedTheme);
-      } else if (prefersDark) {
-        setTheme('dark');
-      } else {
-        setTheme('light'); // لازم دي عشان تظبط الأيقونة والـ title
-      }
+      // 6. عند فتح الصفحة لأول مرة (مفيش localStorage)
+      // بص على المتصفح وطبق
+      applyTheme(prefersDarkMatcher.matches ? 'dark' : 'light');
     </script>
   </body>
 </html>
