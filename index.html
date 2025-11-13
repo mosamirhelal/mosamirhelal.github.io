@@ -1,8 +1,21 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
   <head>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-VJE9JMTR99"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-VJE9JMTR99");
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="manifest" href="/site.webmanifest" />
     <title>let me cook</title>
 
     <style>
@@ -12,27 +25,25 @@
         box-sizing: border-box;
       }
 
+      /* 1. استخدمنا Grid عشان نحط الصور فوق بعض */
       body {
         display: grid;
         place-items: center;
         min-height: 100vh;
         background-color: #ffffff;
         
-        /* === (تعديل 1) === 
-           غيرنا المدة والسرعة عشان تبقى زي الصورة
-        */
+        /* 2. أنيميشن الخلفية (متزامن) */
         transition: background-color 0.4s ease-in-out; 
       }
 
+      /* 3. بنحط الصورتين في نفس المكان */
       img.responsive-center {
         max-width: 100%;
         max-height: 100vh;
         height: auto;
-        grid-area: 1 / 1;
+        grid-area: 1 / 1; /* <-- السطر ده بيخليهم فوق بعض */
 
-        /* === (تعديل 2) === 
-           بطأنا السرعة شوية عشان تبقى مريحة للعين
-        */
+        /* 4. أنيميشن الصورة (متزامن) */
         transition: opacity 0.4s ease-in-out;
       }
 
@@ -40,19 +51,25 @@
         background-color: #000000;
       }
 
-      /* (باقي كود الـ CSS زي ما هو متغيرش) */
+      /* 5. أهم جزء: بنخفي ونظهر بالـ OPACITY (الشفافية) */
+      
+      /* الوضع العادي (النهاري) */
       #light-image {
-        opacity: 1;
+        opacity: 1; /* الفاتحة ظاهرة */
       }
       #dark-image {
-        opacity: 0;
+        opacity: 0; /* الغامقة مخفية */
       }
+
+      /* الوضع الليلي */
       body.dark-mode #light-image {
-        opacity: 0;
+        opacity: 0; /* الفاتحة تختفي */
       }
       body.dark-mode #dark-image {
-        opacity: 1;
+        opacity: 1; /* الغامقة تظهر */
       }
+      
+      /* ... كود الزرار زي ما هو (متغيرش) ... */
       #theme-toggle {
         position: fixed;
         bottom: 20px;
