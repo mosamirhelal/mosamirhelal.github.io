@@ -1,8 +1,6 @@
-<!-- ايه الي جابك هنا هو لازم يعني تشوف كل حاجة ما كود طبيعي بسيط صغير اساسي مفيش اي حاجة فيه ادعيلي اقدر اكمل بناء الموقع اصل حاسس نفسي ارتيتا وهقلب مقاول للمشروع دلوقت -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
   <head>
-    <!-- Google tag (gtag.js) -->
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-VJE9JMTR99"
@@ -33,18 +31,50 @@
         box-sizing: border-box;
       }
 
+      /* الوضع الافتراضي (النهاري) */
       body {
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
         background-color: #ffffff;
+        /* بنضيف دي عشان التغيير يبقى ناعم */
+        transition: background-color 0.3s ease;
       }
 
       img.responsive-center {
         max-width: 100%;
-        max-height: 100vh;
+        max-height: 100vh; /* <-- ده الإصلاح بتاع أول مرة */
         height: auto;
+      }
+
+      /* === الجزء الجديد === */
+
+      /* التنسيق لما الـ body ياخد كلاس .dark-mode */
+      body.dark-mode {
+        background-color: #000000;
+      }
+
+      /* تنسيق الزرار العايم */
+      #theme-toggle {
+        position: fixed; /* عشان يفضل عايم */
+        bottom: 20px;
+        right: 20px;
+        background-color: #eee;
+        border: none;
+        border-radius: 50%; /* عشان يبقى مدور */
+        width: 50px;
+        height: 50px;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      /* شكل الزرار في الوضع الليلي */
+      body.dark-mode #theme-toggle {
+        background-color: #333;
+        color: #ffffff;
       }
     </style>
   </head>
@@ -54,6 +84,57 @@
       src="شايفك-يا-حرامي-يا-الي-رايح-تنزل-الصورة-بتاعتي-وعايز-تعمل-ميم-بيها.jpg"
       alt="شايفك يا حرامي يا الي رايح تنزل الصورة وعايز تعمل ميم بيها"
       class="responsive-center"
+      id="main-image"
     />
+
+    <button id="theme-toggle">🌙</button>
+
+    <script>
+      // 1. عرف العناصر اللي هنستخدمها
+      const toggleBtn = document.getElementById('theme-toggle');
+      const body = document.body;
+      const mainImage = document.getElementById('main-image');
+
+      // 2. عرف أسماء الصور
+      const lightImageSrc =
+        'شايفك-يا-حرامي-يا-الي-رايح-تنزل-الصورة-بتاعتي-وعايز-تعمل-ميم-بيها.jpg';
+      const darkImageSrc = 'dark.jpg'; // <-- غيّر دي لاسم الصورة الغامقة
+
+      // 3. الدالة (Function) اللي بتغير الوضع
+      function setTheme(theme) {
+        if (theme === 'dark') {
+          body.classList.add('dark-mode');
+          mainImage.src = darkImageSrc;
+          toggleBtn.textContent = '☀️';
+          localStorage.setItem('theme', 'dark'); // احفظ الاختيار
+        } else {
+          body.classList.remove('dark-mode');
+          mainImage.src = lightImageSrc;
+          toggleBtn.textContent = '🌙';
+          localStorage.setItem('theme', 'light'); // احفظ الاختيار
+        }
+      }
+
+      // 4. لما الزرار يتضغط
+      toggleBtn.addEventListener('click', () => {
+        // شوف الوضع الحالي واقلبه
+        const isDarkMode = body.classList.contains('dark-mode');
+        setTheme(isDarkMode ? 'light' : 'dark');
+      });
+
+      // 5. لما الصفحة تحمل: شوف الاختيار المحفوظ أو اختيار المتصفح
+      const savedTheme = localStorage.getItem('theme');
+      const prefersDark = window.matchMedia(
+        '(prefers-color-scheme: dark)'
+      ).matches;
+
+      if (savedTheme) {
+        setTheme(savedTheme); // لو فيه اختيار محفوظ، استخدمه
+      } else if (prefersDark) {
+        setTheme('dark'); // لو مفيش، شوف المتصفح واضبطه (أول مرة بس)
+      } else {
+        setTheme('light'); // الافتراضي هو النهاري
+      }
+    </script>
   </body>
 </html>
