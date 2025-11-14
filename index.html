@@ -25,25 +25,25 @@
         box-sizing: border-box;
       }
 
-      /* 1. استخدمنا Grid عشان نحط الصور فوق بعض */
+      
       body {
         display: grid;
         place-items: center;
         min-height: 100vh;
         background-color: #ffffff;
         
-        /* 2. أنيميشن الخلفية (متزامن) */
+        
         transition: background-color 0.4s ease-in-out; 
       }
 
-      /* 3. بنحط الصورتين في نفس المكان */
+    
       img.responsive-center {
         max-width: 100%;
         max-height: 100vh;
         height: auto;
-        grid-area: 1 / 1; /* <-- السطر ده بيخليهم فوق بعض */
+        grid-area: 1 / 1; 
 
-        /* 4. أنيميشن الصورة (متزامن) */
+        
         transition: opacity 0.4s ease-in-out;
       }
 
@@ -51,25 +51,25 @@
         background-color: #000000;
       }
 
-      /* 5. أهم جزء: بنخفي ونظهر بالـ OPACITY (الشفافية) */
       
-      /* الوضع العادي (النهاري) */
+      
+      
       #light-image {
-        opacity: 1; /* الفاتحة ظاهرة */
+        opacity: 1;
       }
       #dark-image {
-        opacity: 0; /* الغامقة مخفية */
+        opacity: 0; 
       }
 
-      /* الوضع الليلي */
+      
       body.dark-mode #light-image {
-        opacity: 0; /* الفاتحة تختفي */
+        opacity: 0; 
       }
       body.dark-mode #dark-image {
-        opacity: 1; /* الغامقة تظهر */
+        opacity: 1; 
       }
       
-      /* ... كود الزرار زي ما هو (متغيرش) ... */
+    
       #theme-toggle {
         position: fixed;
         bottom: 20px;
