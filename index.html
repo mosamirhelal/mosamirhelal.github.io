@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
   <head>
+    <link rel="preconnect" href="https://kit.fontawesome.com" />
+    <link rel="preconnect" href="https://ka-f.fontawesome.com" crossorigin />
     <link
       rel="preload"
       as="image"
@@ -15,8 +17,6 @@
       fetchpriority="high"
       media="(prefers-color-scheme: dark)"
     />
-    <link rel="preconnect" href="https://kit.fontawesome.com" />
-    <link rel="preconnect" href="https://ka-f.fontawesome.com" crossorigin />
     <link rel="preconnect" href="https://www.googletagmanager.com" />
 
     <script
@@ -34,28 +34,23 @@
 
     <script>
       const userLang = navigator.language || navigator.userLanguage;
-      const isArabic = userLang.startsWith("ar");
-      if (isArabic) {
-        document.title = "محمد سمير هلال";
+      window.isArabic = userLang.startsWith("ar");
+      window.arabicTitle = "محمد سمير هلال";
+      window.arabicDesc = "طالب طب أسنان ومبرمج شغوف ومصمم مبدع.";
+      window.arabicLongDesc =
+        "الموقع الرسمي لمحمد سمير هلال، طالب طب أسنان بجامعة مصر للعلوم والتكنولوجيا، ومبرمج شغوف، ومصمم مبدع.";
+      if (window.isArabic) {
+        document.title = window.arabicTitle;
+        document.documentElement.lang = "ar";
+        document.documentElement.dir = "rtl";
       } else {
         document.title = "Mohammed Samir Helal";
-        document.documentElement.lang = "en";
-        document.documentElement.dir = "ltr";
       }
     </script>
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="theme-color"
-      content="#ffffff"
-      media="(prefers-color-scheme: light)"
-    />
-    <meta
-      name="theme-color"
-      content="#000000"
-      media="(prefers-color-scheme: dark)"
-    />
+    <meta name="theme-color" id="theme-meta-tag" content="#ffffff" />
 
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -63,6 +58,7 @@
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="mosamirhelal" />
     <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href="https://mosamirhelal.com" />
 
     <script
       src="https://kit.fontawesome.com/39df5000a2.js"
@@ -72,7 +68,7 @@
 
     <meta
       name="description"
-      content="The official portfolio of Mohammed Samir Helal (محمد سمير هلال), Dental Student at MUST University, Programmer, and Graphic Designer based in Cairo, Egypt."
+      content="The official portfolio of Mohammed Samir Helal (محمد سمير هلال), Dental Student at MUST University, Passionate Programmer, and Creative Designer based in Cairo, Egypt."
     />
     <meta
       name="keywords"
@@ -83,11 +79,25 @@
     <meta property="og:title" content="Mohammed Samir Helal - محمد سمير هلال" />
     <meta
       property="og:description"
-      content="Dental Student at MUST & Creative Developer."
+      content="Dental Student at MUST, Passionate Programmer & Creative Designer."
     />
-    <meta property="og:image" content="https://mosamirhelal.com/light.webp" />
+    <meta property="og:image" content="https://mosamirhelal.com/profile.webp" />
     <meta property="og:url" content="https://mosamirhelal.com" />
     <meta property="og:type" content="profile" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Mohammed Samir Helal - محمد سمير هلال"
+    />
+    <meta
+      name="twitter:description"
+      content="Dental Student at MUST, Passionate Programmer & Creative Designer."
+    />
+    <meta
+      name="twitter:image"
+      content="https://mosamirhelal.com/profile.webp"
+    />
 
     <script type="application/ld+json">
       {
@@ -209,15 +219,19 @@
       body.dark-mode {
         background-color: var(--bg-dark);
       }
+
       #light-image {
         opacity: 1;
       }
+
       #dark-image {
         opacity: 0;
       }
+
       body.dark-mode #light-image {
         opacity: 0;
       }
+
       body.dark-mode #dark-image {
         opacity: 1;
       }
@@ -247,6 +261,7 @@
       #theme-toggle:hover {
         transform: scale(1.15);
       }
+
       #theme-toggle:active {
         transform: scale(0.9);
       }
@@ -318,12 +333,15 @@
         gap: 10px;
         z-index: 102;
       }
+
       .contact-trigger i {
         transition: transform 0.4s ease;
       }
+
       .contact-trigger:hover {
         transform: translateY(-2px);
       }
+
       .contact-wrapper.active .contact-trigger i {
         transform: rotate(180deg);
       }
@@ -392,6 +410,7 @@
         transition: transform 0.2s, background-color 0.3s, color 0.3s;
         box-shadow: 0 2px 5px var(--btn-shadow);
       }
+
       .social-btn:hover {
         transform: scale(1.25);
         z-index: 100;
@@ -433,14 +452,17 @@
         background-color: #1a1a1a;
         border-color: #333;
       }
+
       body.dark-mode .drawer-title {
         color: #fff;
       }
+
       body.dark-mode .social-btn {
         background-color: #333;
         border-color: #444;
         color: #ccc;
       }
+
       body.dark-mode .social-btn::before {
         background-color: rgba(255, 255, 255, 0.95);
         color: #000;
@@ -465,6 +487,7 @@
           #cc2366 75%,
           #bc1888 100%
         ) !important;
+
         color: #fff !important;
         border: none !important;
       }
@@ -508,6 +531,7 @@
       body.dark-mode .github:hover {
         background-color: #ffffff !important;
         color: #000000 !important;
+
         border-color: #fff !important;
       }
 
@@ -605,8 +629,7 @@
       src="dark.webp"
       class="responsive-center"
       id="dark-image"
-      alt="Mohammed Samir Helal - Dark Mode"
-      loading="lazy"
+      alt="Mohammed Samir Helal - Dental Student & Programmer"
       width="1080"
       height="897"
     />
@@ -809,85 +832,74 @@
     </button>
 
     <script>
-      const toggleBtn = document.getElementById("theme-toggle");
-      const body = document.body;
-      const contactBtn = document.getElementById("contact-btn");
-      const contactWrapper = document.getElementById("contact-wrapper");
+      document.addEventListener("DOMContentLoaded", () => {
+        const toggleBtn = document.getElementById("theme-toggle");
+        const body = document.body;
+        const contactBtn = document.getElementById("contact-btn");
+        const contactWrapper = document.getElementById("contact-wrapper");
 
-      const metaThemeColorLight = document.querySelector(
-        'meta[name="theme-color"][media="(prefers-color-scheme: light)"]'
-      );
-      const metaThemeColorDark = document.querySelector(
-        'meta[name="theme-color"][media="(prefers-color-scheme: dark)"]'
-      );
-
-      function updateMetaThemeColor(isDark) {
-        if (isDark) {
-          metaThemeColorLight.content = "#000000";
-          metaThemeColorDark.content = "#000000";
-        } else {
-          metaThemeColorLight.content = "#ffffff";
-          metaThemeColorDark.content = "#ffffff";
-        }
-      }
-
-      function getPreferredTheme() {
-        const savedTheme = localStorage.getItem("theme");
-        if (savedTheme) {
-          return savedTheme;
-        }
-        return window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "dark"
-          : "light";
-      }
-
-      function applyTheme(theme) {
-        if (theme === "dark") {
-          body.classList.add("dark-mode");
-          toggleBtn.textContent = "☀️";
-          toggleBtn.setAttribute("aria-label", "Light Mode");
-          updateMetaThemeColor(true);
-        } else {
-          body.classList.remove("dark-mode");
-          toggleBtn.textContent = "🌙";
-          toggleBtn.setAttribute("aria-label", "Dark Mode");
-          updateMetaThemeColor(false);
-        }
-      }
-
-      applyTheme(getPreferredTheme());
-
-      if (userLang.startsWith("ar")) {
-        const metaDesc = document.querySelector('meta[name="description"]');
-        if (metaDesc) {
-          metaDesc.content =
-            "الموقع الرسمي لمحمد سمير هلال، طالب طب أسنان ومبرمج ومصمم جرافيك.";
-        }
-      }
-
-      toggleBtn.addEventListener("click", () => {
-        const isDarkMode = body.classList.toggle("dark-mode");
-        const newTheme = isDarkMode ? "dark" : "light";
-        toggleBtn.textContent = isDarkMode ? "☀️" : "🌙";
-        toggleBtn.setAttribute(
-          "aria-label",
-          isDarkMode ? "Light Mode" : "Dark Mode"
+        const metaThemeColorLight = document.querySelector(
+          'meta[name="theme-color"][media="(prefers-color-scheme: light)"]'
         );
-        updateMetaThemeColor(isDarkMode);
-        localStorage.setItem("theme", newTheme);
-      });
+        const metaThemeColorDark = document.querySelector(
+          'meta[name="theme-color"][media="(prefers-color-scheme: dark)"]'
+        );
 
-      window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .addEventListener("change", (e) => {
-          const newTheme = e.matches ? "dark" : "light";
+        function applyTheme(theme) {
+          const isDark = theme === "dark";
+          body.classList.toggle("dark-mode", isDark);
+          toggleBtn.textContent = isDark ? "☀️" : "🌙";
+          toggleBtn.setAttribute(
+            "aria-label",
+            isDark ? "Light Mode" : "Dark Mode"
+          );
+          const color = isDark ? "#000000" : "#ffffff";
+          if (metaThemeColorLight) metaThemeColorLight.content = color;
+          if (metaThemeColorDark) metaThemeColorDark.content = color;
+        }
+
+        const savedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches;
+        applyTheme(savedTheme ? savedTheme : prefersDark ? "dark" : "light");
+
+        if (window.isArabic) {
+          const metaDesc = document.querySelector('meta[name="description"]');
+          if (metaDesc) metaDesc.content = window.arabicLongDesc;
+          const ogDesc = document.querySelector(
+            'meta[property="og:description"]'
+          );
+          if (ogDesc) ogDesc.content = window.arabicDesc;
+          const ogTitle = document.querySelector('meta[property="og:title"]');
+          if (ogTitle) ogTitle.content = window.arabicTitle;
+          const twTitle = document.querySelector('meta[name="twitter:title"]');
+          if (twTitle) twTitle.content = window.arabicTitle;
+          const twDesc = document.querySelector(
+            'meta[name="twitter:description"]'
+          );
+          if (twDesc) twDesc.content = window.arabicDesc;
+        }
+
+        toggleBtn.addEventListener("click", () => {
+          const isCurrentlyDark = body.classList.contains("dark-mode");
+          const newTheme = isCurrentlyDark ? "light" : "dark";
           applyTheme(newTheme);
           localStorage.setItem("theme", newTheme);
         });
 
-      contactBtn.addEventListener("click", () => {
-        const isExpanded = contactWrapper.classList.toggle("active");
-        contactBtn.setAttribute("aria-expanded", isExpanded);
+        window
+          .matchMedia("(prefers-color-scheme: dark)")
+          .addEventListener("change", (e) => {
+            if (!localStorage.getItem("theme")) {
+              applyTheme(e.matches ? "dark" : "light");
+            }
+          });
+
+        contactBtn.addEventListener("click", () => {
+          const isExpanded = contactWrapper.classList.toggle("active");
+          contactBtn.setAttribute("aria-expanded", isExpanded);
+        });
       });
     </script>
   </body>
