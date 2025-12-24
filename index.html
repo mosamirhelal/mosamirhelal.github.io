@@ -32,23 +32,8 @@
       gtag("config", "G-VJE9JMTR99");
     </script>
 
-    <script>
-      const userLang = navigator.language || navigator.userLanguage;
-      window.isArabic = userLang.startsWith("ar");
-      window.arabicTitle = "محمد سمير هلال";
-      window.arabicDesc = "طالب طب أسنان ومبرمج شغوف ومصمم مبدع.";
-      window.arabicLongDesc =
-        "الموقع الرسمي لمحمد سمير هلال، طالب طب أسنان بجامعة مصر للعلوم والتكنولوجيا، ومبرمج شغوف، ومصمم مبدع.";
-      if (window.isArabic) {
-        document.title = window.arabicTitle;
-        document.documentElement.lang = "ar";
-        document.documentElement.dir = "rtl";
-      } else {
-        document.title = "Mohammed Samir Helal";
-      }
-    </script>
-
     <meta charset="UTF-8" />
+    <title>Mohammed Samir Helal</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" id="theme-meta-tag" content="#ffffff" />
 
@@ -124,6 +109,31 @@
       }
     </script>
 
+    <script>
+      const userLang = navigator.language || navigator.userLanguage;
+      const isArabic = userLang.startsWith("ar");
+      if (isArabic) {
+        const arabicTitle = "محمد سمير هلال";
+        const arabicDesc = "طالب طب أسنان ومبرمج شغوف ومصمم مبدع.";
+        const arabicLongDesc =
+          "الموقع الرسمي لمحمد سمير هلال، طالب طب أسنان بجامعة مصر للعلوم والتكنولوجيا، ومبرمج شغوف، ومصمم مبدع.";
+
+        document.title = arabicTitle;
+        document.documentElement.lang = "ar";
+        document.documentElement.dir = "rtl";
+
+        document.querySelector('meta[name="description"]').content =
+          arabicLongDesc;
+        document.querySelector('meta[property="og:description"]').content =
+          arabicDesc;
+        document.querySelector('meta[property="og:title"]').content =
+          arabicTitle;
+        document.querySelector('meta[name="twitter:title"]').content =
+          arabicTitle;
+        document.querySelector('meta[name="twitter:description"]').content =
+          arabicDesc;
+      }
+    </script>
     <style>
       :root {
         --bg-light: #ffffff;
@@ -159,6 +169,7 @@
         --khamsat: #b38e56;
         --pinterest: #e60023;
         --outlook: #0078d4;
+        font-family: sans-serif;
       }
 
       * {
@@ -285,7 +296,6 @@
         transition: all 0.2s ease;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         z-index: 20;
-        font-family: sans-serif;
       }
 
       #theme-toggle:hover::before {
@@ -468,17 +478,17 @@
         color: #000;
       }
 
-      .whatsapp:hover {
-        background-color: var(--whatsapp) !important;
-        color: #fff !important;
-        border-color: var(--whatsapp) !important;
+      .social-btn.whatsapp:hover {
+        background-color: var(--whatsapp);
+        color: #fff;
+        border-color: var(--whatsapp);
       }
-      .facebook:hover {
-        background-color: var(--facebook) !important;
-        color: #fff !important;
-        border-color: var(--facebook) !important;
+      .social-btn.facebook:hover {
+        background-color: var(--facebook);
+        color: #fff;
+        border-color: var(--facebook);
       }
-      .instagram:hover {
+      .social-btn.instagram:hover {
         background: linear-gradient(
           45deg,
           #f09433 0%,
@@ -486,114 +496,112 @@
           #dc2743 50%,
           #cc2366 75%,
           #bc1888 100%
-        ) !important;
-
-        color: #fff !important;
-        border: none !important;
+        );
+        color: #fff;
+        border: none;
       }
-      .x-twitter:hover {
-        background-color: var(--x-twitter) !important;
-        color: #fff !important;
-        border-color: var(--x-twitter) !important;
+      .social-btn.x-twitter:hover {
+        background-color: var(--x-twitter);
+        color: #fff;
+        border-color: var(--x-twitter);
       }
-      .threads:hover {
-        background-color: var(--threads) !important;
-        color: #fff !important;
-        border-color: var(--threads) !important;
+      .social-btn.threads:hover {
+        background-color: var(--threads);
+        color: #fff;
+        border-color: var(--threads);
       }
-      .tiktok:hover {
-        background-color: var(--tiktok) !important;
-        color: #fff !important;
-        border-color: var(--tiktok) !important;
+      .social-btn.tiktok:hover {
+        background-color: var(--tiktok);
+        color: #fff;
+        border-color: var(--tiktok);
         box-shadow: 2px 2px 0 #25f4ee, -2px -2px 0 #fe2c55;
       }
-      .youtube:hover {
-        background-color: var(--youtube) !important;
-        color: #fff !important;
-        border-color: var(--youtube) !important;
+      .social-btn.youtube:hover {
+        background-color: var(--youtube);
+        color: #fff;
+        border-color: var(--youtube);
       }
-      .linkedin:hover {
-        background-color: var(--linkedin) !important;
-        color: #fff !important;
-        border-color: var(--linkedin) !important;
+      .social-btn.linkedin:hover {
+        background-color: var(--linkedin);
+        color: #fff;
+        border-color: var(--linkedin);
       }
-      .telegram:hover {
-        background-color: var(--telegram) !important;
-        color: #fff !important;
-        border-color: var(--telegram) !important;
-      }
-
-      .github:hover {
-        background-color: var(--github) !important;
-        color: #fff !important;
-        border-color: var(--github) !important;
-      }
-      body.dark-mode .github:hover {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-
-        border-color: #fff !important;
+      .social-btn.telegram:hover {
+        background-color: var(--telegram);
+        color: #fff;
+        border-color: var(--telegram);
       }
 
-      .snapchat:hover {
-        background-color: var(--snapchat) !important;
-        color: #000 !important;
-        border-color: var(--snapchat) !important;
+      .social-btn.github:hover {
+        background-color: var(--github);
+        color: #fff;
+        border-color: var(--github);
       }
-      .behance:hover {
-        background-color: var(--behance) !important;
-        color: #fff !important;
-        border-color: var(--behance) !important;
+      body.dark-mode .social-btn.github:hover {
+        background-color: #ffffff;
+        color: #000000;
+        border-color: #fff;
       }
-      .reddit:hover {
-        background-color: var(--reddit) !important;
-        color: #fff !important;
-        border-color: var(--reddit) !important;
+
+      .social-btn.snapchat:hover {
+        background-color: var(--snapchat);
+        color: #000;
+        border-color: var(--snapchat);
       }
-      .discord:hover {
-        background-color: var(--discord) !important;
-        color: #fff !important;
-        border-color: var(--discord) !important;
+      .social-btn.behance:hover {
+        background-color: var(--behance);
+        color: #fff;
+        border-color: var(--behance);
       }
-      .twitch:hover {
-        background-color: var(--twitch) !important;
-        color: #fff !important;
-        border-color: var(--twitch) !important;
+      .social-btn.reddit:hover {
+        background-color: var(--reddit);
+        color: #fff;
+        border-color: var(--reddit);
       }
-      .kick:hover {
-        background-color: var(--kick) !important;
-        color: #000 !important;
-        border-color: var(--kick) !important;
+      .social-btn.discord:hover {
+        background-color: var(--discord);
+        color: #fff;
+        border-color: var(--discord);
       }
-      .upwork:hover {
-        background-color: var(--upwork) !important;
-        color: #fff !important;
-        border-color: var(--upwork) !important;
+      .social-btn.twitch:hover {
+        background-color: var(--twitch);
+        color: #fff;
+        border-color: var(--twitch);
       }
-      .freelancer:hover {
-        background-color: var(--freelancer) !important;
-        color: #fff !important;
-        border-color: var(--freelancer) !important;
+      .social-btn.kick:hover {
+        background-color: var(--kick);
+        color: #000;
+        border-color: var(--kick);
       }
-      .mostaql:hover {
-        background-color: var(--mostaql) !important;
-        color: #fff !important;
-        border-color: var(--mostaql) !important;
+      .social-btn.upwork:hover {
+        background-color: var(--upwork);
+        color: #fff;
+        border-color: var(--upwork);
       }
-      .khamsat:hover {
-        background-color: var(--khamsat) !important;
-        color: #fff !important;
-        border-color: var(--khamsat) !important;
+      .social-btn.freelancer:hover {
+        background-color: var(--freelancer);
+        color: #fff;
+        border-color: var(--freelancer);
       }
-      .pinterest:hover {
-        background-color: var(--pinterest) !important;
-        color: #fff !important;
-        border-color: var(--pinterest) !important;
+      .social-btn.mostaql:hover {
+        background-color: var(--mostaql);
+        color: #fff;
+        border-color: var(--mostaql);
       }
-      .outlook:hover {
-        background-color: var(--outlook) !important;
-        color: #fff !important;
-        border-color: var(--outlook) !important;
+      .social-btn.khamsat:hover {
+        background-color: var(--khamsat);
+        color: #fff;
+        border-color: var(--khamsat);
+      }
+      .social-btn.pinterest:hover {
+        background-color: var(--pinterest);
+        color: #fff;
+        border-color: var(--pinterest);
+      }
+      .social-btn.outlook:hover {
+        background-color: var(--outlook);
+        color: #fff;
+        border-color: var(--outlook);
       }
 
       .sr-only {
@@ -630,6 +638,7 @@
       class="responsive-center"
       id="dark-image"
       alt="Mohammed Samir Helal - Dental Student & Programmer"
+      fetchpriority="high"
       width="1080"
       height="897"
     />
@@ -837,13 +846,7 @@
         const body = document.body;
         const contactBtn = document.getElementById("contact-btn");
         const contactWrapper = document.getElementById("contact-wrapper");
-
-        const metaThemeColorLight = document.querySelector(
-          'meta[name="theme-color"][media="(prefers-color-scheme: light)"]'
-        );
-        const metaThemeColorDark = document.querySelector(
-          'meta[name="theme-color"][media="(prefers-color-scheme: dark)"]'
-        );
+        const themeMetaTag = document.getElementById("theme-meta-tag");
 
         function applyTheme(theme) {
           const isDark = theme === "dark";
@@ -854,8 +857,7 @@
             isDark ? "Light Mode" : "Dark Mode"
           );
           const color = isDark ? "#000000" : "#ffffff";
-          if (metaThemeColorLight) metaThemeColorLight.content = color;
-          if (metaThemeColorDark) metaThemeColorDark.content = color;
+          if (themeMetaTag) themeMetaTag.content = color;
         }
 
         const savedTheme = localStorage.getItem("theme");
@@ -863,23 +865,6 @@
           "(prefers-color-scheme: dark)"
         ).matches;
         applyTheme(savedTheme ? savedTheme : prefersDark ? "dark" : "light");
-
-        if (window.isArabic) {
-          const metaDesc = document.querySelector('meta[name="description"]');
-          if (metaDesc) metaDesc.content = window.arabicLongDesc;
-          const ogDesc = document.querySelector(
-            'meta[property="og:description"]'
-          );
-          if (ogDesc) ogDesc.content = window.arabicDesc;
-          const ogTitle = document.querySelector('meta[property="og:title"]');
-          if (ogTitle) ogTitle.content = window.arabicTitle;
-          const twTitle = document.querySelector('meta[name="twitter:title"]');
-          if (twTitle) twTitle.content = window.arabicTitle;
-          const twDesc = document.querySelector(
-            'meta[name="twitter:description"]'
-          );
-          if (twDesc) twDesc.content = window.arabicDesc;
-        }
 
         toggleBtn.addEventListener("click", () => {
           const isCurrentlyDark = body.classList.contains("dark-mode");
