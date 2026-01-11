@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <link rel="preconnect" href="https://kit.fontawesome.com" />
+    <link rel="preconnect" href="https://ka-f.fontawesome.com" crossorigin />
+    <link
+      rel="preload"
+      as="image"
+      href="light.webp"
+      fetchpriority="high"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="dark.webp"
+      fetchpriority="high"
+      media="(prefers-color-scheme: dark)"
+    />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-VJE9JMTR99"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-VJE9JMTR99");
+    </script>
+
+    <meta charset="UTF-8" />
+    <title>Mohammed Samir Helal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" id="theme-meta-tag" content="#ffffff" />
+
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="mosamirhelal" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="canonical" href="https://mosamirhelal.com" />
+
+    <script
+      src="https://kit.fontawesome.com/39df5000a2.js"
+      crossorigin="anonymous"
+      defer
+    ></script>
+
+    <meta
+      name="description"
+      content="The official portfolio of Mohammed Samir Helal (محمد سمير هلال), Dental Student at MUST University, Passionate Programmer, and Creative Designer based in Cairo, Egypt."
+    />
+    <meta
+      name="keywords"
+      content="Mohammed Samir Helal, Mohamed Samir, Dental Student, Programmer, Graphic Designer, MUST University, Cairo, Egypt, محمد سمير هلال, طب أسنان, جامعة مصر للعلوم والتكنولوجيا, مبرمج"
+    />
+    <meta name="author" content="Mohammed Samir Helal" />
+
+    <meta property="og:title" content="Mohammed Samir Helal - محمد سمير هلال" />
+    <meta
+      property="og:description"
+      content="Dental Student at MUST, Passionate Programmer & Creative Designer."
+    />
+    <meta property="og:image" content="https://mosamirhelal.com/profile.webp" />
+    <meta property="og:url" content="https://mosamirhelal.com" />
+    <meta property="og:type" content="profile" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Mohammed Samir Helal - محمد سمير هلال"
+    />
+    <meta
+      name="twitter:description"
+      content="Dental Student at MUST, Passionate Programmer & Creative Designer."
+    />
+    <meta
+      name="twitter:image"
+      content="https://mosamirhelal.com/profile.webp"
+    />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Mohammed Samir Helal",
+        "alternateName": "محمد سمير هلال",
+        "url": "https://mosamirhelal.com",
+        "image": "https://mosamirhelal.com/profile.webp",
+        "sameAs": [
+          "https://www.linkedin.com/in/mosamirhelal",
+          "https://github.com/mosamirhelal",
+          "https://www.facebook.com/mosamirhelal",
+          "https://www.instagram.com/mosamirhelal",
+          "https://x.com/mosamirhelal",
+          "https://www.behance.net/mosamirhelal",
+          "https://www.youtube.com/@mosamirhelal"
+        ],
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Cairo",
+          "addressCountry": "EG"
+        }
+      }
+    </script>
+
+    <script>
+      const userLang = navigator.language || navigator.userLanguage;
+      const isArabic = userLang.startsWith("ar");
+      if (isArabic) {
+        const arabicTitle = "محمد سمير هلال";
+        const arabicDesc = "طالب طب أسنان ومبرمج شغوف ومصمم مبدع.";
+        const arabicLongDesc =
+          "الموقع الرسمي لمحمد سمير هلال، طالب طب أسنان بجامعة مصر للعلوم والتكنولوجيا، ومبرمج شغوف، ومصمم مبدع.";
+
+        document.title = arabicTitle;
+        document.documentElement.lang = "ar";
+        document.documentElement.dir = "rtl";
+
+        document.querySelector('meta[name="description"]').content =
+          arabicLongDesc;
+        document.querySelector('meta[property="og:description"]').content =
+          arabicDesc;
+        document.querySelector('meta[property="og:title"]').content =
+          arabicTitle;
+        document.querySelector('meta[name="twitter:title"]').content =
+          arabicTitle;
+        document.querySelector('meta[name="twitter:description"]').content =
+          arabicDesc;
+      }
+    </script>
+    <style>
+      :root {
+        --bg-light: #ffffff;
+        --bg-dark: #000000;
+        --text-dark: #333;
+        --text-light: #fff;
+
+        --btn-bg: #e6e6e6;
+        --btn-border: #d4d4d4;
+        --btn-shadow: rgba(0, 0, 0, 0.15);
+
+        --transition-speed: 0.4s;
+        --focus-color: #4a90e2;
+
+        --whatsapp: #25d366;
+        --facebook: #1877f2;
+        --x-twitter: #000;
+        --threads: #000;
+        --tiktok: #000;
+        --youtube: #ff0000;
+        --linkedin: #0077b5;
+        --telegram: #0088cc;
+        --github: #000;
+        --snapchat: #fffc00;
+        --behance: #1769ff;
+        --reddit: #ff4500;
+        --discord: #5865f2;
+        --twitch: #9146ff;
+        --kick: #53fc18;
+        --upwork: #14a800;
+        --freelancer: #29b2fe;
+        --mostaql: #2c92e6;
+        --khamsat: #b38e56;
+        --pinterest: #e60023;
+        --outlook: #0078d4;
+        font-family: sans-serif;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        min-height: 100dvh;
+        background-color: var(--bg-light);
+        transition: background-color var(--transition-speed) ease-in-out;
+        overflow-x: hidden;
+        overflow-y: auto;
+        font-family: sans-serif;
+      }
+
+      button:focus-visible,
+      a:focus-visible {
+        outline: 3px solid var(--focus-color);
+        outline-offset: 3px;
+      }
+
+      @keyframes slideUpFade {
+        from {
+          opacity: 0;
+          transform: translateX(-50%) translateY(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(-50%) translateY(0);
+        }
+      }
+
+      @keyframes slideDownFade {
+        from {
+          opacity: 0;
+          transform: translateY(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .hero-container {
+        width: 100%;
+        height: calc(100vh - 100px);
+        height: calc(100dvh - 100px);
+        min-height: 400px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-top: 20px;
+      }
+
+      img.responsive-center {
+        max-width: 95%;
+        max-height: 100%;
+        width: auto;
+        height: auto;
+        object-fit: contain;
+        transition: opacity var(--transition-speed) ease-in-out;
+        will-change: opacity;
+      }
+
+      #light-image, #dark-image {
+         display: none;
+      }
+      
+      body:not(.dark-mode) #light-image {
+          display: block;
+          opacity: 1;
+      }
+      body.dark-mode #dark-image {
+          display: block;
+          opacity: 1;
+      }
+
+      body.dark-mode {
+        background-color: var(--bg-dark);
+      }
+
+      #theme-toggle {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        background-color: var(--text-dark);
+        color: var(--text-light);
+        border: none;
+        border-radius: 50%;
+        width: 45px;
+        height: 45px;
+        font-size: 22px;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+          background-color 0.3s;
+        z-index: 1000;
+        animation: slideDownFade 0.8s ease-out 0.5s backwards;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      #theme-toggle:hover {
+        transform: scale(1.15);
+      }
+
+      #theme-toggle:active {
+        transform: scale(0.9);
+      }
+
+      #theme-toggle::before {
+        content: attr(aria-label);
+        position: absolute;
+        top: 50%;
+        left: 140%;
+        transform: translateY(-50%) translateX(-10px);
+        background-color: rgba(34, 34, 34, 0.95);
+        color: #fff;
+        padding: 6px 10px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: bold;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 20;
+      }
+
+      #theme-toggle:hover::before {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(-50%) translateX(0);
+      }
+
+      body.dark-mode #theme-toggle {
+        background-color: #eee;
+        color: #000;
+      }
+      body.dark-mode #theme-toggle::before {
+        background-color: rgba(255, 255, 255, 0.95);
+        color: #000;
+      }
+
+      .contact-wrapper {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 100;
+        display: flex;
+        flex-direction: column-reverse;
+        align-items: center;
+        width: 100%;
+        max-width: 900px;
+        transition: all 0.4s ease;
+        animation: slideUpFade 0.8s ease-out 0.5s backwards;
+        gap: 15px; 
+      }
+
+      .contact-trigger {
+        order: 2; 
+        background-color: #fff;
+        color: #333;
+        padding: 12px 30px;
+        border-radius: 30px;
+        border: 2px solid #333;
+        font-weight: bold;
+        font-size: 18px;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        z-index: 102;
+      }
+
+      .contact-trigger i {
+        transition: transform 0.4s ease;
+      }
+
+      .contact-trigger:hover {
+        transform: translateY(-2px);
+      }
+
+      .contact-wrapper.active .contact-trigger i {
+        transform: rotate(180deg);
+      }
+
+      .social-icons-container {
+        order: 1;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: max-height 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+          opacity 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+          transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+          padding 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+          overflow 0s linear 0s;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 0; 
+        background-color: #ffffff;
+        padding: 0 15px;
+        border-radius: 20px;
+        border: 1px solid #ddd;
+        width: fit-content;
+        max-width: 95%;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      }
+
+      .contact-wrapper.active .social-icons-container {
+        max-height: 600px;
+        opacity: 1;
+        padding: 20px;
+        transform: translateY(0);
+        overflow: visible;
+        transition: max-height 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+          opacity 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+          transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+          padding 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+          overflow 0s linear 0.5s;
+      }
+
+      .drawer-title {
+        width: 100%;
+        text-align: center;
+        font-weight: 800;
+        font-size: 1.1rem;
+        color: #333;
+        margin-bottom: 15px;
+        direction: ltr;
+        unicode-bidi: embed;
+      }
+
+      .social-btn {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background-color: var(--btn-bg);
+        border: 1px solid var(--btn-border);
+        border-radius: 50%;
+        color: var(--text-dark);
+        text-decoration: none;
+        font-size: 18px;
+        transition: transform 0.2s, background-color 0.3s, color 0.3s;
+        box-shadow: 0 2px 5px var(--btn-shadow);
+      }
+
+      .social-btn:hover {
+        transform: scale(1.25);
+        z-index: 100;
+      }
+
+      .social-btn::before {
+        content: attr(aria-label);
+        position: absolute;
+        bottom: 140%;
+        left: 50%;
+        transform: translateX(-50%) translateY(10px);
+        background-color: rgba(34, 34, 34, 0.95);
+        color: #fff;
+        padding: 8px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: bold;
+        white-space: nowrap;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: all 0.2s ease;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 20;
+      }
+
+      .social-btn:hover::before {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      body.dark-mode .contact-trigger {
+        background-color: #000;
+        color: #fff;
+        border-color: #fff;
+      }
+      body.dark-mode .social-icons-container {
+        background-color: #1a1a1a;
+        border-color: #333;
+      }
+
+      body.dark-mode .drawer-title {
+        color: #fff;
+      }
+
+      body.dark-mode .social-btn {
+        background-color: #333;
+        border-color: #444;
+        color: #ccc;
+      }
+
+      body.dark-mode .social-btn::before {
+        background-color: rgba(255, 255, 255, 0.95);
+        color: #000;
+      }
+
+      .social-btn.whatsapp:hover {
+        background-color: var(--whatsapp);
+        color: #fff;
+        border-color: var(--whatsapp);
+      }
+      .social-btn.facebook:hover {
+        background-color: var(--facebook);
+        color: #fff;
+        border-color: var(--facebook);
+      }
+      .social-btn.instagram:hover {
+        background: linear-gradient(
+          45deg,
+          #f09433 0%,
+          #e6683c 25%,
+          #dc2743 50%,
+          #cc2366 75%,
+          #bc1888 100%
+        );
+        color: #fff;
+        border: none;
+      }
+      .social-btn.x-twitter:hover {
+        background-color: var(--x-twitter);
+        color: #fff;
+        border-color: var(--x-twitter);
+      }
+      .social-btn.threads:hover {
+        background-color: var(--threads);
+        color: #fff;
+        border-color: var(--threads);
+      }
+      .social-btn.tiktok:hover {
+        background-color: var(--tiktok);
+        color: #fff;
+        border-color: var(--tiktok);
+        box-shadow: 2px 2px 0 #25f4ee, -2px -2px 0 #fe2c55;
+      }
+      .social-btn.youtube:hover {
+        background-color: var(--youtube);
+        color: #fff;
+        border-color: var(--youtube);
+      }
+      .social-btn.linkedin:hover {
+        background-color: var(--linkedin);
+        color: #fff;
+        border-color: var(--linkedin);
+      }
+      .social-btn.telegram:hover {
+        background-color: var(--telegram);
+        color: #fff;
+        border-color: var(--telegram);
+      }
+
+      .social-btn.github:hover {
+        background-color: var(--github);
+        color: #fff;
+        border-color: var(--github);
+      }
+      body.dark-mode .social-btn.github:hover {
+        background-color: #ffffff;
+        color: #000000;
+        border-color: #fff;
+      }
+
+      .social-btn.snapchat:hover {
+        background-color: var(--snapchat);
+        color: #000;
+        border-color: var(--snapchat);
+      }
+      .social-btn.behance:hover {
+        background-color: var(--behance);
+        color: #fff;
+        border-color: var(--behance);
+      }
+      .social-btn.reddit:hover {
+        background-color: var(--reddit);
+        color: #fff;
+        border-color: var(--reddit);
+      }
+      .social-btn.discord:hover {
+        background-color: var(--discord);
+        color: #fff;
+        border-color: var(--discord);
+      }
+      .social-btn.twitch:hover {
+        background-color: var(--twitch);
+        color: #fff;
+        border-color: var(--twitch);
+      }
+      .social-btn.kick:hover {
+        background-color: var(--kick);
+        color: #000;
+        border-color: var(--kick);
+      }
+      .social-btn.upwork:hover {
+        background-color: var(--upwork);
+        color: #fff;
+        border-color: var(--upwork);
+      }
+      .social-btn.freelancer:hover {
+        background-color: var(--freelancer);
+        color: #fff;
+        border-color: var(--freelancer);
+      }
+      .social-btn.mostaql:hover {
+        background-color: var(--mostaql);
+        color: #fff;
+        border-color: var(--mostaql);
+      }
+      .social-btn.khamsat:hover {
+        background-color: var(--khamsat);
+        color: #fff;
+        border-color: var(--khamsat);
+      }
+      .social-btn.pinterest:hover {
+        background-color: var(--pinterest);
+        color: #fff;
+        border-color: var(--pinterest);
+      }
+      .social-btn.outlook:hover {
+        background-color: var(--outlook);
+        color: #fff;
+        border-color: var(--outlook);
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border-width: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1 class="sr-only">
+      Mohammed Samir Helal – Personal Portfolio Website | محمد سمير هلال –
+      الموقع الشخصي
+    </h1>
+    
+    <div class="hero-container">
+      <img
+        src="light.webp"
+        class="responsive-center"
+        id="light-image"
+        alt="Mohammed Samir Helal - Dental Student & Programmer"
+        fetchpriority="high"
+        width="1080"
+        height="897"
+      />
+
+      <img
+        src="dark.webp"
+        class="responsive-center"
+        id="dark-image"
+        alt="Mohammed Samir Helal - Dental Student & Programmer"
+        fetchpriority="high"
+        width="1080"
+        height="897"
+      />
+    </div>
+
+    <div class="contact-wrapper" id="contact-wrapper">
+      <button
+        class="contact-trigger"
+        id="contact-btn"
+        aria-label="Open Social Links"
+        aria-expanded="false"
+      >
+        Contact With Mo <i class="fas fa-chevron-up" aria-hidden="true"></i>
+      </button>
+
+      <div class="social-icons-container">
+        <div class="drawer-title">@mosamirhelal</div>
+
+        <a
+          href="https://wa.me/201550084955"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn whatsapp"
+          aria-label="WhatsApp"
+          ><i class="fab fa-whatsapp"></i
+        ></a>
+        <a
+          href="https://t.me/mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn telegram"
+          aria-label="Telegram"
+          ><i class="fab fa-telegram-plane"></i
+        ></a>
+        <a
+          href="mailto:mosamirhelal@outlook.com"
+          class="social-btn outlook"
+          aria-label="Outlook"
+          ><i class="fas fa-envelope"></i
+        ></a>
+
+        <a
+          href="https://www.facebook.com/mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn facebook"
+          aria-label="Facebook"
+          ><i class="fab fa-facebook-f"></i
+        ></a>
+        <a
+          href="https://www.instagram.com/mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn instagram"
+          aria-label="Instagram"
+          ><i class="fab fa-instagram"></i
+        ></a>
+        <a
+          href="https://x.com/mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn x-twitter"
+          aria-label="X"
+          ><i class="fa-brands fa-x-twitter"></i
+        ></a>
+        <a
+          href="https://www.threads.net/@mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn threads"
+          aria-label="Threads"
+          ><i class="fa-brands fa-threads"></i
+        ></a>
+        <a
+          href="https://www.snapchat.com/add/mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn snapchat"
+          aria-label="Snapchat"
+          ><i class="fab fa-snapchat-ghost"></i
+        ></a>
+        <a
+          href="https://www.tiktok.com/@mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn tiktok"
+          aria-label="TikTok"
+          ><i class="fab fa-tiktok"></i
+        ></a>
+        <a
+          href="https://www.youtube.com/@mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn youtube"
+          aria-label="YouTube"
+          ><i class="fab fa-youtube"></i
+        ></a>
+        <a
+          href="https://www.reddit.com/user/mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn reddit"
+          aria-label="Reddit"
+          ><i class="fab fa-reddit-alien"></i
+        ></a>
+
+        <a
+          href="https://www.linkedin.com/in/mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn linkedin"
+          aria-label="LinkedIn"
+          ><i class="fab fa-linkedin-in"></i
+        ></a>
+        <a
+          href="https://github.com/mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn github"
+          aria-label="GitHub"
+          ><i class="fab fa-github"></i
+        ></a>
+        <a
+          href="https://www.behance.net/mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn behance"
+          aria-label="Behance"
+          ><i class="fab fa-behance"></i
+        ></a>
+        <a
+          href="https://www.pinterest.com/mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn pinterest"
+          aria-label="Pinterest"
+          ><i class="fab fa-pinterest"></i
+        ></a>
+        <a
+          href="https://www.freelancer.com/u/mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn freelancer"
+          aria-label="Freelancer"
+          ><i class="fas fa-dove"></i
+        ></a>
+        <a
+          href="https://mostaql.com/u/mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn mostaql"
+          aria-label="Mostaql"
+          ><i class="fas fa-laptop-code"></i
+        ></a>
+        <a
+          href="https://khamsat.com/user/mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn khamsat"
+          aria-label="Khamsat"
+          ><i class="fas fa-briefcase"></i
+        ></a>
+
+        <a
+          href="https://discord.com/users/mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn discord"
+          aria-label="Discord"
+          ><i class="fab fa-discord"></i
+        ></a>
+        <a
+          href="https://www.twitch.tv/mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn twitch"
+          aria-label="Twitch"
+          ><i class="fab fa-twitch"></i
+        ></a>
+        <a
+          href="https://kick.com/mosamirhelal"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="social-btn kick"
+          aria-label="Kick"
+          ><i class="fa-brands fa-kickstarter-k"></i
+        ></a>
+      </div>
+    </div>
+
+    <button id="theme-toggle" aria-label="Dark Mode" title="Toggle Dark Mode">
+      🌙
+    </button>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const toggleBtn = document.getElementById("theme-toggle");
+        const body = document.body;
+        const contactBtn = document.getElementById("contact-btn");
+        const contactWrapper = document.getElementById("contact-wrapper");
+        const themeMetaTag = document.getElementById("theme-meta-tag");
+
+        function applyTheme(theme) {
+          const isDark = theme === "dark";
+          body.classList.toggle("dark-mode", isDark);
+          toggleBtn.textContent = isDark ? "☀️" : "🌙";
+          toggleBtn.setAttribute(
+            "aria-label",
+            isDark ? "Light Mode" : "Dark Mode"
+          );
+          const color = isDark ? "#000000" : "#ffffff";
+          if (themeMetaTag) themeMetaTag.content = color;
+        }
+
+        const savedTheme = localStorage.getItem("theme");
+        const prefersDark = window.matchMedia(
+          "(prefers-color-scheme: dark)"
+        ).matches;
+        applyTheme(savedTheme ? savedTheme : prefersDark ? "dark" : "light");
+
+        toggleBtn.addEventListener("click", () => {
+          const isCurrentlyDark = body.classList.contains("dark-mode");
+          const newTheme = isCurrentlyDark ? "light" : "dark";
+          applyTheme(newTheme);
+          localStorage.setItem("theme", newTheme);
+        });
+
+        window
+          .matchMedia("(prefers-color-scheme: dark)")
+          .addEventListener("change", (e) => {
+            if (!localStorage.getItem("theme")) {
+              applyTheme(e.matches ? "dark" : "light");
+            }
+          });
+
+        contactBtn.addEventListener("click", () => {
+          const isExpanded = contactWrapper.classList.toggle("active");
+          contactBtn.setAttribute("aria-expanded", isExpanded);
+        });
+      });
+    </script>
+  </body>
+</html>

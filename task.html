@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dental Schedule | Mosamirhelal</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Cairo:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --primary: #2eaadc;
+        --bg-color: #f4f7f6;
+        --card-bg: #ffffff;
+        --text-main: #333;
+        --text-muted: #666;
+        --border: #e0e0e0;
+        --danger: #ff4d4d;
+      }
+
+      body {
+        font-family: "Inter", "Cairo", sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 900px;
+        background: var(--card-bg);
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid var(--bg-color);
+      }
+
+      h1 {
+        font-size: 1.8rem;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .table-wrapper {
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 600px;
+      }
+
+      th {
+        text-align: left;
+        padding: 12px;
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        border-bottom: 2px solid var(--border);
+        font-weight: 600;
+      }
+
+      td {
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+        transition: background 0.2s;
+      }
+
+      tr:hover td {
+        background-color: #f9fbfb;
+      }
+
+      [contenteditable="true"] {
+        outline: none;
+        padding: 4px 8px;
+        border-radius: 4px;
+      }
+
+      [contenteditable="true"]:focus {
+        background-color: #eef8fc;
+        color: var(--primary);
+      }
+
+      .btn-add {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.1s, opacity 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-add:hover {
+        opacity: 0.9;
+      }
+
+      .btn-add:active {
+        transform: scale(0.98);
+      }
+
+      .delete-btn {
+        color: var(--text-muted);
+        cursor: pointer;
+        padding: 6px;
+        border-radius: 50%;
+        transition: all 0.2s;
+        border: none;
+        background: transparent;
+        font-size: 1.1rem;
+      }
+
+      .delete-btn:hover {
+        color: var(--danger);
+        background-color: rgba(255, 77, 77, 0.1);
+      }
+
+      .custom-checkbox {
+        width: 20px;
+        height: 20px;
+        cursor: pointer;
+        accent-color: var(--primary);
+      }
+
+      .status-badge {
+        font-size: 0.85rem;
+        padding: 6px 12px;
+        border-radius: 20px;
+        background-color: #eee;
+        color: var(--text-muted);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.3s ease;
+      }
+
+      .status-badge.saving {
+        background-color: #fff3cd;
+        color: #856404;
+      }
+      .status-badge.success {
+        background-color: #d4edda;
+        color: #155724;
+      }
+      .status-badge.error {
+        background-color: #f8d7da;
+        color: #721c24;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1><span>🗓</span> Course Schedule</h1>
+        <div id="statusMsg" class="status-badge">🔄 Connecting...</div>
+      </header>
+
+      <div class="table-wrapper">
+        <table id="scheduleTable">
+          <thead>
+            <tr>
+              <th style="width: 30%">Name</th>
+              <th style="width: 15%">Date</th>
+              <th style="width: 20%">Topic</th>
+              <th style="width: 15%">Type</th>
+              <th style="width: 10%; text-align: center">Done?</th>
+              <th style="width: 10%; text-align: center">Actions</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div style="margin-top: 20px; display: flex; justify-content: center">
+        <button id="addBtn" class="btn-add"><span>+</span> Add New Task</button>
+      </div>
+    </div>
+
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
+      import {
+        getFirestore,
+        doc,
+        setDoc,
+        onSnapshot,
+      } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIza" + "SyBheVYASi7Oje3XtPVZapHqTY4h6am6xhU",
+        authDomain: "dental-schedule-mosamirhelal.firebaseapp.com",
+        projectId: "dental-schedule-mosamirhelal",
+        storageBucket: "dental-schedule-mosamirhelal.firebasestorage.app",
+        messagingSenderId: "1040445715314",
+        appId: "1:1040445715314:web:82990dc4bf007d9a64a3eb",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+      const scheduleDocRef = doc(db, "schedules", "main_schedule_v2");
+
+      const tableBody = document.querySelector("#scheduleTable tbody");
+      const statusMsg = document.getElementById("statusMsg");
+      let saveTimeout;
+
+      function updateStatus(type, message) {
+        statusMsg.className = `status-badge ${type}`;
+        statusMsg.innerHTML = message;
+
+        if (type === "success") {
+          setTimeout(() => {
+            statusMsg.className = "status-badge";
+            statusMsg.innerHTML = "● Ready";
+          }, 3000);
+        }
+      }
+
+      onSnapshot(
+        scheduleDocRef,
+        (docSnap) => {
+          if (docSnap.exists() && docSnap.data().htmlContent) {
+            if (document.activeElement.tagName !== "TD") {
+              tableBody.innerHTML = docSnap.data().htmlContent;
+              reattachEvents();
+              updateStatus("success", "✅ Synced");
+            }
+          } else if (!docSnap.exists()) {
+            updateStatus("success", "ℹ️ New Schedule Created");
+
+            if (tableBody.children.length === 0) addNewRow();
+          }
+        },
+        (error) => {
+          console.error("Firebase Error:", error);
+          updateStatus("error", "❌ Connection Error");
+        }
+      );
+
+      async function saveToFirebase() {
+        updateStatus("saving", "⏳ Saving...");
+
+        const checkboxes = tableBody.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach((cb) => {
+          if (cb.checked) {
+            cb.setAttribute("checked", "true");
+          } else {
+            cb.removeAttribute("checked");
+          }
+        });
+
+        try {
+          await setDoc(scheduleDocRef, { htmlContent: tableBody.innerHTML });
+          updateStatus("success", "✅ Saved");
+        } catch (e) {
+          console.error(e);
+          updateStatus("error", "❌ Save Failed");
+        }
+      }
+
+      function reattachEvents() {
+        tableBody.querySelectorAll("[contenteditable]").forEach((cell) => {
+          cell.oninput = () => {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(saveToFirebase, 1000);
+          };
+        });
+
+        tableBody.querySelectorAll('input[type="checkbox"]').forEach((cb) => {
+          cb.onchange = saveToFirebase;
+        });
+
+        tableBody.querySelectorAll(".delete-btn").forEach((btn) => {
+          btn.onclick = function () {
+            if (confirm("Delete this task?")) {
+              this.closest("tr").remove();
+              saveToFirebase();
+            }
+          };
+        });
+      }
+
+      function addNewRow() {
+        const newRow = document.createElement("tr");
+        const today = new Date().toLocaleDateString("en-GB");
+
+        newRow.innerHTML = `
+            <td contenteditable="true">New Task...</td>
+            <td contenteditable="true">${today}</td>
+            <td contenteditable="true">-</td>
+            <td contenteditable="true">-</td>
+            <td style="text-align: center;">
+                <input type="checkbox" class="custom-checkbox">
+            </td>
+            <td style="text-align: center;">
+                <button class="delete-btn" title="Delete">🗑️</button>
+            </td>
+        `;
+
+        tableBody.appendChild(newRow);
+        reattachEvents();
+        saveToFirebase();
+      }
+
+      document.getElementById("addBtn").addEventListener("click", addNewRow);
+
+      reattachEvents();
+    </script>
+  </body>
+</html>
