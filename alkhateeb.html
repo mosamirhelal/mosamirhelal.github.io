@@ -69,14 +69,21 @@
         h2 {
             color: #0056b3;
             margin-top: 20px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             font-size: 24px;
+        }
+
+        .warning-text {
+            font-size: 14px;
+            color: #e63946;
+            margin-bottom: 8px;
+            font-weight: bold;
         }
 
         input { 
             width: 100%;
             padding: 12px 15px; 
-            margin: 10px 0 20px 0; 
+            margin: 0 0 15px 0; 
             border: 2px solid #e1e1e1; 
             border-radius: 8px; 
             font-size: 16px; 
@@ -115,9 +122,8 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        #result { 
+        #result:not(:empty) { 
             margin-top: 20px; 
-            min-height: 50px;
         }
 
         .student-info-appear {
@@ -206,6 +212,13 @@
             display: none;
         }
 
+        .designer-credit {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #999;
+            text-align: center;
+        }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -267,8 +280,10 @@
             
             .school-name { font-size: 15px; }
             .principal-name { font-size: 13px; margin-bottom: 10px; }
-            h2 { font-size: 20px; margin-bottom: 20px; margin-top: 10px; }
+            h2 { font-size: 20px; margin-bottom: 15px; margin-top: 10px; }
             
+            .warning-text { font-size: 12px; }
+
             th, td { 
                 padding: 10px 5px;
                 font-size: 14px;
@@ -285,6 +300,11 @@
 
             .congrats-message, .fail-message {
                 font-size: 14px;
+            }
+
+            .designer-credit {
+                font-size: 12px;
+                margin-top: 15px;
             }
         }
     </style>
@@ -303,15 +323,26 @@
     
     <h2>استعلام عن النتيجة</h2>
     
+    <div class="warning-text">⚠️ يرجى كتابة الرقم القومي بالأرقام الإنجليزية فقط</div>
+    
     <input type="text" id="nationalId" placeholder="أدخل الرقم القومي للطالب">
     <button onclick="getGrade()" id="searchBtn">بحث</button>
     
     <div class="loader" id="loader"></div>
     
     <div id="result"></div>
+
+    <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
 </div>
 
 <script>
+    document.getElementById("nationalId").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            getGrade();
+        }
+    });
+
     function checkEmpty(value) {
         if (value === "" || value === null || value === undefined) {
             return "-";
