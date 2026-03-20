@@ -13,12 +13,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             text-align: center; 
             margin: 0;
-            padding: 20px;
+            padding: 40px 20px;
             background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
             animation: fadeInPage 1s ease-out;
         }
 
@@ -28,7 +24,7 @@
             border-radius: 15px; 
             width: 100%;
             max-width: 750px;
-            margin: auto; 
+            margin: 0 auto; 
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             animation: slideInUp 0.8s ease-out;
             position: relative;
@@ -88,6 +84,8 @@
             border-radius: 8px; 
             font-size: 16px; 
             transition: all 0.3s ease;
+            direction: ltr;
+            text-align: center;
         }
 
         input:focus {
@@ -258,9 +256,7 @@
 
         @media (max-width: 480px) {
             body {
-                padding: 10px;
-                align-items: flex-start;
-                margin-top: 20px;
+                padding: 20px 10px;
             }
             
             .container { 
@@ -324,7 +320,7 @@
     
     <div class="warning-text">⚠️ يرجى كتابة الرقم القومي بالأرقام الإنجليزية فقط</div>
     
-    <input type="text" id="nationalId" placeholder="أدخل الرقم القومي للطالب">
+    <input type="tel" id="nationalId" placeholder="أدخل الرقم القومي للطالب" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
     <button onclick="getGrade()" id="searchBtn">بحث</button>
     
     <div class="loader" id="loader"></div>
