@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نتيجة الطلاب</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f9; }
+        .container { background: white; padding: 30px; border-radius: 10px; width: 350px; margin: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        input { width: 90%; padding: 10px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; }
+        button { padding: 10px 20px; background-color: #0056b3; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; width: 100%; }
+        button:hover { background-color: #004494; }
+        #result { margin-top: 20px; font-size: 18px; font-weight: bold; line-height: 1.6; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>استعلام عن النتيجة</h2>
+    <input type="text" id="studentId" placeholder="أدخل كود الطالب هنا">
+    <button onclick="getGrade()">بحث</button>
+    <div id="result"></div>
+</div>
+
+<script>
+    function getGrade() {
+        var id = document.getElementById('studentId').value;
+        var resultDiv = document.getElementById('result');
+        
+        if (!id) {
+            resultDiv.innerHTML = "<span style='color:red;'>الرجاء إدخال الكود أولاً</span>";
+            return;
+        }
+
+        resultDiv.innerHTML = "<span style='color:gray;'>جاري البحث عن النتيجة...</span>";
+
+        
+        var url = 'https://script.google.com/macros/s/AKfycbz0LYos-RcOTn1cWxTTrFbGdklfqFuPvmmKgNU04aecc3VMpE5lrRSsqtaQTwv0Ybw/exec?id=' + id;
+
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    resultDiv.innerHTML = `<span style='color:green;'>الاسم: ${data.name} <br> الدرجة: ${data.grade}</span>`;
+                } else {
+                    resultDiv.innerHTML = `<span style='color:red;'>${data.message}</span>`;
+                }
+            })
+            .catch(error => {
+                resultDiv.innerHTML = "<span style='color:red;'>حدث خطأ في الاتصال بقاعدة البيانات. تأكد من الإنترنت.</span>";
+            });
+    }
+</script>
+
+</body>
+</html>
