@@ -6,48 +6,77 @@
     <title>نتيجة الطلاب</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin-top: 50px; background-color: #f4f4f9; }
-        .container { background: white; padding: 30px; border-radius: 10px; width: 350px; margin: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        .container { background: white; padding: 30px; border-radius: 10px; width: 450px; margin: auto; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
         input { width: 90%; padding: 10px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; }
         button { padding: 10px 20px; background-color: #0056b3; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; width: 100%; }
         button:hover { background-color: #004494; }
-        #result { margin-top: 20px; font-size: 18px; font-weight: bold; line-height: 1.6; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
+        th { background-color: #0056b3; color: white; }
+        .total-row { font-weight: bold; background-color: #e9ecef; }
+        
+        .percentage { font-size: 20px; font-weight: bold; color: #28a745; margin-top: 20px; text-align: center; border-top: 2px dashed #ccc; padding-top: 15px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h2>استعلام عن النتيجة</h2>
-    <input type="text" id="studentId" placeholder="أدخل كود الطالب هنا">
+    <input type="text" id="nationalId" placeholder="أدخل الرقم القومي للطالب">
     <button onclick="getGrade()">بحث</button>
     <div id="result"></div>
 </div>
 
 <script>
     function getGrade() {
-        var id = document.getElementById('studentId').value;
+        var id = document.getElementById('nationalId').value;
         var resultDiv = document.getElementById('result');
         
         if (!id) {
-            resultDiv.innerHTML = "<span style='color:red;'>الرجاء إدخال الكود أولاً</span>";
+            resultDiv.innerHTML = "<div style='color:red; margin-top:15px;'>الرجاء إدخال الرقم القومي أولاً</div>";
             return;
         }
 
-        resultDiv.innerHTML = "<span style='color:gray;'>جاري البحث عن النتيجة...</span>";
+        resultDiv.innerHTML = "<div style='color:gray; margin-top:15px;'>جاري البحث عن النتيجة...</div>";
 
-        
-        var url = 'https://script.google.com/macros/s/AKfycbz0LYos-RcOTn1cWxTTrFbGdklfqFuPvmmKgNU04aecc3VMpE5lrRSsqtaQTwv0Ybw/exec?id=' + id;
+        var url = 'https://script.google.com/macros/s/AKfycbwxzE7PlYlrUuGhb_KZKU6YEvkOdaysWdPRNcL2OS9JOrOGoC9bmemvXdBd3WmFzFQ/exec?id=' + id;
 
         fetch(url)
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
-                    resultDiv.innerHTML = `<span style='color:green;'>الاسم: ${data.name} <br> الدرجة: ${data.grade}</span>`;
+                    var arabic = parseFloat(data.arabic) || 0;
+                    var english = parseFloat(data.english) || 0;
+                    var science = parseFloat(data.science) || 0;
+                    var math = parseFloat(data.math) || 0;
+                    
+                    var totalMarks = arabic + english + science + math;
+                    var percentage = (totalMarks / 400) * 100;
+
+                    var html = `
+                        <h3 style="color:#333; margin-top:20px;">الاسم: ${data.name}</h3>
+                        <table>
+                            <tr>
+                                <th>المادة</th>
+                                <th>درجة الطالب</th>
+                                <th>الدرجة النهائية</th>
+                            </tr>
+                            <tr><td>اللغة العربية</td><td>${arabic}</td><td>100</td></tr>
+                            <tr><td>اللغة الإنجليزية</td><td>${english}</td><td>100</td></tr>
+                            <tr><td>العلوم</td><td>${science}</td><td>100</td></tr>
+                            <tr><td>الرياضيات</td><td>${math}</td><td>100</td></tr>
+                            <tr class="total-row"><td>المجموع الكلي</td><td>${totalMarks}</td><td>400</td></tr>
+                        </table>
+                        <div class="percentage">النسبة المئوية: ${percentage.toFixed(1)}%</div>
+                    `;
+                    resultDiv.innerHTML = html;
                 } else {
-                    resultDiv.innerHTML = `<span style='color:red;'>${data.message}</span>`;
+                    resultDiv.innerHTML = `<div style='color:red; margin-top:15px;'>${data.message}</div>`;
                 }
             })
             .catch(error => {
-                resultDiv.innerHTML = "<span style='color:red;'>حدث خطأ في الاتصال بقاعدة البيانات. تأكد من الإنترنت.</span>";
+                resultDiv.innerHTML = "<div style='color:red; margin-top:15px;'>حدث خطأ في الاتصال بقاعدة البيانات. تأكد من الإنترنت.</div>";
             });
     }
 </script>
