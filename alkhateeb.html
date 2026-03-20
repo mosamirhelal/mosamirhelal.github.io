@@ -31,24 +31,44 @@
             margin: auto; 
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             animation: slideInUp 0.8s ease-out;
+            position: relative;
+        }
+
+        .header-logos {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .header-logos img {
+            width: auto;
+            max-height: 70px;
+            height: auto;
+        }
+
+        .header-text {
+            flex: 1;
+            text-align: center;
         }
 
         .school-name {
-            font-size: 18px;
+            font-size: 17px;
             color: #333;
             margin-bottom: 5px;
             font-weight: bold;
         }
 
         .principal-name {
-            font-size: 15px;
+            font-size: 14px;
             color: #666;
-            margin-bottom: 20px;
+            margin-bottom: 0;
         }
 
         h2 {
             color: #0056b3;
-            margin-top: 0;
+            margin-top: 20px;
             margin-bottom: 25px;
             font-size: 24px;
         }
@@ -162,6 +182,19 @@
             opacity: 0;
         }
 
+        .fail-message {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-size: 16px;
+            font-weight: bold;
+            animation: fadeIn 0.5s ease-out 0.8s forwards;
+            opacity: 0;
+        }
+
         .loader {
             border: 4px solid #f3f3f3;
             border-top: 4px solid #0056b3;
@@ -221,10 +254,20 @@
                 padding: 25px 20px; 
                 border-radius: 10px;
             }
+
+            .header-logos {
+                flex-direction: column;
+                margin-bottom: 15px;
+            }
+
+            .header-logos img {
+                max-height: 55px;
+                margin-bottom: 10px;
+            }
             
-            .school-name { font-size: 16px; }
-            .principal-name { font-size: 14px; margin-bottom: 15px; }
-            h2 { font-size: 20px; margin-bottom: 20px; }
+            .school-name { font-size: 15px; }
+            .principal-name { font-size: 13px; margin-bottom: 10px; }
+            h2 { font-size: 20px; margin-bottom: 20px; margin-top: 10px; }
             
             th, td { 
                 padding: 10px 5px;
@@ -240,7 +283,7 @@
                 font-size: 19px;
             }
 
-            .congrats-message {
+            .congrats-message, .fail-message {
                 font-size: 14px;
             }
         }
@@ -249,8 +292,15 @@
 <body>
 
 <div class="container">
-    <div class="school-name">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</div>
-    <div class="principal-name">مدير المدرسة : سمير هلال</div>
+    <div class="header-logos">
+        <img src="logo_2.webp" alt="شعار وزارة التربية والتعليم">
+        <div class="header-text">
+            <div class="school-name">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</div>
+            <div class="principal-name">مدير المدرسة : سمير هلال</div>
+        </div>
+        <img src="logo_1.webp" alt="شعار مدرسة الشهيد محمود علي الخطيب">
+    </div>
+    
     <h2>استعلام عن النتيجة</h2>
     
     <input type="text" id="nationalId" placeholder="أدخل الرقم القومي للطالب">
@@ -311,10 +361,15 @@
 
                     var displayPerc = (perc !== "-") ? perc + "%" : "-";
                     
-                    var congratsHtml = "";
+                    var statusMessageHtml = "";
                     var numericPerc = parseFloat(perc);
-                    if (!isNaN(numericPerc) && numericPerc >= 50) {
-                        congratsHtml = `<div class="congrats-message">تتقدم إدارة المدرسة بخالص التهنئة بالنجاح والتفوق!</div>`;
+                    
+                    if (!isNaN(numericPerc)) {
+                        if (numericPerc >= 50) {
+                            statusMessageHtml = `<div class="congrats-message">تتقدم إدارة المدرسة بخالص التهنئة بالنجاح والتفوق!</div>`;
+                        } else {
+                            statusMessageHtml = `<div class="fail-message">حظ أوفر، نتمنى لك أن تجتهد أكثر في المرة القادمة.</div>`;
+                        }
                     }
 
                     var html = `
@@ -333,7 +388,7 @@
                                 <tr class="total-row"><td>المجموع الكلي</td><td>${total}</td><td>${total_max}</td></tr>
                             </table>
                             <div class="percentage">النسبة المئوية: ${displayPerc}</div>
-                            ${congratsHtml}
+                            ${statusMessageHtml}
                         </div>
                     `;
                     resultDiv.innerHTML = html;
