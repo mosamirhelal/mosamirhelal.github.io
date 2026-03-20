@@ -27,30 +27,30 @@
             padding: 40px; 
             border-radius: 15px; 
             width: 100%;
-            max-width: 550px;
+            max-width: 750px;
             margin: auto; 
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
             animation: slideInUp 0.8s ease-out;
             position: relative;
         }
 
-        .header-logos {
+        .top-logos {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            margin-bottom: 20px;
-            padding: 0 10px;
+            margin-bottom: 15px;
+            width: 100%;
+            gap: 15px;
         }
 
-        .header-logos img {
-            width: auto;
+        .top-logos img {
             max-height: 70px;
-            height: auto;
+            width: auto;
         }
 
         .header-text {
-            flex: 1;
             text-align: center;
+            margin-bottom: 20px;
         }
 
         .school-name {
@@ -68,7 +68,7 @@
 
         h2 {
             color: #0056b3;
-            margin-top: 20px;
+            margin-top: 10px;
             margin-bottom: 20px;
             font-size: 24px;
         }
@@ -268,42 +268,40 @@
                 border-radius: 10px;
             }
 
-            .header-logos {
-                flex-direction: column;
+            .top-logos {
                 margin-bottom: 15px;
             }
 
-            .header-logos img {
-                max-height: 55px;
-                margin-bottom: 10px;
+            .top-logos img {
+                max-height: 55px; 
             }
             
-            .school-name { font-size: 15px; }
-            .principal-name { font-size: 13px; margin-bottom: 10px; }
-            h2 { font-size: 20px; margin-bottom: 15px; margin-top: 10px; }
+            .school-name { font-size: 17px; }
+            .principal-name { font-size: 14px; margin-bottom: 10px; }
+            h2 { font-size: 24px; margin-bottom: 15px; margin-top: 10px; }
             
-            .warning-text { font-size: 12px; }
+            .warning-text { font-size: 14px; }
 
             th, td { 
-                padding: 10px 5px;
-                font-size: 14px;
+                padding: 15px;
+                font-size: 16px;
             }
             
             input, button {
-                font-size: 15px;
-                padding: 10px;
+                font-size: 16px;
+                padding: 12px 15px;
             }
 
             .percentage {
-                font-size: 19px;
+                font-size: 22px;
             }
 
             .congrats-message, .fail-message {
-                font-size: 14px;
+                font-size: 16px;
             }
 
             .designer-credit {
-                font-size: 12px;
+                font-size: 13px;
                 margin-top: 15px;
             }
         }
@@ -312,13 +310,14 @@
 <body>
 
 <div class="container">
-    <div class="header-logos">
+    <div class="top-logos">
         <img src="logo_2.webp" alt="شعار وزارة التربية والتعليم">
-        <div class="header-text">
-            <div class="school-name">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</div>
-            <div class="principal-name">مدير المدرسة : سمير هلال</div>
-        </div>
         <img src="logo_1.webp" alt="شعار مدرسة الشهيد محمود علي الخطيب">
+    </div>
+
+    <div class="header-text">
+        <div class="school-name">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</div>
+        <div class="principal-name">مدير المدرسة : سمير هلال</div>
     </div>
     
     <h2>استعلام عن النتيجة</h2>
