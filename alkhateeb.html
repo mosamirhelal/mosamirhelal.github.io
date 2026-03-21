@@ -1,435 +1,452 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>نتيجة الطلاب - مدرسة الشهيد محمود علي الخطيب</title>
     <style>
-        * {
-            box-sizing: border-box;
+      @import url("https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&display=swap");
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 40px 20px;
+        background-color: #f0f2f5;
+        animation: fadeInPage 1s ease-out;
+      }
+
+      .container {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        width: 100%;
+        max-width: 750px;
+        margin: 0 auto;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        animation: slideInUp 0.8s ease-out;
+        position: relative;
+      }
+
+      .top-logos {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 15px;
+        width: 100%;
+        gap: 15px;
+      }
+
+      .top-logos img {
+        max-height: 70px;
+        width: auto;
+      }
+
+      .header-text {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      .school-name {
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 5px;
+        font-weight: bold;
+      }
+
+      .principal-name {
+        font-size: 15px;
+        color: #666;
+        margin-bottom: 0;
+        font-weight: bold;
+        font-family: "El Messiri", sans-serif;
+      }
+
+      h2 {
+        color: #0056b3;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-size: 24px;
+      }
+
+      .warning-text {
+        font-size: 14px;
+        color: #e63946;
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
+
+      .form-control {
+        font-size: 16px;
+        padding: 12px 15px;
+        border-radius: 8px;
+      }
+
+      input {
+        width: 100%;
+        margin: 0 0 15px 0;
+        border: 2px solid #e1e1e1;
+        transition: all 0.3s ease;
+        direction: ltr;
+        text-align: center;
+      }
+
+      input:focus {
+        border-color: #0056b3;
+        box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+        outline: none;
+      }
+
+      button {
+        background-color: #0056b3;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        width: 100%;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      button:hover {
+        background-color: #004494;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      button:active {
+        transform: translateY(1px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      #result:not(:empty) {
+        margin-top: 20px;
+      }
+
+      .student-info-appear {
+        animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #eee;
+        animation: tableAppear 0.8s ease-out forwards;
+        opacity: 0;
+      }
+
+      th,
+      td {
+        border: 1px solid #eee;
+        padding: 15px;
+        text-align: center;
+      }
+
+      th {
+        background-color: #0056b3;
+        color: white;
+        font-weight: 600;
+      }
+
+      tr:nth-child(even) {
+        background-color: #fbfbfb;
+      }
+
+      .total-row {
+        font-weight: bold;
+        background-color: #bcb8b1 !important;
+      }
+
+      .percentage {
+        font-size: 22px;
+        font-weight: bold;
+        color: #0056b3;
+        margin-top: 25px;
+        text-align: center;
+        border-top: 2px dashed #eee;
+        padding-top: 15px;
+        animation: fadeIn 0.5s ease-out 0.5s forwards;
+        opacity: 0;
+      }
+
+      .status-message {
+        padding: 12px;
+        border-radius: 8px;
+        margin-top: 20px;
+        font-size: 16px;
+        font-weight: bold;
+        animation: fadeIn 0.5s ease-out 0.8s forwards;
+        opacity: 0;
+      }
+
+      .congrats-message {
+        background-color: #008000;
+        color: #f2e8cf;
+        border: 1px solid #c3e6cb;
+      }
+
+      .fail-message {
+        background-color: #b23a48;
+        color: #fed0bb;
+        border: 1px solid #f5c6cb;
+      }
+
+      .loader {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #0056b3;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+        display: none;
+      }
+
+      .designer-credit {
+        margin-top: 15px;
+        font-size: 13px;
+        color: #4a4e69;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
         }
-        
-        body { 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            text-align: center; 
-            margin: 0;
-            padding: 40px 20px;
-            background-color: #f0f2f5;
-            animation: fadeInPage 1s ease-out;
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes fadeIn {
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeInPage {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes tableAppear {
+        from {
+          opacity: 0;
+          transform: scaleY(0.9);
+          transform-origin: top;
+        }
+        to {
+          opacity: 1;
+          transform: scaleY(1);
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 20px 10px;
         }
 
-        .container { 
-            background: white; 
-            padding: 40px; 
-            border-radius: 15px; 
-            width: 100%;
-            max-width: 750px;
-            margin: 0 auto; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            animation: slideInUp 0.8s ease-out;
-            position: relative;
+        .container {
+          padding: 25px 20px;
+          border-radius: 10px;
         }
 
         .top-logos {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 15px;
-            width: 100%;
-            gap: 15px;
+          margin-bottom: 15px;
         }
 
         .top-logos img {
-            max-height: 70px;
-            width: auto;
-        }
-
-        .header-text {
-            text-align: center;
-            margin-bottom: 20px;
+          max-height: 55px;
         }
 
         .school-name {
-            font-size: 17px;
-            color: #333;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .principal-name {
-            font-size: 14px;
-            color: #666;
-            margin-bottom: 0;
+          font-size: 17px;
         }
 
         h2 {
-            color: #0056b3;
-            margin-top: 10px;
-            margin-bottom: 20px;
-            font-size: 24px;
+          font-size: 24px;
+          margin-bottom: 15px;
+          margin-top: 10px;
         }
 
         .warning-text {
-            font-size: 14px;
-            color: #e63946;
-            margin-bottom: 8px;
-            font-weight: bold;
+          font-size: 14px;
         }
 
-        input { 
-            width: 100%;
-            padding: 12px 15px; 
-            margin: 0 0 15px 0; 
-            border: 2px solid #e1e1e1; 
-            border-radius: 8px; 
-            font-size: 16px; 
-            transition: all 0.3s ease;
-            direction: ltr;
-            text-align: center;
+        th,
+        td {
+          font-size: 16px;
         }
-
-        input:focus {
-            border-color: #0056b3;
-            box-shadow: 0 0 0 3px rgba(0,86,179,0.1);
-            outline: none;
-        }
-
-        button { 
-            padding: 12px 20px; 
-            background-color: #0056b3; 
-            color: white; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-size: 16px; 
-            font-weight: bold;
-            width: 100%; 
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        button:hover { 
-            background-color: #004494; 
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        button:active {
-            transform: translateY(1px);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        #result:not(:empty) { 
-            margin-top: 20px; 
-        }
-
-        .student-info-appear {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            margin-top: 20px; 
-            background-color: white;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid #eee;
-            animation: tableAppear 0.8s ease-out forwards;
-            opacity: 0;
-        }
-        
-        th, td { 
-            border: 1px solid #eee; 
-            padding: 15px; 
-            text-align: center; 
-        }
-        
-        th { 
-            background-color: #0056b3; 
-            color: white; 
-            font-weight: 600;
-        }
-        
-        tr:nth-child(even) {
-            background-color: #fbfbfb;
-        }
-
-        .total-row { 
-            font-weight: bold; 
-            background-color: #e9ecef !important; 
-        }
-        
-        .percentage { 
-            font-size: 22px; 
-            font-weight: bold; 
-            color: #28a745; 
-            margin-top: 25px; 
-            text-align: center; 
-            border-top: 2px dashed #eee; 
-            padding-top: 15px;
-            animation: fadeIn 0.5s ease-out 0.5s forwards;
-            opacity: 0;
-        }
-
-        .congrats-message {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 20px;
-            font-size: 16px;
-            font-weight: bold;
-            animation: fadeIn 0.5s ease-out 0.8s forwards;
-            opacity: 0;
-        }
-
-        .fail-message {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 20px;
-            font-size: 16px;
-            font-weight: bold;
-            animation: fadeIn 0.5s ease-out 0.8s forwards;
-            opacity: 0;
-        }
-
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #0056b3;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 20px auto;
-            display: none;
-        }
-
-        .designer-credit {
-            margin-top: 15px;
-            font-size: 13px;
-            color: #999;
-            text-align: center;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes fadeIn {
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeInPage {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes tableAppear {
-            from {
-                opacity: 0;
-                transform: scaleY(0.9);
-                transform-origin: top;
-            }
-            to {
-                opacity: 1;
-                transform: scaleY(1);
-            }
-        }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 20px 10px;
-            }
-            
-            .container { 
-                padding: 25px 20px; 
-                border-radius: 10px;
-            }
-
-            .top-logos {
-                margin-bottom: 15px;
-            }
-
-            .top-logos img {
-                max-height: 55px; 
-            }
-            
-            .school-name { font-size: 17px; }
-            .principal-name { font-size: 14px; margin-bottom: 10px; }
-            h2 { font-size: 24px; margin-bottom: 15px; margin-top: 10px; }
-            
-            .warning-text { font-size: 14px; }
-
-            th, td { 
-                padding: 15px;
-                font-size: 16px;
-            }
-            
-            input, button {
-                font-size: 16px;
-                padding: 12px 15px;
-            }
-
-            .percentage {
-                font-size: 22px;
-            }
-
-            .congrats-message, .fail-message {
-                font-size: 16px;
-            }
-
-            .designer-credit {
-                font-size: 13px;
-                margin-top: 15px;
-            }
-        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <div class="container">
+      <div class="top-logos">
+        <img src="logo_2.webp" alt="شعار وزارة التربية والتعليم" />
+        <img src="logo_1.webp" alt="شعار مدرسة الشهيد محمود علي الخطيب" />
+      </div>
 
-<div class="container">
-    <div class="top-logos">
-        <img src="logo_2.webp" alt="شعار وزارة التربية والتعليم">
-        <img src="logo_1.webp" alt="شعار مدرسة الشهيد محمود علي الخطيب">
-    </div>
-
-    <div class="header-text">
-        <div class="school-name">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</div>
+      <div class="header-text">
+        <div class="school-name">
+          مدرسة الشهيد محمود علي الخطيب
+          <br />
+          الرسمية للغات
+        </div>
         <div class="principal-name">مدير المدرسة : سمير هلال</div>
+      </div>
+
+      <h2>استعلام عن النتيجة</h2>
+
+      <input
+        type="text"
+        inputmode="numeric"
+        maxlength="14"
+        id="nationalId"
+        class="form-control"
+        placeholder="أدخل الرقم القومي للطالب"
+        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+      />
+      <button onclick="getGrade()" id="searchBtn" class="form-control">
+        بحث
+      </button>
+
+      <div class="loader" id="loader"></div>
+
+      <div id="result"></div>
+
+      <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
     </div>
-    
-    <h2>استعلام عن النتيجة</h2>
-    
-    <div class="warning-text">⚠️ يرجى كتابة الرقم القومي بالأرقام الإنجليزية فقط</div>
-    
-    <input type="tel" id="nationalId" placeholder="أدخل الرقم القومي للطالب" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-    <button onclick="getGrade()" id="searchBtn">بحث</button>
-    
-    <div class="loader" id="loader"></div>
-    
-    <div id="result"></div>
 
-    <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
-</div>
-
-<script>
-    document.getElementById("nationalId").addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
+    <script>
+      document
+        .getElementById("nationalId")
+        .addEventListener("keypress", function (event) {
+          if (event.key === "Enter") {
             event.preventDefault();
             getGrade();
-        }
-    });
+          }
+        });
 
-    function checkEmpty(value) {
+      function checkEmpty(value) {
         if (value === "" || value === null || value === undefined) {
-            return "-";
+          return "-";
         }
         return value;
-    }
+      }
 
-    function getGrade() {
-        var id = document.getElementById('nationalId').value;
-        var resultDiv = document.getElementById('result');
-        var loader = document.getElementById('loader');
-        var searchBtn = document.getElementById('searchBtn');
-        
+      function getGrade() {
+        var id = document.getElementById("nationalId").value;
+        var resultDiv = document.getElementById("result");
+        var loader = document.getElementById("loader");
+        var searchBtn = document.getElementById("searchBtn");
+
         resultDiv.innerHTML = "";
-        
+
         if (!id) {
-            resultDiv.innerHTML = "<div style='color:red; margin-top:15px;' class='student-info-appear'>الرجاء إدخال الرقم القومي أولاً</div>";
-            return;
+          resultDiv.innerHTML =
+            "<div style='color:red; margin-top:15px;' class='student-info-appear'>الرجاء إدخال الرقم القومي أولاً</div>";
+          return;
         }
 
         loader.style.display = "block";
         searchBtn.disabled = true;
         searchBtn.innerText = "جاري البحث...";
 
-        var url = 'https://script.google.com/macros/s/AKfycbzY0HaGxuADEwpsQjGSWWv2HEGKltTHL9afL-suKsUGUvxf6RtXckD7HhVuAcFegtXn/exec?id=' + id;
+        var url =
+          "https://script.google.com/macros/s/AKfycbyPaO41_E4vCazRsBQK3IMN_uAgmUwVru-TDF6R5KK8hF1yWb6vqAPa4_oA1NYR8Ksc/exec?id=" +
+          id;
 
         fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                loader.style.display = "none";
-                searchBtn.disabled = false;
-                searchBtn.innerText = "بحث";
+          .then((response) => response.json())
+          .then((data) => {
+            loader.style.display = "none";
+            searchBtn.disabled = false;
+            searchBtn.innerText = "بحث";
 
-                if (data.status === 'success') {
-                    
-                    var ar = checkEmpty(data.arabic);
-                    var ar_max = checkEmpty(data.arabic_max);
-                    var en = checkEmpty(data.english);
-                    var en_max = checkEmpty(data.english_max);
-                    var sc = checkEmpty(data.science);
-                    var sc_max = checkEmpty(data.science_max);
-                    var ma = checkEmpty(data.math);
-                    var ma_max = checkEmpty(data.math_max);
-                    var total = checkEmpty(data.total);
-                    var total_max = checkEmpty(data.total_max); 
-                    var perc = checkEmpty(data.percentage);
+            if (data.status === "success") {
+              var ar = checkEmpty(data.arabic);
+              var ar_max = checkEmpty(data.arabic_max);
+              var en = checkEmpty(data.english);
+              var en_max = checkEmpty(data.english_max);
+              var sc = checkEmpty(data.science);
+              var sc_max = checkEmpty(data.science_max);
+              var ma = checkEmpty(data.math);
+              var ma_max = checkEmpty(data.math_max);
+              var total = checkEmpty(data.total);
+              var total_max = checkEmpty(data.total_max);
+              var perc = checkEmpty(data.percentage);
 
-                    var displayPerc = (perc !== "-") ? perc + "%" : "-";
-                    
-                    var statusMessageHtml = "";
-                    var numericPerc = parseFloat(perc);
-                    
-                    if (!isNaN(numericPerc)) {
-                        if (numericPerc >= 50) {
-                            statusMessageHtml = `<div class="congrats-message">تتقدم إدارة المدرسة بخالص التهاني بالنجاح والتفوق 🏆</div>`;
-                        } else {
-                            statusMessageHtml = `<div class="fail-message">حظ أوفر، نتمنى منك أن تجتهد أكثر في المرة القادمة</div>`;
-                        }
-                    }
+              var displayPerc = perc !== "-" ? perc + "%" : "-";
 
-                    var html = `
-                        <div class="student-info-appear">
-                            <h3 style="color:#333; margin-top:20px;">الاسم: ${data.name}</h3>
-                            <table>
-                                <tr>
-                                    <th>المادة</th>
-                                    <th>درجة الطالب</th>
-                                    <th>الدرجة النهائية</th>
-                                </tr>
-                                <tr><td>اللغة العربية</td><td>${ar}</td><td>${ar_max}</td></tr>
-                                <tr><td>اللغة الإنجليزية</td><td>${en}</td><td>${en_max}</td></tr>
-                                <tr><td>العلوم</td><td>${sc}</td><td>${sc_max}</td></tr>
-                                <tr><td>الرياضيات</td><td>${ma}</td><td>${ma_max}</td></tr>
-                                <tr class="total-row"><td>المجموع الكلي</td><td>${total}</td><td>${total_max}</td></tr>
-                            </table>
-                            <div class="percentage">النسبة المئوية: ${displayPerc}</div>
-                            ${statusMessageHtml}
-                        </div>
-                    `;
-                    resultDiv.innerHTML = html;
+              var statusMessageHtml = "";
+              var numericPerc = parseFloat(perc);
+
+              if (!isNaN(numericPerc)) {
+                if (numericPerc >= 50) {
+                  statusMessageHtml = `<div class="status-message congrats-message">تتقدم إدارة مدرسة الشهيد محمود علي الخطيب بخالص التهاني بالنجاح والتفوق 🏆</div>`;
                 } else {
-                    resultDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${data.message}</div>`;
+                  statusMessageHtml = `<div class="status-message fail-message">حظ أوفر، نتمنى منك أن تجتهد أكثر في المرة القادمة</div>`;
                 }
-            })
-            .catch(error => {
-                loader.style.display = "none";
-                searchBtn.disabled = false;
-                searchBtn.innerText = "بحث";
-                resultDiv.innerHTML = "<div style='color:red; margin-top:15px;' class='student-info-appear'>حدث خطأ في الاتصال بقاعدة البيانات. تأكد من الإنترنت.</div>";
-            });
-    }
-</script>
+              }
 
-</body>
+              var html = `
+                <div class="student-info-appear">
+                    <h3 style="color:#8f250c; margin-top:20px;">الاسم: ${data.name}</h3>
+                    <table>
+                        <tr>
+                            <th>المادة</th>
+                            <th>درجة الطالب</th>
+                            <th>الدرجة النهائية</th>
+                        </tr>
+                        <tr><td>اللغة العربية</td><td>${ar}</td><td>${ar_max}</td></tr>
+                        <tr><td>اللغة الإنجليزية</td><td>${en}</td><td>${en_max}</td></tr>
+                        <tr><td>العلوم</td><td>${sc}</td><td>${sc_max}</td></tr>
+                        <tr><td>الرياضيات</td><td>${ma}</td><td>${ma_max}</td></tr>
+                        <tr class="total-row"><td>المجموع الكلي</td><td>${total}</td><td>${total_max}</td></tr>
+                    </table>
+                    <div class="percentage">النسبة المئوية: ${displayPerc}</div>
+                    ${statusMessageHtml}
+                </div>
+              `;
+              resultDiv.innerHTML = html;
+            } else {
+              resultDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${data.message}</div>`;
+            }
+          })
+          .catch((error) => {
+            loader.style.display = "none";
+            searchBtn.disabled = false;
+            searchBtn.innerText = "بحث";
+            resultDiv.innerHTML =
+              "<div style='color:red; margin-top:15px;' class='student-info-appear'>حدث خطأ في الاتصال بقاعدة البيانات. تأكد من الإنترنت.</div>";
+          });
+      }
+    </script>
+  </body>
 </html>
