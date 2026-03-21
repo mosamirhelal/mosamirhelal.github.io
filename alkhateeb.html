@@ -81,16 +81,28 @@
         border-radius: 8px;
       }
 
-      input {
+      input,
+      textarea {
         width: 100%;
         margin: 0 0 15px 0;
         border: 2px solid #e1e1e1;
         transition: all 0.3s ease;
+        font-family: inherit;
+      }
+
+      input {
         direction: ltr;
         text-align: center;
       }
 
-      input:focus {
+      textarea {
+        resize: vertical;
+        padding: 12px 15px;
+        border-radius: 8px;
+      }
+
+      input:focus,
+      textarea:focus {
         border-color: #0056b3;
         box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
         outline: none;
@@ -193,6 +205,22 @@
         background-color: #b23a48;
         color: #fed0bb;
         border: 1px solid #f5c6cb;
+      }
+
+      .feedback-section {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 2px dashed #eee;
+        animation: fadeIn 0.5s ease-out 1s forwards;
+        opacity: 0;
+      }
+
+      .btn-success {
+        background-color: #28a745;
+      }
+
+      .btn-success:hover {
+        background-color: #218838;
       }
 
       .loader {
@@ -415,6 +443,64 @@
         }
       }
 
+      function toggleFeedbackForm() {
+        document.getElementById("showFeedbackBtn").style.display = "none";
+        var formContainer = document.getElementById("feedbackFormContainer");
+        formContainer.style.display = "block";
+        formContainer.style.animation = "fadeIn 0.5s ease-out forwards";
+
+        setTimeout(() => {
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth",
+          });
+          document.getElementById("feedbackInput").focus();
+        }, 100);
+      }
+
+      function sendFeedback(studentName, studentId) {
+        var feedbackText = document.getElementById("feedbackInput").value;
+        var btn = document.getElementById("submitFeedbackBtn");
+        var statusMsg = document.getElementById("feedbackStatus");
+
+        if (!feedbackText.trim()) {
+          statusMsg.innerHTML =
+            "<span style='color: red;'>الرجاء كتابة رأيك أولاً.</span>";
+          return;
+        }
+
+        btn.disabled = true;
+        btn.innerText = "جاري الإرسال...";
+        statusMsg.innerHTML = "";
+
+        fetch("https://formsubmit.co/ajax/samirhelal2298@gmail.com", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            _subject: "اقتراح جديد من موقع النتيجة",
+            "اسم الطالب": studentName,
+            "الرقم القومي": studentId,
+            "الرأي أو المقترح": feedbackText,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            btn.innerText = "تم الإرسال بنجاح!";
+            statusMsg.innerHTML =
+              "<span style='color: green;'>شكراً لك! تم إرسال رسالتك للإدارة.</span>";
+            document.getElementById("feedbackInput").value = "";
+          })
+          .catch((error) => {
+            btn.disabled = false;
+            btn.innerText = "إرسال الاقتراح";
+            statusMsg.innerHTML =
+              "<span style='color: red;'>حدث خطأ، يرجى المحاولة لاحقاً.</span>";
+          });
+      }
+
       function getGrade() {
         var id = document.getElementById("nationalId").value;
         var resultDiv = document.getElementById("result");
@@ -498,6 +584,16 @@
                     </table>
                     <div class="percentage">النسبة المئوية: ${displayPerc}</div>
                     ${statusMessageHtml}
+                    
+                    <div class="feedback-section">
+                        <button id="showFeedbackBtn" class="form-control" onclick="toggleFeedbackForm()">إضافة رأي أو مقترح</button>
+                        <div id="feedbackFormContainer" style="display: none; text-align: right;">
+                            <h4 style="color: #333; margin-bottom: 15px; font-size: 18px;">سجل رأيك أو مقترحاتك:</h4>
+                            <textarea id="feedbackInput" rows="3" placeholder="اكتب رسالتك هنا..."></textarea>
+                            <button id="submitFeedbackBtn" class="form-control btn-success" onclick="sendFeedback('${data.name}', '${id}')">إرسال الاقتراح</button>
+                            <div id="feedbackStatus" style="margin-top: 10px; font-weight: bold; text-align: center;"></div>
+                        </div>
+                    </div>
                 </div>
               `;
               resultDiv.innerHTML = html;
