@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم - مدرسة الشهيد محمود علي الخطيب</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&display=swap");
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f0f2f5; padding: 20px; text-align: center; }
+        .admin-container { background: white; padding: 30px; border-radius: 15px; max-width: 600px; margin: 0 auto; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        h2 { color: #0056b3; }
+        .form-group { margin-bottom: 15px; text-align: right; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
+        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        button { width: 100%; padding: 12px; background-color: #0056b3; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        button:hover { background-color: #004494; }
+        #msg { margin-top: 15px; font-weight: bold; }
+        .search-area { background: #eef2f7; padding: 15px; border-radius: 10px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="admin-container">
+    <h2>لوحة إدخال وتعديل الدرجات</h2>
+    
+    <div class="search-area">
+        <label>ابحث بالرقم القومي لجلب البيانات (للتعديل):</label>
+        <input type="text" id="searchId" placeholder="أدخل الرقم القومي">
+        <button onclick="fetchStudent()" style="background-color: #4a4e69;">جلب البيانات</button>
+    </div>
+
+    <hr>
+
+    <div class="form-group">
+        <label>اسم الطالب:</label>
+        <input type="text" id="name">
+    </div>
+    <div class="form-group">
+        <label>الرقم القومي:</label>
+        <input type="text" id="natId">
+    </div>
+
+    <div class="grid">
+        <div class="form-group"><label>العربي:</label><input type="number" id="ar"></div>
+        <div class="form-group"><label>الدرجة النهائية:</label><input type="number" id="ar_m" value="100"></div>
+        <div class="form-group"><label>الإنجليزي:</label><input type="number" id="en"></div>
+        <div class="form-group"><label>الدرجة النهائية:</label><input type="number" id="en_m" value="100"></div>
+        <div class="form-group"><label>العلوم:</label><input type="number" id="sc"></div>
+        <div class="form-group"><label>الدرجة النهائية:</label><input type="number" id="sc_m" value="100"></div>
+        <div class="form-group"><label>الرياضيات:</label><input type="number" id="ma"></div>
+        <div class="form-group"><label>الدرجة النهائية:</label><input type="number" id="ma_m" value="100"></div>
+    </div>
+
+    <div class="grid">
+        <div class="form-group"><label>المجموع الكلي:</label><input type="number" id="total"></div>
+        <div class="form-group"><label>من مجموع:</label><input type="number" id="total_m" value="400"></div>
+    </div>
+    
+    <div class="form-group">
+        <label>النسبة المئوية (%):</label>
+        <input type="text" id="perc" placeholder="مثال: 95.5">
+    </div>
+
+    <button onclick="saveData()">حفظ البيانات في الجدول</button>
+    <div id="msg"></div>
+</div>
+
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyBHYjHRAzt88PUNHMqTcMTzsqIXDu0D7v2WA9X41g-HHLkqI-DLgARWGq-exWjBoQw/exec';
+
+    function fetchStudent() {
+        const id = document.getElementById('searchId').value;
+        if(!id) return alert('أدخل الرقم القومي');
+        
+        document.getElementById('msg').innerText = 'جاري جلب البيانات...';
+        
+        fetch(`${scriptURL}?action=read&id=${id}`)
+        .then(res => res.json())
+        .then(data => {
+            if(data.status === 'success') {
+                document.getElementById('name').value = data.name;
+                document.getElementById('natId').value = id;
+                document.getElementById('ar').value = data.arabic;
+                document.getElementById('ar_m').value = data.arabic_max;
+                document.getElementById('en').value = data.english;
+                document.getElementById('en_m').value = data.english_max;
+                document.getElementById('sc').value = data.science;
+                document.getElementById('sc_m').value = data.science_max;
+                document.getElementById('ma').value = data.math;
+                document.getElementById('ma_m').value = data.math_max;
+                document.getElementById('total').value = data.total;
+                document.getElementById('total_m').value = data.total_max;
+                document.getElementById('perc').value = data.percentage;
+                document.getElementById('msg').innerText = 'تم جلب البيانات بنجاح.';
+            } else {
+                alert('الطالب غير موجود، يمكنك إضافته كجديد.');
+                document.getElementById('msg').innerText = '';
+            }
+        });
+    }
+
+    function saveData() {
+    const btn = event.target;
+    btn.disabled = true;
+    document.getElementById('msg').innerText = 'جاري الحفظ...';
+
+    const params = new URLSearchParams({
+        action: 'write',
+        id: document.getElementById('natId').value, 
+        name: document.getElementById('name').value,
+        ar: document.getElementById('ar').value,
+        ar_m: document.getElementById('ar_m').value,
+        en: document.getElementById('en').value,
+        en_m: document.getElementById('en_m').value,
+        sc: document.getElementById('sc').value,
+        sc_m: document.getElementById('sc_m').value,
+        ma: document.getElementById('ma').value,
+        ma_m: document.getElementById('ma_m').value,
+        total: document.getElementById('total').value,
+        total_m: document.getElementById('total_m').value,
+        perc: document.getElementById('perc').value
+    });
+
+    fetch(`${scriptURL}?${params.toString()}`)
+    .then(res => res.text())
+    .then(res => {
+        document.getElementById('msg').innerHTML = '<span style="color:green">تم حفظ البيانات بنجاح!</span>';
+        btn.disabled = false;
+    })
+    .catch(() => {
+        alert('حدث خطأ');
+        btn.disabled = false;
+    });
+}
+</script>
+
+</body>
+</html>
