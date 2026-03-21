@@ -4,7 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>نتيجة الطلاب - مدرسة الشهيد محمود علي الخطيب</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&display=swap");
+
       * {
         box-sizing: border-box;
       }
@@ -16,6 +19,7 @@
         padding: 40px 20px;
         background-color: #f0f2f5;
         animation: fadeInPage 1s ease-out;
+        overflow-x: hidden;
       }
 
       .container {
@@ -28,6 +32,7 @@
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
         animation: slideInUp 0.8s ease-out;
         position: relative;
+        z-index: 10;
       }
 
       .top-logos {
@@ -36,11 +41,11 @@
         align-items: center;
         margin-bottom: 15px;
         width: 100%;
-        gap: 15px;
+        gap: 20px;
       }
 
       .top-logos img {
-        max-height: 70px;
+        max-height: 130px;
         width: auto;
       }
 
@@ -209,6 +214,32 @@
         font-weight: bold;
       }
 
+      .falling-emoji {
+        position: fixed;
+        top: -50px;
+        font-size: 35px;
+        z-index: 9999;
+        pointer-events: none;
+        animation: floatDown linear forwards;
+      }
+
+      @keyframes floatDown {
+        0% {
+          transform: translateY(0) rotate(0deg) translateX(0);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(105vh) rotate(45deg) translateX(20px);
+          opacity: 0;
+        }
+      }
+
       @keyframes spin {
         0% {
           transform: rotate(0deg);
@@ -260,53 +291,43 @@
         body {
           padding: 20px 10px;
         }
-        
         .container {
           padding: 25px 20px;
           border-radius: 10px;
         }
-
         .top-logos {
           margin-bottom: 15px;
         }
-
         .top-logos img {
-          max-height: 55px;
+          max-height: 110px;
         }
-        
         .header-image {
           margin-bottom: 15px;
           padding: 0;
         }
-        
         h2 {
           font-size: 24px;
           margin-bottom: 15px;
           margin-top: 10px;
         }
-        
         .warning-text {
           font-size: 14px;
         }
-
-        th, td {
+        th,
+        td {
           padding: 10px;
           font-size: 14px;
         }
-        
         .form-control {
           font-size: 16px;
           padding: 12px 15px;
         }
-
         .percentage {
           font-size: 20px;
         }
-
         .status-message {
           font-size: 14px;
         }
-
         .designer-credit {
           font-size: 12px;
           margin-top: 15px;
@@ -322,7 +343,10 @@
       </div>
 
       <div class="header-image">
-        <img src="logo_3.webp" alt="مدرسة الشهيد محمود علي الخطيب الرسمية للغات - مدير المدرسة: سمير هلال" />
+        <img
+          src="logo_3.webp"
+          alt="مدرسة الشهيد محمود علي الخطيب الرسمية للغات - مدير المدرسة: سمير هلال"
+        />
       </div>
 
       <h2>استعلام عن النتيجة</h2>
@@ -362,6 +386,33 @@
           return "-";
         }
         return value;
+      }
+
+      function showEmojis(isSuccess) {
+        const happyEmojis = ["🥳", "😄", "👏", "🏆", "🎉", "😘"];
+        const sadEmojis = ["😥", "😭", "☹️", "😣", "😓"];
+        const emojisToUse = isSuccess ? happyEmojis : sadEmojis;
+        const emojiCount = 15;
+
+        for (let i = 0; i < emojiCount; i++) {
+          setTimeout(() => {
+            const emoji = document.createElement("div");
+            emoji.classList.add("falling-emoji");
+
+            const randomEmoji =
+              emojisToUse[Math.floor(Math.random() * emojisToUse.length)];
+            emoji.innerText = randomEmoji;
+
+            emoji.style.left = Math.random() * 100 + "vw";
+            emoji.style.animationDuration = Math.random() * 3 + 4 + "s";
+
+            document.body.appendChild(emoji);
+
+            setTimeout(() => {
+              emoji.remove();
+            }, 7000);
+          }, i * 150);
+        }
       }
 
       function getGrade() {
@@ -414,8 +465,19 @@
               if (!isNaN(numericPerc)) {
                 if (numericPerc >= 50) {
                   statusMessageHtml = `<div class="status-message congrats-message">تتقدم إدارة مدرسة الشهيد محمود علي الخطيب بخالص التهاني بالنجاح والتفوق 🏆</div>`;
+
+                  confetti({
+                    particleCount: 150,
+                    spread: 80,
+                    origin: { y: 0.6 },
+                    zIndex: 9999,
+                  });
+
+                  showEmojis(true);
                 } else {
                   statusMessageHtml = `<div class="status-message fail-message">حظ أوفر، نتمنى منك أن تجتهد أكثر في المرة القادمة</div>`;
+
+                  showEmojis(false);
                 }
               }
 
