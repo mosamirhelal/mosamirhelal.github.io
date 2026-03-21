@@ -566,9 +566,11 @@
           const blob = await new Promise((resolve) =>
             canvas.toBlob(resolve, "image/png")
           );
-          const file = new File([blob], `نتيجة_${studentName}.png`, {
-            type: "image/png",
-          });
+
+          let count = parseInt(localStorage.getItem("shareCount") || "0") + 1;
+          localStorage.setItem("shareCount", count);
+          const fileName = `نتيجة_${studentName}_${count}.png`;
+          const file = new File([blob], fileName, { type: "image/png" });
 
           const isMobile = /Android|iPhone|iPad|iPod/i.test(
             navigator.userAgent
@@ -582,7 +584,7 @@
             try {
               const link = document.createElement("a");
               link.href = URL.createObjectURL(blob);
-              link.download = `نتيجة_${studentName}.png`;
+              link.download = fileName;
               document.body.appendChild(link);
               link.click();
               document.body.removeChild(link);
@@ -598,7 +600,7 @@
           } else {
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.download = `نتيجة_${studentName}.png`;
+            link.download = fileName;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
