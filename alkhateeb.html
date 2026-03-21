@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>نتيجة الطلاب - مدرسة الشهيد محمود علي الخطيب</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&display=swap");
 
@@ -145,12 +146,28 @@
         }
       }
 
+      .btn-share {
+        background-color: #008080;
+        margin-top: 15px;
+      }
+
+      .btn-share:hover {
+        background-color: #006666;
+      }
+
       #result:not(:empty) {
         margin-top: 20px;
       }
 
       .student-info-appear {
         animation: fadeIn 0.5s ease-out forwards;
+      }
+
+      #capture-area {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 15px;
       }
 
       table {
@@ -161,8 +178,6 @@
         border-radius: 8px;
         overflow: hidden;
         border: 1px solid #eee;
-        animation: tableAppear 0.8s ease-out forwards;
-        opacity: 0;
       }
 
       th,
@@ -195,8 +210,6 @@
         text-align: center;
         border-top: 2px dashed #eee;
         padding-top: 15px;
-        animation: fadeIn 0.5s ease-out 0.5s forwards;
-        opacity: 0;
       }
 
       .status-message {
@@ -205,8 +218,6 @@
         margin-top: 20px;
         font-size: 16px;
         font-weight: bold;
-        animation: fadeIn 0.5s ease-out 0.8s forwards;
-        opacity: 0;
       }
 
       .congrats-message {
@@ -314,17 +325,6 @@
           transform: translateY(0);
         }
       }
-      @keyframes tableAppear {
-        from {
-          opacity: 0;
-          transform: scaleY(0.9);
-          transform-origin: top;
-        }
-        to {
-          opacity: 1;
-          transform: scaleY(1);
-        }
-      }
 
       @media (max-width: 480px) {
         body {
@@ -381,7 +381,7 @@
       <div class="header-image">
         <img
           src="logo_3.webp"
-          alt="مدرسة الشهيد محمود علي الخطيب الرسمية للغات - مدير المدرسة: سمير هلال"
+          alt="مدرسة الشهيد محمود علي الخطيب الرسمية للغات"
         />
       </div>
 
@@ -523,6 +523,48 @@
           });
       }
 
+      function shareResult(studentName) {
+        var captureDiv = document.getElementById("capture-area");
+        var shareBtn = document.getElementById("shareBtn");
+        var originalText = shareBtn.innerText;
+
+        shareBtn.innerText = "⏳ جاري تحضير الصورة...";
+        shareBtn.disabled = true;
+
+        html2canvas(captureDiv, {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          backgroundColor: "#ffffff",
+          windowWidth: 800,
+          onclone: function (clonedDoc) {
+            var clonedArea = clonedDoc.getElementById("capture-area");
+            clonedArea.style.width = "750px";
+            clonedArea.style.maxWidth = "none";
+            clonedArea.style.padding = "30px";
+            clonedArea.style.margin = "0 auto";
+          },
+        }).then((canvas) => {
+          canvas.toBlob(function (blob) {
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = `نتيجة_${studentName}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            shareBtn.style.backgroundColor = "#28a745";
+            shareBtn.innerText = "⬇️ تم تنزيل الصورة بنجاح!";
+
+            setTimeout(() => {
+              shareBtn.style.backgroundColor = "";
+              shareBtn.innerText = originalText;
+              shareBtn.disabled = false;
+            }, 5000);
+          }, "image/png");
+        });
+      }
+
       function getGrade() {
         var id = document.getElementById("nationalId").value;
         var resultDiv = document.getElementById("result");
@@ -587,17 +629,28 @@
 
               var html = `
                 <div class="student-info-appear">
-                    <h3 style="color:#8f250c; margin-top:20px;">الاسم: ${data.name}</h3>
-                    <table>
-                        <tr><th>المادة</th><th>الدرجة النهائية</th><th>درجة الطالب</th></tr>
-                        <tr><td>اللغة العربية</td><td>${ar_max}</td><td>${ar}</td></tr>
-                        <tr><td>اللغة الإنجليزية</td><td>${en_max}</td><td>${en}</td></tr>
-                        <tr><td>العلوم</td><td>${sc_max}</td><td>${sc}</td></tr>
-                        <tr><td>الرياضيات</td><td>${ma_max}</td><td>${ma}</td></tr>
-                        <tr class="total-row"><td>المجموع الكلي</td><td>${total_max}</td><td>${total}</td></tr>
-                    </table>
-                    <div class="percentage">النسبة المئوية: ${displayPerc}</div>
-                    ${statusMessageHtml}
+                    <div id="capture-area">
+                        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px; width: 100%; gap: 15px;">
+                            <img src="logo_2.webp" crossorigin="anonymous" style="height: 80px; width: auto; object-fit: contain;" />
+                            <img src="logo_1.webp" crossorigin="anonymous" style="height: 80px; width: auto; object-fit: contain;" />
+                        </div>
+                        <h4 style="color: #4a4e69; margin-top: 0; margin-bottom: 20px; border-bottom: 1px dashed #eee; padding-bottom: 15px; font-size: 16px;">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</h4>
+                        <h3 style="color:#8f250c; margin-top:10px;">الاسم: ${data.name}</h3>
+                        <table>
+                            <tr><th>المادة</th><th>الدرجة النهائية</th><th>درجة الطالب</th></tr>
+                            <tr><td>اللغة العربية</td><td>${ar_max}</td><td>${ar}</td></tr>
+                            <tr><td>اللغة الإنجليزية</td><td>${en_max}</td><td>${en}</td></tr>
+                            <tr><td>العلوم</td><td>${sc_max}</td><td>${sc}</td></tr>
+                            <tr><td>الرياضيات</td><td>${ma_max}</td><td>${ma}</td></tr>
+                            <tr class="total-row"><td>المجموع الكلي</td><td>${total_max}</td><td>${total}</td></tr>
+                        </table>
+                        <div class="percentage">النسبة المئوية: ${displayPerc}</div>
+                        ${statusMessageHtml}
+                        <div style="margin-top: 25px; font-size: 13px; color: #4a4e69; text-align: center; font-weight: bold; border-top: 1px solid #eee; padding-top: 10px;">تصميم وتنفيذ : سمير هلال</div>
+                    </div>
+                    
+                    <button id="shareBtn" class="form-control btn-share" onclick="shareResult('${data.name}')">📸 تحميل النتيجة كصورة</button>
+
                     <div class="feedback-section">
                         <button id="showFeedbackBtn" class="form-control pulse-button" onclick="toggleFeedbackForm()">إضافة رأي أو مقترح</button>
                         <div id="feedbackFormContainer" style="display: none; text-align: right;">
