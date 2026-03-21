@@ -538,7 +538,7 @@
           });
       }
 
-      function shareResult(studentName) {
+      async function shareResult(studentName) {
         var captureDiv = document.getElementById("capture-area");
         var shareBtn = document.getElementById("shareBtn");
         var originalText = shareBtn.innerText;
@@ -546,23 +546,49 @@
         shareBtn.innerText = "⏳ جاري تحضير الصورة...";
         shareBtn.disabled = true;
 
-        html2canvas(captureDiv, {
-          scale: 2,
-          useCORS: true,
-          backgroundColor: "#ffffff",
-          windowWidth: 800,
-          onclone: function (clonedDoc) {
-            var clonedArea = clonedDoc.getElementById("capture-area");
-            clonedArea.style.width = "800px";
-            clonedArea.style.maxWidth = "none";
-            clonedArea.style.padding = "40px";
-            clonedArea.style.margin = "0 auto";
+        try {
+          const canvas = await html2canvas(captureDiv, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: "#ffffff",
+            windowWidth: 800,
+            onclone: function (clonedDoc) {
+              var clonedArea = clonedDoc.getElementById("capture-area");
+              clonedArea.style.width = "800px";
+              clonedArea.style.maxWidth = "none";
+              clonedArea.style.padding = "40px";
+              clonedArea.style.margin = "0 auto";
+              clonedDoc.getElementById("export-header").style.display = "block";
+              clonedDoc.getElementById("export-footer").style.display = "block";
+            },
+          });
 
-            clonedDoc.getElementById("export-header").style.display = "block";
-            clonedDoc.getElementById("export-footer").style.display = "block";
-          },
-        }).then((canvas) => {
-          canvas.toBlob(function (blob) {
+          const blob = await new Promise((resolve) =>
+            canvas.toBlob(resolve, "image/png")
+          );
+          const file = new File([blob], `نتيجة_${studentName}.png`, {
+            type: "image/png",
+          });
+
+          const isMobile = /Android|iPhone|iPad|iPod/i.test(
+            navigator.userAgent
+          );
+
+          if (
+            isMobile &&
+            navigator.canShare &&
+            navigator.canShare({ files: [file] })
+          ) {
+            try {
+              await navigator.share({
+                title: `نتيجة ${studentName}`,
+                text: `نتيجة الطالب ${studentName} - مدرسة الشهيد محمود علي الخطيب`,
+                files: [file],
+              });
+            } catch (err) {}
+            shareBtn.innerText = originalText;
+            shareBtn.disabled = false;
+          } else {
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
             link.download = `نتيجة_${studentName}.png`;
@@ -572,14 +598,17 @@
 
             shareBtn.style.backgroundColor = "#28a745";
             shareBtn.innerText = "⬇️ تم تنزيل الصورة بنجاح!";
-
             setTimeout(() => {
               shareBtn.style.backgroundColor = "";
               shareBtn.innerText = originalText;
               shareBtn.disabled = false;
             }, 5000);
-          }, "image/png");
-        });
+          }
+        } catch (error) {
+          shareBtn.innerText = originalText;
+          shareBtn.disabled = false;
+          alert("حدث خطأ أثناء تحضير الصورة");
+        }
       }
 
       function getGrade() {
@@ -670,7 +699,7 @@
                         <div id="export-footer" style="display: none; margin-top: 30px; font-size: 16px; color: #4a4e69; text-align: center; font-weight: bold; border-top: 2px solid #eee; padding-top: 15px;">تصميم وتنفيذ : سمير هلال</div>
                     </div>
                     
-                    <button id="shareBtn" class="form-control btn-share" onclick="shareResult('${data.name}')">📸 تحميل النتيجة كصورة</button>
+                    <button id="shareBtn" class="form-control btn-share" onclick="shareResult('${data.name}')">📸 مشاركة النتيجة كصورة</button>
 
                     <div class="feedback-section">
                         <button id="showFeedbackBtn" class="form-control pulse-button" onclick="toggleFeedbackForm()">إضافة رأي أو مقترح</button>
