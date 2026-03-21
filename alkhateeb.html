@@ -45,8 +45,10 @@
       }
 
       .top-logos img {
-        max-height: 130px;
+        max-height: 160px;
+        max-width: 48%;
         width: auto;
+        object-fit: contain;
       }
 
       .header-image {
@@ -66,13 +68,6 @@
         margin-top: 10px;
         margin-bottom: 20px;
         font-size: 24px;
-      }
-
-      .warning-text {
-        font-size: 14px;
-        color: #e63946;
-        margin-bottom: 8px;
-        font-weight: bold;
       }
 
       .form-control {
@@ -327,7 +322,7 @@
           margin-bottom: 15px;
         }
         .top-logos img {
-          max-height: 110px;
+          max-height: 130px;
         }
         .header-image {
           margin-bottom: 15px;
@@ -337,9 +332,6 @@
           font-size: 24px;
           margin-bottom: 15px;
           margin-top: 10px;
-        }
-        .warning-text {
-          font-size: 14px;
         }
         th,
         td {
@@ -426,16 +418,11 @@
           setTimeout(() => {
             const emoji = document.createElement("div");
             emoji.classList.add("falling-emoji");
-
-            const randomEmoji =
+            emoji.innerText =
               emojisToUse[Math.floor(Math.random() * emojisToUse.length)];
-            emoji.innerText = randomEmoji;
-
             emoji.style.left = Math.random() * 100 + "vw";
             emoji.style.animationDuration = Math.random() * 3 + 4 + "s";
-
             document.body.appendChild(emoji);
-
             setTimeout(() => {
               emoji.remove();
             }, 7000);
@@ -458,10 +445,21 @@
         }, 100);
       }
 
+      function resetSearch() {
+        document.getElementById("result").innerHTML = "";
+        var natIdInput = document.getElementById("nationalId");
+        natIdInput.value = "";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        setTimeout(() => {
+          natIdInput.focus();
+        }, 500);
+      }
+
       function sendFeedback(studentName, studentId) {
         var feedbackText = document.getElementById("feedbackInput").value;
         var btn = document.getElementById("submitFeedbackBtn");
         var statusMsg = document.getElementById("feedbackStatus");
+        var feedbackTitle = document.getElementById("feedbackTitle");
 
         if (!feedbackText.trim()) {
           statusMsg.innerHTML =
@@ -491,7 +489,15 @@
             btn.innerText = "تم الإرسال بنجاح!";
             statusMsg.innerHTML =
               "<span style='color: green;'>شكراً لك! تم إرسال رسالتك للإدارة.</span>";
-            document.getElementById("feedbackInput").value = "";
+
+            setTimeout(() => {
+              btn.style.display = "none";
+              feedbackTitle.style.display = "none";
+              document.getElementById("feedbackInput").style.display = "none";
+              statusMsg.innerHTML =
+                "<span style='color: green; display: block; margin-bottom: 15px;'>شكراً لك! تم إرسال رسالتك للإدارة.</span>" +
+                "<button class='form-control' style='background-color: #461220; color: white;' onclick='resetSearch()'>للبحث عن نتيجة طالب آخر</button>";
+            }, 1500);
           })
           .catch((error) => {
             btn.disabled = false;
@@ -531,18 +537,17 @@
             searchBtn.innerText = "بحث";
 
             if (data.status === "success") {
-              var ar = checkEmpty(data.arabic);
-              var ar_max = checkEmpty(data.arabic_max);
-              var en = checkEmpty(data.english);
-              var en_max = checkEmpty(data.english_max);
-              var sc = checkEmpty(data.science);
-              var sc_max = checkEmpty(data.science_max);
-              var ma = checkEmpty(data.math);
-              var ma_max = checkEmpty(data.math_max);
-              var total = checkEmpty(data.total);
-              var total_max = checkEmpty(data.total_max);
+              var ar = checkEmpty(data.arabic),
+                ar_max = checkEmpty(data.arabic_max);
+              var en = checkEmpty(data.english),
+                en_max = checkEmpty(data.english_max);
+              var sc = checkEmpty(data.science),
+                sc_max = checkEmpty(data.science_max);
+              var ma = checkEmpty(data.math),
+                ma_max = checkEmpty(data.math_max);
+              var total = checkEmpty(data.total),
+                total_max = checkEmpty(data.total_max);
               var perc = checkEmpty(data.percentage);
-
               var displayPerc = perc !== "-" ? perc + "%" : "-";
 
               var statusMessageHtml = "";
@@ -551,18 +556,15 @@
               if (!isNaN(numericPerc)) {
                 if (numericPerc >= 50) {
                   statusMessageHtml = `<div class="status-message congrats-message">تتقدم إدارة مدرسة الشهيد محمود علي الخطيب بخالص التهاني بالنجاح والتفوق 🏆</div>`;
-
                   confetti({
                     particleCount: 150,
                     spread: 80,
                     origin: { y: 0.6 },
                     zIndex: 9999,
                   });
-
                   showEmojis(true);
                 } else {
                   statusMessageHtml = `<div class="status-message fail-message">حظ أوفر، نتمنى منك أن تجتهد أكثر في المرة القادمة</div>`;
-
                   showEmojis(false);
                 }
               }
@@ -571,11 +573,7 @@
                 <div class="student-info-appear">
                     <h3 style="color:#8f250c; margin-top:20px;">الاسم: ${data.name}</h3>
                     <table>
-                        <tr>
-                            <th>المادة</th>
-                            <th>الدرجة النهائية</th>
-                            <th>درجة الطالب</th>
-                        </tr>
+                        <tr><th>المادة</th><th>الدرجة النهائية</th><th>درجة الطالب</th></tr>
                         <tr><td>اللغة العربية</td><td>${ar_max}</td><td>${ar}</td></tr>
                         <tr><td>اللغة الإنجليزية</td><td>${en_max}</td><td>${en}</td></tr>
                         <tr><td>العلوم</td><td>${sc_max}</td><td>${sc}</td></tr>
@@ -584,18 +582,16 @@
                     </table>
                     <div class="percentage">النسبة المئوية: ${displayPerc}</div>
                     ${statusMessageHtml}
-                    
                     <div class="feedback-section">
                         <button id="showFeedbackBtn" class="form-control" onclick="toggleFeedbackForm()">إضافة رأي أو مقترح</button>
                         <div id="feedbackFormContainer" style="display: none; text-align: right;">
-                            <h4 style="color: #333; margin-bottom: 15px; font-size: 18px;">سجل رأيك أو مقترحاتك:</h4>
-                            <textarea id="feedbackInput" rows="3" placeholder="اكتب رسالتك هنا..."></textarea>
+                            <h4 id="feedbackTitle" style="color: #333; margin-bottom: 15px; font-size: 18px;">سجل رأيك أو مقترحاتك:</h4>
+                            <textarea id="feedbackInput" rows="3" placeholder="اكتب رسالتك هنا..." lang="ar" dir="rtl"></textarea>
                             <button id="submitFeedbackBtn" class="form-control btn-success" onclick="sendFeedback('${data.name}', '${id}')">إرسال الاقتراح</button>
                             <div id="feedbackStatus" style="margin-top: 10px; font-weight: bold; text-align: center;"></div>
                         </div>
                     </div>
-                </div>
-              `;
+                </div>`;
               resultDiv.innerHTML = html;
             } else {
               resultDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${data.message}</div>`;
@@ -613,7 +609,7 @@
             searchBtn.disabled = false;
             searchBtn.innerText = "بحث";
             resultDiv.innerHTML =
-              "<div style='color:red; margin-top:15px;' class='student-info-appear'>حدث خطأ في الاتصال بقاعدة البيانات. تأكد من الإنترنت.</div>";
+              "<div style='color:red; margin-top:15px;' class='student-info-appear'>حدث خطأ في الاتصال بقاعدة البيانات.</div>";
           });
       }
     </script>
