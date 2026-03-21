@@ -126,6 +126,25 @@
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
 
+      .pulse-button {
+        animation: pulseGlow 1.5s infinite;
+      }
+
+      @keyframes pulseGlow {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(0, 86, 179, 0.7);
+        }
+        70% {
+          transform: scale(1.02);
+          box-shadow: 0 0 0 15px rgba(0, 86, 179, 0);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(0, 86, 179, 0);
+        }
+      }
+
       #result:not(:empty) {
         margin-top: 20px;
       }
@@ -277,7 +296,6 @@
           opacity: 1;
         }
       }
-
       @keyframes fadeInPage {
         from {
           opacity: 0;
@@ -286,7 +304,6 @@
           opacity: 1;
         }
       }
-
       @keyframes slideInUp {
         from {
           opacity: 0;
@@ -297,7 +314,6 @@
           transform: translateY(0);
         }
       }
-
       @keyframes tableAppear {
         from {
           opacity: 0;
@@ -322,7 +338,7 @@
           margin-bottom: 15px;
         }
         .top-logos img {
-          max-height: 130px;
+          max-height: 110px;
         }
         .header-image {
           margin-bottom: 15px;
@@ -496,7 +512,7 @@
               document.getElementById("feedbackInput").style.display = "none";
               statusMsg.innerHTML =
                 "<span style='color: green; display: block; margin-bottom: 15px;'>شكراً لك! تم إرسال رسالتك للإدارة.</span>" +
-                "<button class='form-control' style='background-color: #461220; color: white;' onclick='resetSearch()'>للبحث عن نتيجة طالب آخر</button>";
+                "<button class='form-control' style='background-color: #890620; color: white;' onclick='resetSearch()'>للبحث عن نتيجة طالب آخر</button>";
             }, 1500);
           })
           .catch((error) => {
@@ -583,7 +599,7 @@
                     <div class="percentage">النسبة المئوية: ${displayPerc}</div>
                     ${statusMessageHtml}
                     <div class="feedback-section">
-                        <button id="showFeedbackBtn" class="form-control" onclick="toggleFeedbackForm()">إضافة رأي أو مقترح</button>
+                        <button id="showFeedbackBtn" class="form-control pulse-button" onclick="toggleFeedbackForm()">إضافة رأي أو مقترح</button>
                         <div id="feedbackFormContainer" style="display: none; text-align: right;">
                             <h4 id="feedbackTitle" style="color: #333; margin-bottom: 15px; font-size: 18px;">سجل رأيك أو مقترحاتك:</h4>
                             <textarea id="feedbackInput" rows="3" placeholder="اكتب رسالتك هنا..." lang="ar" dir="rtl"></textarea>
