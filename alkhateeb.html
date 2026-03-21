@@ -534,15 +534,17 @@
         html2canvas(captureDiv, {
           scale: 2,
           useCORS: true,
-          allowTaint: true,
           backgroundColor: "#ffffff",
           windowWidth: 800,
           onclone: function (clonedDoc) {
             var clonedArea = clonedDoc.getElementById("capture-area");
-            clonedArea.style.width = "750px";
+            clonedArea.style.width = "800px";
             clonedArea.style.maxWidth = "none";
-            clonedArea.style.padding = "30px";
+            clonedArea.style.padding = "40px";
             clonedArea.style.margin = "0 auto";
+
+            clonedDoc.getElementById("export-header").style.display = "block";
+            clonedDoc.getElementById("export-footer").style.display = "block";
           },
         }).then((canvas) => {
           canvas.toBlob(function (blob) {
@@ -630,11 +632,14 @@
               var html = `
                 <div class="student-info-appear">
                     <div id="capture-area">
-                        <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 20px; width: 100%; gap: 15px;">
-                            <img src="logo_2.webp" crossorigin="anonymous" style="height: 80px; width: auto; object-fit: contain;" />
-                            <img src="logo_1.webp" crossorigin="anonymous" style="height: 80px; width: auto; object-fit: contain;" />
+                        <div id="export-header" style="display: none;">
+                            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 25px; width: 100%; gap: 30px;">
+                                <img src="logo_2.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
+                                <img src="logo_1.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
+                            </div>
+                            <h4 style="color: #4a4e69; margin-top: 0; margin-bottom: 25px; border-bottom: 2px dashed #eee; padding-bottom: 15px; font-size: 22px;">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</h4>
                         </div>
-                        <h4 style="color: #4a4e69; margin-top: 0; margin-bottom: 20px; border-bottom: 1px dashed #eee; padding-bottom: 15px; font-size: 16px;">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</h4>
+
                         <h3 style="color:#8f250c; margin-top:10px;">الاسم: ${data.name}</h3>
                         <table>
                             <tr><th>المادة</th><th>الدرجة النهائية</th><th>درجة الطالب</th></tr>
@@ -646,7 +651,8 @@
                         </table>
                         <div class="percentage">النسبة المئوية: ${displayPerc}</div>
                         ${statusMessageHtml}
-                        <div style="margin-top: 25px; font-size: 13px; color: #4a4e69; text-align: center; font-weight: bold; border-top: 1px solid #eee; padding-top: 10px;">تصميم وتنفيذ : سمير هلال</div>
+                        
+                        <div id="export-footer" style="display: none; margin-top: 30px; font-size: 16px; color: #4a4e69; text-align: center; font-weight: bold; border-top: 2px solid #eee; padding-top: 15px;">تصميم وتنفيذ : سمير هلال</div>
                     </div>
                     
                     <button id="shareBtn" class="form-control btn-share" onclick="shareResult('${data.name}')">📸 تحميل النتيجة كصورة</button>
