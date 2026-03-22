@@ -893,17 +893,14 @@
           contactBtn.setAttribute("aria-expanded", isExpanded);
         });
 
-        fetch("https://api.countapi.xyz/hit/mosamirhelal/visits").catch(
-          () => {}
-        );
-
-        if (window.location.search === "?stats") {
-          fetch("https://api.countapi.xyz/get/mosamirhelal/visits")
-            .then((res) => res.json())
-            .then((data) => {
-              alert(`عدد زيارات الموقع : ${data.value.toLocaleString()}`);
-            });
-        }
+        fetch("https://api.counterapi.dev/v1/mosamirhelal/visits/up")
+          .then((res) => res.json())
+          .then((data) => {
+            if (window.location.search === "?stats") {
+              alert(`عدد زيارات الموقع : ${data.count.toLocaleString()}`);
+            }
+          })
+          .catch(() => {});
       });
     </script>
   </body>
