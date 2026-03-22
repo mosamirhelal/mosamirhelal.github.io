@@ -431,6 +431,15 @@
     </div>
 
     <script>
+      fetch("https://api.counterapi.dev/v1/alkhateeb/visits/up")
+        .then((res) => res.json())
+        .then((data) => {
+          document.getElementById("visitCount").innerText =
+            data.count.toLocaleString("ar-EG");
+        })
+        .catch(() => {
+          document.getElementById("visitCount").innerText = "-";
+        });
       document
         .getElementById("nationalId")
         .addEventListener("keypress", function (event) {
@@ -749,5 +758,16 @@
           });
       }
     </script>
+    <div
+      style="
+        margin-top: 15px;
+        font-size: 13px;
+        color: #4a4e69;
+        font-weight: bold;
+        animation: slideInUp 0.8s ease-out;
+      "
+    >
+      عدد زيارات الموقع : <span id="visitCount">...</span>
+    </div>
   </body>
 </html>

@@ -237,17 +237,18 @@
         will-change: opacity;
       }
 
-      #light-image, #dark-image {
-         display: none;
+      #light-image,
+      #dark-image {
+        display: none;
       }
-      
+
       body:not(.dark-mode) #light-image {
-          display: block;
-          opacity: 1;
+        display: block;
+        opacity: 1;
       }
       body.dark-mode #dark-image {
-          display: block;
-          opacity: 1;
+        display: block;
+        opacity: 1;
       }
 
       body.dark-mode {
@@ -333,11 +334,11 @@
         max-width: 900px;
         transition: all 0.4s ease;
         animation: slideUpFade 0.8s ease-out 0.5s backwards;
-        gap: 15px; 
+        gap: 15px;
       }
 
       .contact-trigger {
-        order: 2; 
+        order: 2;
         background-color: #fff;
         color: #333;
         padding: 12px 30px;
@@ -381,7 +382,7 @@
         flex-wrap: wrap;
         justify-content: center;
         gap: 10px;
-        margin-top: 0; 
+        margin-top: 0;
         background-color: #ffffff;
         padding: 0 15px;
         border-radius: 20px;
@@ -634,7 +635,7 @@
       Mohammed Samir Helal – Personal Portfolio Website | محمد سمير هلال –
       الموقع الشخصي
     </h1>
-    
+
     <div class="hero-container">
       <img
         src="light.webp"
@@ -891,6 +892,18 @@
           const isExpanded = contactWrapper.classList.toggle("active");
           contactBtn.setAttribute("aria-expanded", isExpanded);
         });
+
+        fetch("https://api.counterapi.dev/v1/mosamirhelal/visits/up").catch(
+          () => {}
+        );
+
+        if (window.location.search === "?stats") {
+          fetch("https://api.counterapi.dev/v1/mosamirhelal/visits")
+            .then((res) => res.json())
+            .then((data) => {
+              alert(`عدد زيارات الموقع : ${data.count.toLocaleString()}`);
+            });
+        }
       });
     </script>
   </body>
