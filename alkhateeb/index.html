@@ -4,8 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>نتيجة الطلاب - مدرسة الشهيد محمود علي الخطيب</title>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script
+      src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+      defer
+    ></script>
     <meta
       property="og:title"
       content="نتيجة الطلاب - مدرسة الشهيد محمود علي الخطيب"
@@ -22,13 +34,132 @@
       }
 
       body {
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-family: "Cairo", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         text-align: center;
         margin: 0;
-        padding: 40px 20px;
+        padding: 20px;
         background-color: #c9d0d9;
-        animation: fadeInPage 1s ease-out;
+        animation: fadeInPage 0.55s ease-out;
         overflow-x: hidden;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      @keyframes fadeInPage {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes floatDot {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-18px);
+        }
+      }
+      @keyframes popIn {
+        0% {
+          opacity: 0;
+          transform: scale(0.85);
+        }
+        70% {
+          transform: scale(1.04);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes rowIn {
+        from {
+          opacity: 0;
+          transform: translateX(-12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      @keyframes pulseGlow {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(0, 86, 179, 0.7);
+        }
+        70% {
+          transform: scale(1.02);
+          box-shadow: 0 0 0 15px rgba(0, 86, 179, 0);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(0, 86, 179, 0);
+        }
+      }
+      @keyframes floatDown {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(105vh) rotate(45deg) translateX(20px);
+          opacity: 0;
+        }
+      }
+      @keyframes spin {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes ripple {
+        from {
+          transform: scale(0);
+          opacity: 1;
+        }
+        to {
+          transform: scale(3.5);
+          opacity: 0;
+        }
+      }
+
+      .dot {
+        position: fixed;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+        background: rgba(0, 86, 179, 0.05);
+        animation: floatDot ease-in-out infinite;
       }
 
       .container {
@@ -54,8 +185,8 @@
       }
 
       .top-logos img {
-        max-height: 160px;
-        max-width: 48%;
+        max-height: 120px;
+        max-width: 45%;
         width: auto;
         object-fit: contain;
       }
@@ -68,7 +199,7 @@
 
       .header-image img {
         width: 100%;
-        max-width: 580px;
+        max-width: 500px;
         height: auto;
       }
 
@@ -76,17 +207,19 @@
         color: #0056b3;
         margin-top: 10px;
         margin-bottom: 20px;
-        font-size: 24px;
+        font-size: 26px;
+        font-weight: 800;
       }
 
       .form-control {
         font-size: 16px;
         padding: 12px 15px;
-        border-radius: 8px;
+        border-radius: 11px;
         max-width: 350px;
         margin-left: auto;
         margin-right: auto;
         display: block;
+        font-family: inherit;
       }
 
       input,
@@ -105,10 +238,15 @@
         max-width: 350px;
       }
 
+      input:disabled {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+      }
+
       textarea {
         resize: vertical;
         padding: 12px 15px;
-        border-radius: 8px;
+        border-radius: 11px;
         max-width: 450px;
       }
 
@@ -129,48 +267,59 @@
         max-width: 350px;
         margin: 0 auto;
         display: block;
-        transition: all 0.3s ease;
+        transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
         position: relative;
         overflow: hidden;
+        font-family: inherit;
       }
 
-      button:hover {
+      button:hover:not(:disabled) {
         background-color: #004494;
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       }
 
-      button:active {
+      button:active:not(:disabled) {
         transform: translateY(1px);
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      button:disabled {
+        background-color: #6c757d;
+        cursor: not-allowed;
+      }
+
+      .btn-text {
+        position: relative;
+        z-index: 2;
+      }
+
+      .ripple-span {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        transform: scale(0);
+        animation: ripple 0.6s ease-out forwards;
+        pointer-events: none;
+        z-index: 1;
       }
 
       .pulse-button {
         animation: pulseGlow 1.5s infinite;
       }
 
-      @keyframes pulseGlow {
-        0% {
-          transform: scale(1);
-          box-shadow: 0 0 0 0 rgba(0, 86, 179, 0.7);
-        }
-        70% {
-          transform: scale(1.02);
-          box-shadow: 0 0 0 15px rgba(0, 86, 179, 0);
-        }
-        100% {
-          transform: scale(1);
-          box-shadow: 0 0 0 0 rgba(0, 86, 179, 0);
-        }
-      }
-
       .btn-share {
         background-color: #008080;
         margin-top: 15px;
       }
-
-      .btn-share:hover {
+      .btn-share:hover:not(:disabled) {
         background-color: #006666;
+      }
+      .btn-success {
+        background-color: #28a745;
+      }
+      .btn-success:hover:not(:disabled) {
+        background-color: #218838;
       }
 
       #result:not(:empty) {
@@ -178,7 +327,7 @@
       }
 
       .student-info-appear {
-        animation: fadeIn 0.5s ease-out forwards;
+        animation: slideInUp 0.5s ease-out forwards;
       }
 
       #capture-area {
@@ -188,31 +337,75 @@
         margin-bottom: 15px;
       }
 
+      h3.student-name {
+        color: #8f250c;
+        margin-top: 10px;
+        font-size: 21px;
+        font-weight: 800;
+        animation: popIn 0.5s ease-out;
+      }
+
       table {
         width: 100%;
-        border-collapse: collapse;
+        border-collapse: separate;
+        border-spacing: 0;
         margin-top: 20px;
         background-color: white;
-        border-radius: 8px;
+        border-radius: 10px;
         overflow: hidden;
         border: 1px solid #eee;
       }
 
       th,
       td {
-        border: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+        border-left: 1px solid #eee;
         padding: 15px;
         text-align: center;
+      }
+
+      th:last-child,
+      td:last-child {
+        border-left: none;
+      }
+      tr:last-child td {
+        border-bottom: none;
       }
 
       th {
         background-color: #0056b3;
         color: white;
-        font-weight: 600;
+        font-weight: 700;
       }
 
-      tr:nth-child(even) {
+      tbody tr {
+        transition: background 0.15s;
+      }
+      tbody tr:nth-child(even) {
         background-color: #fbfbfb;
+      }
+      tbody tr:hover {
+        background: #eef4ff;
+      }
+
+      .row-anim {
+        opacity: 0;
+        animation: rowIn 0.35s ease forwards;
+      }
+      .row-anim:nth-child(1) {
+        animation-delay: 0.06s;
+      }
+      .row-anim:nth-child(2) {
+        animation-delay: 0.12s;
+      }
+      .row-anim:nth-child(3) {
+        animation-delay: 0.18s;
+      }
+      .row-anim:nth-child(4) {
+        animation-delay: 0.24s;
+      }
+      .row-anim:nth-child(5) {
+        animation-delay: 0.3s;
       }
 
       .total-row {
@@ -220,14 +413,28 @@
         background-color: #bcb8b1 !important;
       }
 
-      .percentage {
-        font-size: 22px;
-        font-weight: bold;
-        color: #0056b3;
+      .perc-block {
         margin-top: 25px;
-        text-align: center;
-        border-top: 2px dashed #eee;
         padding-top: 15px;
+        border-top: 2px dashed #eee;
+        text-align: center;
+      }
+      .perc-label {
+        font-size: 16px;
+        color: #4a4e69;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      .perc-num {
+        font-size: 38px;
+        font-weight: 900;
+        letter-spacing: -1px;
+        line-height: 1;
+        transition: color 0.4s;
+      }
+      .perc-sym {
+        font-size: 22px;
+        font-weight: 700;
       }
 
       .status-message {
@@ -237,14 +444,13 @@
         font-size: 16px;
         font-weight: bold;
         width: 100%;
+        animation: popIn 0.5s 0.1s ease-out both;
       }
-
       .congrats-message {
         background-color: #008000;
         color: #f2e8cf;
         border: 1px solid #c3e6cb;
       }
-
       .fail-message {
         background-color: #b23a48;
         color: #fed0bb;
@@ -257,14 +463,6 @@
         border-top: 2px dashed #eee;
         animation: fadeIn 0.5s ease-out 1s forwards;
         opacity: 0;
-      }
-
-      .btn-success {
-        background-color: #28a745;
-      }
-
-      .btn-success:hover {
-        background-color: #218838;
       }
 
       .loader {
@@ -286,6 +484,16 @@
         font-weight: bold;
       }
 
+      .visit-counter {
+        margin-top: 15px;
+        font-size: 12px;
+        color: #4a4e69;
+        font-weight: bold;
+        animation: slideInUp 0.8s ease-out;
+        z-index: 10;
+        position: relative;
+      }
+
       .falling-emoji {
         position: fixed;
         top: -50px;
@@ -295,59 +503,25 @@
         animation: floatDown linear forwards;
       }
 
-      @keyframes floatDown {
-        0% {
-          transform: translateY(0) rotate(0deg) translateX(0);
-          opacity: 0;
-        }
-        10% {
-          opacity: 1;
-        }
-        90% {
-          opacity: 1;
-        }
-        100% {
-          transform: translateY(105vh) rotate(45deg) translateX(20px);
-          opacity: 0;
-        }
+      #export-header {
+        display: none;
+      }
+      #export-footer {
+        display: none;
       }
 
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
+      @media (min-width: 768px) {
+        .top-logos img {
+          max-height: 160px;
         }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-
-      @keyframes fadeIn {
-        to {
-          opacity: 1;
-        }
-      }
-      @keyframes fadeInPage {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-      @keyframes slideInUp {
-        from {
-          opacity: 0;
-          transform: translateY(30px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
+        .header-image img {
+          max-width: 580px;
         }
       }
 
       @media (max-width: 480px) {
         body {
-          padding: 20px 10px;
+          padding: 15px 10px;
         }
         .container {
           padding: 25px 20px;
@@ -357,14 +531,14 @@
           margin-bottom: 15px;
         }
         .top-logos img {
-          max-height: 110px;
+          max-height: 90px;
         }
         .header-image {
           margin-bottom: 15px;
           padding: 0;
         }
         h2 {
-          font-size: 24px;
+          font-size: 22px;
           margin-bottom: 15px;
           margin-top: 10px;
         }
@@ -381,8 +555,8 @@
         textarea {
           max-width: 100%;
         }
-        .percentage {
-          font-size: 20px;
+        .perc-num {
+          font-size: 30px;
         }
         .status-message {
           font-size: 14px;
@@ -395,21 +569,73 @@
     </style>
   </head>
   <body>
+    <div
+      class="dot"
+      style="
+        width: 90px;
+        height: 90px;
+        top: 8%;
+        left: 4%;
+        animation-duration: 6s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 60px;
+        height: 60px;
+        top: 20%;
+        right: 6%;
+        animation-duration: 8s;
+        animation-delay: 1s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 120px;
+        height: 120px;
+        top: 55%;
+        left: 2%;
+        animation-duration: 10s;
+        animation-delay: 2s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 50px;
+        height: 50px;
+        top: 70%;
+        right: 4%;
+        animation-duration: 7s;
+        animation-delay: 0.5s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 80px;
+        height: 80px;
+        top: 38%;
+        right: 11%;
+        animation-duration: 9s;
+        animation-delay: 3s;
+      "
+    ></div>
+
     <div class="container">
       <div class="top-logos">
         <img src="logo_2.webp" alt="شعار وزارة التربية والتعليم" />
         <img src="logo_1.webp" alt="شعار مدرسة الشهيد محمود علي الخطيب" />
       </div>
-
       <div class="header-image">
         <img
           src="logo_3.webp"
           alt="مدرسة الشهيد محمود علي الخطيب الرسمية للغات"
         />
       </div>
-
       <h2>استعلام عن النتيجة</h2>
-
       <input
         type="text"
         inputmode="numeric"
@@ -419,15 +645,20 @@
         placeholder="أدخل الرقم القومي للطالب"
         oninput="this.value = this.value.replace(/[^0-9]/g, '')"
       />
-      <button onclick="getGrade()" id="searchBtn" class="form-control">
-        بحث
+      <button
+        onclick="addRipple(event, this); getGrade()"
+        id="searchBtn"
+        class="form-control pulse-button"
+      >
+        <span class="btn-text">بحث 🔎</span>
       </button>
-
       <div class="loader" id="loader"></div>
-
       <div id="result"></div>
-
       <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
+    </div>
+
+    <div class="visit-counter">
+      عدد زيارات الموقع : <span id="visitCount">...</span>
     </div>
 
     <script>
@@ -440,19 +671,54 @@
         .catch(() => {
           document.getElementById("visitCount").innerText = "-";
         });
+
       document
         .getElementById("nationalId")
         .addEventListener("keypress", function (event) {
           if (event.key === "Enter") {
             event.preventDefault();
+            const btn = document.getElementById("searchBtn");
+            addRipple(event, btn);
             getGrade();
           }
         });
 
-      function checkEmpty(value) {
-        if (value === "" || value === null || value === undefined) {
-          return "-";
+      function addRipple(e, btn) {
+        const rect = btn.getBoundingClientRect();
+        let x, y;
+        if (e.clientX !== undefined && e.clientX !== 0) {
+          x = e.clientX - rect.left;
+          y = e.clientY - rect.top;
+        } else if (e.touches && e.touches.length > 0) {
+          x = e.touches[0].clientX - rect.left;
+          y = e.touches[0].clientY - rect.top;
+        } else {
+          x = rect.width / 2;
+          y = rect.height / 2;
         }
+        const size = Math.max(rect.width, rect.height);
+        const span = document.createElement("span");
+        span.className = "ripple-span";
+        span.style.width = span.style.height = size + "px";
+        span.style.left = x - size / 2 + "px";
+        span.style.top = y - size / 2 + "px";
+        btn.appendChild(span);
+        setTimeout(() => span.remove(), 600);
+      }
+
+      function countUp(el, target, duration, suffix) {
+        const start = performance.now();
+        function tick(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          el.innerText = Math.round(eased * target) + (suffix || "");
+          if (p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+
+      function checkEmpty(value) {
+        if (value === "" || value === null || value === undefined) return "-";
         return value;
       }
 
@@ -460,9 +726,7 @@
         const happyEmojis = ["🥳", "😄", "👏", "🏆", "🎉", "😘"];
         const sadEmojis = ["😥", "😭", "☹️", "😣", "😓"];
         const emojisToUse = isSuccess ? happyEmojis : sadEmojis;
-        const emojiCount = 15;
-
-        for (let i = 0; i < emojiCount; i++) {
+        for (let i = 0; i < 15; i++) {
           setTimeout(() => {
             const emoji = document.createElement("div");
             emoji.classList.add("falling-emoji");
@@ -471,9 +735,7 @@
             emoji.style.left = Math.random() * 100 + "vw";
             emoji.style.animationDuration = Math.random() * 3 + 4 + "s";
             document.body.appendChild(emoji);
-            setTimeout(() => {
-              emoji.remove();
-            }, 7000);
+            setTimeout(() => emoji.remove(), 7000);
           }, i * 150);
         }
       }
@@ -483,7 +745,6 @@
         var formContainer = document.getElementById("feedbackFormContainer");
         formContainer.style.display = "block";
         formContainer.style.animation = "fadeIn 0.5s ease-out forwards";
-
         setTimeout(() => {
           window.scrollTo({
             top: document.body.scrollHeight,
@@ -498,14 +759,13 @@
         var natIdInput = document.getElementById("nationalId");
         natIdInput.value = "";
         window.scrollTo({ top: 0, behavior: "smooth" });
-        setTimeout(() => {
-          natIdInput.focus();
-        }, 500);
+        setTimeout(() => natIdInput.focus(), 500);
       }
 
       function sendFeedback(studentName, studentId) {
         var feedbackText = document.getElementById("feedbackInput").value;
         var btn = document.getElementById("submitFeedbackBtn");
+        var btnText = btn.querySelector(".btn-text");
         var statusMsg = document.getElementById("feedbackStatus");
         var feedbackTitle = document.getElementById("feedbackTitle");
 
@@ -516,7 +776,7 @@
         }
 
         btn.disabled = true;
-        btn.innerText = "جاري الإرسال...";
+        btnText.innerText = "جاري الإرسال...";
         statusMsg.innerHTML = "";
 
         fetch("https://formsubmit.co/ajax/samirhelal2298@gmail.com", {
@@ -534,22 +794,21 @@
         })
           .then((response) => response.json())
           .then((data) => {
-            btn.innerText = "تم الإرسال بنجاح!";
+            btnText.innerText = "تم الإرسال بنجاح!";
             statusMsg.innerHTML =
               "<span style='color: green;'>شكراً لك! تم إرسال رسالتك للإدارة.</span>";
-
             setTimeout(() => {
               btn.style.display = "none";
               feedbackTitle.style.display = "none";
               document.getElementById("feedbackInput").style.display = "none";
               statusMsg.innerHTML =
                 "<span style='color: green; display: block; margin-bottom: 15px;'>شكراً لك! تم إرسال رسالتك للإدارة.</span>" +
-                "<button class='form-control' style='background-color: #890620; color: white;' onclick='resetSearch()'>للبحث عن نتيجة طالب آخر</button>";
+                "<button class='form-control' style='background-color: #890620; color: white;' onclick='addRipple(event,this); resetSearch()'><span class='btn-text'>للبحث عن نتيجة طالب آخر</span></button>";
             }, 1500);
           })
-          .catch((error) => {
+          .catch(() => {
             btn.disabled = false;
-            btn.innerText = "إرسال الاقتراح";
+            btnText.innerText = "إرسال الاقتراح";
             statusMsg.innerHTML =
               "<span style='color: red;'>حدث خطأ، يرجى المحاولة لاحقاً.</span>";
           });
@@ -558,9 +817,10 @@
       async function shareResult(studentName) {
         var captureDiv = document.getElementById("capture-area");
         var shareBtn = document.getElementById("shareBtn");
-        var originalText = shareBtn.innerText;
+        var btnText = shareBtn.querySelector(".btn-text");
+        var originalText = btnText.innerText;
 
-        shareBtn.innerText = "⏳ جاري تحضير الصورة...";
+        btnText.innerText = "⏳ جاري تحضير الصورة...";
         shareBtn.disabled = true;
 
         try {
@@ -568,13 +828,18 @@
             scale: 2,
             useCORS: true,
             backgroundColor: "#ffffff",
-            windowWidth: 800,
+            scrollY: -window.scrollY,
             onclone: function (clonedDoc) {
+              var noAnimStyle = clonedDoc.createElement("style");
+              noAnimStyle.innerHTML =
+                "* { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }";
+              clonedDoc.head.appendChild(noAnimStyle);
               var clonedArea = clonedDoc.getElementById("capture-area");
               clonedArea.style.width = "800px";
               clonedArea.style.maxWidth = "none";
               clonedArea.style.padding = "40px";
               clonedArea.style.margin = "0 auto";
+              clonedArea.style.overflow = "visible";
               clonedDoc.getElementById("export-header").style.display = "block";
               clonedDoc.getElementById("export-footer").style.display = "block";
             },
@@ -583,12 +848,10 @@
           const blob = await new Promise((resolve) =>
             canvas.toBlob(resolve, "image/png")
           );
-
           let count = parseInt(localStorage.getItem("shareCount") || "0") + 1;
           localStorage.setItem("shareCount", count);
           const fileName = `نتيجة_${studentName}_${count}.png`;
           const file = new File([blob], fileName, { type: "image/png" });
-
           const isMobile = /Android|iPhone|iPad|iPod/i.test(
             navigator.userAgent
           );
@@ -605,14 +868,13 @@
               document.body.appendChild(link);
               link.click();
               document.body.removeChild(link);
-
               await navigator.share({
                 title: `نتيجة ${studentName}`,
                 text: `نتيجة الطالب ${studentName} - مدرسة الشهيد محمود علي الخطيب`,
                 files: [file],
               });
             } catch (err) {}
-            shareBtn.innerText = originalText;
+            btnText.innerText = originalText;
             shareBtn.disabled = false;
           } else {
             const link = document.createElement("a");
@@ -621,27 +883,28 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-
             shareBtn.style.backgroundColor = "#28a745";
-            shareBtn.innerText = "⬇️ تم مشاركة الصورة بنجاح!";
+            btnText.innerText = "⬇️ تم مشاركة الصورة بنجاح!";
             setTimeout(() => {
               shareBtn.style.backgroundColor = "";
-              shareBtn.innerText = originalText;
+              btnText.innerText = originalText;
               shareBtn.disabled = false;
             }, 5000);
           }
         } catch (error) {
-          shareBtn.innerText = originalText;
+          btnText.innerText = originalText;
           shareBtn.disabled = false;
           alert("حدث خطأ أثناء تحضير الصورة");
         }
       }
 
       function getGrade() {
-        var id = document.getElementById("nationalId").value;
+        var idInput = document.getElementById("nationalId");
+        var id = idInput.value;
         var resultDiv = document.getElementById("result");
         var loader = document.getElementById("loader");
         var searchBtn = document.getElementById("searchBtn");
+        var searchBtnText = searchBtn.querySelector(".btn-text");
 
         resultDiv.innerHTML = "";
 
@@ -653,7 +916,9 @@
 
         loader.style.display = "block";
         searchBtn.disabled = true;
-        searchBtn.innerText = "جاري البحث...";
+        idInput.disabled = true;
+        searchBtn.classList.remove("pulse-button");
+        searchBtnText.innerText = "جاري البحث...";
 
         var url =
           "https://script.google.com/macros/s/AKfycbzKxXdxfG1hFI135i0C3EBJOGxBvYvDuyP3uEqWo7dljWMRo1y1c-6sn1_6TN-GGDWL/exec?id=" +
@@ -664,7 +929,9 @@
           .then((data) => {
             loader.style.display = "none";
             searchBtn.disabled = false;
-            searchBtn.innerText = "بحث";
+            idInput.disabled = false;
+            searchBtn.classList.add("pulse-button");
+            searchBtnText.innerText = "بحث 🔎";
 
             if (data.status === "success") {
               var ar = checkEmpty(data.arabic),
@@ -678,66 +945,96 @@
               var total = checkEmpty(data.total),
                 total_max = checkEmpty(data.total_max);
               var perc = checkEmpty(data.percentage);
-              var displayPerc = perc !== "-" ? perc + "%" : "-";
+              var numericPerc = parseFloat(perc);
+              var totalDisplay = !isNaN(parseFloat(total))
+                ? `<span id="totalNum">0</span>`
+                : total;
+
+              let barColor = "#0056b3";
+              if (!isNaN(numericPerc)) {
+                barColor = numericPerc >= 50 ? "#008000" : "#b23a48";
+              }
 
               var statusMessageHtml = "";
-              var numericPerc = parseFloat(perc);
-
               if (!isNaN(numericPerc)) {
                 if (numericPerc >= 50) {
                   statusMessageHtml = `<div class="status-message congrats-message">تتقدم إدارة مدرسة الشهيد محمود علي الخطيب بخالص التهاني بالنجاح والتفوق 🏆</div>`;
-                  confetti({
-                    particleCount: 150,
-                    spread: 80,
-                    origin: { y: 0.6 },
-                    zIndex: 9999,
-                  });
-                  showEmojis(true);
                 } else {
                   statusMessageHtml = `<div class="status-message fail-message">حظ أوفر، نتمنى منك أن تجتهد أكثر في المرة القادمة</div>`;
-                  showEmojis(false);
                 }
               }
 
+              const percBlock =
+                perc !== "-"
+                  ? `<div class="perc-block">
+                    <div class="perc-label">النسبة المئوية</div>
+                    <div class="perc-num" style="color:${barColor};"><span id="percNumVal">0</span><span class="perc-sym">%</span></div>
+                  </div>`
+                  : `<div class="perc-block"><div class="perc-label">النسبة المئوية</div><div class="perc-num" style="color:#0056b3;">-</div></div>`;
+
               var html = `
                 <div class="student-info-appear">
-                    <div id="capture-area">
-                        <div id="export-header" style="display: none;">
-                            <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 25px; width: 100%; gap: 30px;">
-                                <img src="logo_2.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
-                                <img src="logo_1.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
-                            </div>
-                            <h4 style="color: #4a4e69; margin-top: 0; margin-bottom: 25px; border-bottom: 2px dashed #eee; padding-bottom: 15px; font-size: 22px;">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</h4>
-                        </div>
-
-                        <h3 style="color:#8f250c; margin-top:10px;">الاسم: ${data.name}</h3>
-                        <table>
-                            <tr><th>المادة</th><th>الدرجة النهائية</th><th>درجة الطالب</th></tr>
-                            <tr><td>اللغة العربية</td><td>${ar_max}</td><td>${ar}</td></tr>
-                            <tr><td>اللغة الإنجليزية</td><td>${en_max}</td><td>${en}</td></tr>
-                            <tr><td>العلوم</td><td>${sc_max}</td><td>${sc}</td></tr>
-                            <tr><td>الرياضيات</td><td>${ma_max}</td><td>${ma}</td></tr>
-                            <tr class="total-row"><td>المجموع الكلي</td><td>${total_max}</td><td>${total}</td></tr>
-                        </table>
-                        <div class="percentage">النسبة المئوية: ${displayPerc}</div>
-                        ${statusMessageHtml}
-                        
-                        <div id="export-footer" style="display: none; margin-top: 30px; font-size: 16px; color: #4a4e69; text-align: center; font-weight: bold; border-top: 2px solid #eee; padding-top: 15px;">تصميم وتنفيذ : سمير هلال</div>
+                  <div id="capture-area">
+                    <div id="export-header" style="display: none;">
+                      <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 25px; width: 100%; gap: 30px;">
+                        <img src="logo_2.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
+                        <img src="logo_1.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
+                      </div>
+                      <h4 style="color: #4a4e69; margin-top: 0; margin-bottom: 25px; border-bottom: 2px dashed #eee; padding-bottom: 15px; font-size: 22px;">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</h4>
                     </div>
-                    
-                    <button id="shareBtn" class="form-control btn-share" onclick="shareResult('${data.name}')">📸 مشاركة النتيجة كصورة</button>
-
-                    <div class="feedback-section">
-                        <button id="showFeedbackBtn" class="form-control pulse-button" onclick="toggleFeedbackForm()">إضافة رأي أو مقترح</button>
-                        <div id="feedbackFormContainer" style="display: none; text-align: center;">
-                            <h4 id="feedbackTitle" style="color: #333; margin-bottom: 15px; font-size: 18px;">سجل رأيك أو مقترحاتك:</h4>
-                            <textarea id="feedbackInput" rows="3" placeholder="اكتب رسالتك هنا..." lang="ar" dir="rtl"></textarea>
-                            <button id="submitFeedbackBtn" class="form-control btn-success" onclick="sendFeedback('${data.name}', '${id}')">إرسال الاقتراح</button>
-                            <div id="feedbackStatus" style="margin-top: 10px; font-weight: bold; text-align: center;"></div>
-                        </div>
+                    <h3 class="student-name">الاسم: ${data.name}</h3>
+                    <table>
+                      <thead><tr><th>المادة</th><th>الدرجة النهائية</th><th>درجة الطالب</th></tr></thead>
+                      <tbody>
+                        <tr class="row-anim"><td>اللغة العربية</td><td>${ar_max}</td><td>${ar}</td></tr>
+                        <tr class="row-anim"><td>اللغة الإنجليزية</td><td>${en_max}</td><td>${en}</td></tr>
+                        <tr class="row-anim"><td>العلوم</td><td>${sc_max}</td><td>${sc}</td></tr>
+                        <tr class="row-anim"><td>الرياضيات</td><td>${ma_max}</td><td>${ma}</td></tr>
+                        <tr class="row-anim total-row"><td>المجموع الكلي</td><td>${total_max}</td><td>${totalDisplay}</td></tr>
+                      </tbody>
+                    </table>
+                    ${percBlock}
+                    ${statusMessageHtml}
+                    <div id="export-footer" style="display: none; margin-top: 30px; font-size: 16px; color: #4a4e69; text-align: center; font-weight: bold; border-top: 2px solid #eee; padding-top: 15px;">تصميم وتنفيذ : سمير هلال</div>
+                  </div>
+                  <button id="shareBtn" class="form-control btn-share" onclick="addRipple(event,this); shareResult('${data.name}')"><span class="btn-text">📸 مشاركة النتيجة كصورة</span></button>
+                  <div class="feedback-section">
+                    <button id="showFeedbackBtn" class="form-control pulse-button" onclick="addRipple(event,this); toggleFeedbackForm()"><span class="btn-text">إضافة رأي أو مقترح</span></button>
+                    <div id="feedbackFormContainer" style="display: none; text-align: center;">
+                      <h4 id="feedbackTitle" style="color: #333; margin-bottom: 15px; font-size: 18px;">سجل رأيك أو مقترحاتك:</h4>
+                      <textarea id="feedbackInput" rows="3" placeholder="اكتب رسالتك هنا..." lang="ar" dir="rtl"></textarea>
+                      <button id="submitFeedbackBtn" class="form-control btn-success" onclick="addRipple(event,this); sendFeedback('${data.name}', '${id}')"><span class="btn-text">إرسال الاقتراح</span></button>
+                      <div id="feedbackStatus" style="margin-top: 10px; font-weight: bold; text-align: center;"></div>
                     </div>
+                  </div>
                 </div>`;
+
               resultDiv.innerHTML = html;
+
+              setTimeout(() => {
+                const percNumVal = document.getElementById("percNumVal");
+                const totalNum = document.getElementById("totalNum");
+                if (percNumVal && !isNaN(numericPerc))
+                  countUp(percNumVal, numericPerc, 1200, "");
+                if (totalNum && !isNaN(parseFloat(total)))
+                  countUp(totalNum, parseFloat(total), 1000, "");
+              }, 100);
+
+              if (!isNaN(numericPerc)) {
+                if (numericPerc >= 50) {
+                  setTimeout(() => {
+                    confetti({
+                      particleCount: 150,
+                      spread: 80,
+                      origin: { y: 0.6 },
+                      zIndex: 9999,
+                    });
+                    showEmojis(true);
+                  }, 400);
+                } else {
+                  setTimeout(() => showEmojis(false), 400);
+                }
+              }
             } else {
               resultDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${data.message}</div>`;
             }
@@ -747,27 +1044,18 @@
                 top: document.body.scrollHeight,
                 behavior: "smooth",
               });
-            }, 100);
+            }, 200);
           })
-          .catch((error) => {
+          .catch(() => {
             loader.style.display = "none";
             searchBtn.disabled = false;
-            searchBtn.innerText = "بحث";
+            idInput.disabled = false;
+            searchBtn.classList.add("pulse-button");
+            searchBtnText.innerText = "بحث 🔎";
             resultDiv.innerHTML =
               "<div style='color:red; margin-top:15px;' class='student-info-appear'>حدث خطأ في الاتصال بقاعدة البيانات.</div>";
           });
       }
     </script>
-    <div
-      style="
-        margin-top: 15px;
-        font-size: 10px;
-        color: #4a4e69;
-        font-weight: bold;
-        animation: slideInUp 0.8s ease-out;
-      "
-    >
-      عدد زيارات الموقع : <span id="visitCount">...</span>
-    </div>
   </body>
 </html>
