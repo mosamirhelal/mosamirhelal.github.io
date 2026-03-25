@@ -1,0 +1,1642 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AudioMonitor – Real-time Studio</title>
+    <meta
+      name="description"
+      content="Monitor your input and output audio frequencies directly in the browser."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Tajawal:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      :root {
+        --bg: #080b14;
+        --bg2: #0e1220;
+        --card: #111726;
+        --card-b: #18203a;
+        --fg: #eef2ff;
+        --fg2: #7a8aaa;
+        --fg3: #374160;
+        --accent: #6366f1;
+        --accent2: #818cf8;
+        --red: #ef4444;
+        --red-h: #dc2626;
+        --border: #182038;
+        --border2: #1f2d4a;
+        --icon-dim: #1a2840;
+        --range-track: #182038;
+        --range-thumb: #6366f1;
+      }
+      [data-theme="light"] {
+        --bg: #f2f5fc;
+        --bg2: #e6ecf8;
+        --card: #fff;
+        --card-b: #dbe6f6;
+        --fg: #0c1326;
+        --fg2: #485a7c;
+        --fg3: #94a3b8;
+        --accent: #6366f1;
+        --accent2: #4f46e5;
+        --border: #d4e0f5;
+        --border2: #c2d4ee;
+        --icon-dim: #d0ddf5;
+        --range-track: #d4e0f5;
+        --range-thumb: #6366f1;
+      }
+
+      html[lang="ar"] body {
+        font-family: "Tajawal", system-ui, sans-serif;
+      }
+      html[lang="en"] body {
+        font-family: "Inter", system-ui, sans-serif;
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--fg);
+        min-height: 100vh;
+        transition: background 0.3s, color 0.3s;
+        line-height: 1.5;
+        overflow-x: hidden;
+      }
+
+      header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 9px 18px;
+        background: var(--bg2);
+        border-bottom: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        z-index: 200;
+        gap: 10px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        flex-shrink: 0;
+      }
+      .logo-icon {
+        width: 30px;
+        height: 30px;
+        background: var(--accent);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 0 14px rgba(99, 102, 241, 0.45);
+      }
+      .logo-icon svg {
+        color: #fff;
+      }
+      .logo-text {
+        line-height: 1;
+      }
+      .logo-name {
+        font-size: 14px;
+        font-weight: 800;
+        letter-spacing: -0.2px;
+      }
+      .logo-sub {
+        font-size: 8px;
+        letter-spacing: 1.8px;
+        color: var(--fg2);
+        text-transform: uppercase;
+        margin-top: 2px;
+      }
+      html[lang="ar"] .logo-sub {
+        letter-spacing: 0.3px;
+        font-size: 8.5px;
+      }
+
+      .hdr-right {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .icon-btn {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--card);
+        color: var(--fg2);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s;
+        flex-shrink: 0;
+      }
+      .icon-btn:hover {
+        background: var(--card-b);
+        color: var(--fg);
+        border-color: var(--border2);
+      }
+      .lang-btn {
+        height: 30px;
+        padding: 0 10px;
+        border-radius: 7px;
+        border: 1px solid var(--border);
+        background: var(--card);
+        color: var(--fg2);
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        transition: all 0.2s;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+      html[lang="ar"] .lang-btn {
+        font-family: "Tajawal", sans-serif;
+        letter-spacing: 0;
+      }
+      html[lang="en"] .lang-btn {
+        font-family: "Inter", sans-serif;
+      }
+      .lang-btn:hover {
+        background: var(--card-b);
+        color: var(--fg);
+      }
+
+      .hero {
+        padding: 20px 18px 0;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .hero h1 {
+        font-size: clamp(18px, 3.5vw, 28px);
+        font-weight: 800;
+        letter-spacing: -0.3px;
+        margin-bottom: 4px;
+      }
+      html[lang="ar"] .hero h1 {
+        letter-spacing: 0;
+      }
+      .hero p {
+        font-size: 12.5px;
+        color: var(--fg2);
+        max-width: 520px;
+        line-height: 1.65;
+      }
+
+      .vis-bar {
+        max-width: 1200px;
+        margin: 14px auto 0;
+        padding: 0 18px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .vis-bar-label {
+        font-size: 10.5px;
+        color: var(--fg3);
+        margin-inline-end: 2px;
+        font-weight: 600;
+      }
+      .vis-tag {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 10px;
+        border-radius: 7px;
+        border: 1px solid var(--border);
+        background: var(--card);
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 600;
+        transition: all 0.18s;
+        user-select: none;
+        color: var(--fg2);
+      }
+      .vis-tag:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .vis-tag.card-hidden-tag {
+        opacity: 0.5;
+      }
+
+      .cards-wrap {
+        max-width: 1200px;
+        margin: 14px auto 0;
+        padding: 0 18px 32px;
+        display: flex;
+        align-items: flex-start;
+        gap: 0;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        transition: border-color 0.2s;
+        flex: 1 1 50%;
+        min-width: 0;
+        overflow: hidden;
+      }
+      .card:hover {
+        border-color: var(--border2);
+      }
+      .card.card-hidden {
+        display: none;
+      }
+      .card-solo {
+        flex: 1 1 100% !important;
+        max-width: 100% !important;
+      }
+
+      .drag-handle {
+        flex: 0 0 10px;
+        cursor: col-resize;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 10;
+        user-select: none;
+      }
+      .drag-handle::after {
+        content: "";
+        display: block;
+        width: 3px;
+        height: 40px;
+        border-radius: 3px;
+        background: var(--border2);
+        transition: background 0.2s, height 0.2s;
+      }
+      .drag-handle:hover::after,
+      .drag-handle.dragging::after {
+        background: var(--accent);
+        height: 60px;
+      }
+
+      @media (max-width: 640px) {
+        .cards-wrap {
+          flex-direction: column;
+          gap: 12px;
+        }
+        .drag-handle {
+          display: none;
+        }
+        .card {
+          flex: none !important;
+          width: 100% !important;
+        }
+      }
+
+      .card-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+      .card-meta {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        flex: 1;
+        min-width: 0;
+      }
+      .card-icon {
+        width: 36px;
+        height: 36px;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: var(--fg2);
+      }
+      .card-info h2 {
+        font-size: 13.5px;
+        font-weight: 700;
+        margin-bottom: 1px;
+      }
+      .card-info p {
+        font-size: 11px;
+        color: var(--fg2);
+        line-height: 1.5;
+      }
+      .card-actions {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        flex-shrink: 0;
+      }
+
+      .start-btn {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        background: var(--accent);
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        padding: 7px 12px;
+        font-size: 11.5px;
+        font-weight: 700;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background 0.2s, transform 0.1s;
+      }
+      html[lang="ar"] .start-btn,
+      html[lang="en"] .start-btn {
+        font-family: inherit;
+      }
+      .start-btn:hover {
+        background: var(--accent2);
+      }
+      .start-btn:active {
+        transform: scale(0.97);
+      }
+      .start-btn.active {
+        background: var(--red);
+      }
+      .start-btn.active:hover {
+        background: var(--red-h);
+      }
+
+      .stg-btn {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        border: 1px solid var(--border);
+        background: var(--card);
+        color: var(--fg3);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.18s;
+      }
+      .stg-btn:hover {
+        background: var(--card-b);
+        color: var(--fg);
+      }
+      .stg-btn.open {
+        background: var(--card-b);
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+
+      .settings-panel {
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height 0.32s ease, opacity 0.22s;
+        opacity: 0;
+      }
+      .settings-panel.open {
+        max-height: 200px;
+        opacity: 1;
+      }
+      .settings-inner {
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 11px 13px;
+        margin-bottom: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      .ctrl-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .ctrl-label {
+        font-size: 10.5px;
+        font-weight: 600;
+        color: var(--fg2);
+        white-space: nowrap;
+        min-width: 56px;
+      }
+      html[lang="ar"] .ctrl-label {
+        min-width: 64px;
+      }
+
+      input[type="range"] {
+        flex: 1;
+        min-width: 60px;
+        height: 3px;
+        border-radius: 3px;
+        -webkit-appearance: none;
+        appearance: none;
+        background: var(--range-track);
+        cursor: pointer;
+        outline: none;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: var(--range-thumb);
+        cursor: pointer;
+        border: 2px solid var(--bg2);
+        transition: transform 0.12s;
+      }
+      input[type="range"]::-webkit-slider-thumb:hover {
+        transform: scale(1.25);
+      }
+      input[type="range"]::-moz-range-thumb {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background: var(--range-thumb);
+        cursor: pointer;
+        border: 2px solid var(--bg2);
+      }
+      .range-val {
+        font-size: 10px;
+        font-weight: 700;
+        color: var(--fg);
+        min-width: 30px;
+        text-align: center;
+      }
+
+      .mode-btns {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+      }
+      .mode-btn {
+        padding: 3px 9px;
+        border-radius: 5px;
+        border: 1px solid var(--border);
+        background: transparent;
+        color: var(--fg2);
+        font-size: 10.5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.18s;
+      }
+      html[lang="ar"] .mode-btn {
+        font-family: "Tajawal", sans-serif;
+      }
+      html[lang="en"] .mode-btn {
+        font-family: "Inter", sans-serif;
+      }
+      .mode-btn:hover {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .mode-btn.active {
+        background: var(--accent);
+        border-color: var(--accent);
+        color: #fff;
+      }
+
+      .color-swatches {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+      }
+      .swatch {
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        cursor: pointer;
+        border: 2px solid transparent;
+        transition: transform 0.15s, border-color 0.15s;
+        flex-shrink: 0;
+      }
+      .swatch:hover {
+        transform: scale(1.2);
+      }
+      .swatch.active {
+        border-color: var(--fg);
+        transform: scale(1.15);
+      }
+
+      .db-row {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 3px;
+        font-size: 10.5px;
+        color: var(--fg2);
+        margin-bottom: 8px;
+      }
+      .db-val {
+        font-weight: 700;
+        font-size: 12px;
+        color: var(--fg);
+        min-width: 24px;
+        text-align: end;
+      }
+
+      .viz-wrap {
+        position: relative;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        height: 160px;
+      }
+      canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+      }
+
+      .viz-idle {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        pointer-events: none;
+        transition: opacity 0.25s;
+      }
+      .viz-idle.hidden {
+        opacity: 0;
+      }
+      .viz-idle svg {
+        color: var(--icon-dim);
+      }
+      .idle-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--fg2);
+      }
+      .idle-sub {
+        font-size: 10.5px;
+        color: var(--fg3);
+      }
+
+      footer {
+        text-align: center;
+        padding: 14px 16px 22px;
+        font-size: 11px;
+        color: var(--fg3);
+        border-top: 1px solid var(--border);
+      }
+      footer .name {
+        color: var(--fg2);
+        font-weight: 700;
+      }
+      footer a {
+        color: var(--accent);
+        text-decoration: none;
+      }
+      footer a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <div class="logo-icon">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <rect x="1" y="8" width="2.2" height="4" rx="1.1" />
+            <rect x="4.5" y="5" width="2.2" height="10" rx="1.1" />
+            <rect x="8" y="2" width="2.2" height="16" rx="1.1" />
+            <rect x="11.5" y="5" width="2.2" height="10" rx="1.1" />
+            <rect x="15" y="8" width="2.2" height="4" rx="1.1" />
+          </svg>
+        </div>
+        <div class="logo-text">
+          <div class="logo-name" id="t-appName">AudioMonitor</div>
+          <div class="logo-sub" id="t-appSub">Real-time Studio</div>
+        </div>
+      </div>
+      <div class="hdr-right">
+        <button class="lang-btn" onclick="toggleLang()">
+          <svg
+            width="11"
+            height="11"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" />
+          </svg>
+          <span id="lang-label">AR</span>
+        </button>
+        <button
+          class="icon-btn"
+          onclick="toggleTheme()"
+          id="theme-btn"
+          title="Theme"
+        >
+          <svg
+            id="theme-icon"
+            width="15"
+            height="15"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <circle cx="12" cy="12" r="5" />
+            <path
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"
+            />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="hero">
+      <h1 id="t-heroTitle">Real-time Levels</h1>
+      <p id="t-heroDesc">
+        Monitor your input and output audio frequencies directly in the browser.
+        No data is uploaded or recorded.
+      </p>
+    </div>
+
+    <div class="vis-bar">
+      <span class="vis-bar-label" id="t-showHide">Show / Hide:</span>
+      <div class="vis-tag" id="mic-vis-tag" onclick="toggleCardVis('mic')">
+        <svg
+          width="11"
+          height="11"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <rect x="9" y="2" width="6" height="12" rx="3" />
+          <path d="M5 10a7 7 0 0 0 14 0" />
+          <line x1="12" y1="17" x2="12" y2="22" />
+          <line x1="8" y1="22" x2="16" y2="22" />
+        </svg>
+        <span id="t-micLabel">Microphone</span>
+        <svg
+          id="mic-eye"
+          width="11"
+          height="11"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+          <circle cx="12" cy="12" r="3" />
+        </svg>
+      </div>
+      <div class="vis-tag" id="sys-vis-tag" onclick="toggleCardVis('sys')">
+        <svg
+          width="11"
+          height="11"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <rect x="2" y="6" width="10" height="12" rx="2" />
+          <path d="M16 8a4 4 0 0 1 0 8" />
+          <path d="M19 5a8 8 0 0 1 0 14" />
+        </svg>
+        <span id="t-sysLabel">System Audio</span>
+        <svg
+          id="sys-eye"
+          width="11"
+          height="11"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
+          <circle cx="12" cy="12" r="3" />
+        </svg>
+      </div>
+    </div>
+
+    <div class="cards-wrap" id="cards-wrap">
+      <div class="card" id="mic-card">
+        <div class="card-header">
+          <div class="card-meta">
+            <div class="card-icon">
+              <svg
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <rect x="9" y="2" width="6" height="12" rx="3" />
+                <path d="M5 10a7 7 0 0 0 14 0" />
+                <line x1="12" y1="17" x2="12" y2="22" />
+                <line x1="8" y1="22" x2="16" y2="22" />
+              </svg>
+            </div>
+            <div class="card-info">
+              <h2 id="t-micTitle">Microphone Input</h2>
+              <p id="t-micDesc">
+                Visualizes audio captured directly from your default microphone.
+              </p>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button
+              class="stg-btn"
+              id="mic-stg-btn"
+              onclick="toggleSettings('mic')"
+            >
+              <svg
+                width="13"
+                height="13"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <circle cx="12" cy="12" r="3" />
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+                />
+              </svg>
+            </button>
+            <button class="start-btn" id="mic-btn" onclick="toggleMic()">
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 12 12"
+                fill="currentColor"
+              >
+                <polygon points="2,1 11,6 2,11" />
+              </svg>
+              <span id="t-micBtnText">Start Monitoring</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="settings-panel" id="mic-settings">
+          <div class="settings-inner">
+            <div class="ctrl-row">
+              <span class="ctrl-label" id="t-sens-mic"></span>
+              <input
+                type="range"
+                min="0.1"
+                max="3"
+                step="0.05"
+                value="1"
+                id="mic-sens"
+                oninput="updateSens('mic', this.value)"
+              />
+              <span class="range-val" id="mic-sens-val">100%</span>
+            </div>
+            <div class="ctrl-row">
+              <span class="ctrl-label" id="t-wave-mic"></span>
+              <div class="mode-btns">
+                <button
+                  class="mode-btn active"
+                  onclick="setMode('mic','bars')"
+                  id="mic-m-bars"
+                ></button>
+                <button
+                  class="mode-btn"
+                  onclick="setMode('mic','wave')"
+                  id="mic-m-wave"
+                ></button>
+                <button
+                  class="mode-btn"
+                  onclick="setMode('mic','mirror')"
+                  id="mic-m-mirror"
+                ></button>
+              </div>
+            </div>
+            <div class="ctrl-row">
+              <span class="ctrl-label" id="t-color-mic"></span>
+              <div class="color-swatches" id="mic-swatches"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="db-row">
+          <span>-</span><span class="db-val" id="mic-db">∞</span><span>dB</span>
+        </div>
+        <div class="viz-wrap" id="mic-viz-wrap">
+          <canvas id="mic-canvas"></canvas>
+          <div class="viz-idle" id="mic-idle">
+            <svg
+              width="32"
+              height="32"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+            >
+              <rect x="9" y="2" width="6" height="12" rx="3" />
+              <path d="M5 10a7 7 0 0 0 14 0" />
+              <line x1="12" y1="17" x2="12" y2="22" />
+              <line x1="8" y1="22" x2="16" y2="22" />
+            </svg>
+            <div class="idle-title" id="t-micIdleTitle">Ready to monitor</div>
+            <div class="idle-sub" id="t-micIdleSub">
+              Click Start to begin capturing audio
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="drag-handle" id="drag-handle"></div>
+
+      <div class="card" id="sys-card">
+        <div class="card-header">
+          <div class="card-meta">
+            <div class="card-icon">
+              <svg
+                width="18"
+                height="18"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <rect x="2" y="6" width="10" height="12" rx="2" />
+                <path d="M16 8a4 4 0 0 1 0 8" />
+                <path d="M19 5a8 8 0 0 1 0 14" />
+              </svg>
+            </div>
+            <div class="card-info">
+              <h2 id="t-sysTitle">System Audio</h2>
+              <p id="t-sysDesc">
+                Capture output audio by selecting 'Share tab audio' in the
+                prompt.
+              </p>
+            </div>
+          </div>
+          <div class="card-actions">
+            <button
+              class="stg-btn"
+              id="sys-stg-btn"
+              onclick="toggleSettings('sys')"
+            >
+              <svg
+                width="13"
+                height="13"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <circle cx="12" cy="12" r="3" />
+                <path
+                  d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"
+                />
+              </svg>
+            </button>
+            <button class="start-btn" id="sys-btn" onclick="toggleSys()">
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 12 12"
+                fill="currentColor"
+              >
+                <polygon points="2,1 11,6 2,11" />
+              </svg>
+              <span id="t-sysBtnText">Start Monitoring</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="settings-panel" id="sys-settings">
+          <div class="settings-inner">
+            <div class="ctrl-row">
+              <span class="ctrl-label" id="t-sens-sys"></span>
+              <input
+                type="range"
+                min="0.1"
+                max="3"
+                step="0.05"
+                value="1"
+                id="sys-sens"
+                oninput="updateSens('sys', this.value)"
+              />
+              <span class="range-val" id="sys-sens-val">100%</span>
+            </div>
+            <div class="ctrl-row">
+              <span class="ctrl-label" id="t-wave-sys"></span>
+              <div class="mode-btns">
+                <button
+                  class="mode-btn active"
+                  onclick="setMode('sys','bars')"
+                  id="sys-m-bars"
+                ></button>
+                <button
+                  class="mode-btn"
+                  onclick="setMode('sys','wave')"
+                  id="sys-m-wave"
+                ></button>
+                <button
+                  class="mode-btn"
+                  onclick="setMode('sys','mirror')"
+                  id="sys-m-mirror"
+                ></button>
+              </div>
+            </div>
+            <div class="ctrl-row">
+              <span class="ctrl-label" id="t-color-sys"></span>
+              <div class="color-swatches" id="sys-swatches"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="db-row">
+          <span>-</span><span class="db-val" id="sys-db">∞</span><span>dB</span>
+        </div>
+        <div class="viz-wrap" id="sys-viz-wrap">
+          <canvas id="sys-canvas"></canvas>
+          <div class="viz-idle" id="sys-idle">
+            <svg
+              width="32"
+              height="32"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+            >
+              <rect x="2" y="6" width="10" height="12" rx="2" />
+              <path d="M16 8a4 4 0 0 1 0 8" />
+              <path d="M19 5a8 8 0 0 1 0 14" />
+            </svg>
+            <div class="idle-title" id="t-sysIdleTitle">Ready to monitor</div>
+            <div class="idle-sub" id="t-sysIdleSub">
+              Click Start to begin capturing audio
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <span id="t-madeBy">Made by</span>
+      <span class="name" id="t-authorName">Mohammed Samir</span>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/mosamirhelal" target="_blank" rel="noopener"
+        >@mosamirhelal</a
+      >
+    </footer>
+
+    <script>
+      const T = {
+        en: {
+          appName: "AudioMonitor",
+          appSub: "Real-time Studio",
+          heroTitle: "Real-time Levels",
+          heroDesc:
+            "Monitor your input and output audio frequencies directly in the browser. No data is uploaded or recorded.",
+          micTitle: "Microphone Input",
+          micLabel: "Microphone",
+          micDesc:
+            "Visualizes audio captured directly from your default microphone.",
+          sysTitle: "System Audio",
+          sysLabel: "System Audio",
+          sysDesc:
+            "Capture output audio by selecting 'Share tab audio' in the prompt.",
+          startBtn: "Start Monitoring",
+          stopBtn: "Stop",
+          readyTitle: "Ready to monitor",
+          readySub: "Click Start to begin capturing audio",
+          sensitivity: "Sensitivity",
+          waveform: "Waveform",
+          color: "Color",
+          bars: "Bars",
+          wave: "Wave",
+          mirror: "Mirror",
+          showHide: "Show / Hide:",
+          madeBy: "Made by",
+          authorName: "Mohammed Samir",
+          langToggle: "AR",
+          alertMic: "Could not access microphone:\n",
+          alertSys:
+            'No audio track detected.\nPlease enable "Share tab audio" in the sharing prompt.',
+          alertSysErr: "Could not capture system audio:\n",
+        },
+        ar: {
+          appName: "مؤشر الصوت",
+          appSub: "استوديو مباشر",
+          heroTitle: "المستويات الفورية",
+          heroDesc:
+            "راقب ترددات الصوت الداخلة والخارجة مباشرةً في المتصفح. لا يُرفع أي بيانات أو يُسجَّل.",
+          micTitle: "إدخال الميكروفون",
+          micLabel: "الميكروفون",
+          micDesc: "يعرض الصوت المسجَّل مباشرةً من الميكروفون الافتراضي.",
+          sysTitle: "صوت النظام",
+          sysLabel: "صوت النظام",
+          sysDesc:
+            'التقط صوت الإخراج عن طريق اختيار "مشاركة صوت التبويب" في موجه المشاركة.',
+          startBtn: "بدء المراقبة",
+          stopBtn: "إيقاف",
+          readyTitle: "جاهز للمراقبة",
+          readySub: "اضغط ابدأ لالتقاط الصوت",
+          sensitivity: "الحساسية",
+          waveform: "شكل الموجة",
+          color: "اللون",
+          bars: "أعمدة",
+          wave: "موجة",
+          mirror: "مرآة",
+          showHide: "إظهار / إخفاء:",
+          madeBy: "من تصميم",
+          authorName: "محمد سمير",
+          langToggle: "EN",
+          alertMic: "تعذّر الوصول إلى الميكروفون:\n",
+          alertSys: 'لم يُكتشف مسار صوتي.\nتأكد من تفعيل "مشاركة صوت التبويب".',
+          alertSysErr: "تعذّر التقاط صوت النظام:\n",
+        },
+      };
+
+      let lang = "en";
+      let isDark = true;
+      const cardVis = { mic: true, sys: true };
+      const micCfg = { mode: "bars", sensitivity: 1, scheme: "ocean" };
+      const sysCfg = { mode: "bars", sensitivity: 1, scheme: "ocean" };
+
+      function saveState() {
+        const state = { lang, isDark, cardVis, micCfg, sysCfg };
+        localStorage.setItem("audioMonitorSettings", JSON.stringify(state));
+      }
+
+      function loadState() {
+        const saved = localStorage.getItem("audioMonitorSettings");
+        if (saved) {
+          const state = JSON.parse(saved);
+          if (state.lang) lang = state.lang;
+          if (state.isDark !== undefined) isDark = state.isDark;
+          if (state.cardVis) {
+            cardVis.mic = state.cardVis.mic;
+            cardVis.sys = state.cardVis.sys;
+          }
+          if (state.micCfg) Object.assign(micCfg, state.micCfg);
+          if (state.sysCfg) Object.assign(sysCfg, state.sysCfg);
+        }
+      }
+
+      function applyLang() {
+        const t = T[lang];
+        const isAr = lang === "ar";
+        document.documentElement.lang = lang;
+        document.documentElement.dir = isAr ? "rtl" : "ltr";
+        const s = (id, v) => {
+          const el = document.getElementById(id);
+          if (el) el.textContent = v;
+        };
+        s("t-appName", t.appName);
+        s("t-appSub", t.appSub);
+        s("t-heroTitle", t.heroTitle);
+        s("t-heroDesc", t.heroDesc);
+        s("t-micTitle", t.micTitle);
+        s("t-micLabel", t.micLabel);
+        s("t-micDesc", t.micDesc);
+        s("t-sysTitle", t.sysTitle);
+        s("t-sysLabel", t.sysLabel);
+        s("t-sysDesc", t.sysDesc);
+        s("t-showHide", t.showHide);
+        s("t-madeBy", t.madeBy);
+        s("t-authorName", t.authorName);
+        s("lang-label", t.langToggle);
+        s("t-sens-mic", t.sensitivity);
+        s("t-wave-mic", t.waveform);
+        s("t-color-mic", t.color);
+        s("t-sens-sys", t.sensitivity);
+        s("t-wave-sys", t.waveform);
+        s("t-color-sys", t.color);
+        ["mic", "sys"].forEach((id) => {
+          s(`${id}-m-bars`, t.bars);
+          s(`${id}-m-wave`, t.wave);
+          s(`${id}-m-mirror`, t.mirror);
+        });
+        s("t-micIdleTitle", t.readyTitle);
+        s("t-micIdleSub", t.readySub);
+        s("t-sysIdleTitle", t.readyTitle);
+        s("t-sysIdleSub", t.readySub);
+        updateBtn("mic", micActive);
+        updateBtn("sys", sysActive);
+      }
+
+      function toggleLang() {
+        lang = lang === "en" ? "ar" : "en";
+        applyLang();
+        saveState();
+      }
+
+      const moonSVG = `<path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>`;
+      const sunSVG = `<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>`;
+
+      function applyTheme() {
+        document.documentElement.setAttribute(
+          "data-theme",
+          isDark ? "dark" : "light"
+        );
+        document.getElementById("theme-icon").innerHTML = isDark
+          ? sunSVG
+          : moonSVG;
+      }
+
+      function toggleTheme() {
+        isDark = !isDark;
+        applyTheme();
+        saveState();
+      }
+
+      const SCHEMES = [
+        {
+          id: "ocean",
+          label: "Ocean",
+          h1: 200,
+          h2: 260,
+          preview: "linear-gradient(90deg,#38bdf8,#818cf8)",
+        },
+        {
+          id: "aurora",
+          label: "Aurora",
+          h1: 140,
+          h2: 200,
+          preview: "linear-gradient(90deg,#34d399,#38bdf8)",
+        },
+        {
+          id: "sunset",
+          label: "Sunset",
+          h1: 0,
+          h2: 50,
+          preview: "linear-gradient(90deg,#f97316,#facc15)",
+        },
+        {
+          id: "fire",
+          label: "Fire",
+          h1: 340,
+          h2: 30,
+          preview: "linear-gradient(90deg,#ec4899,#f97316)",
+          wrap: true,
+        },
+        {
+          id: "violet",
+          label: "Violet",
+          h1: 260,
+          h2: 320,
+          preview: "linear-gradient(90deg,#8b5cf6,#ec4899)",
+        },
+        {
+          id: "mono",
+          label: "Mono",
+          h1: 220,
+          h2: 220,
+          preview: "linear-gradient(90deg,#6366f1,#6366f1)",
+        },
+      ];
+
+      function buildSwatches(id) {
+        const el = document.getElementById(`${id}-swatches`);
+        el.innerHTML = "";
+        SCHEMES.forEach((sc, i) => {
+          const b = document.createElement("div");
+          b.className = "swatch";
+          b.title = sc.label;
+          b.style.background = sc.preview;
+          b.dataset.sid = sc.id;
+          b.addEventListener("click", () => setScheme(id, sc.id));
+          el.appendChild(b);
+        });
+      }
+
+      function setScheme(id, sid) {
+        (id === "mic" ? micCfg : sysCfg).scheme = sid;
+        document.querySelectorAll(`#${id}-swatches .swatch`).forEach((s) => {
+          s.classList.toggle("active", s.dataset.sid === sid);
+        });
+        saveState();
+      }
+
+      buildSwatches("mic");
+      buildSwatches("sys");
+
+      function getScheme(sid) {
+        return SCHEMES.find((s) => s.id === sid) || SCHEMES[0];
+      }
+
+      const eyeOpen = `<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/>`;
+      const eyeClosed = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>`;
+
+      function applyCardVis() {
+        ["mic", "sys"].forEach((id) => {
+          const isVis = cardVis[id];
+          document
+            .getElementById(`${id}-card`)
+            .classList.toggle("card-hidden", !isVis);
+          document
+            .getElementById(`${id}-vis-tag`)
+            .classList.toggle("card-hidden-tag", !isVis);
+          document.getElementById(`${id}-eye`).innerHTML = isVis
+            ? eyeOpen
+            : eyeClosed;
+        });
+        const bothVisible = cardVis.mic && cardVis.sys;
+        const h = document.getElementById("drag-handle");
+        if (h) h.style.display = bothVisible ? "flex" : "none";
+        ["mic", "sys"].forEach((cid) => {
+          const other = cid === "mic" ? "sys" : "mic";
+          const el = document.getElementById(`${cid}-card`);
+          if (el)
+            el.classList.toggle("card-solo", cardVis[cid] && !cardVis[other]);
+        });
+        if (bothVisible) {
+          document.getElementById("mic-card").style.flex = "";
+          document.getElementById("sys-card").style.flex = "";
+        }
+      }
+
+      function toggleCardVis(id) {
+        cardVis[id] = !cardVis[id];
+        applyCardVis();
+        saveState();
+      }
+
+      (function () {
+        const handle = document.getElementById("drag-handle");
+        const wrap = document.getElementById("cards-wrap");
+        const micCard = document.getElementById("mic-card");
+        const sysCard = document.getElementById("sys-card");
+        let dragging = false;
+
+        function onMove(clientX) {
+          const rect = wrap.getBoundingClientRect();
+          let ratio = (clientX - rect.left) / rect.width;
+          ratio = Math.max(0.2, Math.min(0.8, ratio));
+          micCard.style.flex = `0 0 calc(${ratio * 100}% - 5px)`;
+          sysCard.style.flex = `0 0 calc(${(1 - ratio) * 100}% - 5px)`;
+        }
+
+        handle.addEventListener("mousedown", (e) => {
+          dragging = true;
+          handle.classList.add("dragging");
+          document.body.style.userSelect = "none";
+          e.preventDefault();
+        });
+        document.addEventListener("mousemove", (e) => {
+          if (dragging) onMove(e.clientX);
+        });
+        document.addEventListener("mouseup", () => {
+          dragging = false;
+          handle.classList.remove("dragging");
+          document.body.style.userSelect = "";
+        });
+
+        handle.addEventListener(
+          "touchstart",
+          (e) => {
+            dragging = true;
+            document.body.style.userSelect = "none";
+            e.preventDefault();
+          },
+          { passive: false }
+        );
+        document.addEventListener(
+          "touchmove",
+          (e) => {
+            if (dragging) onMove(e.touches[0].clientX);
+          },
+          { passive: true }
+        );
+        document.addEventListener("touchend", () => {
+          dragging = false;
+          document.body.style.userSelect = "";
+        });
+      })();
+
+      function toggleSettings(id) {
+        const p = document.getElementById(`${id}-settings`);
+        const b = document.getElementById(`${id}-stg-btn`);
+        const open = !p.classList.contains("open");
+        p.classList.toggle("open", open);
+        b.classList.toggle("open", open);
+      }
+
+      function updateSens(id, val) {
+        (id === "mic" ? micCfg : sysCfg).sensitivity = +val;
+        document.getElementById(`${id}-sens-val`).textContent =
+          Math.round(val * 100) + "%";
+        saveState();
+      }
+
+      function setMode(id, mode) {
+        (id === "mic" ? micCfg : sysCfg).mode = mode;
+        ["bars", "wave", "mirror"].forEach((m) => {
+          document
+            .getElementById(`${id}-m-${m}`)
+            .classList.toggle("active", m === mode);
+        });
+        saveState();
+      }
+
+      const resizeObserver = new ResizeObserver((entries) => {
+        for (let entry of entries) {
+          const canvas = entry.target.querySelector("canvas");
+          if (canvas) {
+            canvas.width = entry.contentRect.width;
+            canvas.height = entry.contentRect.height;
+          }
+        }
+      });
+      resizeObserver.observe(document.getElementById("mic-viz-wrap"));
+      resizeObserver.observe(document.getElementById("sys-viz-wrap"));
+
+      const NUM = 56;
+
+      function drawCanvas(id, freqData, timeData, cfg) {
+        const c = document.getElementById(`${id}-canvas`);
+        const ctx = c.getContext("2d", { alpha: false });
+        const W = c.width,
+          H = c.height;
+        if (!W || !H) return;
+
+        const bgColor = isDark ? "#080b14" : "#f2f5fc";
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(0, 0, W, H);
+        ctx.shadowBlur = 0;
+
+        const { mode, sensitivity, scheme } = cfg;
+        const sc = getScheme(scheme || "ocean");
+
+        if (mode === "wave") {
+          const data = timeData;
+          ctx.beginPath();
+          const sw = W / data.length;
+          for (let i = 0; i < data.length; i++) {
+            const v = data[i] / 128 - 1;
+            const y = H / 2 + v * ((H / 2) * 0.88) * Math.min(3, sensitivity);
+            i === 0 ? ctx.moveTo(i * sw, y) : ctx.lineTo(i * sw, y);
+          }
+          const grad = ctx.createLinearGradient(0, 0, W, 0);
+          grad.addColorStop(0, `hsl(${sc.h1},80%,62%)`);
+          grad.addColorStop(1, `hsl(${sc.h2},80%,62%)`);
+          ctx.strokeStyle = grad;
+          ctx.lineWidth = 2;
+          ctx.shadowColor = `hsl(${sc.h1},80%,62%)`;
+          ctx.shadowBlur = 8;
+          ctx.stroke();
+          ctx.shadowBlur = 0;
+          return;
+        }
+
+        const data = freqData;
+        const step = Math.floor(data.length / NUM);
+        const vals = [];
+        for (let i = 0; i < NUM; i++)
+          vals.push(
+            Math.min(1, (data[i * step] / 255) * Math.min(3, sensitivity))
+          );
+
+        const barW = Math.max(1, (W - (NUM - 1) * 2) / NUM);
+
+        for (let i = 0; i < NUM; i++) {
+          const v = vals[i];
+          const t = i / (NUM - 1);
+          const hue = sc.h1 + (sc.h2 - sc.h1) * t;
+
+          let bh;
+          if (mode === "mirror") bh = v * ((H / 2) * 0.92);
+          else bh = Math.max(2, v * (H - 10));
+
+          const x = i * (barW + 2);
+          const grad = ctx.createLinearGradient(0, H, 0, 0);
+          grad.addColorStop(0, `hsla(${hue},85%,45%,.9)`);
+          grad.addColorStop(1, `hsla(${hue},90%,72%,1)`);
+          ctx.fillStyle = grad;
+
+          if (v > 0.06) {
+            ctx.shadowColor = `hsla(${hue},90%,65%,.45)`;
+            ctx.shadowBlur = v * 10;
+          } else {
+            ctx.shadowBlur = 0;
+          }
+
+          ctx.beginPath();
+          if (mode === "mirror") {
+            const cy = H / 2;
+            ctx.roundRect(x, cy - bh, barW, bh, 2);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.roundRect(x, cy, barW, bh, 2);
+          } else {
+            ctx.roundRect(x, H - bh, barW, bh, 2);
+          }
+          ctx.fill();
+        }
+        ctx.shadowBlur = 0;
+      }
+
+      let micActive = false,
+        micCtx,
+        micAnalyser,
+        micSrc,
+        micStream;
+      let sysActive = false,
+        sysCtx,
+        sysAnalyser,
+        sysSrc,
+        sysStream;
+      let rafId = null;
+
+      const freqBuf = { mic: null, sys: null };
+      const timeBuf = { mic: null, sys: null };
+
+      function animate() {
+        rafId = requestAnimationFrame(animate);
+        if (micActive && cardVis.mic && micAnalyser) {
+          micAnalyser.getByteFrequencyData(freqBuf.mic);
+          micAnalyser.getByteTimeDomainData(timeBuf.mic);
+          drawCanvas("mic", freqBuf.mic, timeBuf.mic, micCfg);
+          const db = calcDb(freqBuf.mic);
+          document.getElementById("mic-db").textContent =
+            db !== null ? db : "∞";
+        }
+        if (sysActive && cardVis.sys && sysAnalyser) {
+          sysAnalyser.getByteFrequencyData(freqBuf.sys);
+          sysAnalyser.getByteTimeDomainData(timeBuf.sys);
+          drawCanvas("sys", freqBuf.sys, timeBuf.sys, sysCfg);
+          const db = calcDb(freqBuf.sys);
+          document.getElementById("sys-db").textContent =
+            db !== null ? db : "∞";
+        }
+      }
+
+      function calcDb(arr) {
+        let s = 0;
+        for (let i = 0; i < arr.length; i++) s += arr[i] * arr[i];
+        const rms = Math.sqrt(s / arr.length) / 255;
+        return rms < 0.0001 ? null : Math.round(20 * Math.log10(rms));
+      }
+
+      const playIcon = `<svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><polygon points="2,1 11,6 2,11"/></svg>`;
+      const stopIcon = `<svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><rect x="2" y="2" width="8" height="8" rx="1"/></svg>`;
+
+      function updateBtn(id, active) {
+        const btn = document.getElementById(`${id}-btn`);
+        const t = T[lang];
+        btn.classList.toggle("active", active);
+        btn.innerHTML = active
+          ? `${stopIcon}<span>${t.stopBtn}</span>`
+          : `${playIcon}<span>${t.startBtn}</span>`;
+      }
+
+      async function toggleMic() {
+        if (!micActive) {
+          try {
+            micStream = await navigator.mediaDevices.getUserMedia({
+              audio: true,
+              video: false,
+            });
+            micCtx = new AudioContext();
+            micAnalyser = micCtx.createAnalyser();
+            micAnalyser.fftSize = 256;
+            micAnalyser.smoothingTimeConstant = 0.75;
+            freqBuf.mic = new Uint8Array(micAnalyser.frequencyBinCount);
+            timeBuf.mic = new Uint8Array(micAnalyser.fftSize);
+            micSrc = micCtx.createMediaStreamSource(micStream);
+            micSrc.connect(micAnalyser);
+            micActive = true;
+            document.getElementById("mic-idle").classList.add("hidden");
+            updateBtn("mic", true);
+            if (!rafId) animate();
+          } catch (e) {
+            alert(T[lang].alertMic + e.message);
+          }
+        } else {
+          stopMic();
+        }
+      }
+      function stopMic() {
+        micActive = false;
+        if (micSrc) {
+          micSrc.disconnect();
+          micSrc = null;
+        }
+        if (micStream) {
+          micStream.getTracks().forEach((t) => t.stop());
+          micStream = null;
+        }
+        if (micCtx) {
+          micCtx.close();
+          micCtx = null;
+        }
+        micAnalyser = null;
+        document.getElementById("mic-idle").classList.remove("hidden");
+        document.getElementById("mic-db").textContent = "∞";
+        updateBtn("mic", false);
+        const c = document.getElementById("mic-canvas");
+        c.getContext("2d").clearRect(0, 0, c.width, c.height);
+        if (!sysActive) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+      }
+
+      async function toggleSys() {
+        if (!sysActive) {
+          try {
+            sysStream = await navigator.mediaDevices.getDisplayMedia({
+              audio: true,
+              video: true,
+            });
+            sysStream.getVideoTracks().forEach((t) => t.stop());
+            if (sysStream.getAudioTracks().length === 0) {
+              sysStream.getTracks().forEach((t) => t.stop());
+              alert(T[lang].alertSys);
+              return;
+            }
+            sysCtx = new AudioContext();
+            sysAnalyser = sysCtx.createAnalyser();
+            sysAnalyser.fftSize = 256;
+            sysAnalyser.smoothingTimeConstant = 0.75;
+            freqBuf.sys = new Uint8Array(sysAnalyser.frequencyBinCount);
+            timeBuf.sys = new Uint8Array(sysAnalyser.fftSize);
+            sysSrc = sysCtx.createMediaStreamSource(sysStream);
+            sysSrc.connect(sysAnalyser);
+            sysActive = true;
+            document.getElementById("sys-idle").classList.add("hidden");
+            updateBtn("sys", true);
+            sysStream.getAudioTracks()[0].addEventListener("ended", stopSys);
+            if (!rafId) animate();
+          } catch (e) {
+            if (e.name !== "NotAllowedError")
+              alert(T[lang].alertSysErr + e.message);
+          }
+        } else {
+          stopSys();
+        }
+      }
+      function stopSys() {
+        sysActive = false;
+        if (sysSrc) {
+          sysSrc.disconnect();
+          sysSrc = null;
+        }
+        if (sysStream) {
+          sysStream.getTracks().forEach((t) => t.stop());
+          sysStream = null;
+        }
+        if (sysCtx) {
+          sysCtx.close();
+          sysCtx = null;
+        }
+        sysAnalyser = null;
+        document.getElementById("sys-idle").classList.remove("hidden");
+        document.getElementById("sys-db").textContent = "∞";
+        updateBtn("sys", false);
+        const c = document.getElementById("sys-canvas");
+        c.getContext("2d").clearRect(0, 0, c.width, c.height);
+        if (!micActive) {
+          cancelAnimationFrame(rafId);
+          rafId = null;
+        }
+      }
+
+      loadState();
+      applyTheme();
+      applyLang();
+      applyCardVis();
+      document.getElementById("mic-sens").value = micCfg.sensitivity;
+      document.getElementById("mic-sens-val").textContent =
+        Math.round(micCfg.sensitivity * 100) + "%";
+      document.getElementById("sys-sens").value = sysCfg.sensitivity;
+      document.getElementById("sys-sens-val").textContent =
+        Math.round(sysCfg.sensitivity * 100) + "%";
+      setMode("mic", micCfg.mode);
+      setMode("sys", sysCfg.mode);
+      setScheme("mic", micCfg.scheme);
+      setScheme("sys", sysCfg.scheme);
+    </script>
+  </body>
+</html>
