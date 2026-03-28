@@ -120,20 +120,6 @@
           box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
         }
       }
-      @keyframes pulseRed {
-        0% {
-          transform: scale(1);
-          box-shadow: 0 0 0 0 rgba(137, 6, 32, 0.7);
-        }
-        70% {
-          transform: scale(1.02);
-          box-shadow: 0 0 0 15px rgba(137, 6, 32, 0);
-        }
-        100% {
-          transform: scale(1);
-          box-shadow: 0 0 0 0 rgba(137, 6, 32, 0);
-        }
-      }
       @keyframes ripple {
         from {
           transform: scale(0);
@@ -154,9 +140,6 @@
       }
       .pulse-success {
         animation: pulseGreen 1.5s infinite;
-      }
-      .pulse-reset {
-        animation: pulseRed 1.5s infinite;
       }
       .dot {
         position: fixed;
@@ -279,16 +262,34 @@
       .btn-success {
         background-color: #28a745;
         margin-top: 20px;
+        border-radius: 11px;
       }
       .btn-success:hover:not(:disabled) {
         background-color: #218838;
       }
-      .btn-reset {
-        background-color: #890620;
-        margin-top: 20px;
+      .bulk-wrapper {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin: 20px auto;
+        flex-wrap: wrap;
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px dashed #0056b3;
+        width: 100%;
+        animation: popIn 0.5s ease-out;
       }
-      .btn-reset:hover:not(:disabled) {
-        background-color: #6a0418;
+      .btn-danger {
+        background-color: #dc3545;
+        max-width: 150px;
+        margin: 0;
+        padding: 12px 15px;
+        border-radius: 11px;
+      }
+      .btn-danger:hover:not(:disabled) {
+        background-color: #c82333;
       }
       table {
         width: 100%;
@@ -457,6 +458,63 @@
         font-weight: bold;
         color: #0056b3;
       }
+
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        animation: fadeInPage 0.3s;
+      }
+      .modal-content {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        animation: popIn 0.3s ease-out;
+        max-width: 90%;
+        width: 400px;
+      }
+      .modal-title {
+        color: #0056b3;
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 25px;
+        line-height: 1.5;
+      }
+      .modal-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+      }
+      .btn-modal-confirm {
+        background-color: #28a745;
+        margin: 0;
+        padding: 10px 20px;
+        max-width: 120px;
+        border-radius: 11px;
+      }
+      .btn-modal-confirm:hover:not(:disabled) {
+        background-color: #218838;
+      }
+      .btn-modal-cancel {
+        background-color: #dc3545;
+        margin: 0;
+        padding: 10px 20px;
+        max-width: 120px;
+        border-radius: 11px;
+      }
+      .btn-modal-cancel:hover:not(:disabled) {
+        background-color: #c82333;
+      }
+
       @media (min-width: 768px) {
         .top-logos img {
           max-height: 160px;
@@ -491,6 +549,17 @@
         .pagination-controls {
           flex-direction: column;
           gap: 10px;
+        }
+        .modal-content {
+          padding: 20px;
+        }
+        .modal-buttons {
+          flex-direction: column;
+          gap: 10px;
+        }
+        .btn-modal-confirm,
+        .btn-modal-cancel {
+          max-width: 100%;
         }
       }
     </style>
@@ -550,6 +619,7 @@
         animation-delay: 3s;
       "
     ></div>
+
     <div class="container">
       <div class="top-logos">
         <img
@@ -568,7 +638,21 @@
         />
       </div>
       <h2>بوابة إدخال الدرجات</h2>
-      <select id="gradeSelect" class="form-control" onchange="showSections()">
+
+      <select id="sheetSelect" class="form-control" onchange="showGrades()">
+        <option value="">-- اختر نوع التقييم --</option>
+        <option value="تقييمات شهر مارس">تقييمات شهر مارس</option>
+        <option value="امتحانات شهر مارس">امتحانات شهر مارس</option>
+        <option value="تقييمات شهر أبريل">تقييمات شهر أبريل</option>
+        <option value="امتحانات شهر أبريل">امتحانات شهر أبريل</option>
+      </select>
+
+      <select
+        id="gradeSelect"
+        class="form-control"
+        style="display: none"
+        onchange="showSections()"
+      >
         <option value="">-- اختر الصف الدراسي --</option>
         <option value="ثالث ابتدائي">الصف الثالث الابتدائي</option>
         <option value="رابع ابتدائي">الصف الرابع الابتدائي</option>
@@ -577,6 +661,7 @@
         <option value="أول اعدادي">الصف الأول الإعدادي</option>
         <option value="ثاني اعدادي">الصف الثاني الإعدادي</option>
       </select>
+
       <select
         id="sectionSelect"
         class="form-control"
@@ -592,6 +677,7 @@
         <option value="6">6</option>
         <option value="7">7</option>
       </select>
+
       <select
         id="subjectSelect"
         class="form-control"
@@ -604,6 +690,7 @@
         <option value="رياضيات">الرياضيات</option>
         <option value="علوم">العلوم</option>
       </select>
+
       <button
         id="searchBtn"
         class="form-control pulse-button"
@@ -612,8 +699,30 @@
       >
         <span class="btn-text">🔎 عرض كشف الطلاب</span>
       </button>
+
       <div id="inlineMessage" class="status-message"></div>
       <div class="loader" id="loader"></div>
+
+      <div id="bulkScoreDiv" class="bulk-wrapper">
+        <span style="font-weight: bold; color: #0056b3; font-size: 15px"
+          >تعميم درجة للكل:</span
+        >
+        <input
+          type="text"
+          id="bulkScoreInput"
+          inputmode="numeric"
+          class="score-input"
+          placeholder="الدرجة"
+          style="max-width: 100px; margin: 0"
+        />
+        <button
+          class="btn-danger"
+          onclick="addRipple(event, this); showBulkConfirm()"
+        >
+          <span class="btn-text">⚡ تطبيق للكل</span>
+        </button>
+      </div>
+
       <table id="studentsTable">
         <thead>
           <tr>
@@ -623,6 +732,7 @@
         </thead>
         <tbody id="studentsBody"></tbody>
       </table>
+
       <div id="paginationDiv" class="pagination-controls">
         <button
           id="prevBtn"
@@ -643,6 +753,7 @@
           <span class="btn-text">التالي</span>
         </button>
       </div>
+
       <button
         id="saveBtn"
         class="form-control btn-success pulse-success"
@@ -651,9 +762,33 @@
       >
         <span class="btn-text">💾 حفظ الدرجات</span>
       </button>
+
       <div id="saveMessage" class="status-message"></div>
       <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
     </div>
+
+    <div id="customModal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-title">
+          هل تريد بالتأكيد تعميم هذه الدرجة على جميع الطلاب الحاضرين؟
+        </div>
+        <div class="modal-buttons">
+          <button
+            class="btn-modal-confirm"
+            onclick="addRipple(event, this); confirmBulkScore()"
+          >
+            نعم
+          </button>
+          <button
+            class="btn-modal-cancel"
+            onclick="addRipple(event, this); closeBulkModal()"
+          >
+            لا
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script>
       const APPS_SCRIPT_URL =
         "https://script.google.com/macros/s/AKfycbx8JBu5aQKAf3cKN9kEss8RiFHoW9DiqbgSlLO3JiIRxtXEzsJh3MU1sgIU2cVPP-rNkw/exec";
@@ -738,6 +873,30 @@
         document.getElementById("studentsTable").style.display = "none";
         document.getElementById("paginationDiv").style.display = "none";
         document.getElementById("saveBtn").style.display = "none";
+        document.getElementById("bulkScoreDiv").style.display = "none";
+      }
+
+      function showGrades() {
+        hideTableAndMessages();
+        const sheet = document.getElementById("sheetSelect").value;
+        const gradeSelect = document.getElementById("gradeSelect");
+        const sectionSelect = document.getElementById("sectionSelect");
+        const subjectSelect = document.getElementById("subjectSelect");
+        const searchBtn = document.getElementById("searchBtn");
+
+        gradeSelect.value = "";
+        sectionSelect.value = "";
+        subjectSelect.value = "";
+        sectionSelect.style.display = "none";
+        subjectSelect.style.display = "none";
+        searchBtn.style.display = "none";
+
+        if (sheet !== "") {
+          gradeSelect.style.display = "block";
+          gradeSelect.style.animation = "slideInUp 0.3s ease-out";
+        } else {
+          gradeSelect.style.display = "none";
+        }
       }
 
       function showSections() {
@@ -806,29 +965,78 @@
         msgDiv.style.display = "block";
       }
 
+      function showBulkConfirm() {
+        const inputEl = document.getElementById("bulkScoreInput");
+        let englishStr = convertToEnglishNumbers(inputEl.value);
+        let cleanedStr = englishStr.replace(/[^0-9.]/g, "");
+
+        if (cleanedStr !== "") {
+          let num = parseFloat(cleanedStr);
+          if (num > 100) {
+            inputEl.value = "";
+            showMessage("الدرجة لا يمكن أن تتجاوز 100", true);
+            return;
+          }
+          document.getElementById("customModal").style.display = "flex";
+        } else {
+          showMessage("⚠️ يرجى إدخال درجة صالحة أولاً.", true);
+        }
+      }
+
+      function closeBulkModal() {
+        document.getElementById("customModal").style.display = "none";
+      }
+
+      function confirmBulkScore() {
+        const inputEl = document.getElementById("bulkScoreInput");
+        let englishStr = convertToEnglishNumbers(inputEl.value);
+        let cleanedStr = englishStr.replace(/[^0-9.]/g, "");
+
+        for (let i = 0; i < allStudents.length; i++) {
+          if (allStudents[i].score !== "غ") {
+            allStudents[i].score = cleanedStr;
+          }
+        }
+
+        inputEl.value = "";
+        closeBulkModal();
+        renderTable();
+        showMessage(
+          "✅ تم تعميم الدرجة بنجاح على جميع الطلاب الحاضرين.",
+          false
+        );
+      }
+
       function fetchStudents() {
+        const sheetSelect = document.getElementById("sheetSelect");
         const gradeSelect = document.getElementById("gradeSelect");
         const sectionSelect = document.getElementById("sectionSelect");
         const subjectSelect = document.getElementById("subjectSelect");
         const searchBtn = document.getElementById("searchBtn");
         const loader = document.getElementById("loader");
         const searchBtnText = searchBtn.querySelector(".btn-text");
+
+        const sheetName = sheetSelect.value;
         const grade = gradeSelect.value;
         const section = sectionSelect.value;
         const subject = subjectSelect.value;
+
         hideTableAndMessages();
         loader.style.display = "block";
         searchBtn.disabled = true;
         searchBtn.classList.remove("pulse-button");
         searchBtnText.innerText = "⏳ جاري البحث...";
+        sheetSelect.disabled = true;
         gradeSelect.disabled = true;
         sectionSelect.disabled = true;
         subjectSelect.disabled = true;
-        const url = `${APPS_SCRIPT_URL}?action=getStudents&grade=${encodeURIComponent(
-          grade
-        )}&section=${encodeURIComponent(section)}&subject=${encodeURIComponent(
-          subject
-        )}`;
+
+        const url = `${APPS_SCRIPT_URL}?action=getStudents&sheetName=${encodeURIComponent(
+          sheetName
+        )}&grade=${encodeURIComponent(grade)}&section=${encodeURIComponent(
+          section
+        )}&subject=${encodeURIComponent(subject)}`;
+
         fetch(url)
           .then((response) => response.json())
           .then((data) => {
@@ -836,9 +1044,15 @@
             searchBtn.disabled = false;
             searchBtn.classList.add("pulse-button");
             searchBtnText.innerText = "🔎 عرض كشف الطلاب";
+            sheetSelect.disabled = false;
             gradeSelect.disabled = false;
             sectionSelect.disabled = false;
             subjectSelect.disabled = false;
+
+            if (data.status === "error") {
+              showMessage(data.message, true);
+              return;
+            }
             if (data.students.length === 0) {
               showMessage("لا يوجد طلاب مسجلين طبقًا للخيارات السابقة.", true);
               return;
@@ -854,6 +1068,10 @@
             };
             saveBtn.className = "form-control btn-success pulse-success";
             saveBtnText.innerText = "💾 حفظ الدرجات";
+
+            document.getElementById("bulkScoreInput").value = "";
+            document.getElementById("bulkScoreDiv").style.display = "flex";
+
             renderTable();
             document.getElementById("studentsTable").style.display = "table";
             saveBtn.style.display = "block";
@@ -870,6 +1088,7 @@
             searchBtn.disabled = false;
             searchBtn.classList.add("pulse-button");
             searchBtnText.innerText = "🔎 عرض كشف الطلاب";
+            sheetSelect.disabled = false;
             gradeSelect.disabled = false;
             sectionSelect.disabled = false;
             subjectSelect.disabled = false;
@@ -1022,6 +1241,7 @@
           return;
         }
 
+        const sheetName = document.getElementById("sheetSelect").value;
         const grade = document.getElementById("gradeSelect").value;
         const section = document.getElementById("sectionSelect").value;
         const subject = document.getElementById("subjectSelect").value;
@@ -1030,12 +1250,15 @@
         saveBtn.disabled = true;
         saveBtn.classList.remove("pulse-success");
         saveBtnText.innerText = "⏳ جاري الحفظ...";
+
         const payload = {
+          sheetName: sheetName,
           grade: grade,
           section: section,
           subject: subject,
           gradesData: allStudents,
         };
+
         fetch(APPS_SCRIPT_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -1047,11 +1270,14 @@
               document.getElementById("studentsTable").style.display = "none";
               document.getElementById("paginationDiv").style.display = "none";
               document.getElementById("saveBtn").style.display = "none";
+              document.getElementById("bulkScoreDiv").style.display = "none";
 
+              document.getElementById("sheetSelect").value = "";
               document.getElementById("gradeSelect").value = "";
               document.getElementById("sectionSelect").value = "";
               document.getElementById("subjectSelect").value = "";
 
+              document.getElementById("gradeSelect").style.display = "none";
               document.getElementById("sectionSelect").style.display = "none";
               document.getElementById("subjectSelect").style.display = "none";
               document.getElementById("searchBtn").style.display = "none";
