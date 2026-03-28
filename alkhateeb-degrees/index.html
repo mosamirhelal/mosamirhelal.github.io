@@ -458,7 +458,6 @@
         font-weight: bold;
         color: #0056b3;
       }
-
       .modal-overlay {
         display: none;
         position: fixed;
@@ -514,7 +513,6 @@
       .btn-modal-cancel:hover:not(:disabled) {
         background-color: #c82333;
       }
-
       @media (min-width: 768px) {
         .top-logos img {
           max-height: 160px;
@@ -705,7 +703,7 @@
 
       <div id="bulkScoreDiv" class="bulk-wrapper">
         <span style="font-weight: bold; color: #0056b3; font-size: 15px"
-          >تعميم درجة للكل:</span
+          >تعميم درجة:</span
         >
         <input
           type="text"
@@ -713,13 +711,25 @@
           inputmode="numeric"
           class="score-input"
           placeholder="الدرجة"
-          style="max-width: 100px; margin: 0"
+          style="max-width: 90px; margin: 0"
         />
+
+        <label class="absent-label" style="font-size: 16px; padding: 5px 10px">
+          <input
+            type="checkbox"
+            id="bulkAbsentCheckbox"
+            class="absent-checkbox"
+            style="width: 20px; height: 20px"
+            onchange="toggleBulkAbsentInput(this.checked)"
+          />
+          غياب للكل
+        </label>
+
         <button
           class="btn-danger"
           onclick="addRipple(event, this); showBulkConfirm()"
         >
-          <span class="btn-text">⚡ تطبيق للكل</span>
+          <span class="btn-text">⚡ تطبيق</span>
         </button>
       </div>
 
@@ -769,7 +779,7 @@
 
     <div id="customModal" class="modal-overlay">
       <div class="modal-content">
-        <div class="modal-title">
+        <div class="modal-title" id="modalTitleText">
           هل تريد بالتأكيد تعميم هذه الدرجة على جميع الطلاب الحاضرين؟
         </div>
         <div class="modal-buttons">
@@ -795,6 +805,62 @@
       let allStudents = [];
       let currentPage = 1;
       const rowsPerPage = 10;
+
+      window.onload = function () {
+        restoreStateLocally();
+      };
+
+      function saveStateLocally() {
+        if (allStudents.length === 0) return;
+        const state = {
+          sheet: document.getElementById("sheetSelect").value,
+          grade: document.getElementById("gradeSelect").value,
+          section: document.getElementById("sectionSelect").value,
+          subject: document.getElementById("subjectSelect").value,
+          students: allStudents,
+          currentPage: currentPage,
+        };
+        localStorage.setItem("alkhateeb_grades_draft", JSON.stringify(state));
+      }
+
+      function restoreStateLocally() {
+        const draft = localStorage.getItem("alkhateeb_grades_draft");
+        if (draft) {
+          try {
+            const state = JSON.parse(draft);
+            if (state.students && state.students.length > 0) {
+              allStudents = state.students;
+              currentPage = state.currentPage || 1;
+              document.getElementById("sheetSelect").value = state.sheet;
+              const gradeSelect = document.getElementById("gradeSelect");
+              gradeSelect.style.display = "block";
+              gradeSelect.value = state.grade;
+              const sectionSelect = document.getElementById("sectionSelect");
+              sectionSelect.style.display = "block";
+              sectionSelect.value = state.section;
+              const subjectSelect = document.getElementById("subjectSelect");
+              subjectSelect.style.display = "block";
+              subjectSelect.value = state.subject;
+              document.getElementById("searchBtn").style.display = "block";
+              document.getElementById("bulkScoreDiv").style.display = "flex";
+              const saveBtn = document.getElementById("saveBtn");
+              saveBtn.disabled = false;
+              saveBtn.style.display = "block";
+              saveBtn.onclick = function (event) {
+                addRipple(event, this);
+                saveData();
+              };
+              saveBtn.className = "form-control btn-success pulse-success";
+              renderTable();
+              document.getElementById("studentsTable").style.display = "table";
+              showMessage(
+                "تم استعادة بياناتك السابقة التي لم يتم حفظها.",
+                false
+              );
+            }
+          } catch (e) {}
+        }
+      }
 
       function addRipple(e, btn) {
         if (btn.disabled) return;
@@ -867,6 +933,17 @@
         }
       }
 
+      function toggleBulkAbsentInput(isChecked) {
+        const inputEl = document.getElementById("bulkScoreInput");
+        if (isChecked) {
+          inputEl.value = "";
+          inputEl.disabled = true;
+        } else {
+          inputEl.disabled = false;
+          inputEl.focus();
+        }
+      }
+
       function hideTableAndMessages() {
         document.getElementById("inlineMessage").style.display = "none";
         document.getElementById("saveMessage").style.display = "none";
@@ -883,14 +960,12 @@
         const sectionSelect = document.getElementById("sectionSelect");
         const subjectSelect = document.getElementById("subjectSelect");
         const searchBtn = document.getElementById("searchBtn");
-
         gradeSelect.value = "";
         sectionSelect.value = "";
         subjectSelect.value = "";
         sectionSelect.style.display = "none";
         subjectSelect.style.display = "none";
         searchBtn.style.display = "none";
-
         if (sheet !== "") {
           gradeSelect.style.display = "block";
           gradeSelect.style.animation = "slideInUp 0.3s ease-out";
@@ -966,10 +1041,17 @@
       }
 
       function showBulkConfirm() {
+        const isAbsentAll =
+          document.getElementById("bulkAbsentCheckbox").checked;
+        if (isAbsentAll) {
+          document.getElementById("modalTitleText").innerText =
+            "هل تريد بالتأكيد تسجيل غياب لجميع الطلاب؟";
+          document.getElementById("customModal").style.display = "flex";
+          return;
+        }
         const inputEl = document.getElementById("bulkScoreInput");
         let englishStr = convertToEnglishNumbers(inputEl.value);
         let cleanedStr = englishStr.replace(/[^0-9.]/g, "");
-
         if (cleanedStr !== "") {
           let num = parseFloat(cleanedStr);
           if (num > 100) {
@@ -977,9 +1059,11 @@
             showMessage("الدرجة لا يمكن أن تتجاوز 100", true);
             return;
           }
+          document.getElementById("modalTitleText").innerText =
+            "هل تريد بالتأكيد تعميم هذه الدرجة على جميع الطلاب الحاضرين؟";
           document.getElementById("customModal").style.display = "flex";
         } else {
-          showMessage("⚠️ يرجى إدخال درجة صالحة أولاً.", true);
+          showMessage("⚠️ يرجى إدخال درجة صالحة أو اختيار غياب للكل.", true);
         }
       }
 
@@ -988,23 +1072,36 @@
       }
 
       function confirmBulkScore() {
-        const inputEl = document.getElementById("bulkScoreInput");
-        let englishStr = convertToEnglishNumbers(inputEl.value);
-        let cleanedStr = englishStr.replace(/[^0-9.]/g, "");
-
-        for (let i = 0; i < allStudents.length; i++) {
-          if (allStudents[i].score !== "غ") {
-            allStudents[i].score = cleanedStr;
+        const isAbsentAll =
+          document.getElementById("bulkAbsentCheckbox").checked;
+        if (isAbsentAll) {
+          for (let i = 0; i < allStudents.length; i++) {
+            allStudents[i].score = "غ";
           }
+        } else {
+          const inputEl = document.getElementById("bulkScoreInput");
+          let englishStr = convertToEnglishNumbers(inputEl.value);
+          let cleanedStr = englishStr.replace(/[^0-9.]/g, "");
+          for (let i = 0; i < allStudents.length; i++) {
+            if (allStudents[i].score !== "غ") {
+              allStudents[i].score = cleanedStr;
+            }
+          }
+          inputEl.value = "";
         }
-
-        inputEl.value = "";
         closeBulkModal();
+        document.getElementById("bulkAbsentCheckbox").checked = false;
+        toggleBulkAbsentInput(false);
         renderTable();
-        showMessage(
-          "✅ تم تعميم الدرجة بنجاح على جميع الطلاب الحاضرين.",
-          false
-        );
+        saveStateLocally();
+        if (isAbsentAll) {
+          showMessage("✅ تم تسجيل غياب جميع الطلاب بنجاح.", false);
+        } else {
+          showMessage(
+            "✅ تم تعميم الدرجة بنجاح على جميع الطلاب الحاضرين.",
+            false
+          );
+        }
       }
 
       function fetchStudents() {
@@ -1015,12 +1112,10 @@
         const searchBtn = document.getElementById("searchBtn");
         const loader = document.getElementById("loader");
         const searchBtnText = searchBtn.querySelector(".btn-text");
-
         const sheetName = sheetSelect.value;
         const grade = gradeSelect.value;
         const section = sectionSelect.value;
         const subject = subjectSelect.value;
-
         hideTableAndMessages();
         loader.style.display = "block";
         searchBtn.disabled = true;
@@ -1048,7 +1143,6 @@
             gradeSelect.disabled = false;
             sectionSelect.disabled = false;
             subjectSelect.disabled = false;
-
             if (data.status === "error") {
               showMessage(data.message, true);
               return;
@@ -1069,10 +1163,13 @@
             saveBtn.className = "form-control btn-success pulse-success";
             saveBtnText.innerText = "💾 حفظ الدرجات";
 
+            document.getElementById("bulkAbsentCheckbox").checked = false;
             document.getElementById("bulkScoreInput").value = "";
+            toggleBulkAbsentInput(false);
             document.getElementById("bulkScoreDiv").style.display = "flex";
 
             renderTable();
+            saveStateLocally();
             document.getElementById("studentsTable").style.display = "table";
             saveBtn.style.display = "block";
             setTimeout(() => {
@@ -1149,11 +1246,13 @@
 
       function changePage(direction) {
         currentPage += direction;
+        saveStateLocally();
         renderTable();
       }
 
       function updateStudentScore(globalIndex, value) {
         allStudents[globalIndex].score = value;
+        saveStateLocally();
       }
 
       function handleEnter(event, currentInput) {
@@ -1164,12 +1263,10 @@
           );
           const currentIndex = inputs.indexOf(currentInput);
           const totalPages = Math.ceil(allStudents.length / rowsPerPage);
-
           let nextIndex = currentIndex + 1;
           while (nextIndex < inputs.length && inputs[nextIndex].disabled) {
             nextIndex++;
           }
-
           if (nextIndex < inputs.length) {
             inputs[nextIndex].focus();
             inputs[nextIndex].select();
@@ -1203,7 +1300,6 @@
         const saveBtn = document.getElementById("saveBtn");
         const saveBtnText = saveBtn.querySelector(".btn-text");
         if (saveBtn.disabled) return;
-
         let hasEmpty = false;
         let emptyGlobalIndex = -1;
         for (let i = 0; i < allStudents.length; i++) {
@@ -1217,7 +1313,6 @@
             break;
           }
         }
-
         if (hasEmpty) {
           const targetPage = Math.floor(emptyGlobalIndex / rowsPerPage) + 1;
           if (currentPage !== targetPage) {
@@ -1240,7 +1335,6 @@
           }, 100);
           return;
         }
-
         const sheetName = document.getElementById("sheetSelect").value;
         const grade = document.getElementById("gradeSelect").value;
         const section = document.getElementById("sectionSelect").value;
@@ -1267,21 +1361,19 @@
           .then((response) => response.json())
           .then((data) => {
             if (data.status === "success") {
+              localStorage.removeItem("alkhateeb_grades_draft");
               document.getElementById("studentsTable").style.display = "none";
               document.getElementById("paginationDiv").style.display = "none";
               document.getElementById("saveBtn").style.display = "none";
               document.getElementById("bulkScoreDiv").style.display = "none";
-
               document.getElementById("sheetSelect").value = "";
               document.getElementById("gradeSelect").value = "";
               document.getElementById("sectionSelect").value = "";
               document.getElementById("subjectSelect").value = "";
-
               document.getElementById("gradeSelect").style.display = "none";
               document.getElementById("sectionSelect").style.display = "none";
               document.getElementById("subjectSelect").style.display = "none";
               document.getElementById("searchBtn").style.display = "none";
-
               showSaveMessage("✅ تم حفظ درجات الفصل بنجاح!");
             } else {
               saveBtn.disabled = false;
