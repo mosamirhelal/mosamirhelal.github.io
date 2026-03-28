@@ -4,6 +4,21 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>إدخال الدرجات - مدرسة الشهيد محمود علي الخطيب</title>
+    <meta
+      property="og:title"
+      content="إدخال الدرجات - مدرسة الشهيد محمود علي الخطيب"
+    />
+    <meta
+      property="og:description"
+      content="بوابة المعلمين لإدخال درجات الطلاب"
+    />
+    <meta
+      property="og:image"
+      content="https://mosamirhelal.com/alkhateeb/logo_3.webp"
+    />
+    <meta property="og:type" content="website" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap"
       rel="stylesheet"
@@ -13,16 +28,27 @@
         box-sizing: border-box;
       }
       body {
-        font-family: "Cairo", sans-serif;
+        font-family: "Cairo", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         text-align: center;
         margin: 0;
         padding: 20px;
         background-color: #c9d0d9;
+        animation: fadeInPage 0.55s ease-out;
+        overflow-x: hidden;
         min-height: 100vh;
+        min-height: 100dvh;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+      }
+      @keyframes fadeInPage {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
       }
       @keyframes slideInUp {
         from {
@@ -44,6 +70,102 @@
           transform: translateX(0);
         }
       }
+      @keyframes popIn {
+        0% {
+          opacity: 0;
+          transform: scale(0.85);
+        }
+        70% {
+          transform: scale(1.04);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes floatDot {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-18px);
+        }
+      }
+      @keyframes pulseBlue {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(0, 86, 179, 0.7);
+        }
+        70% {
+          transform: scale(1.02);
+          box-shadow: 0 0 0 15px rgba(0, 86, 179, 0);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(0, 86, 179, 0);
+        }
+      }
+      @keyframes pulseGreen {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+        }
+        70% {
+          transform: scale(1.02);
+          box-shadow: 0 0 0 15px rgba(40, 167, 69, 0);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+        }
+      }
+      @keyframes pulseRed {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(137, 6, 32, 0.7);
+        }
+        70% {
+          transform: scale(1.02);
+          box-shadow: 0 0 0 15px rgba(137, 6, 32, 0);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(137, 6, 32, 0);
+        }
+      }
+      @keyframes ripple {
+        from {
+          transform: scale(0);
+          opacity: 1;
+        }
+        to {
+          transform: scale(3.5);
+          opacity: 0;
+        }
+      }
+      @keyframes spin {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .pulse-button {
+        animation: pulseBlue 1.5s infinite;
+      }
+      .pulse-success {
+        animation: pulseGreen 1.5s infinite;
+      }
+      .pulse-reset {
+        animation: pulseRed 1.5s infinite;
+      }
+      .dot {
+        position: fixed;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+        background: rgba(0, 86, 179, 0.05);
+        animation: floatDot ease-in-out infinite;
+      }
       .container {
         background: white;
         padding: 40px;
@@ -53,6 +175,8 @@
         margin: 0 auto;
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
         animation: slideInUp 0.8s ease-out;
+        position: relative;
+        z-index: 10;
       }
       .top-logos {
         display: flex;
@@ -65,11 +189,18 @@
       .top-logos img {
         max-height: 120px;
         max-width: 45%;
+        width: auto;
         object-fit: contain;
+      }
+      .header-image {
+        text-align: center;
+        margin-bottom: 25px;
+        padding: 0 10px;
       }
       .header-image img {
         width: 100%;
         max-width: 500px;
+        height: auto;
       }
       h2 {
         color: #0056b3;
@@ -89,10 +220,11 @@
         margin: 0 auto 15px auto;
         border: 2px solid #e1e1e1;
         text-align: center;
-        transition: 0.3s;
+        transition: all 0.3s ease;
       }
       .form-control:focus {
         border-color: #0056b3;
+        box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
         outline: none;
       }
       select:disabled {
@@ -106,18 +238,57 @@
         border: none;
         cursor: pointer;
         font-weight: bold;
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto;
+        display: block;
+        transition: transform 0.18s, box-shadow 0.18s, background 0.18s;
+        position: relative;
+        overflow: hidden;
+        font-family: inherit;
+      }
+      button:hover:not(:disabled) {
+        background-color: #004494;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      button:active:not(:disabled) {
+        transform: translateY(1px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
       button:disabled {
         background-color: #6c757d !important;
         cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+        animation: none;
+      }
+      .btn-text {
+        position: relative;
+        z-index: 2;
+      }
+      .ripple-span {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        transform: scale(0);
+        animation: ripple 0.6s ease-out forwards;
+        pointer-events: none;
+        z-index: 1;
       }
       .btn-success {
         background-color: #28a745;
         margin-top: 20px;
       }
+      .btn-success:hover:not(:disabled) {
+        background-color: #218838;
+      }
       .btn-reset {
         background-color: #890620;
         margin-top: 20px;
+      }
+      .btn-reset:hover:not(:disabled) {
+        background-color: #6a0418;
       }
       table {
         width: 100%;
@@ -137,26 +308,47 @@
         padding: 15px;
         text-align: center;
       }
+      th:last-child,
+      td:last-child {
+        border-left: none;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
       th {
         background-color: #0056b3;
         color: white;
         font-weight: 700;
       }
+      tbody tr {
+        transition: background 0.15s;
+      }
+      tbody tr:nth-child(even) {
+        background-color: #fbfbfb;
+      }
+      tbody tr:hover {
+        background: #eef4ff;
+      }
       .row-anim {
         animation: rowIn 0.35s ease forwards;
+        opacity: 0;
       }
       .score-input {
-        width: 100px;
-        padding: 8px;
+        width: 100%;
+        max-width: 100px;
+        padding: 10px;
         border-radius: 8px;
         border: 2px solid #e1e1e1;
         text-align: center;
         font-family: inherit;
         font-weight: bold;
         direction: ltr;
+        margin: 0 auto;
+        transition: 0.3s;
       }
       .score-input:focus {
         border-color: #0056b3;
+        box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
         outline: none;
         background-color: #eef4ff;
       }
@@ -170,17 +362,14 @@
         margin: 20px auto;
         display: none;
       }
-      @keyframes spin {
-        100% {
-          transform: rotate(360deg);
-        }
-      }
       .status-message {
         padding: 12px;
         border-radius: 8px;
         margin-top: 20px;
         font-size: 16px;
         font-weight: bold;
+        width: 100%;
+        animation: popIn 0.5s 0.1s ease-out both;
         display: none;
       }
       .success-msg {
@@ -190,7 +379,15 @@
       }
       .error-msg {
         background-color: #b23a48;
-        color: white;
+        color: #fed0bb;
+        border: 1px solid #f5c6cb;
+      }
+      .designer-credit {
+        margin-top: 15px;
+        font-size: 13px;
+        color: #4a4e69;
+        text-align: center;
+        font-weight: bold;
       }
       .pagination-controls {
         display: none;
@@ -210,17 +407,116 @@
         border: none;
         cursor: pointer;
         font-weight: bold;
+        max-width: 100px;
+        margin: 0;
+      }
+      .page-btn:hover:not(:disabled) {
+        background-color: #333652;
       }
       .page-btn:disabled {
         background-color: #ccc !important;
+        transform: none;
+        box-shadow: none;
+        animation: none;
       }
       .page-info {
         font-weight: bold;
         color: #0056b3;
       }
+      @media (min-width: 768px) {
+        .top-logos img {
+          max-height: 160px;
+        }
+        .header-image img {
+          max-width: 580px;
+        }
+      }
+      @media (max-width: 480px) {
+        body {
+          padding: 15px 10px;
+        }
+        .container {
+          padding: 25px 20px;
+          border-radius: 10px;
+        }
+        .top-logos img {
+          max-height: 90px;
+        }
+        h2 {
+          font-size: 22px;
+        }
+        th,
+        td {
+          padding: 10px;
+          font-size: 14px;
+        }
+        .form-control,
+        button,
+        .score-input {
+          max-width: 100%;
+        }
+        .pagination-controls {
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
     </style>
   </head>
   <body>
+    <div
+      class="dot"
+      style="
+        width: 90px;
+        height: 90px;
+        top: 8%;
+        left: 4%;
+        animation-duration: 6s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 60px;
+        height: 60px;
+        top: 20%;
+        right: 6%;
+        animation-duration: 8s;
+        animation-delay: 1s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 120px;
+        height: 120px;
+        top: 55%;
+        left: 2%;
+        animation-duration: 10s;
+        animation-delay: 2s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 50px;
+        height: 50px;
+        top: 70%;
+        right: 4%;
+        animation-duration: 7s;
+        animation-delay: 0.5s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 80px;
+        height: 80px;
+        top: 38%;
+        right: 11%;
+        animation-duration: 9s;
+        animation-delay: 3s;
+      "
+    ></div>
     <div class="container">
       <div class="top-logos">
         <img
@@ -238,9 +534,7 @@
           alt="مدرسة الشهيد محمود علي الخطيب"
         />
       </div>
-
       <h2>بوابة إدخال الدرجات</h2>
-
       <select id="gradeSelect" class="form-control" onchange="showSections()">
         <option value="">-- اختر الصف الدراسي --</option>
         <option value="ثالث ابتدائي">الصف الثالث الابتدائي</option>
@@ -250,7 +544,6 @@
         <option value="أول اعدادي">الصف الأول الإعدادي</option>
         <option value="ثاني اعدادي">الصف الثاني الإعدادي</option>
       </select>
-
       <select
         id="sectionSelect"
         class="form-control"
@@ -266,7 +559,6 @@
         <option value="6">6</option>
         <option value="7">7</option>
       </select>
-
       <select
         id="subjectSelect"
         class="form-control"
@@ -279,19 +571,16 @@
         <option value="رياضيات">الرياضيات</option>
         <option value="علوم">العلوم</option>
       </select>
-
       <button
         id="searchBtn"
-        class="form-control"
+        class="form-control pulse-button"
         style="display: none"
-        onclick="fetchStudents()"
+        onclick="addRipple(event, this); fetchStudents()"
       >
-        🔎 عرض كشف الطلاب
+        <span class="btn-text">🔎 عرض كشف الطلاب</span>
       </button>
-
       <div id="inlineMessage" class="status-message"></div>
       <div class="loader" id="loader"></div>
-
       <table id="studentsTable">
         <thead>
           <tr>
@@ -301,52 +590,67 @@
         </thead>
         <tbody id="studentsBody"></tbody>
       </table>
-
       <div id="paginationDiv" class="pagination-controls">
-        <button id="prevBtn" class="page-btn" onclick="changePage(-1)">
-          السابق
+        <button
+          id="prevBtn"
+          class="page-btn"
+          onclick="addRipple(event, this); changePage(-1)"
+        >
+          <span class="btn-text">السابق</span>
         </button>
         <span class="page-info"
           >صفحة <span id="currentPageNum">1</span> من
           <span id="totalPagesNum">1</span></span
         >
-        <button id="nextBtn" class="page-btn" onclick="changePage(1)">
-          التالي
+        <button
+          id="nextBtn"
+          class="page-btn"
+          onclick="addRipple(event, this); changePage(1)"
+        >
+          <span class="btn-text">التالي</span>
         </button>
       </div>
-
       <button
         id="saveBtn"
-        class="form-control btn-success"
+        class="form-control btn-success pulse-success"
         style="display: none"
-        onclick="saveData()"
+        onclick="addRipple(event, this); saveData()"
       >
-        💾 حفظ الدرجات بالشيت
+        <span class="btn-text">💾 حفظ الدرجات بالشيت</span>
       </button>
-
       <div id="saveMessage" class="status-message"></div>
-
-      <div
-        style="
-          margin-top: 25px;
-          font-size: 13px;
-          color: #4a4e69;
-          font-weight: bold;
-        "
-      >
-        تصميم وتنفيذ : سمير هلال
-      </div>
+      <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
     </div>
-
     <script>
       const APPS_SCRIPT_URL =
         "https://script.google.com/macros/s/AKfycbx8JBu5aQKAf3cKN9kEss8RiFHoW9DiqbgSlLO3JiIRxtXEzsJh3MU1sgIU2cVPP-rNkw/exec";
-
       let allStudents = [];
       let currentPage = 1;
       const rowsPerPage = 10;
-
-      function validateScoreInput(str) {
+      function addRipple(e, btn) {
+        if (btn.disabled) return;
+        const rect = btn.getBoundingClientRect();
+        let x, y;
+        if (e.clientX !== undefined && e.clientX !== 0) {
+          x = e.clientX - rect.left;
+          y = e.clientY - rect.top;
+        } else if (e.touches && e.touches.length > 0) {
+          x = e.touches[0].clientX - rect.left;
+          y = e.touches[0].clientY - rect.top;
+        } else {
+          x = rect.width / 2;
+          y = rect.height / 2;
+        }
+        const size = Math.max(rect.width, rect.height);
+        const span = document.createElement("span");
+        span.className = "ripple-span";
+        span.style.width = span.style.height = size + "px";
+        span.style.left = x - size / 2 + "px";
+        span.style.top = y - size / 2 + "px";
+        btn.appendChild(span);
+        setTimeout(() => span.remove(), 600);
+      }
+      function convertToEnglishNumbers(str) {
         const arabicNumbers = [
           "٠",
           "١",
@@ -362,23 +666,18 @@
         let englishStr = String(str).replace(/[٠-٩]/g, function (w) {
           return arabicNumbers.indexOf(w);
         });
-
+        return englishStr.replace(/[^0-9.]/g, "");
+      }
+      function validateScoreInput(str) {
+        let englishStr = convertToEnglishNumbers(str);
         let cleanedStr = englishStr.replace(/[^0-9.غ]/g, "");
-
-        if (cleanedStr.includes("غ")) {
-          return "غ";
-        }
-
+        if (cleanedStr.includes("غ")) return "غ";
         if (cleanedStr !== "") {
           let num = parseFloat(cleanedStr);
-          if (num > 100) {
-            cleanedStr = "100";
-          }
+          if (num > 100) cleanedStr = "100";
         }
-
         return cleanedStr;
       }
-
       function hideTableAndMessages() {
         document.getElementById("inlineMessage").style.display = "none";
         document.getElementById("saveMessage").style.display = "none";
@@ -386,19 +685,16 @@
         document.getElementById("paginationDiv").style.display = "none";
         document.getElementById("saveBtn").style.display = "none";
       }
-
       function showSections() {
         hideTableAndMessages();
         const grade = document.getElementById("gradeSelect").value;
         const sectionSelect = document.getElementById("sectionSelect");
         const subjectSelect = document.getElementById("subjectSelect");
         const searchBtn = document.getElementById("searchBtn");
-
         sectionSelect.value = "";
         subjectSelect.value = "";
         subjectSelect.style.display = "none";
         searchBtn.style.display = "none";
-
         if (grade !== "") {
           sectionSelect.style.display = "block";
           sectionSelect.style.animation = "slideInUp 0.3s ease-out";
@@ -406,16 +702,13 @@
           sectionSelect.style.display = "none";
         }
       }
-
       function showSubjects() {
         hideTableAndMessages();
         const section = document.getElementById("sectionSelect").value;
         const subjectSelect = document.getElementById("subjectSelect");
         const searchBtn = document.getElementById("searchBtn");
-
         subjectSelect.value = "";
         searchBtn.style.display = "none";
-
         if (section !== "") {
           subjectSelect.style.display = "block";
           subjectSelect.style.animation = "slideInUp 0.3s ease-out";
@@ -423,20 +716,20 @@
           subjectSelect.style.display = "none";
         }
       }
-
       function showSearchBtn() {
         hideTableAndMessages();
         const subject = document.getElementById("subjectSelect").value;
         const searchBtn = document.getElementById("searchBtn");
-
         if (subject !== "") {
           searchBtn.style.display = "block";
           searchBtn.style.animation = "slideInUp 0.3s ease-out";
+          setTimeout(function () {
+            searchBtn.style.animation = "";
+          }, 300);
         } else {
           searchBtn.style.display = "none";
         }
       }
-
       function showMessage(text, isError = false) {
         const msgDiv = document.getElementById("inlineMessage");
         msgDiv.innerText = text;
@@ -445,7 +738,6 @@
           : "status-message success-msg";
         msgDiv.style.display = "block";
       }
-
       function showSaveMessage(text, isError = false) {
         const msgDiv = document.getElementById("saveMessage");
         msgDiv.innerText = text;
@@ -454,59 +746,57 @@
           : "status-message success-msg";
         msgDiv.style.display = "block";
       }
-
       function fetchStudents() {
         const gradeSelect = document.getElementById("gradeSelect");
         const sectionSelect = document.getElementById("sectionSelect");
         const subjectSelect = document.getElementById("subjectSelect");
         const searchBtn = document.getElementById("searchBtn");
         const loader = document.getElementById("loader");
-
+        const searchBtnText = searchBtn.querySelector(".btn-text");
         const grade = gradeSelect.value;
         const section = sectionSelect.value;
         const subject = subjectSelect.value;
-
         hideTableAndMessages();
-
         loader.style.display = "block";
         searchBtn.disabled = true;
+        searchBtn.classList.remove("pulse-button");
+        searchBtnText.innerText = "⏳ جاري البحث...";
         gradeSelect.disabled = true;
         sectionSelect.disabled = true;
         subjectSelect.disabled = true;
-
         const url = `${APPS_SCRIPT_URL}?action=getStudents&grade=${encodeURIComponent(
           grade
         )}&section=${encodeURIComponent(section)}&subject=${encodeURIComponent(
           subject
         )}`;
-
         fetch(url)
           .then((response) => response.json())
           .then((data) => {
             loader.style.display = "none";
             searchBtn.disabled = false;
+            searchBtn.classList.add("pulse-button");
+            searchBtnText.innerText = "🔎 عرض كشف الطلاب";
             gradeSelect.disabled = false;
             sectionSelect.disabled = false;
             subjectSelect.disabled = false;
-
             if (data.students.length === 0) {
               showMessage("لا يوجد طلاب مسجلين في هذا الصف والفصل.", true);
               return;
             }
-
             allStudents = data.students;
             currentPage = 1;
-
             const saveBtn = document.getElementById("saveBtn");
+            const saveBtnText = saveBtn.querySelector(".btn-text");
             saveBtn.disabled = false;
-            saveBtn.onclick = saveData;
-            saveBtn.className = "form-control btn-success";
-            saveBtn.innerText = "💾 حفظ الدرجات بالشيت";
-
+            saveBtn.onclick = function (event) {
+              addRipple(event, this);
+              saveData();
+            };
+            saveBtn.className = "form-control btn-success pulse-success";
+            saveBtnText.innerText = "💾 حفظ الدرجات بالشيت";
             renderTable();
             document.getElementById("studentsTable").style.display = "table";
             saveBtn.style.display = "block";
-
             setTimeout(() => {
               const firstInput = document.querySelector(".student-score");
               if (firstInput) {
@@ -518,22 +808,20 @@
           .catch((error) => {
             loader.style.display = "none";
             searchBtn.disabled = false;
+            searchBtn.classList.add("pulse-button");
+            searchBtnText.innerText = "🔎 عرض كشف الطلاب";
             gradeSelect.disabled = false;
             sectionSelect.disabled = false;
             subjectSelect.disabled = false;
-
             showMessage("حدث خطأ في الاتصال بقاعدة البيانات.", true);
           });
       }
-
       function renderTable() {
         const tbody = document.getElementById("studentsBody");
         tbody.innerHTML = "";
-
         const totalPages = Math.ceil(allStudents.length / rowsPerPage);
         document.getElementById("currentPageNum").innerText = currentPage;
         document.getElementById("totalPagesNum").innerText = totalPages;
-
         const pagination = document.getElementById("paginationDiv");
         if (totalPages > 1) {
           pagination.style.display = "flex";
@@ -543,11 +831,9 @@
         } else {
           pagination.style.display = "none";
         }
-
         const start = (currentPage - 1) * rowsPerPage;
         const end = start + rowsPerPage;
         const pageStudents = allStudents.slice(start, end);
-
         pageStudents.forEach((student, index) => {
           const globalIndex = start + index;
           const row = document.createElement("tr");
@@ -565,16 +851,13 @@
           tbody.appendChild(row);
         });
       }
-
       function changePage(direction) {
         currentPage += direction;
         renderTable();
       }
-
       function updateStudentScore(globalIndex, value) {
         allStudents[globalIndex].score = value;
       }
-
       function handleEnter(event, currentInput) {
         if (event.key === "Enter") {
           event.preventDefault();
@@ -583,7 +866,6 @@
           );
           const index = inputs.indexOf(currentInput);
           const totalPages = Math.ceil(allStudents.length / rowsPerPage);
-
           if (index > -1 && index + 1 < inputs.length) {
             inputs[index + 1].focus();
             inputs[index + 1].select();
@@ -604,34 +886,29 @@
           }
         }
       }
-
       function resetPage() {
         document.getElementById("gradeSelect").value = "";
         showSections();
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
-
       function saveData() {
         const saveBtn = document.getElementById("saveBtn");
+        const saveBtnText = saveBtn.querySelector(".btn-text");
         if (saveBtn.disabled) return;
-
         const grade = document.getElementById("gradeSelect").value;
         const section = document.getElementById("sectionSelect").value;
         const subject = document.getElementById("subjectSelect").value;
-
         document.getElementById("inlineMessage").style.display = "none";
         document.getElementById("saveMessage").style.display = "none";
-
         saveBtn.disabled = true;
-        saveBtn.innerText = "⏳ جاري الحفظ في الشيت...";
-
+        saveBtn.classList.remove("pulse-success");
+        saveBtnText.innerText = "⏳ جاري الحفظ في الشيت...";
         const payload = {
           grade: grade,
           section: section,
           subject: subject,
           gradesData: allStudents,
         };
-
         fetch(APPS_SCRIPT_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -642,18 +919,23 @@
             if (data.status === "success") {
               showSaveMessage("✅ تم حفظ درجات الفصل بنجاح!");
               saveBtn.disabled = false;
-              saveBtn.innerText = "🔄 إدخال درجات مادة أخرى";
-              saveBtn.className = "form-control btn-reset";
-              saveBtn.onclick = resetPage;
+              saveBtnText.innerText = "🔄 إدخال درجات مادة أخرى";
+              saveBtn.className = "form-control btn-reset pulse-reset";
+              saveBtn.onclick = function (event) {
+                addRipple(event, this);
+                resetPage();
+              };
             } else {
               saveBtn.disabled = false;
-              saveBtn.innerText = "💾 حفظ الدرجات بالشيت";
+              saveBtn.classList.add("pulse-success");
+              saveBtnText.innerText = "💾 حفظ الدرجات بالشيت";
               showSaveMessage("❌ حدث خطأ: " + data.message, true);
             }
           })
           .catch((error) => {
             saveBtn.disabled = false;
-            saveBtn.innerText = "💾 حفظ الدرجات بالشيت";
+            saveBtn.classList.add("pulse-success");
+            saveBtnText.innerText = "💾 حفظ الدرجات بالشيت";
             showSaveMessage(
               "حدث مشكلة في الإرسال، تأكد من الاتصال بالإنترنت.",
               true
