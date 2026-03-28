@@ -1050,14 +1050,8 @@
           .then((response) => response.json())
           .then((data) => {
             if (data.status === "success") {
+              resetPage();
               showSaveMessage("✅ تم حفظ درجات الفصل بنجاح!");
-              saveBtn.disabled = false;
-              saveBtnText.innerText = "🔄 إدخال درجات مادة أخرى";
-              saveBtn.className = "form-control btn-reset pulse-reset";
-              saveBtn.onclick = function (event) {
-                addRipple(event, this);
-                resetPage();
-              };
             } else {
               saveBtn.disabled = false;
               saveBtn.classList.add("pulse-success");
