@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>إدخال الدرجات - مدرسة الشهيد محمود علي الخطيب</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Cairo", sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 20px;
+        background-color: #c9d0d9;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes rowIn {
+        from {
+          opacity: 0;
+          transform: translateX(-12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .container {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        width: 100%;
+        max-width: 800px;
+        margin: 0 auto;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        animation: slideInUp 0.8s ease-out;
+      }
+      .top-logos {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 15px;
+        width: 100%;
+        gap: 20px;
+      }
+      .top-logos img {
+        max-height: 120px;
+        max-width: 45%;
+        object-fit: contain;
+      }
+      .header-image img {
+        width: 100%;
+        max-width: 500px;
+      }
+      h2 {
+        color: #0056b3;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-size: 26px;
+        font-weight: 800;
+      }
+      .form-control {
+        font-size: 16px;
+        padding: 12px 15px;
+        border-radius: 11px;
+        display: block;
+        font-family: inherit;
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto 15px auto;
+        border: 2px solid #e1e1e1;
+        text-align: center;
+        transition: 0.3s;
+      }
+      .form-control:focus {
+        border-color: #0056b3;
+        outline: none;
+      }
+      select:disabled {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+        color: #999;
+      }
+      button {
+        background-color: #0056b3;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      button:disabled {
+        background-color: #6c757d !important;
+        cursor: not-allowed;
+      }
+      .btn-success {
+        background-color: #28a745;
+        margin-top: 20px;
+      }
+      .btn-reset {
+        background-color: #890620;
+        margin-top: 20px;
+      }
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-top: 20px;
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #eee;
+        display: none;
+      }
+      th,
+      td {
+        border-bottom: 1px solid #eee;
+        border-left: 1px solid #eee;
+        padding: 15px;
+        text-align: center;
+      }
+      th {
+        background-color: #0056b3;
+        color: white;
+        font-weight: 700;
+      }
+      .row-anim {
+        animation: rowIn 0.35s ease forwards;
+      }
+      .score-input {
+        width: 100px;
+        padding: 8px;
+        border-radius: 8px;
+        border: 2px solid #e1e1e1;
+        text-align: center;
+        font-family: inherit;
+        font-weight: bold;
+        direction: ltr;
+      }
+      .score-input:focus {
+        border-color: #0056b3;
+        outline: none;
+        background-color: #eef4ff;
+      }
+      .loader {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #0056b3;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+        display: none;
+      }
+      @keyframes spin {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .status-message {
+        padding: 12px;
+        border-radius: 8px;
+        margin-top: 20px;
+        font-size: 16px;
+        font-weight: bold;
+        display: none;
+      }
+      .success-msg {
+        background-color: #008000;
+        color: #f2e8cf;
+        border: 1px solid #c3e6cb;
+      }
+      .error-msg {
+        background-color: #b23a48;
+        color: white;
+      }
+      .pagination-controls {
+        display: none;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        background: #f8f9fa;
+        padding: 10px 20px;
+        border-radius: 10px;
+        border: 1px solid #eee;
+      }
+      .page-btn {
+        background-color: #4a4e69;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+      }
+      .page-btn:disabled {
+        background-color: #ccc !important;
+      }
+      .page-info {
+        font-weight: bold;
+        color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="top-logos">
+        <img
+          src="https://mosamirhelal.com/alkhateeb/logo_2.webp"
+          alt="وزارة التربية والتعليم"
+        />
+        <img
+          src="https://mosamirhelal.com/alkhateeb/logo_1.webp"
+          alt="شعار المدرسة"
+        />
+      </div>
+      <div class="header-image">
+        <img
+          src="https://mosamirhelal.com/alkhateeb/logo_3.webp"
+          alt="مدرسة الشهيد محمود علي الخطيب"
+        />
+      </div>
+
+      <h2>بوابة إدخال الدرجات</h2>
+
+      <select id="gradeSelect" class="form-control" onchange="showSections()">
+        <option value="">-- اختر الصف الدراسي --</option>
+        <option value="ثالث ابتدائي">الصف الثالث الابتدائي</option>
+        <option value="رابع ابتدائي">الصف الرابع الابتدائي</option>
+        <option value="خامس ابتدائي">الصف الخامس الابتدائي</option>
+        <option value="سادس ابتدائي">الصف السادس الابتدائي</option>
+        <option value="أول اعدادي">الصف الأول الإعدادي</option>
+        <option value="ثاني اعدادي">الصف الثاني الإعدادي</option>
+      </select>
+
+      <select
+        id="sectionSelect"
+        class="form-control"
+        style="display: none"
+        onchange="showSubjects()"
+      >
+        <option value="">-- اختر رقم الفصل --</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+      </select>
+
+      <select
+        id="subjectSelect"
+        class="form-control"
+        style="display: none"
+        onchange="showSearchBtn()"
+      >
+        <option value="">-- اختر المادة --</option>
+        <option value="عربي">اللغة العربية</option>
+        <option value="انجليزي">اللغة الإنجليزية</option>
+        <option value="رياضيات">الرياضيات</option>
+        <option value="علوم">العلوم</option>
+      </select>
+
+      <button
+        id="searchBtn"
+        class="form-control"
+        style="display: none"
+        onclick="fetchStudents()"
+      >
+        🔎 عرض كشف الطلاب
+      </button>
+
+      <div id="inlineMessage" class="status-message"></div>
+      <div class="loader" id="loader"></div>
+
+      <table id="studentsTable">
+        <thead>
+          <tr>
+            <th>اسم الطالب</th>
+            <th>الدرجة</th>
+          </tr>
+        </thead>
+        <tbody id="studentsBody"></tbody>
+      </table>
+
+      <div id="paginationDiv" class="pagination-controls">
+        <button id="prevBtn" class="page-btn" onclick="changePage(-1)">
+          السابق
+        </button>
+        <span class="page-info"
+          >صفحة <span id="currentPageNum">1</span> من
+          <span id="totalPagesNum">1</span></span
+        >
+        <button id="nextBtn" class="page-btn" onclick="changePage(1)">
+          التالي
+        </button>
+      </div>
+
+      <button
+        id="saveBtn"
+        class="form-control btn-success"
+        style="display: none"
+        onclick="saveData()"
+      >
+        💾 حفظ الدرجات بالشيت
+      </button>
+
+      <div id="saveMessage" class="status-message"></div>
+
+      <div
+        style="
+          margin-top: 25px;
+          font-size: 13px;
+          color: #4a4e69;
+          font-weight: bold;
+        "
+      >
+        تصميم وتنفيذ : سمير هلال
+      </div>
+    </div>
+
+    <script>
+      const APPS_SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbx8JBu5aQKAf3cKN9kEss8RiFHoW9DiqbgSlLO3JiIRxtXEzsJh3MU1sgIU2cVPP-rNkw/exec";
+
+      let allStudents = [];
+      let currentPage = 1;
+      const rowsPerPage = 10;
+
+      function validateScoreInput(str) {
+        const arabicNumbers = [
+          "٠",
+          "١",
+          "٢",
+          "٣",
+          "٤",
+          "٥",
+          "٦",
+          "٧",
+          "٨",
+          "٩",
+        ];
+        let englishStr = String(str).replace(/[٠-٩]/g, function (w) {
+          return arabicNumbers.indexOf(w);
+        });
+
+        let cleanedStr = englishStr.replace(/[^0-9.غ]/g, "");
+
+        if (cleanedStr.includes("غ")) {
+          return "غ";
+        }
+
+        if (cleanedStr !== "") {
+          let num = parseFloat(cleanedStr);
+          if (num > 100) {
+            cleanedStr = "100";
+          }
+        }
+
+        return cleanedStr;
+      }
+
+      function hideTableAndMessages() {
+        document.getElementById("inlineMessage").style.display = "none";
+        document.getElementById("saveMessage").style.display = "none";
+        document.getElementById("studentsTable").style.display = "none";
+        document.getElementById("paginationDiv").style.display = "none";
+        document.getElementById("saveBtn").style.display = "none";
+      }
+
+      function showSections() {
+        hideTableAndMessages();
+        const grade = document.getElementById("gradeSelect").value;
+        const sectionSelect = document.getElementById("sectionSelect");
+        const subjectSelect = document.getElementById("subjectSelect");
+        const searchBtn = document.getElementById("searchBtn");
+
+        sectionSelect.value = "";
+        subjectSelect.value = "";
+        subjectSelect.style.display = "none";
+        searchBtn.style.display = "none";
+
+        if (grade !== "") {
+          sectionSelect.style.display = "block";
+          sectionSelect.style.animation = "slideInUp 0.3s ease-out";
+        } else {
+          sectionSelect.style.display = "none";
+        }
+      }
+
+      function showSubjects() {
+        hideTableAndMessages();
+        const section = document.getElementById("sectionSelect").value;
+        const subjectSelect = document.getElementById("subjectSelect");
+        const searchBtn = document.getElementById("searchBtn");
+
+        subjectSelect.value = "";
+        searchBtn.style.display = "none";
+
+        if (section !== "") {
+          subjectSelect.style.display = "block";
+          subjectSelect.style.animation = "slideInUp 0.3s ease-out";
+        } else {
+          subjectSelect.style.display = "none";
+        }
+      }
+
+      function showSearchBtn() {
+        hideTableAndMessages();
+        const subject = document.getElementById("subjectSelect").value;
+        const searchBtn = document.getElementById("searchBtn");
+
+        if (subject !== "") {
+          searchBtn.style.display = "block";
+          searchBtn.style.animation = "slideInUp 0.3s ease-out";
+        } else {
+          searchBtn.style.display = "none";
+        }
+      }
+
+      function showMessage(text, isError = false) {
+        const msgDiv = document.getElementById("inlineMessage");
+        msgDiv.innerText = text;
+        msgDiv.className = isError
+          ? "status-message error-msg"
+          : "status-message success-msg";
+        msgDiv.style.display = "block";
+      }
+
+      function showSaveMessage(text, isError = false) {
+        const msgDiv = document.getElementById("saveMessage");
+        msgDiv.innerText = text;
+        msgDiv.className = isError
+          ? "status-message error-msg"
+          : "status-message success-msg";
+        msgDiv.style.display = "block";
+      }
+
+      function fetchStudents() {
+        const gradeSelect = document.getElementById("gradeSelect");
+        const sectionSelect = document.getElementById("sectionSelect");
+        const subjectSelect = document.getElementById("subjectSelect");
+        const searchBtn = document.getElementById("searchBtn");
+        const loader = document.getElementById("loader");
+
+        const grade = gradeSelect.value;
+        const section = sectionSelect.value;
+        const subject = subjectSelect.value;
+
+        hideTableAndMessages();
+
+        loader.style.display = "block";
+        searchBtn.disabled = true;
+        gradeSelect.disabled = true;
+        sectionSelect.disabled = true;
+        subjectSelect.disabled = true;
+
+        const url = `${APPS_SCRIPT_URL}?action=getStudents&grade=${encodeURIComponent(
+          grade
+        )}&section=${encodeURIComponent(section)}&subject=${encodeURIComponent(
+          subject
+        )}`;
+
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            loader.style.display = "none";
+            searchBtn.disabled = false;
+            gradeSelect.disabled = false;
+            sectionSelect.disabled = false;
+            subjectSelect.disabled = false;
+
+            if (data.students.length === 0) {
+              showMessage("لا يوجد طلاب مسجلين في هذا الصف والفصل.", true);
+              return;
+            }
+
+            allStudents = data.students;
+            currentPage = 1;
+
+            const saveBtn = document.getElementById("saveBtn");
+            saveBtn.disabled = false;
+            saveBtn.onclick = saveData;
+            saveBtn.className = "form-control btn-success";
+            saveBtn.innerText = "💾 حفظ الدرجات بالشيت";
+
+            renderTable();
+            document.getElementById("studentsTable").style.display = "table";
+            saveBtn.style.display = "block";
+
+            setTimeout(() => {
+              const firstInput = document.querySelector(".student-score");
+              if (firstInput) {
+                firstInput.focus();
+                firstInput.select();
+              }
+            }, 100);
+          })
+          .catch((error) => {
+            loader.style.display = "none";
+            searchBtn.disabled = false;
+            gradeSelect.disabled = false;
+            sectionSelect.disabled = false;
+            subjectSelect.disabled = false;
+
+            showMessage("حدث خطأ في الاتصال بقاعدة البيانات.", true);
+          });
+      }
+
+      function renderTable() {
+        const tbody = document.getElementById("studentsBody");
+        tbody.innerHTML = "";
+
+        const totalPages = Math.ceil(allStudents.length / rowsPerPage);
+        document.getElementById("currentPageNum").innerText = currentPage;
+        document.getElementById("totalPagesNum").innerText = totalPages;
+
+        const pagination = document.getElementById("paginationDiv");
+        if (totalPages > 1) {
+          pagination.style.display = "flex";
+          document.getElementById("prevBtn").disabled = currentPage === 1;
+          document.getElementById("nextBtn").disabled =
+            currentPage === totalPages;
+        } else {
+          pagination.style.display = "none";
+        }
+
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        const pageStudents = allStudents.slice(start, end);
+
+        pageStudents.forEach((student, index) => {
+          const globalIndex = start + index;
+          const row = document.createElement("tr");
+          row.className = "row-anim";
+          row.style.animationDelay = `${index * 0.05}s`;
+          row.innerHTML = `
+            <td style='font-weight:600; color:#0056b3;'>${student.name}</td>
+            <td>
+              <input type='text' inputmode='numeric' class='score-input student-score' placeholder='الدرجة' value='${student.score}' 
+                     onfocus='this.select()' 
+                     oninput='this.value = validateScoreInput(this.value); updateStudentScore(${globalIndex}, this.value)' 
+                     onkeydown='handleEnter(event, this)'>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+      }
+
+      function changePage(direction) {
+        currentPage += direction;
+        renderTable();
+      }
+
+      function updateStudentScore(globalIndex, value) {
+        allStudents[globalIndex].score = value;
+      }
+
+      function handleEnter(event, currentInput) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          const inputs = Array.from(
+            document.getElementsByClassName("student-score")
+          );
+          const index = inputs.indexOf(currentInput);
+          const totalPages = Math.ceil(allStudents.length / rowsPerPage);
+
+          if (index > -1 && index + 1 < inputs.length) {
+            inputs[index + 1].focus();
+            inputs[index + 1].select();
+          } else if (index === inputs.length - 1) {
+            if (currentPage < totalPages) {
+              changePage(1);
+              setTimeout(() => {
+                const newInputs =
+                  document.getElementsByClassName("student-score");
+                if (newInputs.length > 0) {
+                  newInputs[0].focus();
+                  newInputs[0].select();
+                }
+              }, 50);
+            } else {
+              saveData();
+            }
+          }
+        }
+      }
+
+      function resetPage() {
+        document.getElementById("gradeSelect").value = "";
+        showSections();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function saveData() {
+        const saveBtn = document.getElementById("saveBtn");
+        if (saveBtn.disabled) return;
+
+        const grade = document.getElementById("gradeSelect").value;
+        const section = document.getElementById("sectionSelect").value;
+        const subject = document.getElementById("subjectSelect").value;
+
+        document.getElementById("inlineMessage").style.display = "none";
+        document.getElementById("saveMessage").style.display = "none";
+
+        saveBtn.disabled = true;
+        saveBtn.innerText = "⏳ جاري الحفظ في الشيت...";
+
+        const payload = {
+          grade: grade,
+          section: section,
+          subject: subject,
+          gradesData: allStudents,
+        };
+
+        fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              showSaveMessage("✅ تم حفظ درجات الفصل بنجاح!");
+              saveBtn.disabled = false;
+              saveBtn.innerText = "🔄 إدخال درجات مادة أخرى";
+              saveBtn.className = "form-control btn-reset";
+              saveBtn.onclick = resetPage;
+            } else {
+              saveBtn.disabled = false;
+              saveBtn.innerText = "💾 حفظ الدرجات بالشيت";
+              showSaveMessage("❌ حدث خطأ: " + data.message, true);
+            }
+          })
+          .catch((error) => {
+            saveBtn.disabled = false;
+            saveBtn.innerText = "💾 حفظ الدرجات بالشيت";
+            showSaveMessage(
+              "حدث مشكلة في الإرسال، تأكد من الاتصال بالإنترنت.",
+              true
+            );
+          });
+      }
+    </script>
+  </body>
+</html>
