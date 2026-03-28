@@ -669,9 +669,10 @@
         return englishStr.replace(/[^0-9.]/g, "");
       }
       function validateScoreInput(str) {
-        let englishStr = convertToEnglishNumbers(str);
-        let cleanedStr = englishStr.replace(/[^0-9.غ]/g, "");
-        if (cleanedStr.includes("غ")) return "غ";
+        const raw = String(str).trim();
+        if (raw === "غ") return "غ";
+        let englishStr = convertToEnglishNumbers(raw);
+        let cleanedStr = englishStr.replace(/[^0-9.]/g, "");
         if (cleanedStr !== "") {
           let num = parseFloat(cleanedStr);
           if (num > 100) cleanedStr = "100";
@@ -842,7 +843,7 @@
           row.innerHTML = `
             <td style='font-weight:600; color:#0056b3;'>${student.name}</td>
             <td>
-              <input type='text' inputmode='numeric' class='score-input student-score' placeholder='الدرجة' value='${student.score}' 
+              <input type='text' inputmode='text' class='score-input student-score' placeholder='الدرجة' value='${student.score}' 
                      onfocus='this.select()' 
                      oninput='this.value = validateScoreInput(this.value); updateStudentScore(${globalIndex}, this.value)' 
                      onkeydown='handleEnter(event, this)'>
