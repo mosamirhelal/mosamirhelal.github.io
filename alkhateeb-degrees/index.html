@@ -649,7 +649,7 @@
         style="display: none"
         onclick="addRipple(event, this); saveData()"
       >
-        <span class="btn-text">💾 حفظ الدرجات بالشيت</span>
+        <span class="btn-text">💾 حفظ الدرجات</span>
       </button>
       <div id="saveMessage" class="status-message"></div>
       <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
@@ -853,7 +853,7 @@
               saveData();
             };
             saveBtn.className = "form-control btn-success pulse-success";
-            saveBtnText.innerText = "💾 حفظ الدرجات بالشيت";
+            saveBtnText.innerText = "💾 حفظ الدرجات";
             renderTable();
             document.getElementById("studentsTable").style.display = "table";
             saveBtn.style.display = "block";
@@ -980,12 +980,6 @@
         }
       }
 
-      function resetPage() {
-        document.getElementById("gradeSelect").value = "";
-        showSections();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-
       function saveData() {
         const saveBtn = document.getElementById("saveBtn");
         const saveBtnText = saveBtn.querySelector(".btn-text");
@@ -1035,7 +1029,7 @@
         document.getElementById("saveMessage").style.display = "none";
         saveBtn.disabled = true;
         saveBtn.classList.remove("pulse-success");
-        saveBtnText.innerText = "⏳ جاري الحفظ في الشيت...";
+        saveBtnText.innerText = "⏳ جاري الحفظ...";
         const payload = {
           grade: grade,
           section: section,
@@ -1050,19 +1044,30 @@
           .then((response) => response.json())
           .then((data) => {
             if (data.status === "success") {
-              resetPage();
+              document.getElementById("studentsTable").style.display = "none";
+              document.getElementById("paginationDiv").style.display = "none";
+              document.getElementById("saveBtn").style.display = "none";
+
+              document.getElementById("gradeSelect").value = "";
+              document.getElementById("sectionSelect").value = "";
+              document.getElementById("subjectSelect").value = "";
+
+              document.getElementById("sectionSelect").style.display = "none";
+              document.getElementById("subjectSelect").style.display = "none";
+              document.getElementById("searchBtn").style.display = "none";
+
               showSaveMessage("✅ تم حفظ درجات الفصل بنجاح!");
             } else {
               saveBtn.disabled = false;
               saveBtn.classList.add("pulse-success");
-              saveBtnText.innerText = "💾 حفظ الدرجات بالشيت";
+              saveBtnText.innerText = "💾 حفظ الدرجات";
               showSaveMessage("❌ حدث خطأ: " + data.message, true);
             }
           })
           .catch((error) => {
             saveBtn.disabled = false;
             saveBtn.classList.add("pulse-success");
-            saveBtnText.innerText = "💾 حفظ الدرجات بالشيت";
+            saveBtnText.innerText = "💾 حفظ الدرجات";
             showSaveMessage(
               "حدث مشكلة في الإرسال، تأكد من الاتصال بالإنترنت.",
               true
