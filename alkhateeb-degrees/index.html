@@ -315,7 +315,7 @@
         width: 100%;
         border-collapse: separate;
         border-spacing: 0;
-        margin-top: 20px;
+        margin-top: 10px;
         background-color: white;
         border-radius: 10px;
         overflow: hidden;
@@ -755,6 +755,38 @@
         </button>
       </div>
 
+      <div
+        id="tableControls"
+        style="
+          display: none;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          margin-top: 20px;
+          padding: 0 5px;
+          background: #f8f9fa;
+          border-radius: 10px;
+          padding: 10px 15px;
+          border: 1px solid #eee;
+        "
+      >
+        <span style="font-weight: bold; color: #0056b3; font-size: 15px"
+          >عرض الطلاب بالصفحة:</span
+        >
+        <select
+          id="rowsPerPageSelect"
+          class="form-control"
+          style="max-width: 100px; margin: 0; padding: 8px; text-align: center"
+          onchange="updateRowsPerPage()"
+        >
+          <option value="10">10</option>
+          <option value="20">20</option>
+          <option value="30">30</option>
+          <option value="50">50</option>
+          <option value="10000">الكل</option>
+        </select>
+      </div>
+
       <table id="studentsTable">
         <thead>
           <tr>
@@ -824,12 +856,21 @@
         "https://script.google.com/macros/s/AKfycbx8JBu5aQKAf3cKN9kEss8RiFHoW9DiqbgSlLO3JiIRxtXEzsJh3MU1sgIU2cVPP-rNkw/exec";
       let allStudents = [];
       let currentPage = 1;
-      const rowsPerPage = 10;
+      let rowsPerPage = 10;
       let currentModalAction = "";
 
       window.onload = function () {
         restoreStateLocally();
       };
+
+      function updateRowsPerPage() {
+        rowsPerPage = parseInt(
+          document.getElementById("rowsPerPageSelect").value
+        );
+        currentPage = 1;
+        saveStateLocally();
+        renderTable();
+      }
 
       function saveStateLocally() {
         if (allStudents.length === 0) return;
@@ -840,6 +881,8 @@
           subject: document.getElementById("subjectSelect").value,
           students: allStudents,
           currentPage: currentPage,
+          rowsPerPage: rowsPerPage,
+          timestamp: Date.now(),
         };
         localStorage.setItem("alkhateeb_grades_draft", JSON.stringify(state));
       }
@@ -849,9 +892,20 @@
         if (draft) {
           try {
             const state = JSON.parse(draft);
+            const now = Date.now();
+            const expirationTime = 5 * 60 * 1000;
+            if (!state.timestamp || now - state.timestamp > expirationTime) {
+              localStorage.removeItem("alkhateeb_grades_draft");
+              return;
+            }
             if (state.students && state.students.length > 0) {
               allStudents = state.students;
               currentPage = state.currentPage || 1;
+              if (state.rowsPerPage) {
+                rowsPerPage = state.rowsPerPage;
+                document.getElementById("rowsPerPageSelect").value =
+                  rowsPerPage;
+              }
               document.getElementById("sheetSelect").value = state.sheet;
               const gradeSelect = document.getElementById("gradeSelect");
               gradeSelect.style.display = "block";
@@ -864,6 +918,7 @@
               subjectSelect.value = state.subject;
               document.getElementById("searchBtn").style.display = "block";
               document.getElementById("bulkScoreDiv").style.display = "flex";
+              document.getElementById("tableControls").style.display = "flex";
               const saveBtn = document.getElementById("saveBtn");
               saveBtn.disabled = false;
               saveBtn.style.display = "block";
@@ -958,6 +1013,7 @@
         document.getElementById("inlineMessage").style.display = "none";
         document.getElementById("saveMessage").style.display = "none";
         document.getElementById("studentsTable").style.display = "none";
+        document.getElementById("tableControls").style.display = "none";
         document.getElementById("paginationDiv").style.display = "none";
         document.getElementById("saveBtn").style.display = "none";
         document.getElementById("bulkScoreDiv").style.display = "none";
@@ -1204,6 +1260,7 @@
 
             document.getElementById("bulkScoreInput").value = "";
             document.getElementById("bulkScoreDiv").style.display = "flex";
+            document.getElementById("tableControls").style.display = "flex";
 
             renderTable();
             saveStateLocally();
@@ -1400,6 +1457,7 @@
             if (data.status === "success") {
               localStorage.removeItem("alkhateeb_grades_draft");
               document.getElementById("studentsTable").style.display = "none";
+              document.getElementById("tableControls").style.display = "none";
               document.getElementById("paginationDiv").style.display = "none";
               document.getElementById("saveBtn").style.display = "none";
               document.getElementById("bulkScoreDiv").style.display = "none";
