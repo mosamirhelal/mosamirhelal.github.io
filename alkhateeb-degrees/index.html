@@ -858,6 +858,7 @@
       let currentPage = 1;
       let rowsPerPage = 10;
       let currentModalAction = "";
+      let highlightErrors = false;
 
       window.onload = function () {
         restoreStateLocally();
@@ -1248,6 +1249,7 @@
             }
             allStudents = data.students;
             currentPage = 1;
+            highlightErrors = false;
             const saveBtn = document.getElementById("saveBtn");
             const saveBtnText = saveBtn.querySelector(".btn-text");
             saveBtn.disabled = false;
@@ -1309,6 +1311,13 @@
           const globalIndex = start + index;
           const isAbsent = student.score === "غ";
           const displayScore = isAbsent ? "" : student.score;
+          const isEmpty =
+            student.score === "" ||
+            student.score === null ||
+            student.score === undefined;
+          const isErrorClass =
+            highlightErrors && !isAbsent && isEmpty ? "error-border" : "";
+
           const row = document.createElement("tr");
           row.className = "row-anim";
           row.style.animationDelay = `${Math.min(index * 0.02, 0.4)}s`;
@@ -1318,7 +1327,7 @@
             }</td>
             <td>
               <div class="checkbox-wrapper">
-                <input type='text' inputmode='numeric' class='score-input student-score' placeholder='الدرجة' value='${displayScore}' 
+                <input type='text' inputmode='numeric' class='score-input student-score ${isErrorClass}' placeholder='الدرجة' value='${displayScore}' 
                        id='score_${globalIndex}'
                        ${isAbsent ? "disabled" : ""}
                        onfocus='this.select()' 
@@ -1407,42 +1416,30 @@
         }
 
         if (firstEmptyIndex !== -1) {
+          highlightErrors = true;
           const targetPage = Math.floor(firstEmptyIndex / rowsPerPage) + 1;
           if (currentPage !== targetPage) {
             currentPage = targetPage;
-            renderTable();
           }
+          renderTable();
           showSaveMessage("⚠️ يرجى إدخال جميع الدرجات، توجد حقول فارغة!", true);
 
           setTimeout(() => {
-            const start = (currentPage - 1) * rowsPerPage;
-            const end = start + rowsPerPage;
-            let scrolled = false;
-
-            for (let i = start; i < end; i++) {
-              if (
-                allStudents[i].score === "" ||
-                allStudents[i].score === null ||
-                allStudents[i].score === undefined
-              ) {
-                const emptyInput = document.getElementById("score_" + i);
-                if (emptyInput && !emptyInput.disabled) {
-                  emptyInput.classList.add("error-border");
-                  if (!scrolled) {
-                    emptyInput.scrollIntoView({
-                      behavior: "smooth",
-                      block: "center",
-                    });
-                    emptyInput.focus({ preventScroll: true });
-                    scrolled = true;
-                  }
-                }
-              }
+            const emptyInput = document.getElementById(
+              "score_" + firstEmptyIndex
+            );
+            if (emptyInput && !emptyInput.disabled) {
+              emptyInput.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+              emptyInput.focus({ preventScroll: true });
             }
           }, 100);
           return;
         }
 
+        highlightErrors = false;
         const sheetName = document.getElementById("sheetSelect").value;
         const grade = document.getElementById("gradeSelect").value;
         const section = document.getElementById("sectionSelect").value;
