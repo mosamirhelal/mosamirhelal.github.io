@@ -311,6 +311,16 @@
       .btn-reset-all:hover:not(:disabled) {
         background-color: #5a6268;
       }
+      .btn-clear-all {
+        background-color: #17a2b8;
+        max-width: 140px;
+        margin: 0;
+        padding: 12px 15px;
+        border-radius: 11px;
+      }
+      .btn-clear-all:hover:not(:disabled) {
+        background-color: #138496;
+      }
       table {
         width: 100%;
         border-collapse: separate;
@@ -753,6 +763,13 @@
         >
           <span class="btn-text">🔄 حضور للكل</span>
         </button>
+
+        <button
+          class="btn-clear-all"
+          onclick="addRipple(event, this); showClearConfirm()"
+        >
+          <span class="btn-text">🗑️ تفريغ الكل</span>
+        </button>
       </div>
 
       <div
@@ -1141,6 +1158,13 @@
         document.getElementById("customModal").style.display = "flex";
       }
 
+      function showClearConfirm() {
+        currentModalAction = "clearAll";
+        document.getElementById("modalTitleText").innerText =
+          "هل تريد بالتأكيد مسح جميع الدرجات وتفريغ الحقول بالكامل؟";
+        document.getElementById("customModal").style.display = "flex";
+      }
+
       function executeModalAction() {
         if (currentModalAction === "bulkScore") {
           confirmBulkScore();
@@ -1148,6 +1172,8 @@
           confirmBulkAbsent();
         } else if (currentModalAction === "allPresent") {
           confirmAllPresent();
+        } else if (currentModalAction === "clearAll") {
+          confirmClearAll();
         }
       }
 
@@ -1174,6 +1200,17 @@
           "✅ تم إلغاء الغياب وتحويل الطلاب إلى حاضرين بنجاح.",
           false
         );
+      }
+
+      function confirmClearAll() {
+        for (let i = 0; i < allStudents.length; i++) {
+          allStudents[i].score = "";
+        }
+        highlightErrors = false;
+        closeBulkModal();
+        renderTable();
+        saveStateLocally();
+        showMessage("✅ تم تفريغ جميع الحقول بنجاح.", false);
       }
 
       function closeBulkModal() {
