@@ -283,7 +283,7 @@
       }
       .btn-danger {
         background-color: #dc3545;
-        max-width: 120px;
+        max-width: 140px;
         margin: 0;
         padding: 12px 15px;
         border-radius: 11px;
@@ -320,6 +320,19 @@
       }
       .btn-clear-all:hover:not(:disabled) {
         background-color: #138496;
+      }
+      #tableControls {
+        display: none;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-top: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 10px 15px;
+        border: 1px solid #eee;
+        gap: 10px;
       }
       table {
         width: 100%;
@@ -626,6 +639,11 @@
           text-align: center !important;
           margin-bottom: 5px !important;
         }
+        #tableControls {
+          flex-direction: column;
+          justify-content: center;
+          text-align: center;
+        }
         .pagination-controls {
           flex-direction: column;
           gap: 10px;
@@ -824,36 +842,29 @@
         </button>
       </div>
 
-      <div
-        id="tableControls"
-        style="
-          display: none;
-          justify-content: space-between;
-          align-items: center;
-          width: 100%;
-          margin-top: 20px;
-          padding: 0 5px;
-          background: #f8f9fa;
-          border-radius: 10px;
-          padding: 10px 15px;
-          border: 1px solid #eee;
-        "
-      >
-        <span style="font-weight: bold; color: #0056b3; font-size: 15px"
-          >عرض الطلاب بالصفحة:</span
-        >
-        <select
-          id="rowsPerPageSelect"
-          class="form-control"
-          style="max-width: 100px; margin: 0; padding: 8px; text-align: center"
-          onchange="updateRowsPerPage()"
-        >
-          <option value="10">10</option>
-          <option value="20">20</option>
-          <option value="30">30</option>
-          <option value="50">50</option>
-          <option value="10000">الكل</option>
-        </select>
+      <div id="tableControls">
+        <div style="display: flex; align-items: center; gap: 10px">
+          <span style="font-weight: bold; color: #0056b3; font-size: 15px"
+            >عرض بالصفحة:</span
+          >
+          <select
+            id="rowsPerPageSelect"
+            class="form-control"
+            style="max-width: 80px; margin: 0; padding: 8px; text-align: center"
+            onchange="updateRowsPerPage()"
+          >
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50" selected>50</option>
+            <option value="10000">الكل</option>
+          </select>
+        </div>
+        <div
+          id="studentCountInfo"
+          style="font-weight: bold; color: #4a4e69; font-size: 14px"
+        ></div>
       </div>
 
       <table id="studentsTable">
@@ -925,7 +936,7 @@
         "https://script.google.com/macros/s/AKfycbx8JBu5aQKAf3cKN9kEss8RiFHoW9DiqbgSlLO3JiIRxtXEzsJh3MU1sgIU2cVPP-rNkw/exec";
       let allStudents = [];
       let currentPage = 1;
-      let rowsPerPage = 10;
+      let rowsPerPage = 50;
       let currentModalAction = "";
       let highlightErrors = false;
 
@@ -975,6 +986,8 @@
                 rowsPerPage = state.rowsPerPage;
                 document.getElementById("rowsPerPageSelect").value =
                   rowsPerPage;
+              } else {
+                document.getElementById("rowsPerPageSelect").value = 50;
               }
               document.getElementById("sheetSelect").value = state.sheet;
               const gradeSelect = document.getElementById("gradeSelect");
@@ -1394,8 +1407,13 @@
           pagination.style.display = "none";
         }
         const start = (currentPage - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
+        const end = Math.min(start + rowsPerPage, allStudents.length);
         const pageStudents = allStudents.slice(start, end);
+
+        document.getElementById(
+          "studentCountInfo"
+        ).innerText = `إجمالي الطلاب: ${allStudents.length} | الظاهر بالصفحة: ${pageStudents.length}`;
+
         pageStudents.forEach((student, index) => {
           const globalIndex = start + index;
           const isAbsent = student.score === "غ";
