@@ -543,6 +543,11 @@
       .btn-modal-cancel:hover:not(:disabled) {
         background-color: #c82333;
       }
+      @media (max-width: 768px) {
+        .bulk-wrapper {
+          justify-content: flex-start;
+        }
+      }
       @media (min-width: 768px) {
         .top-logos img {
           max-height: 160px;
@@ -553,6 +558,19 @@
         .bulk-wrapper {
           gap: 8px;
           padding: 15px 10px;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          justify-content: center;
+        }
+        .bulk-wrapper::-webkit-scrollbar {
+          height: 8px;
+        }
+        .bulk-wrapper::-webkit-scrollbar-thumb {
+          background-color: #0056b3;
+          border-radius: 10px;
+        }
+        .bulk-wrapper > * {
+          flex-shrink: 0;
         }
         .bulk-wrapper button {
           max-width: 110px;
@@ -584,6 +602,29 @@
         }
         .form-control {
           max-width: 100%;
+        }
+        .bulk-wrapper {
+          flex-direction: column !important;
+          gap: 10px !important;
+          padding: 15px !important;
+        }
+        .bulk-wrapper button {
+          width: 180px !important;
+          margin: 0 auto !important;
+          max-width: 100% !important;
+          display: block !important;
+          padding: 12px !important;
+          font-size: 15px !important;
+        }
+        .bulk-wrapper #bulkScoreInput {
+          width: 180px !important;
+          margin: 0 auto !important;
+        }
+        .bulk-wrapper span {
+          display: block !important;
+          width: 100% !important;
+          text-align: center !important;
+          margin-bottom: 5px !important;
         }
         .pagination-controls {
           flex-direction: column;
