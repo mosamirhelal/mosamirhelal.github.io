@@ -210,6 +210,11 @@
         box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
         outline: none;
       }
+      .form-control:disabled {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+        color: #999;
+      }
       select:disabled {
         background-color: #f5f5f5;
         cursor: not-allowed;
@@ -556,10 +561,29 @@
       .btn-modal-cancel:hover:not(:disabled) {
         background-color: #c82333;
       }
-      @media (max-width: 768px) {
-        .bulk-wrapper {
-          justify-content: flex-start;
-        }
+      .header-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+      }
+      .teacher-name {
+        font-weight: bold;
+        color: #0056b3;
+        font-size: 15px;
+      }
+      .btn-logout {
+        background-color: #dc3545;
+        padding: 6px 12px;
+        font-size: 13px;
+        width: auto;
+        margin: 0;
+        border-radius: 8px;
+      }
+      .btn-logout:hover {
+        background-color: #c82333;
       }
       @media (min-width: 768px) {
         .top-logos img {
@@ -718,7 +742,56 @@
       "
     ></div>
 
-    <div class="container">
+    <div class="container" id="loginContainer">
+      <div class="top-logos">
+        <img
+          src="https://mosamirhelal.com/alkhateeb/logo_2.webp"
+          alt="وزارة التربية والتعليم"
+        />
+        <img
+          src="https://mosamirhelal.com/alkhateeb/logo_1.webp"
+          alt="شعار المدرسة"
+        />
+      </div>
+      <div class="header-image">
+        <img
+          src="https://mosamirhelal.com/alkhateeb/logo_3.webp"
+          alt="مدرسة الشهيد محمود علي الخطيب"
+        />
+      </div>
+      <h2>تسجيل الدخول للمعلمين</h2>
+      <input
+        type="text"
+        id="usernameInput"
+        class="form-control"
+        placeholder="اسم المستخدم"
+        dir="rtl"
+      />
+      <input
+        type="password"
+        id="passwordInput"
+        class="form-control"
+        placeholder="كلمة المرور"
+        dir="ltr"
+        onkeydown="if(event.key === 'Enter') doLogin()"
+      />
+      <button
+        id="loginBtn"
+        class="form-control pulse-button"
+        onclick="addRipple(event, this); doLogin()"
+      >
+        <span class="btn-text">دخول المنصة</span>
+      </button>
+      <div class="loader" id="loginLoader"></div>
+      <div id="loginMessage" class="status-message"></div>
+      <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
+    </div>
+
+    <div class="container" id="mainContainer" style="display: none">
+      <div class="header-actions">
+        <span class="teacher-name" id="teacherNameDisplay"></span>
+        <button class="btn-logout" onclick="logout()">تسجيل خروج</button>
+      </div>
       <div class="top-logos">
         <img
           src="https://mosamirhelal.com/alkhateeb/logo_2.webp"
@@ -798,7 +871,7 @@
       </button>
 
       <div id="inlineMessage" class="status-message"></div>
-      <div class="loader" id="loader"></div>
+      <div class="loader" id="mainLoader"></div>
 
       <div id="bulkScoreDiv" class="bulk-wrapper">
         <span style="font-weight: bold; color: #0056b3; font-size: 15px"
@@ -941,8 +1014,98 @@
       let highlightErrors = false;
 
       window.onload = function () {
-        restoreStateLocally();
+        checkAuth();
       };
+
+      function checkAuth() {
+        const authData = localStorage.getItem("alkhateeb_auth");
+        if (authData) {
+          const auth = JSON.parse(authData);
+          document.getElementById("loginContainer").style.display = "none";
+          document.getElementById("mainContainer").style.display = "block";
+          document.getElementById("teacherNameDisplay").innerText =
+            "أهلاً بك: " + auth.name;
+          restoreStateLocally();
+        } else {
+          document.getElementById("loginContainer").style.display = "block";
+          document.getElementById("mainContainer").style.display = "none";
+        }
+      }
+
+      function doLogin() {
+        const userInput = document.getElementById("usernameInput");
+        const passInput = document.getElementById("passwordInput");
+        const user = userInput.value.trim();
+        const pass = passInput.value.trim();
+        const msgDiv = document.getElementById("loginMessage");
+        const btn = document.getElementById("loginBtn");
+        const loader = document.getElementById("loginLoader");
+
+        if (!user || !pass) {
+          msgDiv.innerText = "يرجى إدخال اسم المستخدم وكلمة المرور.";
+          msgDiv.className = "status-message error-msg";
+          msgDiv.style.display = "block";
+          return;
+        }
+
+        msgDiv.style.display = "none";
+        btn.disabled = true;
+        userInput.disabled = true;
+        passInput.disabled = true;
+        btn.classList.remove("pulse-button");
+        btn.querySelector(".btn-text").innerText = "جاري التحقق...";
+        loader.style.display = "block";
+
+        const url = `${APPS_SCRIPT_URL}?action=login&username=${encodeURIComponent(
+          user
+        )}&password=${encodeURIComponent(pass)}`;
+
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            loader.style.display = "none";
+            btn.disabled = false;
+            btn.classList.add("pulse-button");
+            btn.querySelector(".btn-text").innerText = "دخول المنصة";
+
+            if (data.status === "success") {
+              localStorage.setItem(
+                "alkhateeb_auth",
+                JSON.stringify({
+                  user: user,
+                  pass: pass,
+                  name: data.teacherName,
+                })
+              );
+              userInput.disabled = false;
+              passInput.disabled = false;
+              checkAuth();
+            } else {
+              userInput.disabled = false;
+              passInput.disabled = false;
+              msgDiv.innerText = data.message;
+              msgDiv.className = "status-message error-msg";
+              msgDiv.style.display = "block";
+            }
+          })
+          .catch((error) => {
+            loader.style.display = "none";
+            btn.disabled = false;
+            userInput.disabled = false;
+            passInput.disabled = false;
+            btn.classList.add("pulse-button");
+            btn.querySelector(".btn-text").innerText = "دخول المنصة";
+            msgDiv.innerText = "حدث خطأ في الاتصال، يرجى المحاولة مرة أخرى.";
+            msgDiv.className = "status-message error-msg";
+            msgDiv.style.display = "block";
+          });
+      }
+
+      function logout() {
+        localStorage.removeItem("alkhateeb_auth");
+        localStorage.removeItem("alkhateeb_grades_draft");
+        location.reload();
+      }
 
       function escapeHTML(str) {
         return String(str).replace(/[&<>'"]/g, function (tag) {
@@ -1315,12 +1478,19 @@
       }
 
       function fetchStudents() {
+        const authData = localStorage.getItem("alkhateeb_auth");
+        if (!authData) {
+          checkAuth();
+          return;
+        }
+        const auth = JSON.parse(authData);
+
         const sheetSelect = document.getElementById("sheetSelect");
         const gradeSelect = document.getElementById("gradeSelect");
         const sectionSelect = document.getElementById("sectionSelect");
         const subjectSelect = document.getElementById("subjectSelect");
         const searchBtn = document.getElementById("searchBtn");
-        const loader = document.getElementById("loader");
+        const loader = document.getElementById("mainLoader");
         const searchBtnText = searchBtn.querySelector(".btn-text");
         const sheetName = sheetSelect.value;
         const grade = gradeSelect.value;
@@ -1340,7 +1510,9 @@
           sheetName
         )}&grade=${encodeURIComponent(grade)}&section=${encodeURIComponent(
           section
-        )}&subject=${encodeURIComponent(subject)}`;
+        )}&subject=${encodeURIComponent(subject)}&username=${encodeURIComponent(
+          auth.user
+        )}&password=${encodeURIComponent(auth.pass)}`;
 
         fetch(url)
           .then((response) => response.json())
@@ -1354,6 +1526,13 @@
             sectionSelect.disabled = false;
             subjectSelect.disabled = false;
             if (data.status === "error") {
+              if (
+                data.message.includes("غير صحيحة") ||
+                data.message.includes("موقوف")
+              ) {
+                logout();
+                return;
+              }
               showMessage(data.message, true);
               return;
             }
@@ -1519,6 +1698,13 @@
       }
 
       function saveData() {
+        const authData = localStorage.getItem("alkhateeb_auth");
+        if (!authData) {
+          checkAuth();
+          return;
+        }
+        const auth = JSON.parse(authData);
+
         const saveBtn = document.getElementById("saveBtn");
         const saveBtnText = saveBtn.querySelector(".btn-text");
         if (saveBtn.disabled) return;
@@ -1570,6 +1756,8 @@
         saveBtnText.innerText = "⏳ جاري الحفظ...";
 
         const payload = {
+          username: auth.user,
+          password: auth.pass,
           sheetName: sheetName,
           grade: grade,
           section: section,
@@ -1604,6 +1792,13 @@
               saveBtn.disabled = false;
               saveBtn.classList.add("pulse-success");
               saveBtnText.innerText = "💾 حفظ الدرجات";
+              if (
+                data.message.includes("غير صحيحة") ||
+                data.message.includes("موقوف")
+              ) {
+                logout();
+                return;
+              }
               showSaveMessage("❌ حدث خطأ: " + data.message, true);
             }
           })
