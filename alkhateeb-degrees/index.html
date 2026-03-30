@@ -63,7 +63,7 @@
       @keyframes rowIn {
         from {
           opacity: 0;
-          transform: translateX(-12px);
+          transform: translateX(12px);
         }
         to {
           opacity: 1;
@@ -944,6 +944,19 @@
         restoreStateLocally();
       };
 
+      function escapeHTML(str) {
+        return String(str).replace(/[&<>'"]/g, function (tag) {
+          const chars = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "'": "&#39;",
+            '"': "&quot;",
+          };
+          return chars[tag] || tag;
+        });
+      }
+
       function updateRowsPerPage() {
         rowsPerPage = parseInt(
           document.getElementById("rowsPerPageSelect").value
@@ -974,7 +987,7 @@
           try {
             const state = JSON.parse(draft);
             const now = Date.now();
-            const expirationTime = 5 * 60 * 1000;
+            const expirationTime = 30 * 60 * 1000;
             if (!state.timestamp || now - state.timestamp > expirationTime) {
               localStorage.removeItem("alkhateeb_grades_draft");
               return;
@@ -1017,7 +1030,9 @@
                 false
               );
             }
-          } catch (e) {}
+          } catch (e) {
+            localStorage.removeItem("alkhateeb_grades_draft");
+          }
         }
       }
 
@@ -1066,8 +1081,7 @@
 
       function handleScoreInput(globalIndex, inputEl) {
         inputEl.classList.remove("error-border");
-        let englishStr = convertToEnglishNumbers(inputEl.value);
-        let cleanedStr = englishStr.replace(/[^0-9.]/g, "");
+        let cleanedStr = convertToEnglishNumbers(inputEl.value);
         if (cleanedStr !== "") {
           let num = parseFloat(cleanedStr);
           if (num > 100) {
@@ -1191,8 +1205,7 @@
 
       function showBulkConfirm() {
         const inputEl = document.getElementById("bulkScoreInput");
-        let englishStr = convertToEnglishNumbers(inputEl.value);
-        let cleanedStr = englishStr.replace(/[^0-9.]/g, "");
+        let cleanedStr = convertToEnglishNumbers(inputEl.value);
         if (cleanedStr !== "") {
           let num = parseFloat(cleanedStr);
           if (num > 100) {
@@ -1285,8 +1298,7 @@
 
       function confirmBulkScore() {
         const inputEl = document.getElementById("bulkScoreInput");
-        let englishStr = convertToEnglishNumbers(inputEl.value);
-        let cleanedStr = englishStr.replace(/[^0-9.]/g, "");
+        let cleanedStr = convertToEnglishNumbers(inputEl.value);
         for (let i = 0; i < allStudents.length; i++) {
           if (allStudents[i].score !== "غ") {
             allStudents[i].score = cleanedStr;
@@ -1429,9 +1441,9 @@
           row.className = "row-anim";
           row.style.animationDelay = `${Math.min(index * 0.02, 0.4)}s`;
           row.innerHTML = `
-            <td style='font-weight:600; color:#0056b3; vertical-align: middle;'>${
+            <td style='font-weight:600; color:#0056b3; vertical-align: middle;'>${escapeHTML(
               student.name
-            }</td>
+            )}</td>
             <td>
               <div class="checkbox-wrapper">
                 <input type='text' inputmode='numeric' class='score-input student-score ${isErrorClass}' placeholder='الدرجة' value='${displayScore}' 
