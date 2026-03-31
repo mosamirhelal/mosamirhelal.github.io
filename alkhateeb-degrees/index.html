@@ -1337,7 +1337,10 @@
           (s) => String(s.id) === String(studentId)
         );
         if (student) {
-          if (student.score !== student.originalScore) {
+          if (
+            student.score !== student.originalScore &&
+            !student.suppressGreen
+          ) {
             inputEl.classList.add("modified-input");
           } else {
             inputEl.classList.remove("modified-input");
@@ -1519,6 +1522,7 @@
       function confirmBulkAbsent() {
         for (let i = 0; i < allStudents.length; i++) {
           allStudents[i].score = "غ";
+          allStudents[i].suppressGreen = true;
         }
         filteredStudents = [...allStudents];
         closeBulkModal();
@@ -1531,6 +1535,7 @@
         for (let i = 0; i < allStudents.length; i++) {
           if (allStudents[i].score === "غ") {
             allStudents[i].score = "";
+            allStudents[i].suppressGreen = true;
           }
         }
         filteredStudents = [...allStudents];
@@ -1546,6 +1551,7 @@
       function confirmClearAll() {
         for (let i = 0; i < allStudents.length; i++) {
           allStudents[i].score = "";
+          allStudents[i].suppressGreen = true;
         }
         filteredStudents = [...allStudents];
         highlightErrors = false;
@@ -1566,6 +1572,7 @@
         for (let i = 0; i < allStudents.length; i++) {
           if (allStudents[i].score !== "غ") {
             allStudents[i].score = cleanedStr;
+            allStudents[i].suppressGreen = false;
           }
         }
         filteredStudents = [...allStudents];
@@ -1654,6 +1661,7 @@
             allStudents = data.students.map((s) => ({
               ...s,
               originalScore: s.score,
+              suppressGreen: false,
             }));
             document.getElementById("liveSearchInput").value = "";
             filteredStudents = [...allStudents];
@@ -1723,7 +1731,7 @@
 
         document.getElementById(
           "studentCountInfo"
-        ).innerText = `إجمالي الطلاب: ${allStudents.length} | المفلتر: ${filteredStudents.length} | الظاهر: ${pageStudents.length}`;
+        ).innerText = `إجمالي الطلاب: ${allStudents.length} | الظاهر بالصفحة: ${pageStudents.length}`;
 
         pageStudents.forEach((student, index) => {
           const isAbsent = student.score === "غ";
@@ -1735,7 +1743,9 @@
           const isErrorClass =
             highlightErrors && !isAbsent && isEmpty ? "error-border" : "";
           const isModifiedClass =
-            student.score !== student.originalScore ? "modified-input" : "";
+            student.score !== student.originalScore && !student.suppressGreen
+              ? "modified-input"
+              : "";
 
           const row = document.createElement("tr");
           row.className = "row-anim";
@@ -1781,6 +1791,7 @@
         );
         if (student) {
           student.score = value;
+          student.suppressGreen = false;
           saveStateLocally();
         }
       }
@@ -1913,7 +1924,10 @@
           .then((response) => response.json())
           .then((data) => {
             if (data.status === "success") {
-              allStudents.forEach((s) => (s.originalScore = s.score));
+              allStudents.forEach((s) => {
+                s.originalScore = s.score;
+                s.suppressGreen = false;
+              });
               localStorage.removeItem("alkhateeb_grades_draft");
               document.getElementById("studentsTable").style.display = "none";
               document.getElementById("tableControls").style.display = "none";
