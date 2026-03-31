@@ -210,11 +210,7 @@
         box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
         outline: none;
       }
-      .form-control:disabled {
-        background-color: #f5f5f5;
-        cursor: not-allowed;
-        color: #999;
-      }
+      .form-control:disabled,
       select:disabled {
         background-color: #f5f5f5;
         cursor: not-allowed;
@@ -552,22 +548,21 @@
         justify-content: center;
         gap: 15px;
       }
-      .btn-modal-confirm {
-        background-color: #28a745;
+      .btn-modal-confirm,
+      .btn-modal-cancel {
         margin: 0;
         padding: 10px 20px;
         max-width: 120px;
         border-radius: 11px;
+      }
+      .btn-modal-confirm {
+        background-color: #28a745;
       }
       .btn-modal-confirm:hover:not(:disabled) {
         background-color: #218838;
       }
       .btn-modal-cancel {
         background-color: #dc3545;
-        margin: 0;
-        padding: 10px 20px;
-        max-width: 120px;
-        border-radius: 11px;
       }
       .btn-modal-cancel:hover:not(:disabled) {
         background-color: #c82333;
@@ -801,7 +796,7 @@
     <div class="container" id="mainContainer" style="display: none">
       <div class="header-actions">
         <span class="teacher-name" id="teacherNameDisplay"></span>
-        <button class="btn-logout" onclick="logout()">تسجيل خروج</button>
+        <button class="btn-logout" onclick="logout(false)">تسجيل خروج</button>
       </div>
       <div class="top-logos">
         <img
@@ -896,28 +891,24 @@
           placeholder="الدرجة"
           style="max-width: 80px; margin: 0"
         />
-
         <button
           class="btn-danger"
           onclick="addRipple(event, this); showBulkConfirm()"
         >
           <span class="btn-text">⚡ تطبيق</span>
         </button>
-
         <button
           class="btn-clear-all"
           onclick="addRipple(event, this); showClearConfirm()"
         >
           <span class="btn-text">🗑️ تفريغ الكل</span>
         </button>
-
         <button
           class="btn-absent-all"
           onclick="addRipple(event, this); showAbsentConfirm()"
         >
           <span class="btn-text">🚫 غياب للكل</span>
         </button>
-
         <button
           class="btn-reset-all"
           onclick="addRipple(event, this); showPresentConfirm()"
@@ -1063,6 +1054,17 @@
         }
       }
 
+      function handleSessionExpired() {
+        localStorage.removeItem("alkhateeb_auth");
+        document.getElementById("mainContainer").style.display = "none";
+        document.getElementById("loginContainer").style.display = "block";
+        const msgDiv = document.getElementById("loginMessage");
+        msgDiv.innerText =
+          "⏳ انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجدداً لاستكمال عملك (لن تفقد مسودتك).";
+        msgDiv.className = "status-message error-msg";
+        msgDiv.style.display = "block";
+      }
+
       function doLogin() {
         const userInput = document.getElementById("usernameInput");
         const passInput = document.getElementById("passwordInput");
@@ -1078,7 +1080,6 @@
           msgDiv.style.display = "block";
           return;
         }
-
         msgDiv.style.display = "none";
         btn.disabled = true;
         userInput.disabled = true;
@@ -1087,13 +1088,7 @@
         btn.querySelector(".btn-text").innerText = "جاري التحقق...";
         loader.style.display = "block";
 
-        const payload = {
-          action: "login",
-          username: user,
-          password: pass,
-          deviceInfo: navigator.userAgent,
-        };
-
+        const payload = { action: "login", username: user, password: pass };
         fetch(APPS_SCRIPT_URL, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -1105,7 +1100,6 @@
             btn.disabled = false;
             btn.classList.add("pulse-button");
             btn.querySelector(".btn-text").innerText = "دخول المنصة";
-
             if (data.status === "success") {
               localStorage.setItem(
                 "alkhateeb_auth",
@@ -1137,7 +1131,18 @@
           });
       }
 
-      function logout() {
+      function logout(force = false) {
+        if (!force) {
+          const hasChanges = allStudents.some(
+            (s) => s.score !== s.originalScore
+          );
+          if (hasChanges) {
+            const confirmLeave = confirm(
+              "⚠️ لديك درجات لم يتم حفظها! هل أنت متأكد أنك تريد تسجيل الخروج وإلغاء تعديلاتك؟"
+            );
+            if (!confirmLeave) return;
+          }
+        }
         const authData = localStorage.getItem("alkhateeb_auth");
         if (authData) {
           const auth = JSON.parse(authData);
@@ -1147,6 +1152,7 @@
             body: JSON.stringify({ action: "logout", token: auth.token }),
           }).catch((e) => console.log(e));
         }
+        allStudents = [];
         localStorage.removeItem("alkhateeb_auth");
         localStorage.removeItem("alkhateeb_grades_draft");
         location.reload();
@@ -1236,10 +1242,7 @@
               saveBtn.className = "form-control btn-success pulse-success";
               renderTable();
               document.getElementById("studentsTable").style.display = "table";
-              showMessage(
-                "تم استعادة بياناتك السابقة التي لم يتم حفظها.",
-                false
-              );
+              showMessage("تم استعادة مسودتك السابقة بنجاح.", false);
             }
           } catch (e) {
             localStorage.removeItem("alkhateeb_grades_draft");
@@ -1308,9 +1311,7 @@
         let cleanedStr = convertToEnglishNumbers(inputEl.value);
         if (cleanedStr !== "") {
           let num = parseFloat(cleanedStr);
-          if (num > 100) {
-            cleanedStr = "";
-          }
+          if (num > 100) cleanedStr = "";
         }
         inputEl.value = cleanedStr;
         updateStudentScore(studentId, cleanedStr);
@@ -1355,18 +1356,14 @@
         const modifiedCount = allStudents.filter(
           (s) => s.score !== s.originalScore
         ).length;
-
-        if (modifiedCount === 0) {
-          saveBtnText.innerText = "💾 حفظ الدرجات";
-        } else if (modifiedCount === 1) {
+        if (modifiedCount === 0) saveBtnText.innerText = "💾 حفظ الدرجات";
+        else if (modifiedCount === 1)
           saveBtnText.innerText = "💾 حفظ درجة طالب واحد";
-        } else if (modifiedCount === 2) {
+        else if (modifiedCount === 2)
           saveBtnText.innerText = "💾 حفظ درجات طالبين";
-        } else if (modifiedCount >= 3 && modifiedCount <= 10) {
+        else if (modifiedCount >= 3 && modifiedCount <= 10)
           saveBtnText.innerText = "💾 حفظ درجات " + modifiedCount + " طلاب";
-        } else {
-          saveBtnText.innerText = "💾 حفظ درجات " + modifiedCount + " طالب";
-        }
+        else saveBtnText.innerText = "💾 حفظ درجات " + modifiedCount + " طالب";
       }
 
       function hideTableAndMessages() {
@@ -1508,15 +1505,10 @@
       }
 
       function executeModalAction() {
-        if (currentModalAction === "bulkScore") {
-          confirmBulkScore();
-        } else if (currentModalAction === "bulkAbsent") {
-          confirmBulkAbsent();
-        } else if (currentModalAction === "allPresent") {
-          confirmAllPresent();
-        } else if (currentModalAction === "clearAll") {
-          confirmClearAll();
-        }
+        if (currentModalAction === "bulkScore") confirmBulkScore();
+        else if (currentModalAction === "bulkAbsent") confirmBulkAbsent();
+        else if (currentModalAction === "allPresent") confirmAllPresent();
+        else if (currentModalAction === "clearAll") confirmClearAll();
       }
 
       function confirmBulkAbsent() {
@@ -1561,11 +1553,6 @@
         showMessage("✅ تم تفريغ جميع الحقول بنجاح.", false);
       }
 
-      function closeBulkModal() {
-        document.getElementById("customModal").style.display = "none";
-        currentModalAction = "";
-      }
-
       function confirmBulkScore() {
         const inputEl = document.getElementById("bulkScoreInput");
         let cleanedStr = convertToEnglishNumbers(inputEl.value);
@@ -1584,6 +1571,11 @@
           "✅ تم تعميم الدرجة بنجاح على جميع الطلاب الحاضرين.",
           false
         );
+      }
+
+      function closeBulkModal() {
+        document.getElementById("customModal").style.display = "none";
+        currentModalAction = "";
       }
 
       function fetchStudents() {
@@ -1642,12 +1634,15 @@
             subjectSelect.disabled = false;
 
             if (data.status === "error") {
+              if (data.message.includes("موقوف")) {
+                logout(true);
+                return;
+              }
               if (
                 data.message.includes("منتهية") ||
-                data.message.includes("غير صالحة") ||
-                data.message.includes("موقوف")
+                data.message.includes("غير صالحة")
               ) {
-                logout();
+                handleSessionExpired();
                 return;
               }
               showMessage(data.message, true);
@@ -1757,20 +1752,16 @@
             <td>
               <div class="checkbox-wrapper">
                 <input type='text' inputmode='numeric' class='score-input student-score ${isErrorClass} ${isModifiedClass}' placeholder='الدرجة' value='${displayScore}' 
-                       id='score_${student.id}'
-                       ${isAbsent ? "disabled" : ""}
-                       onfocus='this.select()' 
-                       oninput='handleScoreInput("${student.id}", this)' 
-                       onkeydown='handleEnter(event, this)'>
-                <label class="absent-label">
-                  <input type='checkbox' class='absent-checkbox' ${
-                    isAbsent ? "checked" : ""
-                  } 
-                         onchange='toggleAbsence("${
-                           student.id
-                         }", this.checked)'>
-                  غائب
-                </label>
+                       id='score_${student.id}' ${
+            isAbsent ? "disabled" : ""
+          } onfocus='this.select()' oninput='handleScoreInput("${
+            student.id
+          }", this)' onkeydown='handleEnter(event, this)'>
+                <label class="absent-label"><input type='checkbox' class='absent-checkbox' ${
+                  isAbsent ? "checked" : ""
+                } onchange='toggleAbsence("${
+            student.id
+          }", this.checked)'> غائب</label>
               </div>
             </td>
           `;
@@ -1905,7 +1896,6 @@
         const modifiedStudents = allStudents.filter(
           (s) => s.score !== s.originalScore
         );
-
         const payload = {
           action: "saveGrades",
           token: auth.token,
@@ -1948,12 +1938,15 @@
               saveBtn.disabled = false;
               saveBtn.classList.add("pulse-success");
               updateSaveButton();
+              if (data.message.includes("موقوف")) {
+                logout(true);
+                return;
+              }
               if (
                 data.message.includes("منتهية") ||
-                data.message.includes("غير صالحة") ||
-                data.message.includes("موقوف")
+                data.message.includes("غير صالحة")
               ) {
-                logout();
+                handleSessionExpired();
                 return;
               }
               showSaveMessage("❌ حدث خطأ: " + data.message, true);
