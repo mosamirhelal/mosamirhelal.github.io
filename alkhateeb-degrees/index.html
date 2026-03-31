@@ -339,6 +339,12 @@
         border: 1px solid #eee;
         gap: 10px;
       }
+      #searchContainer {
+        display: none;
+        width: 100%;
+        margin-top: 20px;
+        animation: popIn 0.5s ease-out;
+      }
       table {
         width: 100%;
         border-collapse: separate;
@@ -915,6 +921,17 @@
         </button>
       </div>
 
+      <div id="searchContainer">
+        <input
+          type="text"
+          id="liveSearchInput"
+          class="form-control"
+          placeholder="🔎 بحث باسم الطالب أو الرقم القومي..."
+          style="max-width: 100%; margin: 0"
+          oninput="filterTable()"
+        />
+      </div>
+
       <div id="tableControls">
         <div style="display: flex; align-items: center; gap: 10px">
           <span style="font-weight: bold; color: #0056b3; font-size: 15px"
@@ -1008,6 +1025,7 @@
       const APPS_SCRIPT_URL =
         "https://script.google.com/macros/s/AKfycbx8JBu5aQKAf3cKN9kEss8RiFHoW9DiqbgSlLO3JiIRxtXEzsJh3MU1sgIU2cVPP-rNkw/exec";
       let allStudents = [];
+      let filteredStudents = [];
       let currentPage = 1;
       let rowsPerPage = 50;
       let currentModalAction = "";
@@ -1056,11 +1074,18 @@
         btn.querySelector(".btn-text").innerText = "جاري التحقق...";
         loader.style.display = "block";
 
-        const url = `${APPS_SCRIPT_URL}?action=login&username=${encodeURIComponent(
-          user
-        )}&password=${encodeURIComponent(pass)}`;
+        const payload = {
+          action: "login",
+          username: user,
+          password: pass,
+          deviceInfo: navigator.userAgent,
+        };
 
-        fetch(url)
+        fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload),
+        })
           .then((response) => response.json())
           .then((data) => {
             loader.style.display = "none";
@@ -1072,13 +1097,14 @@
               localStorage.setItem(
                 "alkhateeb_auth",
                 JSON.stringify({
-                  user: user,
-                  pass: pass,
+                  token: data.token,
                   name: data.teacherName,
                 })
               );
               userInput.disabled = false;
               passInput.disabled = false;
+              userInput.value = "";
+              passInput.value = "";
               checkAuth();
             } else {
               userInput.disabled = false;
@@ -1102,6 +1128,15 @@
       }
 
       function logout() {
+        const authData = localStorage.getItem("alkhateeb_auth");
+        if (authData) {
+          const auth = JSON.parse(authData);
+          fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: "logout", token: auth.token }),
+          }).catch((e) => console.log(e));
+        }
         localStorage.removeItem("alkhateeb_auth");
         localStorage.removeItem("alkhateeb_grades_draft");
         location.reload();
@@ -1157,6 +1192,7 @@
             }
             if (state.students && state.students.length > 0) {
               allStudents = state.students;
+              filteredStudents = [...allStudents];
               currentPage = state.currentPage || 1;
               if (state.rowsPerPage) {
                 rowsPerPage = state.rowsPerPage;
@@ -1177,6 +1213,8 @@
               subjectSelect.value = state.subject;
               document.getElementById("searchBtn").style.display = "block";
               document.getElementById("bulkScoreDiv").style.display = "flex";
+              document.getElementById("searchContainer").style.display =
+                "block";
               document.getElementById("tableControls").style.display = "flex";
               const saveBtn = document.getElementById("saveBtn");
               saveBtn.disabled = false;
@@ -1242,7 +1280,20 @@
         return englishStr.replace(/[^0-9.]/g, "");
       }
 
-      function handleScoreInput(globalIndex, inputEl) {
+      function filterTable() {
+        const term = document
+          .getElementById("liveSearchInput")
+          .value.toLowerCase();
+        filteredStudents = allStudents.filter(
+          (s) =>
+            String(s.name).toLowerCase().includes(term) ||
+            String(s.id).includes(term)
+        );
+        currentPage = 1;
+        renderTable();
+      }
+
+      function handleScoreInput(studentId, inputEl) {
         inputEl.classList.remove("error-border");
         let cleanedStr = convertToEnglishNumbers(inputEl.value);
         if (cleanedStr !== "") {
@@ -1252,19 +1303,19 @@
           }
         }
         inputEl.value = cleanedStr;
-        updateStudentScore(globalIndex, cleanedStr);
+        updateStudentScore(studentId, cleanedStr);
       }
 
-      function toggleAbsence(globalIndex, isChecked) {
-        const inputEl = document.getElementById("score_" + globalIndex);
+      function toggleAbsence(studentId, isChecked) {
+        const inputEl = document.getElementById("score_" + studentId);
         inputEl.classList.remove("error-border");
         if (isChecked) {
           inputEl.value = "";
           inputEl.disabled = true;
-          updateStudentScore(globalIndex, "غ");
+          updateStudentScore(studentId, "غ");
         } else {
           inputEl.disabled = false;
-          updateStudentScore(globalIndex, "");
+          updateStudentScore(studentId, "");
           inputEl.focus();
         }
       }
@@ -1274,6 +1325,7 @@
         document.getElementById("saveMessage").style.display = "none";
         document.getElementById("studentsTable").style.display = "none";
         document.getElementById("tableControls").style.display = "none";
+        document.getElementById("searchContainer").style.display = "none";
         document.getElementById("paginationDiv").style.display = "none";
         document.getElementById("saveBtn").style.display = "none";
         document.getElementById("bulkScoreDiv").style.display = "none";
@@ -1422,6 +1474,7 @@
         for (let i = 0; i < allStudents.length; i++) {
           allStudents[i].score = "غ";
         }
+        filteredStudents = [...allStudents];
         closeBulkModal();
         renderTable();
         saveStateLocally();
@@ -1434,6 +1487,7 @@
             allStudents[i].score = "";
           }
         }
+        filteredStudents = [...allStudents];
         closeBulkModal();
         renderTable();
         saveStateLocally();
@@ -1447,6 +1501,7 @@
         for (let i = 0; i < allStudents.length; i++) {
           allStudents[i].score = "";
         }
+        filteredStudents = [...allStudents];
         highlightErrors = false;
         closeBulkModal();
         renderTable();
@@ -1467,6 +1522,7 @@
             allStudents[i].score = cleanedStr;
           }
         }
+        filteredStudents = [...allStudents];
         inputEl.value = "";
         closeBulkModal();
         renderTable();
@@ -1496,6 +1552,7 @@
         const grade = gradeSelect.value;
         const section = sectionSelect.value;
         const subject = subjectSelect.value;
+
         hideTableAndMessages();
         loader.style.display = "block";
         searchBtn.disabled = true;
@@ -1506,15 +1563,20 @@
         sectionSelect.disabled = true;
         subjectSelect.disabled = true;
 
-        const url = `${APPS_SCRIPT_URL}?action=getStudents&sheetName=${encodeURIComponent(
-          sheetName
-        )}&grade=${encodeURIComponent(grade)}&section=${encodeURIComponent(
-          section
-        )}&subject=${encodeURIComponent(subject)}&username=${encodeURIComponent(
-          auth.user
-        )}&password=${encodeURIComponent(auth.pass)}`;
+        const payload = {
+          action: "getStudents",
+          token: auth.token,
+          sheetName: sheetName,
+          grade: grade,
+          section: section,
+          subject: subject,
+        };
 
-        fetch(url)
+        fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload),
+        })
           .then((response) => response.json())
           .then((data) => {
             loader.style.display = "none";
@@ -1525,9 +1587,11 @@
             gradeSelect.disabled = false;
             sectionSelect.disabled = false;
             subjectSelect.disabled = false;
+
             if (data.status === "error") {
               if (
-                data.message.includes("غير صحيحة") ||
+                data.message.includes("منتهية") ||
+                data.message.includes("غير صالحة") ||
                 data.message.includes("موقوف")
               ) {
                 logout();
@@ -1540,9 +1604,15 @@
               showMessage("لا يوجد طلاب مسجلين طبقًا للخيارات السابقة.", true);
               return;
             }
-            allStudents = data.students;
+
+            allStudents = data.students.map((s) => ({
+              ...s,
+              originalScore: s.score,
+            }));
+            filteredStudents = [...allStudents];
             currentPage = 1;
             highlightErrors = false;
+
             const saveBtn = document.getElementById("saveBtn");
             const saveBtnText = saveBtn.querySelector(".btn-text");
             saveBtn.disabled = false;
@@ -1553,14 +1623,17 @@
             saveBtn.className = "form-control btn-success pulse-success";
             saveBtnText.innerText = "💾 حفظ الدرجات";
 
+            document.getElementById("liveSearchInput").value = "";
             document.getElementById("bulkScoreInput").value = "";
             document.getElementById("bulkScoreDiv").style.display = "flex";
+            document.getElementById("searchContainer").style.display = "block";
             document.getElementById("tableControls").style.display = "flex";
 
             renderTable();
             saveStateLocally();
             document.getElementById("studentsTable").style.display = "table";
             saveBtn.style.display = "block";
+
             setTimeout(() => {
               const firstInput = document.querySelector(".student-score");
               if (firstInput && !firstInput.disabled) {
@@ -1585,10 +1658,12 @@
       function renderTable() {
         const tbody = document.getElementById("studentsBody");
         tbody.innerHTML = "";
-        const totalPages = Math.ceil(allStudents.length / rowsPerPage);
+        const totalPages = Math.ceil(filteredStudents.length / rowsPerPage);
         document.getElementById("currentPageNum").innerText = currentPage;
-        document.getElementById("totalPagesNum").innerText = totalPages;
+        document.getElementById("totalPagesNum").innerText =
+          totalPages > 0 ? totalPages : 1;
         const pagination = document.getElementById("paginationDiv");
+
         if (totalPages > 1) {
           pagination.style.display = "flex";
           document.getElementById("prevBtn").disabled = currentPage === 1;
@@ -1597,16 +1672,16 @@
         } else {
           pagination.style.display = "none";
         }
+
         const start = (currentPage - 1) * rowsPerPage;
-        const end = Math.min(start + rowsPerPage, allStudents.length);
-        const pageStudents = allStudents.slice(start, end);
+        const end = Math.min(start + rowsPerPage, filteredStudents.length);
+        const pageStudents = filteredStudents.slice(start, end);
 
         document.getElementById(
           "studentCountInfo"
-        ).innerText = `إجمالي الطلاب: ${allStudents.length} | الظاهر بالصفحة: ${pageStudents.length}`;
+        ).innerText = `إجمالي: ${allStudents.length} | نتيجة البحث: ${filteredStudents.length} | الظاهر: ${pageStudents.length}`;
 
         pageStudents.forEach((student, index) => {
-          const globalIndex = start + index;
           const isAbsent = student.score === "غ";
           const displayScore = isAbsent ? "" : student.score;
           const isEmpty =
@@ -1626,16 +1701,18 @@
             <td>
               <div class="checkbox-wrapper">
                 <input type='text' inputmode='numeric' class='score-input student-score ${isErrorClass}' placeholder='الدرجة' value='${displayScore}' 
-                       id='score_${globalIndex}'
+                       id='score_${student.id}'
                        ${isAbsent ? "disabled" : ""}
                        onfocus='this.select()' 
-                       oninput='handleScoreInput(${globalIndex}, this)' 
+                       oninput='handleScoreInput("${student.id}", this)' 
                        onkeydown='handleEnter(event, this)'>
                 <label class="absent-label">
                   <input type='checkbox' class='absent-checkbox' ${
                     isAbsent ? "checked" : ""
                   } 
-                         onchange='toggleAbsence(${globalIndex}, this.checked)'>
+                         onchange='toggleAbsence("${
+                           student.id
+                         }", this.checked)'>
                   غائب
                 </label>
               </div>
@@ -1651,9 +1728,14 @@
         renderTable();
       }
 
-      function updateStudentScore(globalIndex, value) {
-        allStudents[globalIndex].score = value;
-        saveStateLocally();
+      function updateStudentScore(studentId, value) {
+        const student = allStudents.find(
+          (s) => String(s.id) === String(studentId)
+        );
+        if (student) {
+          student.score = value;
+          saveStateLocally();
+        }
       }
 
       function handleEnter(event, currentInput) {
@@ -1663,7 +1745,7 @@
             document.getElementsByClassName("student-score")
           );
           const currentIndex = inputs.indexOf(currentInput);
-          const totalPages = Math.ceil(allStudents.length / rowsPerPage);
+          const totalPages = Math.ceil(filteredStudents.length / rowsPerPage);
           let nextIndex = currentIndex + 1;
           while (nextIndex < inputs.length && inputs[nextIndex].disabled) {
             nextIndex++;
@@ -1709,29 +1791,40 @@
         const saveBtnText = saveBtn.querySelector(".btn-text");
         if (saveBtn.disabled) return;
 
-        let firstEmptyIndex = -1;
+        let emptyStudentId = null;
         for (let i = 0; i < allStudents.length; i++) {
           if (
             allStudents[i].score === "" ||
             allStudents[i].score === null ||
             allStudents[i].score === undefined
           ) {
-            if (firstEmptyIndex === -1) firstEmptyIndex = i;
+            emptyStudentId = allStudents[i].id;
+            break;
           }
         }
 
-        if (firstEmptyIndex !== -1) {
+        if (emptyStudentId !== null) {
+          document.getElementById("liveSearchInput").value = "";
+          filterTable();
+
+          const indexInFiltered = filteredStudents.findIndex(
+            (s) => String(s.id) === String(emptyStudentId)
+          );
           highlightErrors = true;
-          const targetPage = Math.floor(firstEmptyIndex / rowsPerPage) + 1;
-          if (currentPage !== targetPage) {
-            currentPage = targetPage;
+
+          if (indexInFiltered !== -1) {
+            const targetPage = Math.floor(indexInFiltered / rowsPerPage) + 1;
+            if (currentPage !== targetPage) {
+              currentPage = targetPage;
+            }
           }
+
           renderTable();
           showSaveMessage("⚠️ يرجى إدخال جميع الدرجات، توجد حقول فارغة!", true);
 
           setTimeout(() => {
             const emptyInput = document.getElementById(
-              "score_" + firstEmptyIndex
+              "score_" + emptyStudentId
             );
             if (emptyInput && !emptyInput.disabled) {
               emptyInput.scrollIntoView({
@@ -1749,20 +1842,25 @@
         const grade = document.getElementById("gradeSelect").value;
         const section = document.getElementById("sectionSelect").value;
         const subject = document.getElementById("subjectSelect").value;
+
         document.getElementById("inlineMessage").style.display = "none";
         document.getElementById("saveMessage").style.display = "none";
         saveBtn.disabled = true;
         saveBtn.classList.remove("pulse-success");
         saveBtnText.innerText = "⏳ جاري الحفظ...";
 
+        const modifiedStudents = allStudents.filter(
+          (s) => s.score !== s.originalScore
+        );
+
         const payload = {
-          username: auth.user,
-          password: auth.pass,
+          action: "saveGrades",
+          token: auth.token,
           sheetName: sheetName,
           grade: grade,
           section: section,
           subject: subject,
-          gradesData: allStudents,
+          gradesData: modifiedStudents,
         };
 
         fetch(APPS_SCRIPT_URL, {
@@ -1776,6 +1874,7 @@
               localStorage.removeItem("alkhateeb_grades_draft");
               document.getElementById("studentsTable").style.display = "none";
               document.getElementById("tableControls").style.display = "none";
+              document.getElementById("searchContainer").style.display = "none";
               document.getElementById("paginationDiv").style.display = "none";
               document.getElementById("saveBtn").style.display = "none";
               document.getElementById("bulkScoreDiv").style.display = "none";
@@ -1793,7 +1892,8 @@
               saveBtn.classList.add("pulse-success");
               saveBtnText.innerText = "💾 حفظ الدرجات";
               if (
-                data.message.includes("غير صحيحة") ||
+                data.message.includes("منتهية") ||
+                data.message.includes("غير صالحة") ||
                 data.message.includes("موقوف")
               ) {
                 logout();
