@@ -417,6 +417,11 @@
         box-shadow: 0 0 0 3px rgba(178, 58, 72, 0.2) !important;
         background-color: #fff0f0 !important;
       }
+      .modified-input {
+        background-color: #e6f6ec !important;
+        border-color: #28a745 !important;
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2) !important;
+      }
       .checkbox-wrapper {
         display: flex;
         align-items: center;
@@ -1031,6 +1036,14 @@
       let currentModalAction = "";
       let highlightErrors = false;
 
+      window.addEventListener("beforeunload", function (e) {
+        const hasChanges = allStudents.some((s) => s.score !== s.originalScore);
+        if (hasChanges) {
+          e.preventDefault();
+          e.returnValue = "";
+        }
+      });
+
       window.onload = function () {
         checkAuth();
       };
@@ -1096,10 +1109,7 @@
             if (data.status === "success") {
               localStorage.setItem(
                 "alkhateeb_auth",
-                JSON.stringify({
-                  token: data.token,
-                  name: data.teacherName,
-                })
+                JSON.stringify({ token: data.token, name: data.teacherName })
               );
               userInput.disabled = false;
               passInput.disabled = false;
@@ -1304,6 +1314,7 @@
         }
         inputEl.value = cleanedStr;
         updateStudentScore(studentId, cleanedStr);
+        checkModifiedState(studentId, inputEl);
       }
 
       function toggleAbsence(studentId, isChecked) {
@@ -1317,6 +1328,41 @@
           inputEl.disabled = false;
           updateStudentScore(studentId, "");
           inputEl.focus();
+        }
+        checkModifiedState(studentId, inputEl);
+      }
+
+      function checkModifiedState(studentId, inputEl) {
+        const student = allStudents.find(
+          (s) => String(s.id) === String(studentId)
+        );
+        if (student) {
+          if (student.score !== student.originalScore) {
+            inputEl.classList.add("modified-input");
+          } else {
+            inputEl.classList.remove("modified-input");
+          }
+        }
+        updateSaveButton();
+      }
+
+      function updateSaveButton() {
+        const saveBtnText = document.querySelector("#saveBtn .btn-text");
+        if (!saveBtnText) return;
+        const modifiedCount = allStudents.filter(
+          (s) => s.score !== s.originalScore
+        ).length;
+
+        if (modifiedCount === 0) {
+          saveBtnText.innerText = "💾 حفظ الدرجات";
+        } else if (modifiedCount === 1) {
+          saveBtnText.innerText = "💾 حفظ درجة طالب واحد";
+        } else if (modifiedCount === 2) {
+          saveBtnText.innerText = "💾 حفظ درجات طالبين";
+        } else if (modifiedCount >= 3 && modifiedCount <= 10) {
+          saveBtnText.innerText = "💾 حفظ درجات " + modifiedCount + " طلاب";
+        } else {
+          saveBtnText.innerText = "💾 حفظ درجات " + modifiedCount + " طالب";
         }
       }
 
@@ -1609,21 +1655,19 @@
               ...s,
               originalScore: s.score,
             }));
+            document.getElementById("liveSearchInput").value = "";
             filteredStudents = [...allStudents];
             currentPage = 1;
             highlightErrors = false;
 
             const saveBtn = document.getElementById("saveBtn");
-            const saveBtnText = saveBtn.querySelector(".btn-text");
             saveBtn.disabled = false;
             saveBtn.onclick = function (event) {
               addRipple(event, this);
               saveData();
             };
             saveBtn.className = "form-control btn-success pulse-success";
-            saveBtnText.innerText = "💾 حفظ الدرجات";
 
-            document.getElementById("liveSearchInput").value = "";
             document.getElementById("bulkScoreInput").value = "";
             document.getElementById("bulkScoreDiv").style.display = "flex";
             document.getElementById("searchContainer").style.display = "block";
@@ -1679,7 +1723,7 @@
 
         document.getElementById(
           "studentCountInfo"
-        ).innerText = `إجمالي: ${allStudents.length} | نتيجة البحث: ${filteredStudents.length} | الظاهر: ${pageStudents.length}`;
+        ).innerText = `إجمالي الطلاب: ${allStudents.length} | المفلتر: ${filteredStudents.length} | الظاهر: ${pageStudents.length}`;
 
         pageStudents.forEach((student, index) => {
           const isAbsent = student.score === "غ";
@@ -1690,6 +1734,8 @@
             student.score === undefined;
           const isErrorClass =
             highlightErrors && !isAbsent && isEmpty ? "error-border" : "";
+          const isModifiedClass =
+            student.score !== student.originalScore ? "modified-input" : "";
 
           const row = document.createElement("tr");
           row.className = "row-anim";
@@ -1700,7 +1746,7 @@
             )}</td>
             <td>
               <div class="checkbox-wrapper">
-                <input type='text' inputmode='numeric' class='score-input student-score ${isErrorClass}' placeholder='الدرجة' value='${displayScore}' 
+                <input type='text' inputmode='numeric' class='score-input student-score ${isErrorClass} ${isModifiedClass}' placeholder='الدرجة' value='${displayScore}' 
                        id='score_${student.id}'
                        ${isAbsent ? "disabled" : ""}
                        onfocus='this.select()' 
@@ -1720,6 +1766,7 @@
           `;
           tbody.appendChild(row);
         });
+        updateSaveButton();
       }
 
       function changePage(direction) {
@@ -1786,7 +1833,6 @@
           return;
         }
         const auth = JSON.parse(authData);
-
         const saveBtn = document.getElementById("saveBtn");
         const saveBtnText = saveBtn.querySelector(".btn-text");
         if (saveBtn.disabled) return;
@@ -1806,22 +1852,18 @@
         if (emptyStudentId !== null) {
           document.getElementById("liveSearchInput").value = "";
           filterTable();
-
           const indexInFiltered = filteredStudents.findIndex(
             (s) => String(s.id) === String(emptyStudentId)
           );
           highlightErrors = true;
-
           if (indexInFiltered !== -1) {
             const targetPage = Math.floor(indexInFiltered / rowsPerPage) + 1;
             if (currentPage !== targetPage) {
               currentPage = targetPage;
             }
           }
-
           renderTable();
           showSaveMessage("⚠️ يرجى إدخال جميع الدرجات، توجد حقول فارغة!", true);
-
           setTimeout(() => {
             const emptyInput = document.getElementById(
               "score_" + emptyStudentId
@@ -1871,6 +1913,7 @@
           .then((response) => response.json())
           .then((data) => {
             if (data.status === "success") {
+              allStudents.forEach((s) => (s.originalScore = s.score));
               localStorage.removeItem("alkhateeb_grades_draft");
               document.getElementById("studentsTable").style.display = "none";
               document.getElementById("tableControls").style.display = "none";
@@ -1890,7 +1933,7 @@
             } else {
               saveBtn.disabled = false;
               saveBtn.classList.add("pulse-success");
-              saveBtnText.innerText = "💾 حفظ الدرجات";
+              updateSaveButton();
               if (
                 data.message.includes("منتهية") ||
                 data.message.includes("غير صالحة") ||
@@ -1905,7 +1948,7 @@
           .catch((error) => {
             saveBtn.disabled = false;
             saveBtn.classList.add("pulse-success");
-            saveBtnText.innerText = "💾 حفظ الدرجات";
+            updateSaveButton();
             showSaveMessage(
               "حدث مشكلة في الإرسال، تأكد من الاتصال بالإنترنت.",
               true
