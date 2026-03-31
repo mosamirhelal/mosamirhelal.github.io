@@ -796,7 +796,9 @@
     <div class="container" id="mainContainer" style="display: none">
       <div class="header-actions">
         <span class="teacher-name" id="teacherNameDisplay"></span>
-        <button class="btn-logout" onclick="logout(false)">تسجيل خروج</button>
+        <button class="btn-logout" onclick="showLogoutConfirm()">
+          تسجيل خروج
+        </button>
       </div>
       <div class="top-logos">
         <img
@@ -1131,18 +1133,7 @@
           });
       }
 
-      function logout(force = false) {
-        if (!force) {
-          const hasChanges = allStudents.some(
-            (s) => s.score !== s.originalScore
-          );
-          if (hasChanges) {
-            const confirmLeave = confirm(
-              "⚠️ لديك درجات لم يتم حفظها! هل أنت متأكد أنك تريد تسجيل الخروج وإلغاء تعديلاتك؟"
-            );
-            if (!confirmLeave) return;
-          }
-        }
+      function executeLogout() {
         const authData = localStorage.getItem("alkhateeb_auth");
         if (authData) {
           const auth = JSON.parse(authData);
@@ -1504,11 +1495,24 @@
         document.getElementById("customModal").style.display = "flex";
       }
 
+      function showLogoutConfirm() {
+        const hasChanges = allStudents.some((s) => s.score !== s.originalScore);
+        if (hasChanges) {
+          currentModalAction = "logout";
+          document.getElementById("modalTitleText").innerText =
+            "⚠️ لديك درجات لم يتم حفظها! هل أنت متأكد أنك تريد تسجيل الخروج وإلغاء تعديلاتك؟";
+          document.getElementById("customModal").style.display = "flex";
+        } else {
+          executeLogout();
+        }
+      }
+
       function executeModalAction() {
         if (currentModalAction === "bulkScore") confirmBulkScore();
         else if (currentModalAction === "bulkAbsent") confirmBulkAbsent();
         else if (currentModalAction === "allPresent") confirmAllPresent();
         else if (currentModalAction === "clearAll") confirmClearAll();
+        else if (currentModalAction === "logout") executeLogout();
       }
 
       function confirmBulkAbsent() {
@@ -1635,7 +1639,7 @@
 
             if (data.status === "error") {
               if (data.message.includes("موقوف")) {
-                logout(true);
+                executeLogout();
                 return;
               }
               if (
@@ -1939,7 +1943,7 @@
               saveBtn.classList.add("pulse-success");
               updateSaveButton();
               if (data.message.includes("موقوف")) {
-                logout(true);
+                executeLogout();
                 return;
               }
               if (
