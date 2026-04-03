@@ -28,7 +28,7 @@
     }
     .container {
       background: white; padding: 30px; border-radius: 15px; width: 100%;
-      max-width: 800px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+      max-width: 850px; margin: 0 auto; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
       animation: slideInUp 0.8s ease-out; position: relative; z-index: 10;
     }
     .top-logos { display: flex; justify-content: center; gap: 20px; margin-bottom: 15px; }
@@ -44,15 +44,67 @@
     .form-control:disabled { background-color: #f5f5f5; cursor: not-allowed; color: #999; }
     
     button {
-      background-color: #0056b3; color: white; border: none; cursor: pointer;
-      font-weight: bold; width: 100%; max-width: 400px; margin: 0 auto; padding: 12px;
-      border-radius: 11px; display: block; transition: 0.2s; font-family: inherit; font-size: 16px;
+      background: linear-gradient(135deg, #0056b3 0%, #004494 100%);
+      color: white; border: none; cursor: pointer; font-weight: 800;
+      width: 100%; max-width: 400px; margin: 0 auto; padding: 12px;
+      border-radius: 11px; display: block; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      font-family: inherit; font-size: 16px; box-shadow: 0 4px 6px rgba(0, 86, 179, 0.2);
     }
-    button:hover:not(:disabled) { background-color: #004494; transform: translateY(-2px); }
-    button:disabled { background-color: #6c757d !important; cursor: not-allowed; }
-    
-    .btn-today { background-color: #4a4e69; width: auto; margin: 0; padding: 10px 15px; font-size: 14px; }
-    .btn-today:hover:not(:disabled) { background-color: #22223b; }
+    button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 86, 179, 0.3);
+      background: linear-gradient(135deg, #004494 0%, #003377 100%);
+    }
+    button:active:not(:disabled) { transform: translateY(1px); box-shadow: 0 2px 4px rgba(0, 86, 179, 0.2); }
+    button:disabled { background: #6c757d !important; box-shadow: none !important; transform: none !important; cursor: not-allowed; }
+
+    .btn-info {
+      background: linear-gradient(135deg, #17a2b8 0%, #117a8b 100%);
+      box-shadow: 0 4px 6px rgba(23, 162, 184, 0.2);
+    }
+    .btn-info:hover:not(:disabled) {
+      background: linear-gradient(135deg, #117a8b 0%, #0c5460 100%);
+      box-shadow: 0 6px 12px rgba(23, 162, 184, 0.3);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+      box-shadow: 0 4px 6px rgba(40, 167, 69, 0.2);
+    }
+    .btn-success:hover:not(:disabled) {
+      background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
+      box-shadow: 0 6px 12px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-logout {
+      background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+      box-shadow: 0 4px 6px rgba(220, 53, 69, 0.2);
+      max-width: 120px; padding: 6px; font-size: 14px; margin: 0;
+    }
+    .btn-logout:hover:not(:disabled) {
+      background: linear-gradient(135deg, #c82333 0%, #bd2130 100%);
+      box-shadow: 0 6px 12px rgba(220, 53, 69, 0.3);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+      box-shadow: 0 4px 6px rgba(108, 117, 125, 0.2);
+      max-width: 120px; padding: 6px; font-size: 14px; margin: 0;
+    }
+    .btn-secondary:hover:not(:disabled) {
+      background: linear-gradient(135deg, #5a6268 0%, #4e555b 100%);
+      box-shadow: 0 6px 12px rgba(108, 117, 125, 0.3);
+    }
+
+    .btn-today {
+      background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+      box-shadow: 0 4px 6px rgba(108, 117, 125, 0.2);
+      width: auto; margin: 0; padding: 10px 15px; font-size: 14px;
+    }
+    .btn-today:hover:not(:disabled) {
+      background: linear-gradient(135deg, #5a6268 0%, #4e555b 100%);
+      box-shadow: 0 6px 12px rgba(108, 117, 125, 0.3);
+    }
 
     .status-message { padding: 12px; border-radius: 8px; margin-top: 15px; font-weight: bold; display: none; animation: popIn 0.3s ease; }
     .success-msg { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
@@ -61,7 +113,13 @@
     
     .header-actions { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px; }
     .user-name-display { font-weight: bold; color: #0056b3; }
-    .btn-logout { background-color: #dc3545; max-width: 120px; padding: 6px; font-size: 14px; margin:0; }
+
+    .tabs-container { display: flex; justify-content: center; gap: 8px; margin-bottom: 25px; flex-wrap: wrap; background: #fff; padding: 8px; border-radius: 12px; border: 1px solid #e9ecef; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); }
+    .tab-btn { background: transparent; color: #6c757d; box-shadow: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; flex: 1; min-width: 120px; margin: 0; }
+    .tab-btn:hover { background: rgba(0, 86, 179, 0.05); color: #0056b3; transform: none; box-shadow: none; }
+    .tab-btn.active { background: linear-gradient(135deg, #0056b3 0%, #004494 100%); color: white; box-shadow: 0 4px 8px rgba(0, 86, 179, 0.25); transform: translateY(-1px); }
+    .tab-content { display: none; animation: fadeInPage 0.4s ease; }
+    .tab-content.active { display: block; }
 
     .dual-search { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px; }
     .dual-search > div, .dual-search > select { flex: 1; min-width: 250px; max-width: 100%; margin: 0; }
@@ -104,6 +162,27 @@
     .timeline-title { font-size: 16px; font-weight: bold; color: #333; }
     .timeline-notes { font-size: 14px; color: #666; margin-top: 5px; }
 
+    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-top: 20px; direction: rtl; }
+    .dash-card { background: #fff; border: 1px solid #e1e1e1; border-radius: 12px; padding: 15px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.3s ease; }
+    .dash-card:hover { transform: translateY(-3px); }
+    .dash-card h4 { margin: 0 0 10px 0; color: #4a4e69; font-size: 14px; font-weight: bold; }
+    .dash-card .dash-value { font-size: 26px; font-weight: 800; color: #0056b3; }
+    .dash-card.danger .dash-value { color: #dc3545; }
+    .dash-card.warning .dash-value { color: #fd7e14; }
+    .dash-card.success .dash-value { color: #28a745; }
+
+    .table-responsive { overflow-x: auto; margin-top: 20px; background: white; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border: 1px solid #eee;}
+    .custom-table { width: 100%; border-collapse: collapse; text-align: right; min-width: 600px; }
+    .custom-table th, .custom-table td { padding: 15px; border-bottom: 1px solid #eee; font-size: 15px;}
+    .custom-table th { background-color: #f1f5f9; color: #0056b3; font-weight: bold; }
+    .custom-table tr:hover { background-color: #f8f9fa; }
+    .badge { padding: 5px 12px; border-radius: 20px; font-size: 13px; font-weight: bold; display: inline-block;}
+    .badge-danger { background: #ffeeba; color: #dc3545; }
+    .badge-warning { background: #fff3cd; color: #856404; }
+    .badge-success { background: #d4edda; color: #155724; }
+
+    .placeholder-msg { padding: 40px; color: #888; border: 2px dashed #ddd; border-radius: 12px; margin-top: 20px; text-align: center;}
+
     @media (max-width: 480px) { .circle-wrapper { width: 100px; } .dual-search { flex-direction: column; } .date-row { flex-direction: column; } }
   </style>
 </head>
@@ -133,92 +212,162 @@
       <span class="user-name-display" id="adminNameDisplay"></span>
       <button class="btn-logout" onclick="executeLogout()">تسجيل خروج</button>
     </div>
-    <h2>تسجيل الحضور والغياب</h2>
     
-    <div class="dual-search">
-      <div class="search-container">
-        <input type="text" id="adminSearchInput" class="form-control" placeholder="ابحث باسم المعلم أو الكود..." oninput="handleLiveSearch()" onfocus="this.select()" onclick="this.select()" autocomplete="off" style="margin-bottom:0;" />
-        <div id="searchResults" class="autocomplete-items" style="display: none;"></div>
-      </div>
-      <select id="adminTeacherSelect" class="form-control" onchange="selectTeacherFromDropdown()">
-        <option value="">-- أو اختر من القائمة --</option>
-      </select>
+    <div class="tabs-container">
+      <button class="tab-btn active" onclick="switchTab('tab-record', this)">تسجيل الإجراءات</button>
+      <button class="tab-btn" onclick="switchTab('tab-today', this)">حالة اليوم</button>
+      <button class="tab-btn" onclick="switchTab('tab-history', this)">السجل الشامل</button>
+      <button class="tab-btn" onclick="switchTab('tab-approvals', this)">الاعتمادات</button>
     </div>
 
-    <div class="action-card" id="actionCard">
-      <h3 id="selectedTeacherName"></h3>
-      <input type="hidden" id="selectedTeacherCode" />
-      <input type="hidden" id="selectedTeacherStart" />
-
-      <select id="actionTypeSelect" class="form-control" style="max-width: 100%;" onchange="handleActionTypeChange()">
-        <option value="">-- اختر الإجراء --</option>
-        <option value="تأخر صباحي">تأخر صباحي</option>
-        <option value="تأخر بإذن">تأخر بإذن</option>
-        <option value="غياب">غياب</option>
-        <option value="غياب بعذر">غياب بعذر</option>
-        <option value="اعتيادي">إجازة اعتيادي</option>
-        <option value="مرضي">إجازة مرضي</option>
-        <option value="خروج بدون إذن">خروج بدون إذن</option>
-        <option value="خروج بإذن">خروج بإذن</option>
-        <option value="إذن صباحي">إذن صباحي</option>
-      </select>
-
-      <div id="dynamicArea" class="dynamic-area" style="display: none;">
-        <div id="timeCalcArea" style="display: none;">
-          <div class="time-input-group">
-            <span style="font-weight:bold;">وقت الإجراء:</span>
-            <input type="time" id="actionTimeInput" class="form-control" style="width:130px; margin:0; direction: ltr;" onchange="calculateDelay()" />
-            <button onclick="setNowTime()" style="width:auto; margin:0; padding:10px;">الآن</button>
-          </div>
-          <div id="delayResultArea" class="time-input-group" style="display:none; background: #fff0f0; padding: 10px; border-radius: 8px;">
-            <span style="font-weight:bold; color: #dc3545;">التأخير (بالدقائق):</span>
-            <input type="number" id="manualDelayInput" class="form-control" style="width:80px; margin:0; border-color: #dc3545; color: #dc3545; font-weight: bold; text-align: center; direction: ltr;" min="0" />
-          </div>
+    <div id="tab-record" class="tab-content active">
+      <div class="dual-search">
+        <div class="search-container">
+          <input type="text" id="adminSearchInput" class="form-control" placeholder="ابحث باسم المعلم أو الكود..." oninput="handleLiveSearch()" onfocus="this.select()" onclick="this.select()" autocomplete="off" style="margin-bottom:0;" />
+          <div id="searchResults" class="autocomplete-items" style="display: none;"></div>
         </div>
+        <select id="adminTeacherSelect" class="form-control" onchange="selectTeacherFromDropdown()">
+          <option value="">-- أو اختر من القائمة --</option>
+        </select>
+      </div>
 
-        <div id="dateSelectArea" style="display: none;">
-          <div class="radio-group">
-            <label><input type="radio" name="dateMode" value="single" checked onchange="toggleDateMode()"> تسجيل يوم واحد</label>
-            <label><input type="radio" name="dateMode" value="multiple" onchange="toggleDateMode()"> تسجيل عدة أيام</label>
-          </div>
+      <div class="action-card" id="actionCard">
+        <h3 id="selectedTeacherName"></h3>
+        <input type="hidden" id="selectedTeacherCode" />
+        <input type="hidden" id="selectedTeacherStart" />
 
-          <div id="singleDayArea">
-            <div class="date-row">
-              <label style="font-weight:bold;">التاريخ:</label>
-              <input type="date" id="singleDateInput" class="form-control" style="max-width:200px; margin:0;" />
-              <button onclick="setToday('singleDateInput')" class="btn-today">اليوم</button>
+        <select id="actionTypeSelect" class="form-control" style="max-width: 100%;" onchange="handleActionTypeChange()">
+          <option value="">-- اختر الإجراء --</option>
+          <option value="تأخر صباحي">تأخر صباحي</option>
+          <option value="تأخر بإذن">تأخر بإذن</option>
+          <option value="غياب">غياب</option>
+          <option value="غياب بعذر">غياب بعذر</option>
+          <option value="اعتيادي">إجازة اعتيادي</option>
+          <option value="مرضي">إجازة مرضي</option>
+          <option value="خروج بدون إذن">خروج بدون إذن</option>
+          <option value="خروج بإذن">خروج بإذن</option>
+          <option value="إذن صباحي">إذن صباحي</option>
+        </select>
+
+        <div id="dynamicArea" class="dynamic-area" style="display: none;">
+          <div id="timeCalcArea" style="display: none;">
+            <div class="time-input-group">
+              <span style="font-weight:bold;">وقت الإجراء:</span>
+              <input type="time" id="actionTimeInput" class="form-control" style="width:130px; margin:0; direction: ltr;" onchange="calculateDelay()" />
+              <button onclick="setNowTime()" style="width:auto; margin:0; padding:10px;">الآن</button>
+            </div>
+            <div id="delayResultArea" class="time-input-group" style="display:none; background: #fff0f0; padding: 10px; border-radius: 8px;">
+              <span style="font-weight:bold; color: #dc3545;">التأخير (بالدقائق):</span>
+              <input type="number" id="manualDelayInput" class="form-control" style="width:80px; margin:0; border-color: #dc3545; color: #dc3545; font-weight: bold; text-align: center; direction: ltr;" min="0" />
             </div>
           </div>
 
-          <div id="multipleDaysArea" style="display: none;">
-            <div class="date-row">
-              <label style="font-weight:bold;">البداية:</label>
-              <input type="date" id="startDateInput" class="form-control" style="max-width:150px; margin:0;" onchange="generateCheckboxes()" />
-              <button onclick="setToday('startDateInput')" class="btn-today">اليوم</button>
+          <div id="dateSelectArea" style="display: none;">
+            <div class="radio-group">
+              <label><input type="radio" name="dateMode" value="single" checked onchange="toggleDateMode()"> تسجيل يوم واحد</label>
+              <label><input type="radio" name="dateMode" value="multiple" onchange="toggleDateMode()"> تسجيل عدة أيام</label>
+            </div>
+
+            <div id="singleDayArea">
+              <div class="date-row">
+                <label style="font-weight:bold;">التاريخ:</label>
+                <input type="date" id="singleDateInput" class="form-control" style="max-width:200px; margin:0;" />
+                <button onclick="setToday('singleDateInput')" class="btn-today">اليوم</button>
+              </div>
+            </div>
+
+            <div id="multipleDaysArea" style="display: none;">
+              <div class="date-row">
+                <label style="font-weight:bold;">البداية:</label>
+                <input type="date" id="startDateInput" class="form-control" style="max-width:150px; margin:0;" onchange="generateCheckboxes()" />
+                <button onclick="setToday('startDateInput')" class="btn-today">اليوم</button>
+                
+                <label style="font-weight:bold; margin-right: 15px;">النهاية:</label>
+                <input type="date" id="endDateInput" class="form-control" style="max-width:150px; margin:0;" onchange="generateCheckboxes()" />
+                <button onclick="setToday('endDateInput')" class="btn-today">اليوم</button>
+              </div>
               
-              <label style="font-weight:bold; margin-right: 15px;">النهاية:</label>
-              <input type="date" id="endDateInput" class="form-control" style="max-width:150px; margin:0;" onchange="generateCheckboxes()" />
-              <button onclick="setToday('endDateInput')" class="btn-today">اليوم</button>
+              <div id="selectAllContainer" style="display:none; text-align:right; margin-top:15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <label style="font-weight:bold; cursor:pointer; color:#0056b3;">
+                  <input type="checkbox" id="selectAllDays" checked onchange="toggleAllDays(this.checked)" style="accent-color:#0056b3; transform:scale(1.2); margin-left:5px;">
+                  تحديد جميع الأيام
+                </label>
+              </div>
+              
+              <div id="checkboxesContainer" class="checkbox-grid"></div>
             </div>
-            
-            <div id="selectAllContainer" style="display:none; text-align:right; margin-top:15px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-              <label style="font-weight:bold; cursor:pointer; color:#0056b3;">
-                <input type="checkbox" id="selectAllDays" checked onchange="toggleAllDays(this.checked)" style="accent-color:#0056b3; transform:scale(1.2); margin-left:5px;">
-                تحديد جميع الأيام
-              </label>
-            </div>
-            
-            <div id="checkboxesContainer" class="checkbox-grid"></div>
           </div>
-        </div>
 
-        <input type="text" id="actionNotes" class="form-control" style="max-width: 100%; margin-top:15px;" placeholder="ملاحظات (اختياري)..." />
-        <button id="saveActionBtn" style="background-color: #28a745;" onclick="saveAttendance()">تسجيل وحفظ</button>
+          <input type="text" id="actionNotes" class="form-control" style="max-width: 100%; margin-top:15px;" placeholder="ملاحظات (اختياري)..." />
+          <button id="saveActionBtn" class="btn-success" onclick="saveAttendance()">تسجيل وحفظ</button>
+        </div>
+      </div>
+      
+      <div class="loader" id="adminLoader"></div>
+      <div id="adminMessage" class="status-message"></div>
+    </div>
+
+    <div id="tab-today" class="tab-content">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 15px;">
+        <h3 style="margin:0; color:#0056b3;">نظرة عامة على أحداث اليوم</h3>
+        <button onclick="fetchTodayStatus()" class="btn-info" style="width:auto; margin:0; padding:8px 15px;">تحديث البيانات</button>
+      </div>
+
+      <div class="loader" id="todayLoader" style="display:none;"></div>
+      <div id="todayDashboard" class="dashboard-grid" style="display: none; margin-bottom: 20px;"></div>
+
+      <div id="todayTableContainer" class="table-responsive" style="display:none;">
+        <table class="custom-table" id="todayTable">
+          <thead>
+            <tr><th>المعلم</th><th>الإجراء</th><th>الكمية</th><th>ملاحظات</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div id="todayEmpty" class="placeholder-msg">اضغط على "تحديث البيانات" لعرض سجل اليوم.</div>
+    </div>
+
+    <div id="tab-history" class="tab-content">
+      <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; border: 1px solid #eee; margin-bottom: 20px;">
+        <h3 style="margin-top: 0; color: #0056b3; border-bottom: 2px solid #ddd; padding-bottom: 10px;">فلترة السجل واستخراج التقارير</h3>
+        <div class="date-row" style="margin-top: 15px;">
+          <label style="font-weight:bold;">من:</label>
+          <input type="date" id="historyStartDate" class="form-control" style="max-width:140px; margin:0;" />
+          <label style="font-weight:bold; margin-right:10px;">إلى:</label>
+          <input type="date" id="historyEndDate" class="form-control" style="max-width:140px; margin:0;" />
+          
+          <select id="historyTeacherSelect" class="form-control" style="max-width: 200px; margin:0 15px 0 0;">
+            <option value="">جميع المعلمين</option>
+          </select>
+
+          <button onclick="fetchHistoryData()" class="btn-info" style="width:auto; margin:0 15px 0 0; padding:10px 20px;">بحث وعرض</button>
+        </div>
+      </div>
+      
+      <div class="loader" id="historyLoader"></div>
+      
+      <div id="historyDashboard" class="dashboard-grid" style="display: none; margin-bottom: 30px;"></div>
+
+      <div id="historyTableContainer" class="table-responsive" style="display:none;">
+        <table class="custom-table" id="historyTable">
+          <thead>
+            <tr><th>التاريخ</th><th>المعلم</th><th>الإجراء</th><th>الكمية</th><th>المسؤول</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div id="historyEmpty" class="placeholder-msg" style="display:block;">لا توجد سجلات. حدد الفترة واضغط بحث وعرض.</div>
+    </div>
+
+    <div id="tab-approvals" class="tab-content">
+      <div class="placeholder-msg">
+        <h3>طلبات قيد الانتظار</h3>
+        <p>سيتم برمجة طلبات الإجازات ومرفقات المعلمين هنا للمراجعة والقبول أو الرفض في الخطوات القادمة.</p>
       </div>
     </div>
-    
-    <div class="loader" id="adminLoader"></div>
-    <div id="adminMessage" class="status-message"></div>
+
   </div>
 
   <div class="container" id="teacherContainer" style="display: none;">
@@ -255,7 +404,7 @@
       </div>
     </div>
 
-    <h3 style="text-align: right; color:#0056b3; border-bottom: 2px solid #eee; padding-bottom: 10px;">سجل الحركات الأخير</h3>
+    <h3 style="text-align: right; color:#0056b3; border-bottom: 2px solid #eee; padding-bottom: 10px;">سجل الإجراءات الأخير</h3>
     <div id="teacherTimeline" class="timeline"></div>
     <div class="loader" id="teacherLoader"></div>
   </div>
@@ -280,9 +429,13 @@
           const cachedTeachers = localStorage.getItem("alkhateeb_teachers");
           if(cachedTeachers) { 
             allTeachers = JSON.parse(cachedTeachers);
-            populateDropdown();
+            populateDropdowns();
           }
           
+          const today = new Date().toISOString().split('T')[0];
+          document.getElementById("historyStartDate").value = today;
+          document.getElementById("historyEndDate").value = today;
+
           fetchTeachersList(auth.token, false);
         } else {
           document.getElementById("teacherContainer").style.display = "block";
@@ -370,6 +523,18 @@
       setTimeout(() => element.style.display = "none", 4000);
     }
 
+    function switchTab(tabId, btnElement) {
+      document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      
+      document.getElementById(tabId).classList.add('active');
+      btnElement.classList.add('active');
+
+      if(tabId === 'tab-today') {
+        fetchTodayStatus();
+      }
+    }
+
     function fetchTeachersList(token, fromLogin = false) {
       const loader = document.getElementById("adminLoader");
       if(!fromLogin && allTeachers.length === 0) loader.style.display = "block";
@@ -381,7 +546,7 @@
         if (data.status === "success") {
           allTeachers = data.teachers;
           localStorage.setItem("alkhateeb_teachers", JSON.stringify(allTeachers));
-          populateDropdown();
+          populateDropdowns();
           
           if(fromLogin) {
             document.getElementById("loginLoader").style.display = "none";
@@ -400,14 +565,21 @@
       });
     }
 
-    function populateDropdown() {
-      const select = document.getElementById("adminTeacherSelect");
-      select.innerHTML = '<option value="">-- أو اختر من القائمة --</option>';
+    function populateDropdowns() {
+      const select1 = document.getElementById("adminTeacherSelect");
+      const select2 = document.getElementById("historyTeacherSelect");
+      
+      select1.innerHTML = '<option value="">-- أو اختر من القائمة --</option>';
+      select2.innerHTML = '<option value="">جميع المعلمين</option>';
+      
       allTeachers.forEach(t => {
-        let opt = document.createElement("option");
-        opt.value = t.code; 
-        opt.innerText = t.name + " (" + t.code + ")";
-        select.appendChild(opt);
+        let opt1 = document.createElement("option");
+        opt1.value = t.code; opt1.innerText = t.name + " (" + t.code + ")";
+        select1.appendChild(opt1);
+
+        let opt2 = document.createElement("option");
+        opt2.value = t.code; opt2.innerText = t.name;
+        select2.appendChild(opt2);
       });
     }
 
@@ -549,7 +721,6 @@
       document.getElementById("actionNotes").value = "";
       delayResultArea.style.display = "none";
 
-      // تم إزالة إذن صباحي من قائمة الوقت ليتم معاملته كأيام الغياب
       const timeBased = ["تأخر صباحي", "تأخر بإذن", "خروج بدون إذن", "خروج بإذن"];
       if (timeBased.includes(type)) {
         dateArea.style.display = "none"; 
@@ -724,6 +895,169 @@
       }).catch(err => { btn.disabled = false; btn.innerText = "تسجيل وحفظ"; showMsg(msgDiv, "خطأ في الاتصال", true); });
     }
 
+    function fetchTodayStatus() {
+      const auth = JSON.parse(localStorage.getItem("alkhateeb_hr_auth"));
+      const today = new Date().toISOString().split('T')[0];
+      
+      document.getElementById("todayLoader").style.display = "block";
+      document.getElementById("todayDashboard").style.display = "none";
+      document.getElementById("todayTableContainer").style.display = "none";
+      document.getElementById("todayEmpty").style.display = "none";
+
+      fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "getReports", token: auth.token, startDate: today, endDate: today, teacherCode: "" })
+      }).then(res => res.json()).then(data => {
+        document.getElementById("todayLoader").style.display = "none";
+        if(data.status === "success") {
+          renderTodayDashboard(data.totals);
+          renderTodayTable(data.history);
+        } else {
+          alert("خطأ: " + data.message);
+        }
+      }).catch(err => {
+        document.getElementById("todayLoader").style.display = "none";
+        alert("خطأ في الاتصال");
+      });
+    }
+
+    function renderTodayDashboard(totals) {
+      const dashboard = document.getElementById("todayDashboard");
+      dashboard.innerHTML = `
+        <div class="dash-card danger"><h4>تأخر صباحي</h4><div class="dash-value">${totals['تأخر صباحي']}</div><span style="font-size:12px; color:#666;">دقيقة</span></div>
+        <div class="dash-card danger"><h4>حالات غياب</h4><div class="dash-value">${(totals['غياب']||0) + (totals['غياب بعذر']||0)}</div><span style="font-size:12px; color:#666;">حالة</span></div>
+        <div class="dash-card success"><h4>إجازات اليوم</h4><div class="dash-value">${(totals['اعتيادي']||0) + (totals['مرضي']||0)}</div><span style="font-size:12px; color:#666;">إجازة</span></div>
+        <div class="dash-card warning"><h4>أذونات</h4><div class="dash-value">${(totals['خروج بإذن']||0) + (totals['إذن صباحي']||0)}</div><span style="font-size:12px; color:#666;">إذن</span></div>
+      `;
+      dashboard.style.display = "grid";
+    }
+
+    function renderTodayTable(history) {
+      const tbody = document.querySelector("#todayTable tbody");
+      const container = document.getElementById("todayTableContainer");
+      const emptyMsg = document.getElementById("todayEmpty");
+      
+      tbody.innerHTML = "";
+      
+      if (!history || history.length === 0) {
+        container.style.display = "none";
+        emptyMsg.style.display = "block";
+        emptyMsg.innerText = "لم يتم تسجيل أي إجراءات حتى الآن اليوم.";
+        return;
+      }
+
+      history.forEach(row => {
+        let badgeClass = getBadgeClass(row.type);
+        let tr = document.createElement("tr");
+        let suffix = ["تأخر صباحي", "تأخر بإذن", "خروج بدون إذن", "خروج بإذن"].includes(row.type) ? "ق" : "يوم";
+        
+        tr.innerHTML = `
+          <td><strong>${row.name}</strong></td>
+          <td><span class="badge ${badgeClass}">${row.type}</span></td>
+          <td style="font-weight:bold;">${row.amount} ${suffix}</td>
+          <td style="color:#666; font-size:13px;">${row.notes || '-'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      
+      container.style.display = "block";
+      emptyMsg.style.display = "none";
+    }
+
+    function fetchHistoryData() {
+      const auth = JSON.parse(localStorage.getItem("alkhateeb_hr_auth"));
+      const start = document.getElementById("historyStartDate").value;
+      const end = document.getElementById("historyEndDate").value;
+      const tCode = document.getElementById("historyTeacherSelect").value;
+      
+      if(!start || !end) {
+        alert("يرجى تحديد فترة البداية والنهاية.");
+        return;
+      }
+
+      const loader = document.getElementById("historyLoader");
+      const dashboard = document.getElementById("historyDashboard");
+      const container = document.getElementById("historyTableContainer");
+      const emptyMsg = document.getElementById("historyEmpty");
+      
+      loader.style.display = "block";
+      dashboard.style.display = "none";
+      container.style.display = "none";
+      emptyMsg.style.display = "none";
+
+      fetch(APPS_SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify({ action: "getReports", token: auth.token, startDate: start, endDate: end, teacherCode: tCode })
+      }).then(res => res.json()).then(data => {
+        loader.style.display = "none";
+        if(data.status === "success") {
+          renderReportsDashboard(data.totals);
+          renderHistoryTable(data.history);
+        } else {
+          alert("حدث خطأ: " + data.message);
+        }
+      }).catch(err => {
+        loader.style.display = "none";
+        alert("خطأ في الاتصال");
+      });
+    }
+
+    function renderReportsDashboard(totals) {
+      const dashboard = document.getElementById("historyDashboard");
+      dashboard.innerHTML = `
+        <div class="dash-card danger"><h4>تأخر صباحي</h4><div class="dash-value">${totals['تأخر صباحي']}</div><span style="font-size:12px; color:#666;">دقيقة</span></div>
+        <div class="dash-card warning"><h4>تأخر بإذن</h4><div class="dash-value">${totals['تأخر بإذن']}</div><span style="font-size:12px; color:#666;">دقيقة</span></div>
+        <div class="dash-card danger"><h4>غياب</h4><div class="dash-value">${totals['غياب']}</div><span style="font-size:12px; color:#666;">أيام</span></div>
+        <div class="dash-card warning"><h4>غياب بعذر</h4><div class="dash-value">${totals['غياب بعذر']}</div><span style="font-size:12px; color:#666;">أيام</span></div>
+        <div class="dash-card success"><h4>إجازة اعتيادي</h4><div class="dash-value">${totals['اعتيادي']}</div><span style="font-size:12px; color:#666;">أيام</span></div>
+        <div class="dash-card success"><h4>إجازة مرضي</h4><div class="dash-value">${totals['مرضي']}</div><span style="font-size:12px; color:#666;">أيام</span></div>
+        <div class="dash-card danger"><h4>خروج بدون إذن</h4><div class="dash-value">${totals['خروج بدون إذن']}</div><span style="font-size:12px; color:#666;">دقيقة</span></div>
+        <div class="dash-card warning"><h4>خروج بإذن</h4><div class="dash-value">${totals['خروج بإذن']}</div><span style="font-size:12px; color:#666;">دقيقة</span></div>
+        <div class="dash-card warning"><h4>إذن صباحي</h4><div class="dash-value">${totals['إذن صباحي']}</div><span style="font-size:12px; color:#666;">أيام</span></div>
+      `;
+      dashboard.style.display = "grid";
+    }
+
+    function renderHistoryTable(history) {
+      const tbody = document.querySelector("#historyTable tbody");
+      const container = document.getElementById("historyTableContainer");
+      const emptyMsg = document.getElementById("historyEmpty");
+      
+      tbody.innerHTML = "";
+      
+      if (!history || history.length === 0) {
+        container.style.display = "none";
+        emptyMsg.style.display = "block";
+        emptyMsg.innerText = "لا توجد سجلات في هذه الفترة للمعلم المحدد.";
+        return;
+      }
+
+      history.forEach(row => {
+        let badgeClass = getBadgeClass(row.type);
+        let dateOnly = row.date.split('T')[0];
+        let suffix = ["تأخر صباحي", "تأخر بإذن", "خروج بدون إذن", "خروج بإذن"].includes(row.type) ? "ق" : "يوم";
+        
+        let tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td style="color:#555;">${dateOnly}</td>
+          <td><strong>${row.name}</strong></td>
+          <td><span class="badge ${badgeClass}">${row.type}</span></td>
+          <td style="font-weight:bold;">${row.amount} ${suffix}</td>
+          <td style="font-size:13px; color:#888;">${row.admin}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+      
+      container.style.display = "block";
+      emptyMsg.style.display = "none";
+    }
+
+    function getBadgeClass(type) {
+      if(["غياب", "خروج بدون إذن", "تأخر صباحي"].includes(type)) return "badge-danger";
+      if(["اعتيادي", "مرضي"].includes(type)) return "badge-success";
+      return "badge-warning";
+    }
+
     function fetchTeacherStats(token) {
       const loader = document.getElementById("teacherLoader");
       loader.style.display = "block";
@@ -757,7 +1091,7 @@
       const container = document.getElementById("teacherTimeline");
       container.innerHTML = "";
       if(!history || history.length === 0) {
-        container.innerHTML = "<p style='text-align:center; color:#888;'>لا يوجد سجل حركات حالياً.</p>";
+        container.innerHTML = "<p style='text-align:center; color:#888;'>لا يوجد سجل إجراءات حالياً.</p>";
         return;
       }
       history.forEach(item => {
