@@ -407,6 +407,7 @@
         background-color: #f5f5f5;
         cursor: not-allowed;
         border-color: #ddd;
+        color: #666;
       }
       .error-border {
         border-color: #b23a48 !important;
@@ -432,15 +433,31 @@
         display: flex;
         align-items: center;
         gap: 5px;
-        font-size: 15px;
+        font-size: 14px;
         user-select: none;
       }
-      .absent-checkbox {
+      .exempt-label {
+        font-weight: bold;
+        color: #fd7e14;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 14px;
+        user-select: none;
+      }
+      .absent-checkbox,
+      .exempt-checkbox {
         width: 18px;
         height: 18px;
         cursor: pointer;
-        accent-color: #b23a48;
         margin: 0;
+      }
+      .absent-checkbox {
+        accent-color: #b23a48;
+      }
+      .exempt-checkbox {
+        accent-color: #fd7e14;
       }
       .loader {
         border: 4px solid #f3f3f3;
@@ -818,20 +835,7 @@
       </div>
       <h2>بوابة إدخال الدرجات</h2>
 
-      <select id="sheetSelect" class="form-control" onchange="showGrades()">
-        <option value="">-- اختر نوع التقييم --</option>
-        <option value="تقييمات شهر مارس">تقييمات شهر مارس</option>
-        <option value="امتحانات شهر مارس">امتحانات شهر مارس</option>
-        <option value="تقييمات شهر أبريل">تقييمات شهر أبريل</option>
-        <option value="امتحانات شهر أبريل">امتحانات شهر أبريل</option>
-      </select>
-
-      <select
-        id="gradeSelect"
-        class="form-control"
-        style="display: none"
-        onchange="showSections()"
-      >
+      <select id="gradeSelect" class="form-control" onchange="showSections()">
         <option value="">-- اختر الصف الدراسي --</option>
         <option value="ثالث ابتدائي">الصف الثالث الابتدائي</option>
         <option value="رابع ابتدائي">الصف الرابع الابتدائي</option>
@@ -860,13 +864,22 @@
         id="subjectSelect"
         class="form-control"
         style="display: none"
-        onchange="showSearchBtn()"
+        onchange="showEvaluations()"
       >
         <option value="">-- اختر المادة --</option>
-        <option value="عربي">اللغة العربية</option>
-        <option value="انجليزي">اللغة الإنجليزية</option>
-        <option value="رياضيات">الرياضيات</option>
-        <option value="علوم">العلوم</option>
+      </select>
+
+      <select
+        id="evaluationSelect"
+        class="form-control"
+        style="display: none"
+        onchange="showSearchBtn()"
+      >
+        <option value="">-- اختر التقييم --</option>
+        <option value="تقييم_مارس">تقييمات شهر مارس</option>
+        <option value="امتحان_مارس">امتحانات شهر مارس</option>
+        <option value="تقييم_أبريل">تقييمات شهر أبريل</option>
+        <option value="امتحان_أبريل">امتحانات شهر أبريل</option>
       </select>
 
       <button
@@ -1022,12 +1035,74 @@
     <script>
       const APPS_SCRIPT_URL =
         "https://script.google.com/macros/s/AKfycbx8JBu5aQKAf3cKN9kEss8RiFHoW9DiqbgSlLO3JiIRxtXEzsJh3MU1sgIU2cVPP-rNkw/exec";
+
       let allStudents = [];
       let filteredStudents = [];
       let currentPage = 1;
       let rowsPerPage = 50;
       let currentModalAction = "";
       let highlightErrors = false;
+
+      const subjectsConfig = {
+        "ثالث ابتدائي": [
+          { name: "اللغة العربية", val: "عربي" },
+          { name: "الرياضيات", val: "رياضيات" },
+          { name: "التربية الدينية", val: "دين" },
+          { name: "اللغة الإنجليزية", val: "انجليزي" },
+          { name: "مستوى رفيع", val: "رفيع" },
+        ],
+        "رابع ابتدائي": [
+          { name: "اللغة العربية", val: "عربي" },
+          { name: "اللغة الإنجليزية", val: "انجليزي" },
+          { name: "التربية الدينية", val: "دين" },
+          { name: "الرياضيات", val: "رياضيات" },
+          { name: "العلوم", val: "علوم" },
+          { name: "الدراسات الاجتماعية", val: "دراسات" },
+          { name: "مستوى رفيع", val: "رفيع" },
+        ],
+        "خامس ابتدائي": [
+          { name: "اللغة العربية", val: "عربي" },
+          { name: "اللغة الإنجليزية", val: "انجليزي" },
+          { name: "التربية الدينية", val: "دين" },
+          { name: "الرياضيات", val: "رياضيات" },
+          { name: "العلوم", val: "علوم" },
+          { name: "الدراسات الاجتماعية", val: "دراسات" },
+          { name: "مستوى رفيع", val: "رفيع" },
+        ],
+        "سادس ابتدائي": [
+          { name: "اللغة العربية", val: "عربي" },
+          { name: "اللغة الإنجليزية", val: "انجليزي" },
+          { name: "التربية الدينية", val: "دين" },
+          { name: "الرياضيات", val: "رياضيات" },
+          { name: "العلوم", val: "علوم" },
+          { name: "الدراسات الاجتماعية", val: "دراسات" },
+          { name: "مستوى رفيع", val: "رفيع" },
+        ],
+        "أول اعدادي": [
+          { name: "اللغة العربية", val: "عربي" },
+          { name: "مستوى رفيع (لغة ثانية)", val: "رفيع 2" },
+          { name: "اللغة الإنجليزية", val: "انجليزي" },
+          { name: "الحاسب الآلي", val: "حاسب" },
+          { name: "الدراسات الاجتماعية", val: "دراسات" },
+          { name: "التربية الفنية", val: "رسم" },
+          { name: "الرياضيات", val: "رياضيات" },
+          { name: "التربية الدينية", val: "دين" },
+          { name: "العلوم", val: "علوم" },
+          { name: "مستوى رفيع (لغة أولى)", val: "رفيع 1" },
+        ],
+        "ثاني اعدادي": [
+          { name: "اللغة العربية", val: "عربي" },
+          { name: "مستوى رفيع (لغة ثانية)", val: "رفيع 2" },
+          { name: "اللغة الإنجليزية", val: "انجليزي" },
+          { name: "الحاسب الآلي", val: "حاسب" },
+          { name: "الدراسات الاجتماعية", val: "دراسات" },
+          { name: "التربية الفنية", val: "رسم" },
+          { name: "الرياضيات", val: "رياضيات" },
+          { name: "التربية الدينية", val: "دين" },
+          { name: "العلوم", val: "علوم" },
+          { name: "مستوى رفيع (لغة أولى)", val: "رفيع 1" },
+        ],
+      };
 
       window.addEventListener("beforeunload", function (e) {
         const hasChanges = allStudents.some((s) => s.score !== s.originalScore);
@@ -1174,10 +1249,10 @@
       function saveStateLocally() {
         if (allStudents.length === 0) return;
         const state = {
-          sheet: document.getElementById("sheetSelect").value,
           grade: document.getElementById("gradeSelect").value,
           section: document.getElementById("sectionSelect").value,
           subject: document.getElementById("subjectSelect").value,
+          evaluation: document.getElementById("evaluationSelect").value,
           students: allStudents,
           currentPage: currentPage,
           rowsPerPage: rowsPerPage,
@@ -1208,21 +1283,31 @@
               } else {
                 document.getElementById("rowsPerPageSelect").value = 50;
               }
-              document.getElementById("sheetSelect").value = state.sheet;
+
               const gradeSelect = document.getElementById("gradeSelect");
-              gradeSelect.style.display = "block";
-              gradeSelect.value = state.grade;
               const sectionSelect = document.getElementById("sectionSelect");
+              const subjectSelect = document.getElementById("subjectSelect");
+              const evaluationSelect =
+                document.getElementById("evaluationSelect");
+
+              gradeSelect.value = state.grade;
+
               sectionSelect.style.display = "block";
               sectionSelect.value = state.section;
-              const subjectSelect = document.getElementById("subjectSelect");
+
+              populateSubjects(state.grade);
               subjectSelect.style.display = "block";
               subjectSelect.value = state.subject;
+
+              evaluationSelect.style.display = "block";
+              evaluationSelect.value = state.evaluation;
+
               document.getElementById("searchBtn").style.display = "block";
               document.getElementById("bulkScoreDiv").style.display = "flex";
               document.getElementById("searchContainer").style.display =
                 "block";
               document.getElementById("tableControls").style.display = "flex";
+
               const saveBtn = document.getElementById("saveBtn");
               saveBtn.disabled = false;
               saveBtn.style.display = "block";
@@ -1231,6 +1316,7 @@
                 saveData();
               };
               saveBtn.className = "form-control btn-success pulse-success";
+
               renderTable();
               document.getElementById("studentsTable").style.display = "table";
               showMessage("تم استعادة مسودتك السابقة بنجاح.", false);
@@ -1311,13 +1397,46 @@
 
       function toggleAbsence(studentId, isChecked) {
         const inputEl = document.getElementById("score_" + studentId);
+        const exemptBox = document.querySelector(
+          `#row_${studentId} .exempt-checkbox`
+        );
         inputEl.classList.remove("error-border");
         if (isChecked) {
-          inputEl.value = "";
+          inputEl.value = "غائب";
           inputEl.disabled = true;
+          if (exemptBox) {
+            exemptBox.checked = false;
+            exemptBox.disabled = true;
+          }
           updateStudentScore(studentId, "غ");
         } else {
+          inputEl.value = "";
           inputEl.disabled = false;
+          if (exemptBox) exemptBox.disabled = false;
+          updateStudentScore(studentId, "");
+          inputEl.focus();
+        }
+        checkModifiedState(studentId, inputEl);
+      }
+
+      function toggleExempt(studentId, isChecked) {
+        const inputEl = document.getElementById("score_" + studentId);
+        const absentBox = document.querySelector(
+          `#row_${studentId} .absent-checkbox`
+        );
+        inputEl.classList.remove("error-border");
+        if (isChecked) {
+          inputEl.value = "غير مسجل";
+          inputEl.disabled = true;
+          if (absentBox) {
+            absentBox.checked = false;
+            absentBox.disabled = true;
+          }
+          updateStudentScore(studentId, "غير مسجل");
+        } else {
+          inputEl.value = "";
+          inputEl.disabled = false;
+          if (absentBox) absentBox.disabled = false;
           updateStudentScore(studentId, "");
           inputEl.focus();
         }
@@ -1368,24 +1487,16 @@
         document.getElementById("bulkScoreDiv").style.display = "none";
       }
 
-      function showGrades() {
-        hideTableAndMessages();
-        const sheet = document.getElementById("sheetSelect").value;
-        const gradeSelect = document.getElementById("gradeSelect");
-        const sectionSelect = document.getElementById("sectionSelect");
+      function populateSubjects(grade) {
         const subjectSelect = document.getElementById("subjectSelect");
-        const searchBtn = document.getElementById("searchBtn");
-        gradeSelect.value = "";
-        sectionSelect.value = "";
-        subjectSelect.value = "";
-        sectionSelect.style.display = "none";
-        subjectSelect.style.display = "none";
-        searchBtn.style.display = "none";
-        if (sheet !== "") {
-          gradeSelect.style.display = "block";
-          gradeSelect.style.animation = "slideInUp 0.3s ease-out";
-        } else {
-          gradeSelect.style.display = "none";
+        subjectSelect.innerHTML = '<option value="">-- اختر المادة --</option>';
+        if (subjectsConfig[grade]) {
+          subjectsConfig[grade].forEach((subj) => {
+            let option = document.createElement("option");
+            option.value = subj.val;
+            option.text = subj.name;
+            subjectSelect.appendChild(option);
+          });
         }
       }
 
@@ -1394,12 +1505,18 @@
         const grade = document.getElementById("gradeSelect").value;
         const sectionSelect = document.getElementById("sectionSelect");
         const subjectSelect = document.getElementById("subjectSelect");
+        const evaluationSelect = document.getElementById("evaluationSelect");
         const searchBtn = document.getElementById("searchBtn");
+
         sectionSelect.value = "";
         subjectSelect.value = "";
+        evaluationSelect.value = "";
         subjectSelect.style.display = "none";
+        evaluationSelect.style.display = "none";
         searchBtn.style.display = "none";
+
         if (grade !== "") {
+          populateSubjects(grade);
           sectionSelect.style.display = "block";
           sectionSelect.style.animation = "slideInUp 0.3s ease-out";
         } else {
@@ -1411,9 +1528,14 @@
         hideTableAndMessages();
         const section = document.getElementById("sectionSelect").value;
         const subjectSelect = document.getElementById("subjectSelect");
+        const evaluationSelect = document.getElementById("evaluationSelect");
         const searchBtn = document.getElementById("searchBtn");
+
         subjectSelect.value = "";
+        evaluationSelect.value = "";
+        evaluationSelect.style.display = "none";
         searchBtn.style.display = "none";
+
         if (section !== "") {
           subjectSelect.style.display = "block";
           subjectSelect.style.animation = "slideInUp 0.3s ease-out";
@@ -1422,11 +1544,28 @@
         }
       }
 
-      function showSearchBtn() {
+      function showEvaluations() {
         hideTableAndMessages();
         const subject = document.getElementById("subjectSelect").value;
+        const evaluationSelect = document.getElementById("evaluationSelect");
         const searchBtn = document.getElementById("searchBtn");
+
+        evaluationSelect.value = "";
+        searchBtn.style.display = "none";
+
         if (subject !== "") {
+          evaluationSelect.style.display = "block";
+          evaluationSelect.style.animation = "slideInUp 0.3s ease-out";
+        } else {
+          evaluationSelect.style.display = "none";
+        }
+      }
+
+      function showSearchBtn() {
+        hideTableAndMessages();
+        const evaluation = document.getElementById("evaluationSelect").value;
+        const searchBtn = document.getElementById("searchBtn");
+        if (evaluation !== "") {
           searchBtn.style.display = "block";
           searchBtn.style.animation = "slideInUp 0.3s ease-out";
           setTimeout(function () {
@@ -1517,8 +1656,13 @@
 
       function confirmBulkAbsent() {
         for (let i = 0; i < allStudents.length; i++) {
-          allStudents[i].score = "غ";
-          allStudents[i].suppressGreen = true;
+          if (
+            allStudents[i].score !== "معفي" &&
+            allStudents[i].score !== "غير مسجل"
+          ) {
+            allStudents[i].score = "غ";
+            allStudents[i].suppressGreen = true;
+          }
         }
         filteredStudents = [...allStudents];
         closeBulkModal();
@@ -1546,22 +1690,31 @@
 
       function confirmClearAll() {
         for (let i = 0; i < allStudents.length; i++) {
-          allStudents[i].score = "";
-          allStudents[i].suppressGreen = true;
+          if (
+            allStudents[i].score !== "معفي" &&
+            allStudents[i].score !== "غير مسجل"
+          ) {
+            allStudents[i].score = "";
+            allStudents[i].suppressGreen = true;
+          }
         }
         filteredStudents = [...allStudents];
         highlightErrors = false;
         closeBulkModal();
         renderTable();
         saveStateLocally();
-        showMessage("✅ تم تفريغ جميع الحقول بنجاح.", false);
+        showMessage("✅ تم تفريغ الحقول بنجاح.", false);
       }
 
       function confirmBulkScore() {
         const inputEl = document.getElementById("bulkScoreInput");
         let cleanedStr = convertToEnglishNumbers(inputEl.value);
         for (let i = 0; i < allStudents.length; i++) {
-          if (allStudents[i].score !== "غ") {
+          if (
+            allStudents[i].score !== "غ" &&
+            allStudents[i].score !== "معفي" &&
+            allStudents[i].score !== "غير مسجل"
+          ) {
             allStudents[i].score = cleanedStr;
             allStudents[i].suppressGreen = false;
           }
@@ -1590,35 +1743,40 @@
         }
         const auth = JSON.parse(authData);
 
-        const sheetSelect = document.getElementById("sheetSelect");
         const gradeSelect = document.getElementById("gradeSelect");
         const sectionSelect = document.getElementById("sectionSelect");
         const subjectSelect = document.getElementById("subjectSelect");
+        const evaluationSelect = document.getElementById("evaluationSelect");
         const searchBtn = document.getElementById("searchBtn");
         const loader = document.getElementById("mainLoader");
         const searchBtnText = searchBtn.querySelector(".btn-text");
-        const sheetName = sheetSelect.value;
+
         const grade = gradeSelect.value;
         const section = sectionSelect.value;
         const subject = subjectSelect.value;
+
+        const evalValue = evaluationSelect.value;
+        const [examType, month] = evalValue.split("_");
 
         hideTableAndMessages();
         loader.style.display = "block";
         searchBtn.disabled = true;
         searchBtn.classList.remove("pulse-button");
         searchBtnText.innerText = "⏳ جاري البحث...";
-        sheetSelect.disabled = true;
+
         gradeSelect.disabled = true;
         sectionSelect.disabled = true;
         subjectSelect.disabled = true;
+        evaluationSelect.disabled = true;
 
         const payload = {
           action: "getStudents",
           token: auth.token,
-          sheetName: sheetName,
           grade: grade,
           section: section,
           subject: subject,
+          month: month,
+          examType: examType,
         };
 
         fetch(APPS_SCRIPT_URL, {
@@ -1632,10 +1790,11 @@
             searchBtn.disabled = false;
             searchBtn.classList.add("pulse-button");
             searchBtnText.innerText = "🔎 عرض كشف الطلاب";
-            sheetSelect.disabled = false;
+
             gradeSelect.disabled = false;
             sectionSelect.disabled = false;
             subjectSelect.disabled = false;
+            evaluationSelect.disabled = false;
 
             if (data.status === "error") {
               if (data.message.includes("موقوف")) {
@@ -1659,7 +1818,8 @@
 
             allStudents = data.students.map((s) => ({
               ...s,
-              originalScore: s.score,
+              originalScore: String(s.score).trim(),
+              score: String(s.score).trim(),
               suppressGreen: false,
             }));
             document.getElementById("liveSearchInput").value = "";
@@ -1686,8 +1846,10 @@
             saveBtn.style.display = "block";
 
             setTimeout(() => {
-              const firstInput = document.querySelector(".student-score");
-              if (firstInput && !firstInput.disabled) {
+              const firstInput = document.querySelector(
+                ".student-score:not(:disabled)"
+              );
+              if (firstInput) {
                 firstInput.focus();
                 firstInput.select();
               }
@@ -1698,10 +1860,10 @@
             searchBtn.disabled = false;
             searchBtn.classList.add("pulse-button");
             searchBtnText.innerText = "🔎 عرض كشف الطلاب";
-            sheetSelect.disabled = false;
             gradeSelect.disabled = false;
             sectionSelect.disabled = false;
             subjectSelect.disabled = false;
+            evaluationSelect.disabled = false;
             showMessage("حدث خطأ في الاتصال بقاعدة البيانات.", true);
           });
       }
@@ -1733,20 +1895,30 @@
         ).innerText = `إجمالي الطلاب: ${allStudents.length} | الظاهر بالصفحة: ${pageStudents.length}`;
 
         pageStudents.forEach((student, index) => {
-          const isAbsent = student.score === "غ";
-          const displayScore = isAbsent ? "" : student.score;
+          const isAbsent = student.score === "غ" || student.score === "غائب";
+          const isExempt =
+            student.score === "معفي" || student.score === "غير مسجل";
+
+          let displayScore = student.score;
+          if (isAbsent) displayScore = "غائب";
+          if (isExempt) displayScore = "غير مسجل";
+
           const isEmpty =
             student.score === "" ||
             student.score === null ||
             student.score === undefined;
           const isErrorClass =
-            highlightErrors && !isAbsent && isEmpty ? "error-border" : "";
+            highlightErrors && !isAbsent && !isExempt && isEmpty
+              ? "error-border"
+              : "";
           const isModifiedClass =
             student.score !== student.originalScore && !student.suppressGreen
               ? "modified-input"
               : "";
+          const isDisabled = isAbsent || isExempt ? "disabled" : "";
 
           const row = document.createElement("tr");
+          row.id = "row_" + student.id;
           row.className = "row-anim";
           row.style.animationDelay = `${Math.min(index * 0.02, 0.4)}s`;
           row.innerHTML = `
@@ -1756,14 +1928,19 @@
             <td>
               <div class="checkbox-wrapper">
                 <input type='text' inputmode='numeric' class='score-input student-score ${isErrorClass} ${isModifiedClass}' placeholder='الدرجة' value='${displayScore}' 
-                       id='score_${student.id}' ${
-            isAbsent ? "disabled" : ""
-          } onfocus='this.select()' oninput='handleScoreInput("${
+                       id='score_${
+                         student.id
+                       }' ${isDisabled} onfocus='this.select()' oninput='handleScoreInput("${
             student.id
           }", this)' onkeydown='handleEnter(event, this)'>
+                <label class="exempt-label"><input type='checkbox' class='exempt-checkbox' ${
+                  isExempt ? "checked" : ""
+                } ${isAbsent ? "disabled" : ""} onchange='toggleExempt("${
+            student.id
+          }", this.checked)'> غير مسجل</label>
                 <label class="absent-label"><input type='checkbox' class='absent-checkbox' ${
                   isAbsent ? "checked" : ""
-                } onchange='toggleAbsence("${
+                } ${isExempt ? "disabled" : ""} onchange='toggleAbsence("${
             student.id
           }", this.checked)'> غائب</label>
               </div>
@@ -1886,16 +2063,14 @@
         }
 
         highlightErrors = false;
-        const sheetName = document.getElementById("sheetSelect").value;
-        const grade = document.getElementById("gradeSelect").value;
-        const section = document.getElementById("sectionSelect").value;
-        const subject = document.getElementById("subjectSelect").value;
-
         document.getElementById("inlineMessage").style.display = "none";
         document.getElementById("saveMessage").style.display = "none";
         saveBtn.disabled = true;
         saveBtn.classList.remove("pulse-success");
         saveBtnText.innerText = "⏳ جاري الحفظ...";
+
+        const evalValue = document.getElementById("evaluationSelect").value;
+        const [examType, month] = evalValue.split("_");
 
         const modifiedStudents = allStudents.filter(
           (s) => s.score !== s.originalScore
@@ -1903,10 +2078,11 @@
         const payload = {
           action: "saveGrades",
           token: auth.token,
-          sheetName: sheetName,
-          grade: grade,
-          section: section,
-          subject: subject,
+          grade: document.getElementById("gradeSelect").value,
+          section: document.getElementById("sectionSelect").value,
+          subject: document.getElementById("subjectSelect").value,
+          month: month,
+          examType: examType,
           gradesData: modifiedStudents,
         };
 
@@ -1929,14 +2105,18 @@
               document.getElementById("paginationDiv").style.display = "none";
               document.getElementById("saveBtn").style.display = "none";
               document.getElementById("bulkScoreDiv").style.display = "none";
-              document.getElementById("sheetSelect").value = "";
+
+              document.getElementById("sectionSelect").style.display = "none";
+              document.getElementById("subjectSelect").style.display = "none";
+              document.getElementById("evaluationSelect").style.display =
+                "none";
+              document.getElementById("searchBtn").style.display = "none";
+
               document.getElementById("gradeSelect").value = "";
               document.getElementById("sectionSelect").value = "";
               document.getElementById("subjectSelect").value = "";
-              document.getElementById("gradeSelect").style.display = "none";
-              document.getElementById("sectionSelect").style.display = "none";
-              document.getElementById("subjectSelect").style.display = "none";
-              document.getElementById("searchBtn").style.display = "none";
+              document.getElementById("evaluationSelect").value = "";
+
               showSaveMessage("✅ تم حفظ درجات الفصل بنجاح!");
             } else {
               saveBtn.disabled = false;
