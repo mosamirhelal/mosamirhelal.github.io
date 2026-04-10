@@ -1137,7 +1137,7 @@
         document.getElementById("loginContainer").style.display = "block";
         const msgDiv = document.getElementById("loginMessage");
         msgDiv.innerText =
-          "⏳ انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجدداً لاستكمال عملك (لن تفقد مسودتك).";
+          "⏳ انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجدداً لاستكمال عملك.";
         msgDiv.className = "status-message error-msg";
         msgDiv.style.display = "block";
       }
@@ -1318,7 +1318,6 @@
 
               renderTable();
               document.getElementById("studentsTable").style.display = "table";
-              showMessage("تم استعادة مسودتك السابقة بنجاح.", false);
             }
           } catch (e) {
             localStorage.removeItem("alkhateeb_grades_draft");
@@ -1584,9 +1583,9 @@
         msgDiv.style.display = "block";
       }
 
-      function showSaveMessage(text, isError = false) {
+      function showSaveMessage(content, isError = false) {
         const msgDiv = document.getElementById("saveMessage");
-        msgDiv.innerText = text;
+        msgDiv.innerHTML = content;
         msgDiv.className = isError
           ? "status-message error-msg"
           : "status-message success-msg";
@@ -2110,6 +2109,25 @@
                 s.suppressGreen = false;
               });
               localStorage.removeItem("alkhateeb_grades_draft");
+
+              const gradeSel = document.getElementById("gradeSelect");
+              const subjSel = document.getElementById("subjectSelect");
+              const evalSel = document.getElementById("evaluationSelect");
+
+              const gradeText = gradeSel.options[gradeSel.selectedIndex].text;
+              const sectionText =
+                document.getElementById("sectionSelect").value;
+              const subjectText = subjSel.options[subjSel.selectedIndex].text;
+              const evalText = evalSel.options[evalSel.selectedIndex].text;
+              const savedCount = modifiedStudents.length;
+
+              const summaryHTML = `
+                ✅ تم حفظ درجات <strong>${savedCount}</strong> طالب بنجاح!<br>
+                <span style="font-size: 14px; font-weight: normal; margin-top: 8px; display: inline-block; color: #d4edda;">
+                  📑 ${gradeText} - فصل ${sectionText} | 📚 ${subjectText} | 📅 ${evalText}
+                </span>
+              `;
+
               document.getElementById("studentsTable").style.display = "none";
               document.getElementById("tableControls").style.display = "none";
               document.getElementById("searchContainer").style.display = "none";
@@ -2128,7 +2146,7 @@
               document.getElementById("subjectSelect").value = "";
               document.getElementById("evaluationSelect").value = "";
 
-              showSaveMessage("✅ تم حفظ درجات الفصل بنجاح!");
+              showSaveMessage(summaryHTML);
             } else {
               saveBtn.disabled = false;
               saveBtn.classList.add("pulse-success");
