@@ -436,28 +436,12 @@
         font-size: 14px;
         user-select: none;
       }
-      .exempt-label {
-        font-weight: bold;
-        color: #fd7e14;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        font-size: 14px;
-        user-select: none;
-      }
-      .absent-checkbox,
-      .exempt-checkbox {
+      .absent-checkbox {
         width: 18px;
         height: 18px;
         cursor: pointer;
         margin: 0;
-      }
-      .absent-checkbox {
         accent-color: #b23a48;
-      }
-      .exempt-checkbox {
-        accent-color: #fd7e14;
       }
       .loader {
         border: 4px solid #f3f3f3;
@@ -1395,46 +1379,14 @@
 
       function toggleAbsence(studentId, isChecked) {
         const inputEl = document.getElementById("score_" + studentId);
-        const exemptBox = document.querySelector(
-          `#row_${studentId} .exempt-checkbox`
-        );
         inputEl.classList.remove("error-border");
         if (isChecked) {
           inputEl.value = "غائب";
           inputEl.disabled = true;
-          if (exemptBox) {
-            exemptBox.checked = false;
-            exemptBox.disabled = true;
-          }
           updateStudentScore(studentId, "غائب");
         } else {
           inputEl.value = "";
           inputEl.disabled = false;
-          if (exemptBox) exemptBox.disabled = false;
-          updateStudentScore(studentId, "");
-          inputEl.focus();
-        }
-        checkModifiedState(studentId, inputEl);
-      }
-
-      function toggleExempt(studentId, isChecked) {
-        const inputEl = document.getElementById("score_" + studentId);
-        const absentBox = document.querySelector(
-          `#row_${studentId} .absent-checkbox`
-        );
-        inputEl.classList.remove("error-border");
-        if (isChecked) {
-          inputEl.value = "غير مسجل";
-          inputEl.disabled = true;
-          if (absentBox) {
-            absentBox.checked = false;
-            absentBox.disabled = true;
-          }
-          updateStudentScore(studentId, "غير مسجل");
-        } else {
-          inputEl.value = "";
-          inputEl.disabled = false;
-          if (absentBox) absentBox.disabled = false;
           updateStudentScore(studentId, "");
           inputEl.focus();
         }
@@ -1654,13 +1606,8 @@
 
       function confirmBulkAbsent() {
         for (let i = 0; i < allStudents.length; i++) {
-          if (
-            allStudents[i].score !== "معفي" &&
-            allStudents[i].score !== "غير مسجل"
-          ) {
-            allStudents[i].score = "غائب";
-            allStudents[i].suppressGreen = true;
-          }
+          allStudents[i].score = "غائب";
+          allStudents[i].suppressGreen = true;
         }
         filteredStudents = [...allStudents];
         closeBulkModal();
@@ -1688,12 +1635,7 @@
 
       function confirmClearAll() {
         for (let i = 0; i < allStudents.length; i++) {
-          if (
-            allStudents[i].score !== "معفي" &&
-            allStudents[i].score !== "غير مسجل" &&
-            allStudents[i].score !== "غ" &&
-            allStudents[i].score !== "غائب"
-          ) {
+          if (allStudents[i].score !== "غ" && allStudents[i].score !== "غائب") {
             allStudents[i].score = "";
             allStudents[i].suppressGreen = true;
           }
@@ -1710,12 +1652,7 @@
         const inputEl = document.getElementById("bulkScoreInput");
         let cleanedStr = convertToEnglishNumbers(inputEl.value);
         for (let i = 0; i < allStudents.length; i++) {
-          if (
-            allStudents[i].score !== "غ" &&
-            allStudents[i].score !== "غائب" &&
-            allStudents[i].score !== "معفي" &&
-            allStudents[i].score !== "غير مسجل"
-          ) {
+          if (allStudents[i].score !== "غ" && allStudents[i].score !== "غائب") {
             allStudents[i].score = cleanedStr;
             allStudents[i].suppressGreen = false;
           }
@@ -1897,26 +1834,21 @@
 
         pageStudents.forEach((student, index) => {
           const isAbsent = student.score === "غ" || student.score === "غائب";
-          const isExempt =
-            student.score === "معفي" || student.score === "غير مسجل";
 
           let displayScore = student.score;
           if (isAbsent) displayScore = "غائب";
-          if (isExempt) displayScore = "غير مسجل";
 
           const isEmpty =
             student.score === "" ||
             student.score === null ||
             student.score === undefined;
           const isErrorClass =
-            highlightErrors && !isAbsent && !isExempt && isEmpty
-              ? "error-border"
-              : "";
+            highlightErrors && !isAbsent && isEmpty ? "error-border" : "";
           const isModifiedClass =
             student.score !== student.originalScore && !student.suppressGreen
               ? "modified-input"
               : "";
-          const isDisabled = isAbsent || isExempt ? "disabled" : "";
+          const isDisabled = isAbsent ? "disabled" : "";
 
           const row = document.createElement("tr");
           row.id = "row_" + student.id;
@@ -1934,14 +1866,9 @@
                        }' ${isDisabled} onfocus='this.select()' oninput='handleScoreInput("${
             student.id
           }", this)' onkeydown='handleEnter(event, this)'>
-                <label class="exempt-label"><input type='checkbox' class='exempt-checkbox' ${
-                  isExempt ? "checked" : ""
-                } ${isAbsent ? "disabled" : ""} onchange='toggleExempt("${
-            student.id
-          }", this.checked)'> غير مسجل</label>
                 <label class="absent-label"><input type='checkbox' class='absent-checkbox' ${
                   isAbsent ? "checked" : ""
-                } ${isExempt ? "disabled" : ""} onchange='toggleAbsence("${
+                } onchange='toggleAbsence("${
             student.id
           }", this.checked)'> غائب</label>
               </div>
