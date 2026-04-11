@@ -773,6 +773,7 @@
         class="form-control"
         placeholder="اسم المستخدم"
         dir="rtl"
+        onkeydown="if(event.key === 'Enter') { event.preventDefault(); document.getElementById('passwordInput').focus(); }"
       />
       <input
         type="password"
@@ -780,7 +781,7 @@
         class="form-control"
         placeholder="كلمة المرور"
         dir="ltr"
-        onkeydown="if(event.key === 'Enter') doLogin()"
+        onkeydown="if(event.key === 'Enter') { event.preventDefault(); doLogin(); }"
       />
       <button
         id="loginBtn"
@@ -917,7 +918,6 @@
           <span class="btn-text">🔄 حضور للكل</span>
         </button> 
         -->
-        
       </div>
 
       <div id="searchContainer">
