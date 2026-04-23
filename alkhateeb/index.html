@@ -641,12 +641,15 @@
         setTimeout(() => span.remove(), 600);
       }
 
-      function countUp(el, target, duration, suffix) {
+      function countUp(el, target, duration, suffix, decimals = 0) {
         const start = performance.now();
         function tick(now) {
           const p = Math.min((now - start) / duration, 1);
           const eased = 1 - Math.pow(1 - p, 3);
-          el.innerText = Math.round(eased * target) + (suffix || "");
+          const val = eased * target;
+          el.innerText =
+            (decimals > 0 ? val.toFixed(decimals) : Math.round(val)) +
+            (suffix || "");
           if (p < 1) requestAnimationFrame(tick);
         }
         requestAnimationFrame(tick);
@@ -944,9 +947,11 @@
                 const percNumVal = document.getElementById("percNumVal");
                 const totalNum = document.getElementById("totalNum");
                 if (percNumVal && !isNaN(numericPerc))
-                  countUp(percNumVal, numericPerc, 1200, "");
-                if (totalNum && !isNaN(parseFloat(data.total)))
-                  countUp(totalNum, parseFloat(data.total), 1000, "");
+                  countUp(percNumVal, numericPerc, 1200, "", 2);
+                if (totalNum && !isNaN(parseFloat(data.total))) {
+                  const tVal = parseFloat(data.total);
+                  countUp(totalNum, tVal, 1000, "", tVal % 1 !== 0 ? 2 : 0);
+                }
               }, 100);
 
               if (!isNaN(numericPerc)) {
