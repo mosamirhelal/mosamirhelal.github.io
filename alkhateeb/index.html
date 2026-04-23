@@ -32,9 +32,8 @@
       * {
         box-sizing: border-box;
       }
-
       body {
-        font-family: "Cairo", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-family: "Cairo", sans-serif;
         text-align: center;
         margin: 0;
         padding: 20px;
@@ -42,13 +41,11 @@
         animation: fadeInPage 0.55s ease-out;
         overflow-x: hidden;
         min-height: 100vh;
-        min-height: 100dvh;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
       }
-
       @keyframes fadeInPage {
         from {
           opacity: 0;
@@ -152,7 +149,6 @@
           opacity: 0;
         }
       }
-
       .dot {
         position: fixed;
         border-radius: 50%;
@@ -161,7 +157,6 @@
         background: rgba(0, 86, 179, 0.05);
         animation: floatDot ease-in-out infinite;
       }
-
       .container {
         background: white;
         padding: 40px;
@@ -174,7 +169,6 @@
         position: relative;
         z-index: 10;
       }
-
       .top-logos {
         display: flex;
         justify-content: center;
@@ -183,26 +177,22 @@
         width: 100%;
         gap: 20px;
       }
-
       .top-logos img {
         max-height: 120px;
         max-width: 45%;
         width: auto;
         object-fit: contain;
       }
-
       .header-image {
         text-align: center;
         margin-bottom: 25px;
         padding: 0 10px;
       }
-
       .header-image img {
         width: 100%;
         max-width: 500px;
         height: auto;
       }
-
       h2 {
         color: #0056b3;
         margin-top: 10px;
@@ -210,7 +200,6 @@
         font-size: 26px;
         font-weight: 800;
       }
-
       .form-control {
         font-size: 16px;
         padding: 12px 15px;
@@ -218,14 +207,12 @@
         display: block;
         font-family: inherit;
       }
-
       .input-group {
         position: relative;
         width: 100%;
         max-width: 350px;
         margin: 0 auto 15px auto;
       }
-
       .input-group-icon {
         position: absolute;
         top: 50%;
@@ -236,7 +223,6 @@
         pointer-events: none;
         z-index: 2;
       }
-
       input,
       textarea {
         width: 100%;
@@ -245,18 +231,15 @@
         transition: all 0.3s ease;
         font-family: inherit;
       }
-
       input {
         direction: ltr;
         text-align: center;
         padding-right: 45px !important;
       }
-
       input:disabled {
         background-color: #f5f5f5;
         cursor: not-allowed;
       }
-
       textarea {
         resize: vertical;
         padding: 12px 15px;
@@ -264,14 +247,12 @@
         max-width: 450px;
         margin: 0 auto 15px auto;
       }
-
       input:focus,
       textarea:focus {
         border-color: #0056b3;
         box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
         outline: none;
       }
-
       button {
         background-color: #0056b3;
         color: white;
@@ -287,28 +268,23 @@
         overflow: hidden;
         font-family: inherit;
       }
-
       button:hover:not(:disabled) {
         background-color: #004494;
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
       }
-
       button:active:not(:disabled) {
         transform: translateY(1px);
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
-
       button:disabled {
         background-color: #6c757d;
         cursor: not-allowed;
       }
-
       .btn-text {
         position: relative;
         z-index: 2;
       }
-
       .ripple-span {
         position: absolute;
         border-radius: 50%;
@@ -318,7 +294,6 @@
         pointer-events: none;
         z-index: 1;
       }
-
       .pulse-button {
         animation: pulseGlow 1.5s infinite;
       }
@@ -335,7 +310,6 @@
       .btn-success:hover:not(:disabled) {
         background-color: #218838;
       }
-
       #result:not(:empty) {
         margin-top: 20px;
       }
@@ -355,7 +329,6 @@
         font-weight: 800;
         animation: popIn 0.5s ease-out;
       }
-
       table {
         width: 100%;
         border-collapse: separate;
@@ -366,7 +339,6 @@
         overflow: hidden;
         border: 1px solid #eee;
       }
-
       th,
       td {
         border-bottom: 1px solid #eee;
@@ -395,27 +367,10 @@
       tbody tr:hover {
         background: #eef4ff;
       }
-
       .row-anim {
         opacity: 0;
         animation: rowIn 0.35s ease forwards;
       }
-      .row-anim:nth-child(1) {
-        animation-delay: 0.06s;
-      }
-      .row-anim:nth-child(2) {
-        animation-delay: 0.12s;
-      }
-      .row-anim:nth-child(3) {
-        animation-delay: 0.18s;
-      }
-      .row-anim:nth-child(4) {
-        animation-delay: 0.24s;
-      }
-      .row-anim:nth-child(5) {
-        animation-delay: 0.3s;
-      }
-
       .total-row {
         font-weight: bold;
         background-color: #bcb8b1 !important;
@@ -443,7 +398,6 @@
         font-size: 22px;
         font-weight: 700;
       }
-
       .status-message {
         padding: 12px;
         border-radius: 8px;
@@ -463,7 +417,6 @@
         color: #fed0bb;
         border: 1px solid #f5c6cb;
       }
-
       .feedback-section {
         margin-top: 30px;
         padding-top: 20px;
@@ -509,7 +462,6 @@
       #export-footer {
         display: none;
       }
-
       @media (min-width: 768px) {
         .top-logos img {
           max-height: 160px;
@@ -617,7 +569,6 @@
         />
       </div>
       <h2>استعلام عن النتيجة</h2>
-
       <div class="input-group">
         <span class="input-group-icon">👤</span>
         <input
@@ -630,7 +581,6 @@
           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
         />
       </div>
-
       <button
         onclick="addRipple(event, this); getGrade()"
         id="searchBtn"
@@ -638,12 +588,10 @@
       >
         <span class="btn-text">🔎 بحث</span>
       </button>
-
       <div class="loader" id="loader"></div>
       <div id="result"></div>
       <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
     </div>
-
     <div class="visit-counter">
       عدد زيارات الموقع : <span id="visitCount">...</span>
     </div>
@@ -702,11 +650,6 @@
           if (p < 1) requestAnimationFrame(tick);
         }
         requestAnimationFrame(tick);
-      }
-
-      function checkEmpty(value) {
-        if (value === "" || value === null || value === undefined) return "-";
-        return value;
       }
 
       function showEmojis(isSuccess) {
@@ -905,11 +848,10 @@
         searchBtn.disabled = true;
         idInput.disabled = true;
         searchBtn.classList.remove("pulse-button");
-
         searchBtnText.innerText = "⏳ جاري البحث...";
 
         var url =
-          "https://script.google.com/macros/s/AKfycbzKxXdxfG1hFI135i0C3EBJOGxBvYvDuyP3uEqWo7dljWMRo1y1c-6sn1_6TN-GGDWL/exec?id=" +
+          "https://script.google.com/macros/s/AKfycbx8JBu5aQKAf3cKN9kEss8RiFHoW9DiqbgSlLO3JiIRxtXEzsJh3MU1sgIU2cVPP-rNkw/exec?id=" +
           id;
 
         fetch(url)
@@ -919,25 +861,13 @@
             searchBtn.disabled = false;
             idInput.disabled = false;
             searchBtn.classList.add("pulse-button");
-
             searchBtnText.innerText = "🔎 بحث";
 
             if (data.status === "success") {
-              var ar = checkEmpty(data.arabic),
-                ar_max = checkEmpty(data.arabic_max);
-              var en = checkEmpty(data.english),
-                en_max = checkEmpty(data.english_max);
-              var sc = checkEmpty(data.science),
-                sc_max = checkEmpty(data.science_max);
-              var ma = checkEmpty(data.math),
-                ma_max = checkEmpty(data.math_max);
-              var total = checkEmpty(data.total),
-                total_max = checkEmpty(data.total_max);
-              var perc = checkEmpty(data.percentage);
-              var numericPerc = parseFloat(perc);
-              var totalDisplay = !isNaN(parseFloat(total))
+              var numericPerc = parseFloat(data.percentage);
+              var totalDisplay = !isNaN(parseFloat(data.total))
                 ? `<span id="totalNum">0</span>`
-                : total;
+                : data.total;
 
               let barColor = "#0056b3";
               if (!isNaN(numericPerc)) {
@@ -953,13 +883,23 @@
                 }
               }
 
-              const percBlock =
-                perc !== "-"
-                  ? `<div class="perc-block">
+              var subjectsHtml = data.subjects
+                .map(function (sub, index) {
+                  var animDelay = 0.06 * (index + 1);
+                  return `<tr class="row-anim" style="animation-delay: ${animDelay}s">
+                          <td>${sub.name}</td>
+                          <td>${sub.max}</td>
+                          <td>${sub.score}</td>
+                        </tr>`;
+                })
+                .join("");
+
+              var totalAnimDelay = 0.06 * (data.subjects.length + 1);
+
+              const percBlock = `<div class="perc-block">
                     <div class="perc-label">النسبة المئوية</div>
                     <div class="perc-num" style="color:${barColor};"><span id="percNumVal">0</span><span class="perc-sym">%</span></div>
-                  </div>`
-                  : `<div class="perc-block"><div class="perc-label">النسبة المئوية</div><div class="perc-num" style="color:#0056b3;">-</div></div>`;
+                  </div>`;
 
               var html = `
                 <div class="student-info-appear">
@@ -972,14 +912,14 @@
                       <h4 style="color: #4a4e69; margin-top: 0; margin-bottom: 25px; border-bottom: 2px dashed #eee; padding-bottom: 15px; font-size: 22px;">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</h4>
                     </div>
                     <h3 class="student-name">الاسم: ${data.name}</h3>
+                    <h4 style="color: #0056b3; margin-top: 0;">الصف: ${data.grade}</h4>
                     <table>
                       <thead><tr><th>المادة</th><th>الدرجة النهائية</th><th>درجة الطالب</th></tr></thead>
                       <tbody>
-                        <tr class="row-anim"><td>اللغة العربية</td><td>${ar_max}</td><td>${ar}</td></tr>
-                        <tr class="row-anim"><td>اللغة الإنجليزية</td><td>${en_max}</td><td>${en}</td></tr>
-                        <tr class="row-anim"><td>العلوم</td><td>${sc_max}</td><td>${sc}</td></tr>
-                        <tr class="row-anim"><td>الرياضيات</td><td>${ma_max}</td><td>${ma}</td></tr>
-                        <tr class="row-anim total-row"><td>المجموع الكلي</td><td>${total_max}</td><td>${totalDisplay}</td></tr>
+                        ${subjectsHtml}
+                        <tr class="row-anim total-row" style="animation-delay: ${totalAnimDelay}s">
+                          <td>المجموع الكلي</td><td>${data.total_max}</td><td>${totalDisplay}</td>
+                        </tr>
                       </tbody>
                     </table>
                     ${percBlock}
@@ -1005,8 +945,8 @@
                 const totalNum = document.getElementById("totalNum");
                 if (percNumVal && !isNaN(numericPerc))
                   countUp(percNumVal, numericPerc, 1200, "");
-                if (totalNum && !isNaN(parseFloat(total)))
-                  countUp(totalNum, parseFloat(total), 1000, "");
+                if (totalNum && !isNaN(parseFloat(data.total)))
+                  countUp(totalNum, parseFloat(data.total), 1000, "");
               }, 100);
 
               if (!isNaN(numericPerc)) {
@@ -1039,11 +979,9 @@
             searchBtn.disabled = false;
             idInput.disabled = false;
             searchBtn.classList.add("pulse-button");
-
             searchBtnText.innerText = "🔎 بحث";
-
             resultDiv.innerHTML =
-              "<div style='color:red; margin-top:15px;' class='student-info-appear'>حدث خطأ في الاتصال بقاعدة البيانات.</div>";
+              "<div style='color:red; margin-top:15px;' class='student-info-appear'>حدث خطأ في الاتصال بقاعدة البيانات. تأكد من الرابط.</div>";
           });
       }
     </script>
