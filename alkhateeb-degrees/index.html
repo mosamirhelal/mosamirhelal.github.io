@@ -31,7 +31,7 @@
         font-family: "Cairo", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         text-align: center;
         margin: 0;
-        padding: 20px;
+        padding: 40px 20px;
         background-color: #c9d0d9;
         animation: fadeInPage 0.55s ease-out;
         overflow-x: hidden;
@@ -39,7 +39,6 @@
         min-height: 100dvh;
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
       }
       @keyframes fadeInPage {
@@ -155,7 +154,7 @@
         border-radius: 15px;
         width: 100%;
         max-width: 800px;
-        margin: 0 auto;
+        margin: auto;
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
         animation: slideInUp 0.8s ease-out;
         position: relative;
@@ -751,20 +750,11 @@
 
     <div class="container" id="loginContainer">
       <div class="top-logos">
-        <img
-          src="logo_2.webp"
-          alt="وزارة التربية والتعليم"
-        />
-        <img
-          src="logo_1.webp"
-          alt="شعار المدرسة"
-        />
+        <img src="logo_2.webp" alt="وزارة التربية والتعليم" />
+        <img src="logo_1.webp" alt="شعار المدرسة" />
       </div>
       <div class="header-image">
-        <img
-          src="logo_3.webp"
-          alt="مدرسة الشهيد محمود علي الخطيب"
-        />
+        <img src="logo_3.webp" alt="مدرسة الشهيد محمود علي الخطيب" />
       </div>
       <h2>تسجيل الدخول للمعلمين</h2>
       <input
@@ -803,20 +793,11 @@
         </button>
       </div>
       <div class="top-logos">
-        <img
-          src="logo_2.webp"
-          alt="وزارة التربية والتعليم"
-        />
-        <img
-          src="logo_1.webp"
-          alt="شعار المدرسة"
-        />
+        <img src="logo_2.webp" alt="وزارة التربية والتعليم" />
+        <img src="logo_1.webp" alt="شعار المدرسة" />
       </div>
       <div class="header-image">
-        <img
-          src="logo_3.webp"
-          alt="مدرسة الشهيد محمود علي الخطيب"
-        />
+        <img src="logo_3.webp" alt="مدرسة الشهيد محمود علي الخطيب" />
       </div>
       <h2>بوابة إدخال الدرجات</h2>
 
@@ -897,7 +878,6 @@
         >
           <span class="btn-text">⚡ تطبيق</span>
         </button>
-
         <!--
         <button
           class="btn-clear-all"
@@ -1213,6 +1193,7 @@
       }
 
       function escapeHTML(str) {
+        if (str === null || str === undefined) return "";
         return String(str).replace(/[&<>'"]/g, function (tag) {
           const chars = {
             "&": "&amp;",
@@ -1415,19 +1396,26 @@
       }
 
       function updateSaveButton() {
+        const saveBtn = document.getElementById("saveBtn");
         const saveBtnText = document.querySelector("#saveBtn .btn-text");
         if (!saveBtnText) return;
         const modifiedCount = allStudents.filter(
           (s) => s.score !== s.originalScore
         ).length;
-        if (modifiedCount === 0) saveBtnText.innerText = "💾 حفظ الدرجات";
-        else if (modifiedCount === 1)
-          saveBtnText.innerText = "💾 حفظ درجة طالب واحد";
-        else if (modifiedCount === 2)
-          saveBtnText.innerText = "💾 حفظ درجات طالبين";
-        else if (modifiedCount >= 3 && modifiedCount <= 10)
-          saveBtnText.innerText = "💾 حفظ درجات " + modifiedCount + " طلاب";
-        else saveBtnText.innerText = "💾 حفظ درجات " + modifiedCount + " طالب";
+        if (modifiedCount === 0) {
+          saveBtnText.innerText = "💾 حفظ الدرجات";
+          saveBtn.classList.remove("pulse-success");
+        } else {
+          saveBtn.classList.add("pulse-success");
+          if (modifiedCount === 1)
+            saveBtnText.innerText = "💾 حفظ درجة طالب واحد";
+          else if (modifiedCount === 2)
+            saveBtnText.innerText = "💾 حفظ درجات طالبين";
+          else if (modifiedCount >= 3 && modifiedCount <= 10)
+            saveBtnText.innerText = "💾 حفظ درجات " + modifiedCount + " طلاب";
+          else
+            saveBtnText.innerText = "💾 حفظ درجات " + modifiedCount + " طالب";
+        }
       }
 
       function hideTableAndMessages() {
@@ -1858,23 +1846,26 @@
           row.id = "row_" + student.id;
           row.className = "row-anim";
           row.style.animationDelay = `${Math.min(index * 0.02, 0.4)}s`;
+
           row.innerHTML = `
             <td style='font-weight:600; color:#0056b3; vertical-align: middle;'>${escapeHTML(
               student.name
             )}</td>
             <td>
               <div class="checkbox-wrapper">
-                <input type='text' inputmode='numeric' class='score-input student-score ${isErrorClass} ${isModifiedClass}' placeholder='الدرجة' value='${displayScore}' 
-                       id='score_${
+                <input type='text' inputmode='numeric' class='score-input student-score ${isErrorClass} ${isModifiedClass}' placeholder='الدرجة' value='${escapeHTML(
+            displayScore
+          )}' 
+                       id='score_${escapeHTML(
                          student.id
-                       }' ${isDisabled} onfocus='this.select()' oninput='handleScoreInput("${
+                       )}' ${isDisabled} onfocus='this.select()' oninput='handleScoreInput("${escapeHTML(
             student.id
-          }", this)' onkeydown='handleEnter(event, this)'>
+          )}", this)' onkeydown='handleEnter(event, this)'>
                 <label class="absent-label"><input type='checkbox' class='absent-checkbox' ${
                   isAbsent ? "checked" : ""
-                } onchange='toggleAbsence("${
+                } onchange='toggleAbsence("${escapeHTML(
             student.id
-          }", this.checked)'> غائب</label>
+          )}", this.checked)'> غائب</label>
               </div>
             </td>
           `;
@@ -2093,7 +2084,7 @@
                 handleSessionExpired();
                 return;
               }
-              showSaveMessage("❌ حدث خطأ: " + data.message, true);
+              showSaveMessage("❌ حدث خطأ: " + escapeHTML(data.message), true);
             }
           })
           .catch((error) => {
