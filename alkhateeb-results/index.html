@@ -575,7 +575,7 @@
           type="text"
           inputmode="numeric"
           maxlength="14"
-          id="nationalId"
+          id="studentIdInput"
           class="form-control"
           placeholder="أدخل رقم الطالب"
           oninput="this.value = this.value.replace(/[^0-9]/g, '')"
@@ -597,7 +597,7 @@
     </div>
 
     <script>
-      fetch("https://api.counterapi.dev/v1/alkhateeb/visits/up")
+      fetch("https://api.counterapi.dev/v1/alkhateeb_school/visits/up")
         .then((res) => res.json())
         .then((data) => {
           document.getElementById("visitCount").innerText =
@@ -608,7 +608,7 @@
         });
 
       document
-        .getElementById("nationalId")
+        .getElementById("studentIdInput")
         .addEventListener("keypress", function (event) {
           if (event.key === "Enter") {
             event.preventDefault();
@@ -689,7 +689,7 @@
 
       function resetSearch() {
         document.getElementById("result").innerHTML = "";
-        var natIdInput = document.getElementById("nationalId");
+        var natIdInput = document.getElementById("studentIdInput");
         natIdInput.value = "";
         window.scrollTo({ top: 0, behavior: "smooth" });
         setTimeout(() => natIdInput.focus(), 500);
@@ -845,7 +845,7 @@
       }
 
       function getGrade() {
-        var idInput = document.getElementById("nationalId");
+        var idInput = document.getElementById("studentIdInput");
         var id = idInput.value;
         var resultDiv = document.getElementById("result");
         var loader = document.getElementById("loader");
