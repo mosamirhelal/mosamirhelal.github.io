@@ -22,7 +22,6 @@
         margin: 0;
         padding: 0;
       }
-
       :root {
         --bg: #080b14;
         --bg2: #0e1220;
@@ -57,14 +56,12 @@
         --range-track: #d4e0f5;
         --range-thumb: #6366f1;
       }
-
       html[lang="ar"] body {
         font-family: "Tajawal", system-ui, sans-serif;
       }
       html[lang="en"] body {
         font-family: "Inter", system-ui, sans-serif;
       }
-
       body {
         background: var(--bg);
         color: var(--fg);
@@ -73,7 +70,6 @@
         line-height: 1.5;
         overflow-x: hidden;
       }
-
       header {
         display: flex;
         align-items: center;
@@ -124,7 +120,6 @@
         letter-spacing: 0.3px;
         font-size: 8.5px;
       }
-
       .hdr-right {
         display: flex;
         align-items: center;
@@ -182,7 +177,6 @@
         background: var(--card-b);
         color: var(--fg);
       }
-
       .hero {
         padding: 20px 18px 0;
         max-width: 1200px;
@@ -203,7 +197,6 @@
         max-width: 520px;
         line-height: 1.65;
       }
-
       .vis-bar {
         max-width: 1200px;
         margin: 14px auto 0;
@@ -247,7 +240,6 @@
         background: var(--border);
         margin: 0 4px;
       }
-
       .cards-wrap {
         max-width: 1200px;
         margin: 14px auto 0;
@@ -261,7 +253,6 @@
       .cards-wrap.stack {
         grid-template-columns: 1fr;
       }
-
       .card {
         background: var(--card);
         border: 1px solid var(--border);
@@ -279,7 +270,6 @@
       .card.card-hidden {
         display: none !important;
       }
-
       .card-header {
         display: flex;
         align-items: flex-start;
@@ -322,7 +312,6 @@
         gap: 5px;
         flex-shrink: 0;
       }
-
       .start-btn {
         display: flex;
         align-items: center;
@@ -354,7 +343,6 @@
       .start-btn.active:hover {
         background: var(--red-h);
       }
-
       .stg-btn {
         width: 28px;
         height: 28px;
@@ -377,7 +365,6 @@
         color: var(--accent);
         border-color: var(--accent);
       }
-
       .settings-panel {
         overflow: hidden;
         max-height: 0;
@@ -385,7 +372,7 @@
         opacity: 0;
       }
       .settings-panel.open {
-        max-height: 200px;
+        max-height: 250px;
         opacity: 1;
       }
       .settings-inner {
@@ -413,7 +400,6 @@
       html[lang="ar"] .ctrl-label {
         min-width: 64px;
       }
-
       input[type="range"] {
         flex: 1;
         min-width: 60px;
@@ -425,7 +411,11 @@
         cursor: pointer;
         outline: none;
       }
-      input[type="range"]::-webkit-slider-thumb {
+      input[type="range"]:focus-visible::-webkit-slider-thumb {
+        border-color: var(--accent);
+      }
+      input[type="range"]::-webkit-slider-thumb,
+      input[type="range"]::-moz-range-thumb {
         -webkit-appearance: none;
         width: 13px;
         height: 13px;
@@ -435,16 +425,9 @@
         border: 2px solid var(--bg2);
         transition: transform 0.12s;
       }
-      input[type="range"]::-webkit-slider-thumb:hover {
+      input[type="range"]::-webkit-slider-thumb:hover,
+      input[type="range"]::-moz-range-thumb:hover {
         transform: scale(1.25);
-      }
-      input[type="range"]::-moz-range-thumb {
-        width: 13px;
-        height: 13px;
-        border-radius: 50%;
-        background: var(--range-thumb);
-        cursor: pointer;
-        border: 2px solid var(--bg2);
       }
       .range-val {
         font-size: 10px;
@@ -453,7 +436,6 @@
         min-width: 30px;
         text-align: center;
       }
-
       .mode-btns {
         display: flex;
         gap: 4px;
@@ -485,7 +467,6 @@
         border-color: var(--accent);
         color: #fff;
       }
-
       .color-swatches {
         display: flex;
         gap: 5px;
@@ -507,7 +488,6 @@
         border-color: var(--fg);
         transform: scale(1.15);
       }
-
       .db-row {
         display: flex;
         align-items: center;
@@ -524,7 +504,6 @@
         min-width: 24px;
         text-align: end;
       }
-
       .viz-wrap {
         position: relative;
         border-radius: 10px;
@@ -538,7 +517,6 @@
         width: 100%;
         height: 100%;
       }
-
       .viz-idle {
         position: absolute;
         inset: 0;
@@ -565,7 +543,6 @@
         font-size: 10.5px;
         color: var(--fg3);
       }
-
       footer {
         text-align: center;
         padding: 14px 16px 22px;
@@ -610,7 +587,11 @@
         </div>
       </div>
       <div class="hdr-right">
-        <button class="lang-btn" onclick="toggleLang()">
+        <button
+          class="lang-btn"
+          aria-label="Toggle Language"
+          onclick="toggleLang()"
+        >
           <svg
             width="11"
             height="11"
@@ -626,6 +607,7 @@
         </button>
         <button
           class="icon-btn"
+          aria-label="Toggle Theme"
           onclick="toggleTheme()"
           id="theme-btn"
           title="Theme"
@@ -681,10 +663,7 @@
           stroke="currentColor"
           stroke-width="2"
           viewBox="0 0 24 24"
-        >
-          <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
-          <circle cx="12" cy="12" r="3" />
-        </svg>
+        ></svg>
       </div>
       <div class="vis-tag" id="sys-vis-tag" onclick="toggleCardVis('sys')">
         <svg
@@ -708,15 +687,17 @@
           stroke="currentColor"
           stroke-width="2"
           viewBox="0 0 24 24"
-        >
-          <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" />
-          <circle cx="12" cy="12" r="3" />
-        </svg>
+        ></svg>
       </div>
 
       <div class="vis-sep"></div>
       <span class="vis-bar-label" id="t-layout">Layout:</span>
-      <button class="icon-btn active" id="btn-side" onclick="setLayout('side')">
+      <button
+        class="icon-btn active"
+        aria-label="Side by Side Layout"
+        id="btn-side"
+        onclick="setLayout('side')"
+      >
         <svg
           width="14"
           height="14"
@@ -731,7 +712,12 @@
           <rect x="14" y="3" width="7" height="18" rx="2" />
         </svg>
       </button>
-      <button class="icon-btn" id="btn-stack" onclick="setLayout('stack')">
+      <button
+        class="icon-btn"
+        aria-label="Stacked Layout"
+        id="btn-stack"
+        onclick="setLayout('stack')"
+      >
         <svg
           width="14"
           height="14"
@@ -777,6 +763,7 @@
           <div class="card-actions">
             <button
               class="stg-btn"
+              aria-label="Settings"
               id="mic-stg-btn"
               onclick="toggleSettings('mic')"
             >
@@ -819,9 +806,22 @@
                 step="0.05"
                 value="1"
                 id="mic-sens"
-                oninput="updateSens('mic', this.value)"
+                oninput="updateProp('mic', 'sensitivity', this.value)"
               />
               <span class="range-val" id="mic-sens-val">100%</span>
+            </div>
+            <div class="ctrl-row">
+              <span class="ctrl-label" id="t-smooth-mic"></span>
+              <input
+                type="range"
+                min="0.1"
+                max="0.99"
+                step="0.01"
+                value="0.75"
+                id="mic-smooth"
+                oninput="updateProp('mic', 'smoothing', this.value)"
+              />
+              <span class="range-val" id="mic-smooth-val">0.75</span>
             </div>
             <div class="ctrl-row">
               <span class="ctrl-label" id="t-wave-mic"></span>
@@ -905,6 +905,7 @@
           <div class="card-actions">
             <button
               class="stg-btn"
+              aria-label="Settings"
               id="sys-stg-btn"
               onclick="toggleSettings('sys')"
             >
@@ -947,9 +948,22 @@
                 step="0.05"
                 value="1"
                 id="sys-sens"
-                oninput="updateSens('sys', this.value)"
+                oninput="updateProp('sys', 'sensitivity', this.value)"
               />
               <span class="range-val" id="sys-sens-val">100%</span>
+            </div>
+            <div class="ctrl-row">
+              <span class="ctrl-label" id="t-smooth-sys"></span>
+              <input
+                type="range"
+                min="0.1"
+                max="0.99"
+                step="0.01"
+                value="0.75"
+                id="sys-smooth"
+                oninput="updateProp('sys', 'smoothing', this.value)"
+              />
+              <span class="range-val" id="sys-smooth-val">0.75</span>
             </div>
             <div class="ctrl-row">
               <span class="ctrl-label" id="t-wave-sys"></span>
@@ -1005,6 +1019,17 @@
       </div>
     </div>
 
+    <footer>
+      <span id="t-madeBy"></span>
+      <a
+        href="https://mosamirhelal.com"
+        target="_blank"
+        rel="noopener"
+        class="name"
+        id="t-authorName"
+      ></a>
+    </footer>
+
     <script>
       const T = {
         en: {
@@ -1026,6 +1051,7 @@
           readyTitle: "Ready to monitor",
           readySub: "Click Start to begin capturing audio",
           sensitivity: "Sensitivity",
+          smoothing: "Smoothing",
           waveform: "Waveform",
           color: "Color",
           bars: "Bars",
@@ -1061,6 +1087,7 @@
           readyTitle: "جاهز للمراقبة",
           readySub: "اضغط ابدأ لالتقاط الصوت",
           sensitivity: "الحساسية",
+          smoothing: "النعومة",
           waveform: "شكل الموجة",
           color: "اللون",
           bars: "أعمدة",
@@ -1083,27 +1110,45 @@
       let isDark = true;
       let layoutMode = "side";
       const cardVis = { mic: true, sys: true };
-      const micCfg = { mode: "bars", sensitivity: 1, scheme: "ocean" };
-      const sysCfg = { mode: "bars", sensitivity: 1, scheme: "ocean" };
+      const micCfg = {
+        mode: "bars",
+        sensitivity: 1,
+        smoothing: 0.75,
+        scheme: "ocean",
+      };
+      const sysCfg = {
+        mode: "bars",
+        sensitivity: 1,
+        smoothing: 0.75,
+        scheme: "ocean",
+      };
 
       function saveState() {
-        const state = { lang, isDark, layoutMode, cardVis, micCfg, sysCfg };
-        localStorage.setItem("audioMonitorSettings", JSON.stringify(state));
+        try {
+          const state = { lang, isDark, layoutMode, cardVis, micCfg, sysCfg };
+          localStorage.setItem("audioMonitorSettings", JSON.stringify(state));
+        } catch (e) {
+          console.warn("Could not save settings to localStorage", e);
+        }
       }
 
       function loadState() {
-        const saved = localStorage.getItem("audioMonitorSettings");
-        if (saved) {
-          const state = JSON.parse(saved);
-          if (state.lang) lang = state.lang;
-          if (state.isDark !== undefined) isDark = state.isDark;
-          if (state.layoutMode) layoutMode = state.layoutMode;
-          if (state.cardVis) {
-            cardVis.mic = state.cardVis.mic;
-            cardVis.sys = state.cardVis.sys;
+        try {
+          const saved = localStorage.getItem("audioMonitorSettings");
+          if (saved) {
+            const state = JSON.parse(saved);
+            if (state.lang) lang = state.lang;
+            if (state.isDark !== undefined) isDark = state.isDark;
+            if (state.layoutMode) layoutMode = state.layoutMode;
+            if (state.cardVis) {
+              cardVis.mic = state.cardVis.mic;
+              cardVis.sys = state.cardVis.sys;
+            }
+            if (state.micCfg) Object.assign(micCfg, state.micCfg);
+            if (state.sysCfg) Object.assign(sysCfg, state.sysCfg);
           }
-          if (state.micCfg) Object.assign(micCfg, state.micCfg);
-          if (state.sysCfg) Object.assign(sysCfg, state.sysCfg);
+        } catch (e) {
+          console.warn("Could not load settings from localStorage", e);
         }
       }
 
@@ -1116,6 +1161,7 @@
           const el = document.getElementById(id);
           if (el) el.textContent = v;
         };
+
         s("t-appName", t.appName);
         s("t-appSub", t.appSub);
         s("t-heroTitle", t.heroTitle);
@@ -1132,11 +1178,14 @@
         s("t-authorName", t.authorName);
         s("lang-label", t.langToggle);
         s("t-sens-mic", t.sensitivity);
+        s("t-smooth-mic", t.smoothing);
         s("t-wave-mic", t.waveform);
         s("t-color-mic", t.color);
         s("t-sens-sys", t.sensitivity);
+        s("t-smooth-sys", t.smoothing);
         s("t-wave-sys", t.waveform);
         s("t-color-sys", t.color);
+
         ["mic", "sys"].forEach((id) => {
           s(`${id}-m-bars`, t.bars);
           s(`${id}-m-wave`, t.wave);
@@ -1152,6 +1201,7 @@
 
         updateBtn("mic", micActive);
         updateBtn("sys", sysActive);
+        updateSwatchTitles();
       }
 
       function toggleLang() {
@@ -1175,6 +1225,7 @@
 
       function toggleTheme() {
         isDark = !isDark;
+        clearGradCache();
         applyTheme();
         saveState();
       }
@@ -1196,43 +1247,48 @@
       const SCHEMES = [
         {
           id: "ocean",
-          label: "Ocean",
+          label_en: "Ocean",
+          label_ar: "محيط",
           h1: 200,
           h2: 260,
           preview: "linear-gradient(90deg,#38bdf8,#818cf8)",
         },
         {
           id: "aurora",
-          label: "Aurora",
+          label_en: "Aurora",
+          label_ar: "شفق",
           h1: 140,
           h2: 200,
           preview: "linear-gradient(90deg,#34d399,#38bdf8)",
         },
         {
           id: "sunset",
-          label: "Sunset",
+          label_en: "Sunset",
+          label_ar: "غروب",
           h1: 0,
           h2: 50,
           preview: "linear-gradient(90deg,#f97316,#facc15)",
         },
         {
           id: "fire",
-          label: "Fire",
+          label_en: "Fire",
+          label_ar: "نار",
           h1: 340,
           h2: 30,
           preview: "linear-gradient(90deg,#ec4899,#f97316)",
-          wrap: true,
         },
         {
           id: "violet",
-          label: "Violet",
+          label_en: "Violet",
+          label_ar: "بنفسجي",
           h1: 260,
           h2: 320,
           preview: "linear-gradient(90deg,#8b5cf6,#ec4899)",
         },
         {
           id: "mono",
-          label: "Mono",
+          label_en: "Mono",
+          label_ar: "أحادي",
           h1: 220,
           h2: 220,
           preview: "linear-gradient(90deg,#6366f1,#6366f1)",
@@ -1245,11 +1301,21 @@
         SCHEMES.forEach((sc) => {
           const b = document.createElement("div");
           b.className = "swatch";
-          b.title = sc.label;
           b.style.background = sc.preview;
           b.dataset.sid = sc.id;
           b.addEventListener("click", () => setScheme(id, sc.id));
           el.appendChild(b);
+        });
+      }
+
+      function updateSwatchTitles() {
+        ["mic", "sys"].forEach((id) => {
+          SCHEMES.forEach((sc) => {
+            const el = document.querySelector(
+              `#${id}-swatches .swatch[data-sid="${sc.id}"]`
+            );
+            if (el) el.title = lang === "ar" ? sc.label_ar : sc.label_en;
+          });
         });
       }
 
@@ -1258,6 +1324,7 @@
         document.querySelectorAll(`#${id}-swatches .swatch`).forEach((s) => {
           s.classList.toggle("active", s.dataset.sid === sid);
         });
+        clearGradCache(id);
         saveState();
       }
 
@@ -1300,10 +1367,20 @@
         b.classList.toggle("open", open);
       }
 
-      function updateSens(id, val) {
-        (id === "mic" ? micCfg : sysCfg).sensitivity = +val;
-        document.getElementById(`${id}-sens-val`).textContent =
-          Math.round(val * 100) + "%";
+      function updateProp(id, prop, val) {
+        const obj = id === "mic" ? micCfg : sysCfg;
+        obj[prop] = +val;
+        const disp =
+          prop === "sensitivity"
+            ? Math.round(val * 100) + "%"
+            : parseFloat(val).toFixed(2);
+        document.getElementById(
+          `${id}-${prop === "sensitivity" ? "sens" : "smooth"}-val`
+        ).textContent = disp;
+        if (prop === "smoothing") {
+          const analyser = id === "mic" ? micAnalyser : sysAnalyser;
+          if (analyser) analyser.smoothingTimeConstant = val;
+        }
         saveState();
       }
 
@@ -1317,23 +1394,65 @@
         saveState();
       }
 
+      const canvases = { mic: null, sys: null };
+      const ctxs = { mic: null, sys: null };
+
+      const gradCache = { mic: {}, sys: {} };
+      function clearGradCache(id) {
+        if (id) gradCache[id] = {};
+        else {
+          gradCache.mic = {};
+          gradCache.sys = {};
+        }
+      }
+
+      function getBarGrad(ctx, H, hue, id) {
+        const key = `${Math.round(hue)}-${H}`;
+        if (!gradCache[id][key]) {
+          const g = ctx.createLinearGradient(0, H, 0, 0);
+          g.addColorStop(0, `hsla(${hue},85%,45%,.9)`);
+          g.addColorStop(1, `hsla(${hue},90%,72%,1)`);
+          gradCache[id][key] = g;
+        }
+        return gradCache[id][key];
+      }
+
+      function getWaveGrad(ctx, W, sc, id) {
+        const key = `wave-${Math.round(W)}-${sc.h1}-${sc.h2}`;
+        if (!gradCache[id][key]) {
+          const g = ctx.createLinearGradient(0, 0, W, 0);
+          g.addColorStop(0, `hsl(${sc.h1},80%,62%)`);
+          g.addColorStop(1, `hsl(${sc.h2},80%,62%)`);
+          gradCache[id][key] = g;
+        }
+        return gradCache[id][key];
+      }
+
       const resizeObserver = new ResizeObserver((entries) => {
         for (let entry of entries) {
           const canvas = entry.target.querySelector("canvas");
           if (canvas) {
             canvas.width = entry.contentRect.width;
             canvas.height = entry.contentRect.height;
+            clearGradCache();
           }
         }
       });
-      resizeObserver.observe(document.getElementById("mic-viz-wrap"));
-      resizeObserver.observe(document.getElementById("sys-viz-wrap"));
 
       const NUM = 56;
+      const peaks = {
+        mic: new Array(NUM).fill(0),
+        sys: new Array(NUM).fill(0),
+      };
+
+      function drawRoundRect(ctx, x, y, w, h, r) {
+        if (ctx.roundRect) ctx.roundRect(x, y, w, h, r);
+        else ctx.rect(x, y, w, h);
+      }
 
       function drawCanvas(id, freqData, timeData, cfg) {
-        const c = document.getElementById(`${id}-canvas`);
-        const ctx = c.getContext("2d", { alpha: false });
+        const c = canvases[id];
+        const ctx = ctxs[id];
         const W = c.width,
           H = c.height;
         if (!W || !H) return;
@@ -1355,10 +1474,7 @@
             const y = H / 2 + v * ((H / 2) * 0.88) * Math.min(3, sensitivity);
             i === 0 ? ctx.moveTo(i * sw, y) : ctx.lineTo(i * sw, y);
           }
-          const grad = ctx.createLinearGradient(0, 0, W, 0);
-          grad.addColorStop(0, `hsl(${sc.h1},80%,62%)`);
-          grad.addColorStop(1, `hsl(${sc.h2},80%,62%)`);
-          ctx.strokeStyle = grad;
+          ctx.strokeStyle = getWaveGrad(ctx, W, sc, id);
           ctx.lineWidth = 2;
           ctx.shadowColor = `hsl(${sc.h1},80%,62%)`;
           ctx.shadowBlur = 8;
@@ -1370,30 +1486,38 @@
         const data = freqData;
         const step = Math.floor(data.length / NUM);
         const vals = [];
-        for (let i = 0; i < NUM; i++)
+        for (let i = 0; i < NUM; i++) {
           vals.push(
             Math.min(1, (data[i * step] / 255) * Math.min(3, sensitivity))
           );
+        }
 
         const barW = Math.max(1, (W - (NUM - 1) * 2) / NUM);
 
         for (let i = 0; i < NUM; i++) {
           const v = vals[i];
+          const decayRate = peaks[id][i] > 0.7 ? 0.008 : 0.018;
+          peaks[id][i] = Math.max(peaks[id][i] - decayRate, v);
+
           const t = i / (NUM - 1);
           const hue = sc.h1 + (sc.h2 - sc.h1) * t;
 
-          let bh;
-          if (mode === "mirror") bh = v * ((H / 2) * 0.92);
-          else bh = Math.max(2, v * (H - 10));
+          let bh, py, ph;
+          if (mode === "mirror") {
+            bh = v * ((H / 2) * 0.92);
+            py = H / 2 - peaks[id][i] * ((H / 2) * 0.92) - 2;
+            ph = 2;
+          } else {
+            bh = Math.max(2, v * (H - 10));
+            py = H - Math.max(2, peaks[id][i] * (H - 10)) - 4;
+            ph = 2;
+          }
 
           const x = i * (barW + 2);
-          const grad = ctx.createLinearGradient(0, H, 0, 0);
-          grad.addColorStop(0, `hsla(${hue},85%,45%,.9)`);
-          grad.addColorStop(1, `hsla(${hue},90%,72%,1)`);
-          ctx.fillStyle = grad;
+          ctx.fillStyle = getBarGrad(ctx, H, hue, id);
 
           if (v > 0.06) {
-            ctx.shadowColor = `hsla(${hue},90%,65%,.45)`;
+            ctx.shadowColor = `hsla(${hue},90%,65%,.4)`;
             ctx.shadowBlur = v * 10;
           } else {
             ctx.shadowBlur = 0;
@@ -1402,25 +1526,49 @@
           ctx.beginPath();
           if (mode === "mirror") {
             const cy = H / 2;
-            ctx.roundRect(x, cy - bh, barW, bh, 2);
+            drawRoundRect(ctx, x, cy - bh, barW, bh, 2);
             ctx.fill();
             ctx.beginPath();
-            ctx.roundRect(x, cy, barW, bh, 2);
+            drawRoundRect(ctx, x, cy, barW, bh, 2);
           } else {
-            ctx.roundRect(x, H - bh, barW, bh, 2);
+            drawRoundRect(ctx, x, H - bh, barW, bh, 2);
           }
           ctx.fill();
+
+          ctx.shadowBlur = 0;
+
+          ctx.fillStyle = `hsla(${hue},90%,75%,0.8)`;
+          ctx.beginPath();
+          drawRoundRect(ctx, x, py, barW, ph, 1);
+          ctx.fill();
+
+          if (mode === "mirror") {
+            const py_bottom = H / 2 + peaks[id][i] * ((H / 2) * 0.92);
+            ctx.beginPath();
+            drawRoundRect(ctx, x, py_bottom, barW, ph, 1);
+            ctx.fill();
+          }
         }
-        ctx.shadowBlur = 0;
+      }
+
+      let globalAudioCtx = null;
+      async function getAudioCtx() {
+        if (!globalAudioCtx || globalAudioCtx.state === "closed") {
+          globalAudioCtx = new AudioContext();
+          micAnalyser = null;
+          sysAnalyser = null;
+        }
+        if (globalAudioCtx.state === "suspended") {
+          await globalAudioCtx.resume();
+        }
+        return globalAudioCtx;
       }
 
       let micActive = false,
-        micCtx,
         micAnalyser,
         micSrc,
         micStream;
       let sysActive = false,
-        sysCtx,
         sysAnalyser,
         sysSrc,
         sysStream;
@@ -1435,7 +1583,7 @@
           micAnalyser.getByteFrequencyData(freqBuf.mic);
           micAnalyser.getByteTimeDomainData(timeBuf.mic);
           drawCanvas("mic", freqBuf.mic, timeBuf.mic, micCfg);
-          const db = calcDb(freqBuf.mic);
+          const db = calcDb(timeBuf.mic);
           document.getElementById("mic-db").textContent =
             db !== null ? db : "∞";
         }
@@ -1443,16 +1591,19 @@
           sysAnalyser.getByteFrequencyData(freqBuf.sys);
           sysAnalyser.getByteTimeDomainData(timeBuf.sys);
           drawCanvas("sys", freqBuf.sys, timeBuf.sys, sysCfg);
-          const db = calcDb(freqBuf.sys);
+          const db = calcDb(timeBuf.sys);
           document.getElementById("sys-db").textContent =
             db !== null ? db : "∞";
         }
       }
 
-      function calcDb(arr) {
+      function calcDb(timeArr) {
         let s = 0;
-        for (let i = 0; i < arr.length; i++) s += arr[i] * arr[i];
-        const rms = Math.sqrt(s / arr.length) / 255;
+        for (let i = 0; i < timeArr.length; i++) {
+          const v = timeArr[i] / 128 - 1;
+          s += v * v;
+        }
+        const rms = Math.sqrt(s / timeArr.length);
         return rms < 0.0001 ? null : Math.round(20 * Math.log10(rms));
       }
 
@@ -1475,17 +1626,18 @@
               audio: true,
               video: false,
             });
-            micCtx = new AudioContext();
-            micAnalyser = micCtx.createAnalyser();
-            micAnalyser.fftSize = 256;
-            micAnalyser.smoothingTimeConstant = 0.75;
+            const actx = await getAudioCtx();
+            micAnalyser = actx.createAnalyser();
+            micAnalyser.fftSize = 2048;
+            micAnalyser.smoothingTimeConstant = micCfg.smoothing;
             freqBuf.mic = new Uint8Array(micAnalyser.frequencyBinCount);
             timeBuf.mic = new Uint8Array(micAnalyser.fftSize);
-            micSrc = micCtx.createMediaStreamSource(micStream);
+            micSrc = actx.createMediaStreamSource(micStream);
             micSrc.connect(micAnalyser);
             micActive = true;
             document.getElementById("mic-idle").classList.add("hidden");
             updateBtn("mic", true);
+            peaks.mic.fill(0);
             if (!rafId) animate();
           } catch (e) {
             alert(T[lang].alertMic + e.message);
@@ -1494,6 +1646,7 @@
           stopMic();
         }
       }
+
       function stopMic() {
         micActive = false;
         if (micSrc) {
@@ -1504,16 +1657,13 @@
           micStream.getTracks().forEach((t) => t.stop());
           micStream = null;
         }
-        if (micCtx) {
-          micCtx.close();
-          micCtx = null;
-        }
         micAnalyser = null;
         document.getElementById("mic-idle").classList.remove("hidden");
         document.getElementById("mic-db").textContent = "∞";
         updateBtn("mic", false);
-        const c = document.getElementById("mic-canvas");
-        c.getContext("2d").clearRect(0, 0, c.width, c.height);
+        const ctx = ctxs.mic;
+        ctx.fillStyle = isDark ? "#080b14" : "#f2f5fc";
+        ctx.fillRect(0, 0, canvases.mic.width, canvases.mic.height);
         if (!sysActive) {
           cancelAnimationFrame(rafId);
           rafId = null;
@@ -1533,17 +1683,18 @@
               alert(T[lang].alertSys);
               return;
             }
-            sysCtx = new AudioContext();
-            sysAnalyser = sysCtx.createAnalyser();
-            sysAnalyser.fftSize = 256;
-            sysAnalyser.smoothingTimeConstant = 0.75;
+            const actx = await getAudioCtx();
+            sysAnalyser = actx.createAnalyser();
+            sysAnalyser.fftSize = 2048;
+            sysAnalyser.smoothingTimeConstant = sysCfg.smoothing;
             freqBuf.sys = new Uint8Array(sysAnalyser.frequencyBinCount);
             timeBuf.sys = new Uint8Array(sysAnalyser.fftSize);
-            sysSrc = sysCtx.createMediaStreamSource(sysStream);
+            sysSrc = actx.createMediaStreamSource(sysStream);
             sysSrc.connect(sysAnalyser);
             sysActive = true;
             document.getElementById("sys-idle").classList.add("hidden");
             updateBtn("sys", true);
+            peaks.sys.fill(0);
             sysStream.getAudioTracks()[0].addEventListener("ended", stopSys);
             if (!rafId) animate();
           } catch (e) {
@@ -1554,6 +1705,7 @@
           stopSys();
         }
       }
+
       function stopSys() {
         sysActive = false;
         if (sysSrc) {
@@ -1564,33 +1716,58 @@
           sysStream.getTracks().forEach((t) => t.stop());
           sysStream = null;
         }
-        if (sysCtx) {
-          sysCtx.close();
-          sysCtx = null;
-        }
         sysAnalyser = null;
         document.getElementById("sys-idle").classList.remove("hidden");
         document.getElementById("sys-db").textContent = "∞";
         updateBtn("sys", false);
-        const c = document.getElementById("sys-canvas");
-        c.getContext("2d").clearRect(0, 0, c.width, c.height);
+        const ctx = ctxs.sys;
+        ctx.fillStyle = isDark ? "#080b14" : "#f2f5fc";
+        ctx.fillRect(0, 0, canvases.sys.width, canvases.sys.height);
         if (!micActive) {
           cancelAnimationFrame(rafId);
           rafId = null;
         }
       }
 
+      document.addEventListener("keydown", (e) => {
+        if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA")
+          return;
+        if (e.ctrlKey || e.metaKey || e.altKey) return;
+        const k = e.key.toLowerCase();
+        if (k === "m") toggleMic();
+        if (k === "s") toggleSys();
+      });
+
+      canvases.mic = document.getElementById("mic-canvas");
+      ctxs.mic = canvases.mic.getContext("2d", { alpha: false });
+      canvases.sys = document.getElementById("sys-canvas");
+      ctxs.sys = canvases.sys.getContext("2d", { alpha: false });
+
+      resizeObserver.observe(document.getElementById("mic-viz-wrap"));
+      resizeObserver.observe(document.getElementById("sys-viz-wrap"));
+
       loadState();
       applyTheme();
       setLayout(layoutMode);
       applyLang();
       applyCardVis();
+
       document.getElementById("mic-sens").value = micCfg.sensitivity;
       document.getElementById("mic-sens-val").textContent =
         Math.round(micCfg.sensitivity * 100) + "%";
+      document.getElementById("mic-smooth").value = micCfg.smoothing;
+      document.getElementById("mic-smooth-val").textContent = parseFloat(
+        micCfg.smoothing
+      ).toFixed(2);
+
       document.getElementById("sys-sens").value = sysCfg.sensitivity;
       document.getElementById("sys-sens-val").textContent =
         Math.round(sysCfg.sensitivity * 100) + "%";
+      document.getElementById("sys-smooth").value = sysCfg.smoothing;
+      document.getElementById("sys-smooth-val").textContent = parseFloat(
+        sysCfg.smoothing
+      ).toFixed(2);
+
       setMode("mic", micCfg.mode);
       setMode("sys", sysCfg.mode);
       setScheme("mic", micCfg.scheme);
