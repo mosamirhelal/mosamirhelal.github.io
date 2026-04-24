@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>البوابة الإلكترونية - مدرسة الشهيد محمود علي الخطيب</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <meta
+      property="og:title"
+      content="البوابة الإلكترونية - مدرسة الشهيد محمود علي الخطيب"
+    />
+    <meta
+      property="og:description"
+      content="المنصة الرئيسية للخدمات الإلكترونية للمدرسة"
+    />
+    <meta
+      property="og:image"
+      content="https://mosamirhelal.com/alkhateeb/logo_3.webp"
+    />
+    <meta property="og:type" content="website" />
+    <style>
+      :root {
+        --blue: #0056b3;
+        --blue-dark: #003d80;
+        --blue-light: #e8f0fb;
+        --teal: #007a7a;
+        --teal-dark: #005c5c;
+        --maroon: #8f250c;
+        --maroon-dark: #6c1b08;
+        --bg: #c9d0d9;
+        --card: #ffffff;
+        --text-main: #1a2340;
+        --text-sub: #4a4e69;
+        --border: #e2e8f0;
+        --radius: 16px;
+        --shadow: 0 24px 60px rgba(0, 0, 0, 0.13);
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "Cairo", sans-serif;
+        text-align: center;
+        padding: 24px 16px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        overflow-x: hidden;
+        background-color: var(--bg);
+        background-image: radial-gradient(
+            ellipse at 20% 20%,
+            rgba(0, 86, 179, 0.08) 0%,
+            transparent 55%
+          ),
+          radial-gradient(
+            ellipse at 80% 80%,
+            rgba(0, 122, 122, 0.07) 0%,
+            transparent 55%
+          );
+        animation: fadeInPage 0.5s ease-out;
+      }
+      @keyframes fadeInPage {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(28px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes floatDot {
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+        50% {
+          transform: translateY(-18px) scale(1.05);
+        }
+      }
+      @keyframes ripple {
+        from {
+          transform: scale(0);
+          opacity: 1;
+        }
+        to {
+          transform: scale(3.5);
+          opacity: 0;
+        }
+      }
+      @keyframes overlayIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes cardPop {
+        from {
+          opacity: 0;
+          transform: translateY(10px) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+      .dot {
+        position: fixed;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+        background: rgba(0, 86, 179, 0.055);
+        animation: floatDot ease-in-out infinite;
+      }
+      .container {
+        background: var(--card);
+        padding: 40px 36px;
+        border-radius: var(--radius);
+        width: 100%;
+        max-width: 820px;
+        margin: 0 auto;
+        box-shadow: var(--shadow);
+        animation: slideInUp 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+        position: relative;
+        z-index: 10;
+        border-top: 4px solid var(--blue);
+      }
+      .top-logos {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 18px;
+        gap: 24px;
+      }
+      .top-logos img {
+        max-height: 120px;
+        max-width: 44%;
+        width: auto;
+        object-fit: contain;
+        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.08));
+        transition: transform 0.3s ease;
+      }
+      .top-logos img:hover {
+        transform: scale(1.04);
+      }
+      .logo-divider {
+        width: 1px;
+        height: 80px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          var(--border),
+          transparent
+        );
+        flex-shrink: 0;
+      }
+      .header-image {
+        text-align: center;
+        margin-bottom: 22px;
+      }
+      .header-image img {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+        filter: drop-shadow(0 2px 8px rgba(0, 86, 179, 0.1));
+      }
+      .title-block {
+        margin-bottom: 28px;
+        padding-bottom: 22px;
+        border-bottom: 1px solid var(--border);
+        position: relative;
+      }
+      .title-block::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        right: 50%;
+        transform: translateX(50%);
+        width: 60px;
+        height: 3px;
+        background: var(--blue);
+        border-radius: 2px;
+      }
+      h2 {
+        color: var(--blue);
+        font-size: 26px;
+        font-weight: 900;
+        margin-bottom: 6px;
+        letter-spacing: -0.3px;
+      }
+      .subtitle {
+        color: var(--text-sub);
+        font-weight: 600;
+        font-size: 15px;
+      }
+      .buttons-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        margin-bottom: 4px;
+      }
+      .portal-btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-decoration: none;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-weight: 700;
+        font-size: 17px;
+        width: 100%;
+        max-width: 420px;
+        margin: 0 auto;
+        padding: 17px 22px;
+        border-radius: 12px;
+        transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
+          box-shadow 0.18s ease;
+        position: relative;
+        overflow: hidden;
+        font-family: inherit;
+        letter-spacing: 0.2px;
+      }
+      .portal-btn:hover {
+        transform: translateY(-4px) scale(1.015);
+        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+      }
+      .portal-btn:active {
+        transform: translateY(1px) scale(0.99);
+        box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
+      }
+      .btn-results {
+        background: linear-gradient(135deg, #0056b3 0%, #0070e0 100%);
+        box-shadow: 0 4px 16px rgba(0, 86, 179, 0.25);
+      }
+      .btn-degrees {
+        background: linear-gradient(135deg, #007a7a 0%, #00a3a3 100%);
+        box-shadow: 0 4px 16px rgba(0, 122, 122, 0.25);
+      }
+      .btn-teachers {
+        background: linear-gradient(135deg, #8f250c 0%, #bf3d18 100%);
+        box-shadow: 0 4px 16px rgba(143, 37, 12, 0.25);
+      }
+      .btn-content {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        position: relative;
+        z-index: 2;
+      }
+      .btn-icon {
+        font-size: 22px;
+        flex-shrink: 0;
+        line-height: 1;
+      }
+      .btn-arrow {
+        position: relative;
+        z-index: 2;
+        opacity: 0.7;
+        font-size: 16px;
+        transition: transform 0.2s ease, opacity 0.2s;
+      }
+      .portal-btn:hover .btn-arrow {
+        transform: translateX(4px);
+        opacity: 1;
+      }
+      .btn-shine {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 40%;
+        height: 100%;
+        background: linear-gradient(
+          to left,
+          rgba(255, 255, 255, 0.08),
+          transparent
+        );
+        pointer-events: none;
+        z-index: 1;
+      }
+      .ripple-span {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.35);
+        transform: scale(0);
+        animation: ripple 0.65s ease-out forwards;
+        pointer-events: none;
+        z-index: 1;
+      }
+      .designer-credit {
+        margin-top: 26px;
+        padding-top: 18px;
+        border-top: 1px dashed var(--border);
+        font-size: 13px;
+        color: #9aa3b8;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+      }
+      .redirect-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(10, 25, 60, 0.72);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        z-index: 9999;
+        animation: overlayIn 0.3s ease-out;
+        pointer-events: all;
+      }
+      .redirect-card {
+        background: white;
+        border-radius: 18px;
+        padding: 36px 48px;
+        text-align: center;
+        animation: cardPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+        min-width: 240px;
+      }
+      .spinner {
+        width: 42px;
+        height: 42px;
+        border: 3.5px solid var(--blue-light);
+        border-top-color: var(--blue);
+        border-radius: 50%;
+        animation: spin 0.75s linear infinite;
+      }
+      .redirect-text {
+        color: var(--text-main);
+        font-size: 17px;
+        font-weight: 700;
+        font-family: "Cairo", sans-serif;
+      }
+      .redirect-dots span {
+        display: inline-block;
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--blue);
+        margin: 0 3px;
+        animation: pulse 1.2s ease-in-out infinite;
+      }
+      .redirect-dots span:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .redirect-dots span:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      @media (min-width: 768px) {
+        .top-logos img {
+          max-height: 150px;
+        }
+        .header-image img {
+          max-width: 560px;
+        }
+        h2 {
+          font-size: 28px;
+        }
+      }
+      @media (max-width: 480px) {
+        body {
+          padding: 14px 10px;
+        }
+        .container {
+          padding: 26px 18px;
+        }
+        .top-logos img {
+          max-height: 85px;
+        }
+        h2 {
+          font-size: 21px;
+        }
+        .portal-btn {
+          font-size: 15px;
+          padding: 15px 16px;
+        }
+        .btn-icon {
+          font-size: 19px;
+        }
+        .redirect-card {
+          padding: 28px 32px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="dot"
+      style="
+        width: 90px;
+        height: 90px;
+        top: 8%;
+        left: 4%;
+        animation-duration: 6s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 60px;
+        height: 60px;
+        top: 20%;
+        right: 6%;
+        animation-duration: 8s;
+        animation-delay: 1s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 120px;
+        height: 120px;
+        top: 55%;
+        left: 2%;
+        animation-duration: 10s;
+        animation-delay: 2s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 50px;
+        height: 50px;
+        top: 70%;
+        right: 4%;
+        animation-duration: 7s;
+        animation-delay: 0.5s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 80px;
+        height: 80px;
+        top: 38%;
+        right: 11%;
+        animation-duration: 9s;
+        animation-delay: 3s;
+      "
+    ></div>
+    <div class="container">
+      <div class="top-logos">
+        <img src="logo_2.webp" alt="شعار وزارة التربية والتعليم" />
+        <div class="logo-divider"></div>
+        <img src="logo_1.webp" alt="شعار مدرسة الشهيد محمود علي الخطيب" />
+      </div>
+      <div class="header-image">
+        <img
+          src="logo_3.webp"
+          alt="مدرسة الشهيد محمود علي الخطيب الرسمية للغات"
+        />
+      </div>
+      <div class="title-block">
+        <h2>البوابة الإلكترونية للمدرسة</h2>
+        <div class="subtitle">الرجاء اختيار الخدمة المطلوبة للمتابعة</div>
+      </div>
+      <div class="buttons-grid">
+        <a
+          href="../alkhateeb-teachers/"
+          class="portal-btn btn-teachers"
+          onclick="navigateWithRipple(event, this, '../alkhateeb-teachers/')"
+        >
+          <div class="btn-content">
+            <span class="btn-icon">📝</span>
+            <span>بوابة إدخال الدرجات</span>
+          </div>
+          <span class="btn-arrow">&#8592;</span>
+          <div class="btn-shine"></div>
+        </a>
+        <a
+          href="../alkhateeb-results/"
+          class="portal-btn btn-results"
+          onclick="navigateWithRipple(event, this, '../alkhateeb-results/')"
+        >
+          <div class="btn-content">
+            <span class="btn-icon">📊</span>
+            <span>بوابة النتائج</span>
+          </div>
+          <span class="btn-arrow">&#8592;</span>
+          <div class="btn-shine"></div>
+        </a>
+        <a
+          href="../alkhateeb-degrees/"
+          class="portal-btn btn-degrees"
+          onclick="navigateWithRipple(event, this, '../alkhateeb-degrees/')"
+        >
+          <div class="btn-content">
+            <span class="btn-icon">👨‍🏫</span>
+            <span>بوابة شؤون المعلمين</span>
+          </div>
+          <span class="btn-arrow">&#8592;</span>
+          <div class="btn-shine"></div>
+        </a>
+      </div>
+      <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
+    </div>
+    <script>
+      function addRipple(e, btn) {
+        const rect = btn.getBoundingClientRect();
+        let x, y;
+        if (e.clientX) {
+          x = e.clientX - rect.left;
+          y = e.clientY - rect.top;
+        } else if (e.touches && e.touches.length > 0) {
+          x = e.touches[0].clientX - rect.left;
+          y = e.touches[0].clientY - rect.top;
+        } else {
+          x = rect.width / 2;
+          y = rect.height / 2;
+        }
+        const size = Math.max(rect.width, rect.height);
+        const span = document.createElement("span");
+        span.className = "ripple-span";
+        span.style.cssText = `width:${size}px;height:${size}px;left:${
+          x - size / 2
+        }px;top:${y - size / 2}px`;
+        btn.appendChild(span);
+        setTimeout(() => span.remove(), 700);
+      }
+      function showRedirectOverlay() {
+        const overlay = document.createElement("div");
+        overlay.className = "redirect-overlay";
+        overlay.innerHTML = `
+          <div class="redirect-card">
+            <div class="spinner"></div>
+            <div class="redirect-text">جارٍ تحويلك...</div>
+            <div class="redirect-dots">
+              <span></span><span></span><span></span>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(overlay);
+      }
+      function navigateWithRipple(event, element, url) {
+        event.preventDefault();
+        addRipple(event, element);
+        setTimeout(() => {
+          showRedirectOverlay();
+          setTimeout(() => {
+            window.location.href = url;
+          }, 500);
+        }, 200);
+      }
+    </script>
+  </body>
+</html>
