@@ -66,7 +66,7 @@
             rgba(0, 122, 122, 0.07) 0%,
             transparent 55%
           );
-        animation: fadeInPage 0.5s ease-out;
+        animation: fadeInPage 0.3s ease-out;
       }
       @keyframes fadeInPage {
         from {
@@ -79,7 +79,7 @@
       @keyframes slideInUp {
         from {
           opacity: 0;
-          transform: translateY(28px);
+          transform: translateY(20px);
         }
         to {
           opacity: 1;
@@ -92,7 +92,7 @@
           transform: translateY(0) scale(1);
         }
         50% {
-          transform: translateY(-18px) scale(1.05);
+          transform: translateY(-15px) scale(1.02);
         }
       }
       @keyframes ripple {
@@ -142,7 +142,7 @@
         border-radius: 50%;
         pointer-events: none;
         z-index: 0;
-        background: rgba(0, 86, 179, 0.055);
+        background: rgba(0, 86, 179, 0.03);
         animation: floatDot ease-in-out infinite;
       }
       .container {
@@ -153,7 +153,7 @@
         max-width: 820px;
         margin: 0 auto;
         box-shadow: var(--shadow);
-        animation: slideInUp 0.75s cubic-bezier(0.22, 1, 0.36, 1);
+        animation: slideInUp 0.45s ease-out;
         position: relative;
         z-index: 10;
         border-top: 4px solid var(--blue);
@@ -171,10 +171,10 @@
         width: auto;
         object-fit: contain;
         filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.08));
-        transition: transform 0.3s ease;
+        transition: transform 0.2s ease;
       }
       .top-logos img:hover {
-        transform: scale(1.04);
+        transform: scale(1.03);
       }
       .logo-divider {
         width: 1px;
@@ -247,19 +247,18 @@
         margin: 0 auto;
         padding: 17px 22px;
         border-radius: 12px;
-        transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1),
-          box-shadow 0.18s ease;
+        transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
         position: relative;
         overflow: hidden;
         font-family: inherit;
         letter-spacing: 0.2px;
       }
       .portal-btn:hover {
-        transform: translateY(-4px) scale(1.015);
-        box-shadow: 0 12px 28px rgba(0, 0, 0, 0.18);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
       }
       .portal-btn:active {
-        transform: translateY(1px) scale(0.99);
+        transform: translateY(1px);
         box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
       }
       .btn-results {
@@ -316,7 +315,7 @@
         border-radius: 50%;
         background: rgba(255, 255, 255, 0.35);
         transform: scale(0);
-        animation: ripple 0.65s ease-out forwards;
+        animation: ripple 0.45s ease-out forwards;
         pointer-events: none;
         z-index: 1;
       }
@@ -341,7 +340,7 @@
         justify-content: center;
         gap: 20px;
         z-index: 9999;
-        animation: overlayIn 0.3s ease-out;
+        animation: overlayIn 0.2s ease-out;
         pointer-events: all;
       }
       .redirect-card {
@@ -349,7 +348,7 @@
         border-radius: 18px;
         padding: 36px 48px;
         text-align: center;
-        animation: cardPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        animation: cardPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         box-shadow: 0 30px 80px rgba(0, 0, 0, 0.25);
         display: flex;
         flex-direction: column;
@@ -378,7 +377,7 @@
         border-radius: 50%;
         background: var(--blue);
         margin: 0 3px;
-        animation: pulse 1.2s ease-in-out infinite;
+        animation: pulse 1s ease-in-out infinite;
       }
       .redirect-dots span:nth-child(2) {
         animation-delay: 0.2s;
@@ -478,6 +477,7 @@
         animation-delay: 3s;
       "
     ></div>
+
     <div class="container">
       <div class="top-logos">
         <img src="logo_2.webp" alt="شعار وزارة التربية والتعليم" />
@@ -534,7 +534,13 @@
       </div>
       <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
     </div>
+
     <script>
+      window.addEventListener("pageshow", function (event) {
+        const overlays = document.querySelectorAll(".redirect-overlay");
+        overlays.forEach((overlay) => overlay.remove());
+      });
+
       function addRipple(e, btn) {
         const rect = btn.getBoundingClientRect();
         let x, y;
@@ -555,8 +561,9 @@
           x - size / 2
         }px;top:${y - size / 2}px`;
         btn.appendChild(span);
-        setTimeout(() => span.remove(), 700);
+        setTimeout(() => span.remove(), 450);
       }
+
       function showRedirectOverlay() {
         const overlay = document.createElement("div");
         overlay.className = "redirect-overlay";
@@ -571,15 +578,17 @@
         `;
         document.body.appendChild(overlay);
       }
+
       function navigateWithRipple(event, element, url) {
         event.preventDefault();
         addRipple(event, element);
+
         setTimeout(() => {
           showRedirectOverlay();
           setTimeout(() => {
             window.location.href = url;
-          }, 500);
-        }, 200);
+          }, 300);
+        }, 150);
       }
     </script>
   </body>
