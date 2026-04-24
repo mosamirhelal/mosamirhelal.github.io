@@ -313,7 +313,7 @@
           </div>
         </div>
         
-        <div class="loader" id="historyLoader"></div>
+        <div class="loader" id="historyLoader" style="display:none;"></div>
         
         <div id="historyDashboard" class="dashboard-grid" style="display: none; margin-bottom: 30px;"></div>
 
@@ -384,13 +384,40 @@
     </div>
 
     <script>
-      const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXTty_kiBjAsx1zrTWw2peIO_VNuENGkjaK_I20c3OdbGBnCWY5dhjR_Pp-dwvVXfolg/exec";
+      const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-a6hbMYNAuaAwSLshSygqwRC4RpdhNBgNyOl1M2LlMn7ZkLI8cyxY2WeYzY9yP1Emgw/exec";
       let allTeachers = []; 
       let currentSearchFocus = -1;
 
       function getLocalDate() {
         const d = new Date();
         return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
+      }
+
+      function getAuth() {
+        const authData = localStorage.getItem("alkhateeb_hr_auth");
+        if (!authData) { executeLogoutLocal(); return null; }
+        return JSON.parse(authData);
+      }
+
+      function executeLogoutLocal() {
+        localStorage.removeItem("alkhateeb_hr_auth");
+        localStorage.removeItem("alkhateeb_teachers");
+        location.reload();
+      }
+
+      function executeLogout() {
+        const authData = localStorage.getItem("alkhateeb_hr_auth");
+        if (authData) {
+          const auth = JSON.parse(authData);
+          fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "logout", token: auth.token })
+          }).finally(() => {
+            executeLogoutLocal();
+          });
+        } else {
+          executeLogoutLocal();
+        }
       }
 
       window.onload = function () { checkAuth(); };
@@ -519,12 +546,6 @@
         });
       }
 
-      function executeLogout() {
-        localStorage.removeItem("alkhateeb_hr_auth");
-        localStorage.removeItem("alkhateeb_teachers");
-        location.reload();
-      }
-
       function showMsg(element, text, isError) {
         element.innerText = text;
         element.className = isError ? "status-message error-msg" : "status-message success-msg";
@@ -566,7 +587,7 @@
               lBtn.querySelector(".btn-text").innerText = "دخول المنصة";
               checkAuth(true); 
             }
-          } else if(data.message.includes("منتهية")) { executeLogout(); }
+          } else if(data.message.includes("منتهية")) { executeLogoutLocal(); }
         }).catch(err => {
           if(fromLogin) {
             document.getElementById("loginLoader").style.display = "none";
@@ -762,7 +783,8 @@
         const resultArea = document.getElementById("delayResultArea");
         const delayInput = document.getElementById("manualDelayInput");
         
-        if (type !== "تأخر صباحي" && type !== "تأخر بإذن") { 
+        const timeBasedTypes = ["تأخر صباحي", "تأخر بإذن", "خروج بدون إذن", "خروج بإذن"];
+        if (!timeBasedTypes.includes(type)) { 
           resultArea.style.display = "none"; 
           return; 
         }
@@ -807,8 +829,10 @@
 
         if(!startStr || !endStr) return;
 
-        const startDate = new Date(startStr);
-        const endDate = new Date(endStr);
+        const [sy, sm, sd] = startStr.split('-').map(Number);
+        const startDate = new Date(sy, sm - 1, sd);
+        const [ey, em, ed] = endStr.split('-').map(Number);
+        const endDate = new Date(ey, em - 1, ed);
 
         if(endDate < startDate) {
            document.getElementById("endDateInput").value = startStr;
@@ -862,7 +886,9 @@
       }
 
       function saveAttendance() {
-        const auth = JSON.parse(localStorage.getItem("alkhateeb_hr_auth"));
+        const auth = getAuth();
+        if (!auth) return;
+
         const btn = document.getElementById("saveActionBtn");
         const msgDiv = document.getElementById("adminMessage");
         
@@ -876,10 +902,7 @@
         
         if (timeBased.includes(type)) {
           const time = document.getElementById("actionTimeInput").value;
-          let mins = 0;
-          if (type === "تأخر صباحي" || type === "تأخر بإذن") {
-            mins = document.getElementById("manualDelayInput").value || 0;
-          }
+          let mins = document.getElementById("manualDelayInput").value || 0;
           records.push({ code: teacherCode, name: teacherName, type: type, dateStr: getLocalDate(), timeStr: time, minutes: mins, notes: notes });
         } else {
           const mode = document.querySelector('input[name="dateMode"]:checked').value;
@@ -924,7 +947,9 @@
       }
 
       function fetchTodayStatus() {
-        const auth = JSON.parse(localStorage.getItem("alkhateeb_hr_auth"));
+        const auth = getAuth();
+        if (!auth) return;
+
         const today = getLocalDate();
         
         document.getElementById("todayLoader").style.display = "block";
@@ -993,7 +1018,9 @@
       }
 
       function fetchHistoryData() {
-        const auth = JSON.parse(localStorage.getItem("alkhateeb_hr_auth"));
+        const auth = getAuth();
+        if (!auth) return;
+
         const start = document.getElementById("historyStartDate").value;
         const end = document.getElementById("historyEndDate").value;
         const tCode = document.getElementById("historyTeacherSelect").value;
@@ -1124,7 +1151,7 @@
 
             buildTimeline(data.history);
           } else if(data.message && data.message.includes("منتهية")) {
-             executeLogout();
+             executeLogoutLocal();
           }
         }).catch(err => {
             loader.style.display = "none";
