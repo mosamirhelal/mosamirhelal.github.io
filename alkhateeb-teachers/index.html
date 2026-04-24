@@ -374,6 +374,9 @@
         </div>
       </div>
 
+      <h3 style="text-align: right; color:#0056b3; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-top:20px;">تفاصيل السجل المجمع</h3>
+      <div id="teacherDetailedStats" class="dashboard-grid" style="margin-bottom: 30px;"></div>
+
       <h3 style="text-align: right; color:#0056b3; border-bottom: 2px solid #eee; padding-bottom: 10px;">سجل الإجراءات الأخير</h3>
       <div id="teacherTimeline" class="timeline"></div>
       <div class="loader" id="teacherLoader"></div>
@@ -381,7 +384,7 @@
     </div>
 
     <script>
-      const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh5dDLmIF4BCxzeoNK9t33Yq3QZ5rVOU1M5YaoRcHPJrt7BINDOZcGIwmbBdjHgddCVg/exec";
+      const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXTty_kiBjAsx1zrTWw2peIO_VNuENGkjaK_I20c3OdbGBnCWY5dhjR_Pp-dwvVXfolg/exec";
       let allTeachers = []; 
       let currentSearchFocus = -1;
 
@@ -1101,9 +1104,24 @@
               lBtn.querySelector(".btn-text").innerText = "دخول المنصة";
               checkAuth(true); 
             }
-            animateCircle("circleAttendance", "textAttendance", data.stats.attendanceRate, 100, "%");
-            animateCircle("circleCasual", "textCasual", data.stats.remainingCasual, 21, "");
+
+            animateCircle("circleAttendance", "textAttendance", Math.round(data.stats.attendanceRate), 100, "%");
+            animateCircle("circleCasual", "textCasual", data.stats.remainingCasual, data.stats.maxCasual, "");
             animateCircle("circleLate", "textLate", data.stats.totalLateMins, 300, "ق");
+
+            const detailedGrid = document.getElementById("teacherDetailedStats");
+            detailedGrid.innerHTML = `
+              <div class="dash-card danger"><h4>تأخر صباحي</h4><div class="dash-value">${data.stats.lateMorning}</div><span style="font-size:12px; color:#666;">دقيقة</span></div>
+              <div class="dash-card warning"><h4>تأخر بإذن</h4><div class="dash-value">${data.stats.lateExcused}</div><span style="font-size:12px; color:#666;">دقيقة</span></div>
+              <div class="dash-card danger"><h4>خروج بدون إذن</h4><div class="dash-value">${data.stats.leaveNoExcuse}</div><span style="font-size:12px; color:#666;">دقيقة</span></div>
+              <div class="dash-card warning"><h4>خروج بإذن</h4><div class="dash-value">${data.stats.leaveExcused}</div><span style="font-size:12px; color:#666;">دقيقة</span></div>
+              <div class="dash-card danger"><h4>غياب</h4><div class="dash-value">${data.stats.absent}</div><span style="font-size:12px; color:#666;">أيام</span></div>
+              <div class="dash-card warning"><h4>غياب بعذر</h4><div class="dash-value">${data.stats.absentExcused}</div><span style="font-size:12px; color:#666;">أيام</span></div>
+              <div class="dash-card warning"><h4>إذن صباحي</h4><div class="dash-value">${data.stats.permissionMorning}</div><span style="font-size:12px; color:#666;">أيام</span></div>
+              <div class="dash-card success"><h4>إجازة مرضي</h4><div class="dash-value">${data.stats.sickLeave}</div><span style="font-size:12px; color:#666;">أيام</span></div>
+              <div class="dash-card success"><h4>إجازة اعتيادي</h4><div class="dash-value">${data.stats.casualLeave}</div><span style="font-size:12px; color:#666;">أيام</span></div>
+            `;
+
             buildTimeline(data.history);
           } else if(data.message && data.message.includes("منتهية")) {
              executeLogout();
@@ -1126,6 +1144,7 @@
       function animateCircle(circleId, textId, value, maxVal, suffix) {
         const circle = document.getElementById(circleId);
         const text = document.getElementById(textId);
+        
         let percentage = (value / maxVal) * 100;
         if (percentage > 100) percentage = 100;
         if (percentage < 0) percentage = 0;
