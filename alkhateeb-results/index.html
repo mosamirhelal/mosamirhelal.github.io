@@ -36,14 +36,13 @@
         font-family: "Cairo", sans-serif;
         text-align: center;
         margin: 0;
-        padding: 20px;
+        padding: 40px 20px;
         background-color: #c9d0d9;
         animation: fadeInPage 0.55s ease-out;
         overflow-x: hidden;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
       }
       @keyframes fadeInPage {
@@ -163,7 +162,7 @@
         border-radius: 15px;
         width: 100%;
         max-width: 800px;
-        margin: 0 auto;
+        margin: auto;
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
         animation: slideInUp 0.8s ease-out;
         position: relative;
@@ -597,6 +596,20 @@
     </div>
 
     <script>
+      function escapeHTML(str) {
+        if (str === null || str === undefined) return "";
+        return String(str).replace(/[&<>'"]/g, function (tag) {
+          const charsToReplace = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "'": "&#39;",
+            '"': "&quot;",
+          };
+          return charsToReplace[tag] || tag;
+        });
+      }
+
       fetch("https://api.counterapi.dev/v1/alkhateeb_school/visits/up")
         .then((res) => res.json())
         .then((data) => {
@@ -808,12 +821,6 @@
             navigator.canShare({ files: [file] })
           ) {
             try {
-              const link = document.createElement("a");
-              link.href = URL.createObjectURL(blob);
-              link.download = fileName;
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
               await navigator.share({
                 title: `نتيجة ${studentName}`,
                 text: `نتيجة الطالب ${studentName} - مدرسة الشهيد محمود علي الخطيب`,
@@ -860,6 +867,8 @@
           return;
         }
 
+        idInput.blur();
+
         loader.style.display = "block";
         searchBtn.disabled = true;
         idInput.disabled = true;
@@ -868,7 +877,7 @@
 
         var url =
           "https://script.google.com/macros/s/AKfycbx8JBu5aQKAf3cKN9kEss8RiFHoW9DiqbgSlLO3JiIRxtXEzsJh3MU1sgIU2cVPP-rNkw/exec?id=" +
-          id;
+          encodeURIComponent(id);
 
         fetch(url)
           .then((response) => response.json())
@@ -883,7 +892,7 @@
               var numericPerc = parseFloat(data.percentage);
               var totalDisplay = !isNaN(parseFloat(data.total))
                 ? `<span id="totalNum">0</span>`
-                : data.total;
+                : escapeHTML(data.total);
 
               let barColor = "#0056b3";
               if (!isNaN(numericPerc)) {
@@ -899,13 +908,18 @@
                 }
               }
 
+              var safeStudentName = escapeHTML(data.name);
+              var safeStudentGrade = escapeHTML(data.grade);
+              var safeStudentSection = escapeHTML(data.section);
+              var safeTotalMax = escapeHTML(data.total_max);
+
               var subjectsHtml = data.subjects
                 .map(function (sub, index) {
                   var animDelay = 0.06 * (index + 1);
                   return `<tr class="row-anim" style="animation-delay: ${animDelay}s">
-                          <td>${sub.name}</td>
-                          <td>${sub.max}</td>
-                          <td>${sub.score}</td>
+                          <td>${escapeHTML(sub.name)}</td>
+                          <td>${escapeHTML(sub.max)}</td>
+                          <td>${escapeHTML(sub.score)}</td>
                         </tr>`;
                 })
                 .join("");
@@ -927,14 +941,14 @@
                       </div>
                       <h4 style="color: #4a4e69; margin-top: 0; margin-bottom: 25px; border-bottom: 2px dashed #eee; padding-bottom: 15px; font-size: 22px;">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</h4>
                     </div>
-                    <h3 class="student-name">الاسم: ${data.name}</h3>
-                    <h4 style="color: #0056b3; margin-top: 0;">الصف: ${data.grade}</h4>
+                    <h3 class="student-name">الاسم: ${safeStudentName}</h3>
+                    <h4 style="color: #0056b3; margin-top: 0;">الصف: ${safeStudentGrade}</h4>
                     <table>
                       <thead><tr><th>المادة</th><th>الدرجة النهائية</th><th>درجة الطالب</th></tr></thead>
                       <tbody>
                         ${subjectsHtml}
                         <tr class="row-anim total-row" style="animation-delay: ${totalAnimDelay}s">
-                          <td>المجموع الكلي</td><td>${data.total_max}</td><td>${totalDisplay}</td>
+                          <td>المجموع الكلي</td><td>${safeTotalMax}</td><td>${totalDisplay}</td>
                         </tr>
                       </tbody>
                     </table>
@@ -942,13 +956,13 @@
                     ${statusMessageHtml}
                     <div id="export-footer" style="display: none; margin-top: 30px; font-size: 16px; color: #4a4e69; text-align: center; font-weight: bold; border-top: 2px solid #eee; padding-top: 15px;">تصميم وتنفيذ : سمير هلال</div>
                   </div>
-                  <button id="shareBtn" class="form-control btn-share" onclick="addRipple(event,this); shareResult('${data.name}')"><span class="btn-text">📸 مشاركة النتيجة كصورة</span></button>
+                  <button id="shareBtn" class="form-control btn-share" onclick="addRipple(event,this); shareResult('${safeStudentName}')"><span class="btn-text">📸 مشاركة النتيجة كصورة</span></button>
                   <div class="feedback-section">
                     <button id="showFeedbackBtn" class="form-control pulse-button" onclick="addRipple(event,this); toggleFeedbackForm()"><span class="btn-text">💬 إضافة رأي أو مقترح</span></button>
                     <div id="feedbackFormContainer" style="display: none; text-align: center;">
                       <h4 id="feedbackTitle" style="color: #333; margin-bottom: 15px; font-size: 18px;">سجل رأيك أو مقترحاتك:</h4>
                       <textarea id="feedbackInput" rows="3" placeholder="اكتب رسالتك هنا..." lang="ar" dir="rtl"></textarea>
-                      <button id="submitFeedbackBtn" class="form-control btn-success" onclick="addRipple(event,this); sendFeedback('${data.name}', '${id}', '${data.grade}', '${data.section}')"><span class="btn-text">📨 إرسال الاقتراح</span></button>
+                      <button id="submitFeedbackBtn" class="form-control btn-success" onclick="addRipple(event,this); sendFeedback('${safeStudentName}', '${id}', '${safeStudentGrade}', '${safeStudentSection}')"><span class="btn-text">📨 إرسال الاقتراح</span></button>
                       <div id="feedbackStatus" style="margin-top: 10px; font-weight: bold; text-align: center;"></div>
                     </div>
                   </div>
@@ -983,7 +997,9 @@
                 }
               }
             } else {
-              resultDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${data.message}</div>`;
+              resultDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${escapeHTML(
+                data.message
+              )}</div>`;
             }
             setTimeout(() => {
               window.scrollTo({
@@ -999,7 +1015,7 @@
             searchBtn.classList.add("pulse-button");
             searchBtnText.innerText = "🔎 بحث";
             resultDiv.innerHTML =
-              "<div style='color:red; margin-top:15px;' class='student-info-appear'>حدث خطأ في الاتصال بقاعدة البيانات. تأكد من الرابط.</div>";
+              "<div style='color:red; margin-top:15px;' class='student-info-appear'>حدث خطأ في الاتصال بقاعدة البيانات. تأكد من اتصالك بالإنترنت.</div>";
           });
       }
     </script>
