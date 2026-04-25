@@ -320,7 +320,7 @@
         <div id="historyTableContainer" class="table-responsive">
           <table id="historyTable">
             <thead>
-              <tr><th>التاريخ</th><th>المعلم</th><th>الإجراء</th><th>الكمية</th><th>المسؤول</th></tr>
+              <tr><th>التاريخ</th><th>المعلم</th><th>الإجراء</th><th>الكمية</th><th>المسؤول</th><th>خيارات</th></tr>
             </thead>
             <tbody></tbody>
           </table>
@@ -383,10 +383,89 @@
       <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
     </div>
 
+    <div id="editModal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; direction:rtl;">
+      <div style="background:#fff; padding:25px; border-radius:12px; width:90%; max-width:400px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.2); animation: popIn 0.3s ease;">
+        <h3 style="color:#0056b3; margin-top:0; border-bottom:2px solid #eee; padding-bottom:10px;">تعديل السجل</h3>
+        <input type="hidden" id="editOldDate">
+        <input type="hidden" id="editOldName">
+        <input type="hidden" id="editOldType">
+        <input type="hidden" id="editOldAmount">
+        
+        <label style="display:block; text-align:right; margin:15px 0 5px; font-weight:bold; color:#4a4e69;">نوع الإجراء:</label>
+        <select id="editNewType" class="form-control" style="margin-bottom:0;">
+          <option value="تأخر صباحي">تأخر صباحي</option>
+          <option value="تأخر بإذن">تأخر بإذن</option>
+          <option value="غياب">غياب</option>
+          <option value="غياب بعذر">غياب بعذر</option>
+          <option value="اعتيادي">إجازة اعتيادي</option>
+          <option value="مرضي">إجازة مرضي</option>
+          <option value="خروج بدون إذن">خروج بدون إذن</option>
+          <option value="خروج بإذن">خروج بإذن</option>
+          <option value="إذن صباحي">إذن صباحي</option>
+        </select>
+        
+        <label style="display:block; text-align:right; margin:15px 0 5px; font-weight:bold; color:#4a4e69;">الكمية / الدقائق / الأيام:</label>
+        <input type="number" id="editNewAmount" class="form-control" style="margin-bottom:0;" min="0">
+        
+        <label style="display:block; text-align:right; margin:15px 0 5px; font-weight:bold; color:#4a4e69;">ملاحظات:</label>
+        <input type="text" id="editNewNotes" class="form-control" style="margin-bottom:0;">
+        
+        <div style="display:flex; gap:10px; justify-content:center; margin-top:25px;">
+          <button class="btn-success" onclick="submitEditRecord()" style="margin:0;">حفظ التعديل</button>
+          <button class="btn-logout" onclick="closeEditModal()" style="margin:0; background:#6c757d;">إلغاء</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="customAlertModal" style="display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; direction:rtl;">
+      <div style="background:#fff; padding:25px; border-radius:12px; width:90%; max-width:400px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.2); animation: popIn 0.3s ease;">
+        <h3 style="color:#0056b3; margin-top:0; border-bottom:2px solid #eee; padding-bottom:10px;">تنبيه النظام</h3>
+        <p id="customAlertText" style="font-size:16px; color:#333; margin:20px 0;"></p>
+        <button class="btn-info" onclick="closeCustomAlert()" style="margin:0 auto; width:100px;">حسناً</button>
+      </div>
+    </div>
+
+    <div id="customConfirmModal" style="display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; direction:rtl;">
+      <div style="background:#fff; padding:25px; border-radius:12px; width:90%; max-width:400px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.2); animation: popIn 0.3s ease;">
+        <h3 style="color:#dc3545; margin-top:0; border-bottom:2px solid #eee; padding-bottom:10px;">تأكيد الحذف</h3>
+        <p id="customConfirmText" style="font-size:16px; color:#333; margin:20px 0;"></p>
+        <div style="display:flex; gap:10px; justify-content:center;">
+          <button class="btn-logout" onclick="executeConfirmAction()" style="margin:0; width:100px;">حذف</button>
+          <button class="btn-today" onclick="closeCustomConfirm()" style="margin:0; width:100px;">إلغاء</button>
+        </div>
+      </div>
+    </div>
+
     <script>
       const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx-a6hbMYNAuaAwSLshSygqwRC4RpdhNBgNyOl1M2LlMn7ZkLI8cyxY2WeYzY9yP1Emgw/exec";
       let allTeachers = []; 
       let currentSearchFocus = -1;
+      let confirmCallback = null;
+
+      function customAlert(msg) {
+        document.getElementById("customAlertText").innerText = msg;
+        document.getElementById("customAlertModal").style.display = "flex";
+      }
+
+      function closeCustomAlert() {
+        document.getElementById("customAlertModal").style.display = "none";
+      }
+
+      function customConfirm(msg, callback) {
+        document.getElementById("customConfirmText").innerText = msg;
+        document.getElementById("customConfirmModal").style.display = "flex";
+        confirmCallback = callback;
+      }
+
+      function closeCustomConfirm() {
+        document.getElementById("customConfirmModal").style.display = "none";
+        confirmCallback = null;
+      }
+
+      function executeConfirmAction() {
+        if (confirmCallback) confirmCallback();
+        closeCustomConfirm();
+      }
 
       function getLocalDate() {
         const d = new Date();
@@ -394,19 +473,19 @@
       }
 
       function getAuth() {
-        const authData = localStorage.getItem("alkhateeb_hr_auth");
+        const authData = sessionStorage.getItem("alkhateeb_hr_auth");
         if (!authData) { executeLogoutLocal(); return null; }
         return JSON.parse(authData);
       }
 
       function executeLogoutLocal() {
-        localStorage.removeItem("alkhateeb_hr_auth");
-        localStorage.removeItem("alkhateeb_teachers");
+        sessionStorage.removeItem("alkhateeb_hr_auth");
+        sessionStorage.removeItem("alkhateeb_teachers");
         location.reload();
       }
 
       function executeLogout() {
-        const authData = localStorage.getItem("alkhateeb_hr_auth");
+        const authData = sessionStorage.getItem("alkhateeb_hr_auth");
         if (authData) {
           const auth = JSON.parse(authData);
           fetch(APPS_SCRIPT_URL, {
@@ -447,7 +526,7 @@
       }
 
       function checkAuth(skipFetch = false) {
-        const authData = localStorage.getItem("alkhateeb_hr_auth");
+        const authData = sessionStorage.getItem("alkhateeb_hr_auth");
         if (authData) {
           const auth = JSON.parse(authData);
           document.getElementById("inputsWrapper").style.display = "none";
@@ -457,7 +536,7 @@
             document.getElementById("adminContainer").style.display = "block";
             document.getElementById("adminNameDisplay").innerText = "أهلاً بك: " + auth.name;
             
-            const cachedTeachers = localStorage.getItem("alkhateeb_teachers");
+            const cachedTeachers = sessionStorage.getItem("alkhateeb_teachers");
             if(cachedTeachers) { 
               allTeachers = JSON.parse(cachedTeachers);
               populateDropdowns();
@@ -519,7 +598,7 @@
             inputsWrapper.style.display = "none";
             showMsg(msgDiv, "تم التسجيل بنجاح", false);
 
-            localStorage.setItem("alkhateeb_hr_auth", JSON.stringify({ token: data.token, name: data.name, role: data.role }));
+            sessionStorage.setItem("alkhateeb_hr_auth", JSON.stringify({ token: data.token, name: data.name, role: data.role }));
             
             if (data.role === "Admin") {
               fetchTeachersList(data.token, true);
@@ -575,7 +654,7 @@
           loader.style.display = "none";
           if (data.status === "success") {
             allTeachers = data.teachers;
-            localStorage.setItem("alkhateeb_teachers", JSON.stringify(allTeachers));
+            sessionStorage.setItem("alkhateeb_teachers", JSON.stringify(allTeachers));
             populateDropdowns();
             
             if(fromLogin) {
@@ -614,7 +693,7 @@
           select1.appendChild(opt1);
 
           let opt2 = document.createElement("option");
-          opt2.value = t.code; opt2.innerText = t.name;
+          opt2.value = t.code; opt2.innerText = t.name + " (" + t.code + ")";
           select2.appendChild(opt2);
         });
       }
@@ -836,7 +915,7 @@
 
         if(endDate < startDate) {
            document.getElementById("endDateInput").value = startStr;
-           showMsg(document.getElementById("adminMessage"), "لا يمكن أن يسبق تاريخ النهاية تاريخ البداية.", true);
+           customAlert("لا يمكن أن يسبق تاريخ النهاية تاريخ البداية.");
            generateCheckboxes(); 
            return;
         }
@@ -847,7 +926,7 @@
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
         if(diffDays > 60) {
-            showMsg(document.getElementById("adminMessage"), "الفترة المحددة طويلة جداً. أقصى حد هو 60 يوماً.", true);
+            customAlert("الفترة المحددة طويلة جداً. أقصى حد هو 60 يوماً.");
             return;
         }
 
@@ -966,11 +1045,11 @@
             renderTodayDashboard(data.totals);
             renderTodayTable(data.history);
           } else {
-            alert("خطأ: " + data.message);
+            customAlert("خطأ: " + data.message);
           }
         }).catch(err => {
           document.getElementById("todayLoader").style.display = "none";
-          alert("خطأ في الاتصال");
+          customAlert("خطأ في الاتصال");
         });
       }
 
@@ -1017,7 +1096,7 @@
         emptyMsg.style.display = "none";
       }
 
-      function fetchHistoryData() {
+      function fetchHistoryData(isSilentUpdate = false) {
         const auth = getAuth();
         if (!auth) return;
 
@@ -1026,7 +1105,7 @@
         const tCode = document.getElementById("historyTeacherSelect").value;
         
         if(!start || !end) {
-          alert("يرجى تحديد فترة البداية والنهاية.");
+          customAlert("يرجى تحديد فترة البداية والنهاية.");
           return;
         }
 
@@ -1036,9 +1115,12 @@
         const emptyMsg = document.getElementById("historyEmpty");
         
         loader.style.display = "block";
-        dashboard.style.display = "none";
-        container.style.display = "none";
-        emptyMsg.style.display = "none";
+        
+        if (!isSilentUpdate) {
+          dashboard.style.display = "none";
+          container.style.display = "none";
+          emptyMsg.style.display = "none";
+        }
 
         fetch(APPS_SCRIPT_URL, {
           method: "POST",
@@ -1049,11 +1131,11 @@
             renderReportsDashboard(data.totals);
             renderHistoryTable(data.history);
           } else {
-            alert("حدث خطأ: " + data.message);
+            customAlert("حدث خطأ: " + data.message);
           }
         }).catch(err => {
           loader.style.display = "none";
-          alert("خطأ في الاتصال");
+          customAlert("خطأ في الاتصال");
         });
       }
 
@@ -1092,6 +1174,10 @@
           let dateOnly = row.date.split('T')[0];
           let suffix = ["تأخر صباحي", "تأخر بإذن", "خروج بدون إذن", "خروج بإذن"].includes(row.type) ? "ق" : "يوم";
           
+          let safeName = row.name.replace(/'/g, "\\'");
+          let safeType = row.type.replace(/'/g, "\\'");
+          let safeNotes = (row.notes || '').replace(/'/g, "\\'");
+
           let tr = document.createElement("tr");
           tr.innerHTML = `
             <td style="color:#555;">${dateOnly}</td>
@@ -1099,12 +1185,107 @@
             <td><span class="badge ${badgeClass}">${row.type}</span></td>
             <td style="font-weight:bold; color:#0056b3;">${row.amount} ${suffix}</td>
             <td style="font-size:13px; color:#888;">${row.admin}</td>
+            <td style="min-width: 140px; vertical-align: middle;">
+              <div style="display:flex; justify-content:center; gap:5px;">
+                <button class="btn-info" style="padding:6px; font-size:12px; margin:0; flex:1; max-width:60px;" onclick="openEditModal('${dateOnly}', '${safeName}', '${safeType}', '${row.amount}', '${safeNotes}')">تعديل</button>
+                <button class="btn-logout" style="padding:6px; font-size:12px; margin:0; flex:1; max-width:60px;" onclick="deleteRecord('${dateOnly}', '${safeName}', '${safeType}', '${row.amount}')">حذف</button>
+              </div>
+            </td>
           `;
           tbody.appendChild(tr);
         });
         
         container.style.display = "block";
         emptyMsg.style.display = "none";
+      }
+
+      function openEditModal(date, name, type, amount, notes) {
+        document.getElementById("editModal").style.display = "flex";
+        document.getElementById("editOldDate").value = date;
+        document.getElementById("editOldName").value = name;
+        document.getElementById("editOldType").value = type;
+        document.getElementById("editOldAmount").value = amount;
+        
+        document.getElementById("editNewType").value = type;
+        document.getElementById("editNewAmount").value = amount;
+        document.getElementById("editNewNotes").value = notes !== 'undefined' ? notes : '';
+      }
+
+      function closeEditModal() {
+        document.getElementById("editModal").style.display = "none";
+      }
+
+      function submitEditRecord() {
+        const auth = getAuth();
+        if (!auth) return;
+        
+        const oldDate = document.getElementById("editOldDate").value;
+        const oldName = document.getElementById("editOldName").value;
+        const oldType = document.getElementById("editOldType").value;
+        const oldAmount = document.getElementById("editOldAmount").value;
+        
+        const newType = document.getElementById("editNewType").value;
+        const newAmount = document.getElementById("editNewAmount").value;
+        const newNotes = document.getElementById("editNewNotes").value;
+        
+        document.getElementById("historyLoader").style.display = "block";
+        closeEditModal();
+        
+        fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            action: "editRecord",
+            token: auth.token,
+            oldDate: oldDate,
+            oldName: oldName,
+            oldType: oldType,
+            oldAmount: oldAmount,
+            newType: newType,
+            newAmount: newAmount,
+            newNotes: newNotes
+          })
+        }).then(res => res.json()).then(data => {
+          if(data.status === "success") {
+            fetchHistoryData(true);
+          } else {
+            customAlert("خطأ: " + data.message);
+            document.getElementById("historyLoader").style.display = "none";
+          }
+        }).catch(err => {
+          customAlert("خطأ في الاتصال");
+          document.getElementById("historyLoader").style.display = "none";
+        });
+      }
+
+      function deleteRecord(date, name, type, amount) {
+        customConfirm("هل أنت متأكد من حذف هذا السجل نهائياً؟ لا يمكن التراجع عن هذه الخطوة.", function() {
+          const auth = getAuth();
+          if (!auth) return;
+          
+          document.getElementById("historyLoader").style.display = "block";
+          
+          fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify({
+              action: "deleteRecord",
+              token: auth.token,
+              date: date,
+              name: name,
+              type: type,
+              amount: amount
+            })
+          }).then(res => res.json()).then(data => {
+            if(data.status === "success") {
+              fetchHistoryData(true); 
+            } else {
+              customAlert("خطأ: " + data.message);
+              document.getElementById("historyLoader").style.display = "none";
+            }
+          }).catch(err => {
+            customAlert("خطأ في الاتصال");
+            document.getElementById("historyLoader").style.display = "none";
+          });
+        });
       }
 
       function getBadgeClass(type) {
