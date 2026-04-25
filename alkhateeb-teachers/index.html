@@ -14,7 +14,7 @@
       * { box-sizing: border-box; }
       body {
         font-family: "Cairo", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-        text-align: center; margin: 0; padding: 20px;
+        text-align: center; margin: 0; padding: 20px; padding-bottom: 80px;
         background-color: #c9d0d9; animation: fadeInPage 0.55s ease-out;
         overflow-x: hidden; min-height: 100vh; min-height: 100dvh;
         display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -77,11 +77,11 @@
       .badge-danger { background: #ffeeba; color: #dc3545; }
       .badge-warning { background: #fff3cd; color: #856404; }
       .badge-success { background: #d4edda; color: #155724; }
-      .status-message { padding: 12px; border-radius: 8px; margin-top: 20px; font-size: 16px; font-weight: bold; width: 100%; animation: popIn 0.5s 0.1s ease-out both; display: none; }
+      .status-message { position: fixed; bottom: 50px; left: 0; right: 0; margin: 0 auto; padding: 15px 25px; border-radius: 8px; font-size: 16px; font-weight: bold; width: calc(100% - 40px); max-width: 600px; z-index: 9999; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: none; animation: slideInUp 0.3s ease-out forwards; }
       .success-msg { background-color: #008000; color: #f2e8cf; border: 1px solid #c3e6cb; }
       .error-msg { background-color: #b23a48; color: #fed0bb; border: 1px solid #f5c6cb; }
       .loader { border: 4px solid #f3f3f3; border-top: 4px solid #0056b3; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; display: none; }
-      .designer-credit { margin-top: 20px; font-size: 13px; color: #4a4e69; text-align: center; font-weight: bold; }
+      .designer-credit { margin-top: 20px; font-size: 13px; color: #4a4e69; text-align: center; font-weight: bold; width: 100%; }
       .dual-search { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 20px; }
       .dual-search > div, .dual-search > select { flex: 1; min-width: 250px; max-width: 100%; margin: 0; }
       .search-container { position: relative; }
@@ -124,7 +124,7 @@
       .placeholder-msg { padding: 40px; color: #888; border: 2px dashed #ddd; border-radius: 12px; margin-top: 20px; text-align: center;}
       @media (min-width: 768px) { .top-logos img { max-height: 160px; } .header-image img { max-width: 580px; } }
       @media (max-width: 480px) {
-        body { padding: 15px 10px; }
+        body { padding: 15px 10px; padding-bottom: 80px; }
         .container { padding: 25px 20px; border-radius: 10px; }
         .top-logos img { max-height: 90px; }
         h2 { font-size: 22px; }
@@ -142,6 +142,8 @@
     <div class="dot" style="width: 120px; height: 120px; top: 55%; left: 2%; animation-duration: 10s; animation-delay: 2s;"></div>
     <div class="dot" style="width: 50px; height: 50px; top: 70%; right: 4%; animation-duration: 7s; animation-delay: 0.5s;"></div>
     <div class="dot" style="width: 80px; height: 80px; top: 38%; right: 11%; animation-duration: 9s; animation-delay: 3s;"></div>
+
+    <div id="globalMessage" class="status-message"></div>
 
     <div class="container" id="loginContainer">
       <div class="top-logos">
@@ -162,7 +164,6 @@
           <span class="btn-text">دخول المنصة</span>
       </button>
       <div class="loader" id="loginLoader"></div>
-      <div id="loginMessage" class="status-message"></div>
       <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
     </div>
 
@@ -268,7 +269,6 @@
         </div>
         
         <div class="loader" id="adminLoader"></div>
-        <div id="adminMessage" class="status-message"></div>
       </div>
 
       <div id="tab-today" class="tab-content">
@@ -317,10 +317,21 @@
         
         <div id="historyDashboard" class="dashboard-grid" style="display: none; margin-bottom: 30px;"></div>
 
+        <div id="bulkActions" style="display:none; background:#eef4ff; border:1px solid #cce0ff; padding:15px; border-radius:8px; margin-bottom:15px; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+          <span id="bulkCount" style="font-weight:bold; color:#0056b3; font-size:16px;">تم تحديد 0 سجل</span>
+          <div style="display:flex; gap:10px;">
+            <button class="btn-info" style="margin:0; width:auto; padding:6px 15px;" onclick="openBulkEditModal()">تعديل المحدد</button>
+            <button class="btn-logout" style="margin:0; width:auto; padding:6px 15px;" onclick="bulkDeleteRecords()">حذف المحدد</button>
+          </div>
+        </div>
+
         <div id="historyTableContainer" class="table-responsive">
           <table id="historyTable">
             <thead>
-              <tr><th>التاريخ</th><th>المعلم</th><th>الإجراء</th><th>الكمية</th><th>المسؤول</th><th>خيارات</th></tr>
+              <tr>
+                <th style="width:40px;"><input type="checkbox" id="selectAllHistory" onchange="toggleAllHistory(this.checked)" style="transform:scale(1.2); accent-color:#0056b3; cursor:pointer;"></th>
+                <th>التاريخ</th><th>المعلم</th><th>الإجراء</th><th>الكمية</th><th>المسؤول</th><th>خيارات</th>
+              </tr>
             </thead>
             <tbody></tbody>
           </table>
@@ -417,11 +428,34 @@
       </div>
     </div>
 
-    <div id="customAlertModal" style="display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; direction:rtl;">
+    <div id="bulkEditModal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; direction:rtl;">
       <div style="background:#fff; padding:25px; border-radius:12px; width:90%; max-width:400px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.2); animation: popIn 0.3s ease;">
-        <h3 style="color:#0056b3; margin-top:0; border-bottom:2px solid #eee; padding-bottom:10px;">تنبيه النظام</h3>
-        <p id="customAlertText" style="font-size:16px; color:#333; margin:20px 0;"></p>
-        <button class="btn-info" onclick="closeCustomAlert()" style="margin:0 auto; width:100px;">حسناً</button>
+        <h3 style="color:#0056b3; margin-top:0; border-bottom:2px solid #eee; padding-bottom:10px;">تعديل السجلات المحددة</h3>
+        <p style="color:#666; font-size:14px; margin-bottom:15px;">سيتم تطبيق هذا التعديل على جميع السجلات التي قمت بتحديدها.</p>
+        
+        <label style="display:block; text-align:right; margin:15px 0 5px; font-weight:bold; color:#4a4e69;">نوع الإجراء الجديد:</label>
+        <select id="bulkEditNewType" class="form-control" style="margin-bottom:0;">
+          <option value="تأخر صباحي">تأخر صباحي</option>
+          <option value="تأخر بإذن">تأخر بإذن</option>
+          <option value="غياب">غياب</option>
+          <option value="غياب بعذر">غياب بعذر</option>
+          <option value="اعتيادي">إجازة اعتيادي</option>
+          <option value="مرضي">إجازة مرضي</option>
+          <option value="خروج بدون إذن">خروج بدون إذن</option>
+          <option value="خروج بإذن">خروج بإذن</option>
+          <option value="إذن صباحي">إذن صباحي</option>
+        </select>
+        
+        <label style="display:block; text-align:right; margin:15px 0 5px; font-weight:bold; color:#4a4e69;">الكمية / الدقائق / الأيام:</label>
+        <input type="number" id="bulkEditNewAmount" class="form-control" style="margin-bottom:0;" min="0">
+        
+        <label style="display:block; text-align:right; margin:15px 0 5px; font-weight:bold; color:#4a4e69;">ملاحظات:</label>
+        <input type="text" id="bulkEditNewNotes" class="form-control" style="margin-bottom:0;">
+        
+        <div style="display:flex; gap:10px; justify-content:center; margin-top:25px;">
+          <button class="btn-success" onclick="submitBulkEditRecord()" style="margin:0;">حفظ التعديل للكل</button>
+          <button class="btn-logout" onclick="closeBulkEditModal()" style="margin:0; background:#6c757d;">إلغاء</button>
+        </div>
       </div>
     </div>
 
@@ -442,13 +476,12 @@
       let currentSearchFocus = -1;
       let confirmCallback = null;
 
-      function customAlert(msg) {
-        document.getElementById("customAlertText").innerText = msg;
-        document.getElementById("customAlertModal").style.display = "flex";
-      }
-
-      function closeCustomAlert() {
-        document.getElementById("customAlertModal").style.display = "none";
+      function showMsg(text, isError) {
+        const msgDiv = document.getElementById("globalMessage");
+        msgDiv.innerText = text;
+        msgDiv.className = isError ? "status-message error-msg" : "status-message success-msg";
+        msgDiv.style.display = "block";
+        setTimeout(() => msgDiv.style.display = "none", 4000);
       }
 
       function customConfirm(msg, callback) {
@@ -573,18 +606,16 @@
         const passInput = document.getElementById("passwordInput");
         const user = userInput.value.trim();
         const pass = passInput.value.trim();
-        const msgDiv = document.getElementById("loginMessage");
         const btn = document.getElementById("loginBtn");
         const loader = document.getElementById("loginLoader");
         const inputsWrapper = document.getElementById("inputsWrapper");
 
-        if (!user || !pass) { showMsg(msgDiv, "يرجى إدخال البيانات.", true); return; }
+        if (!user || !pass) { showMsg("يرجى إدخال البيانات.", true); return; }
         
         userInput.disabled = true;
         passInput.disabled = true;
         btn.disabled = true; 
         loader.style.display = "block"; 
-        msgDiv.style.display = "none";
         btn.classList.remove("pulse-button");
         btn.querySelector(".btn-text").innerText = "جاري جلب البيانات...";
 
@@ -596,7 +627,7 @@
         .then(data => {
           if (data.status === "success") {
             inputsWrapper.style.display = "none";
-            showMsg(msgDiv, "تم التسجيل بنجاح", false);
+            showMsg("تم التسجيل بنجاح", false);
 
             sessionStorage.setItem("alkhateeb_hr_auth", JSON.stringify({ token: data.token, name: data.name, role: data.role }));
             
@@ -612,7 +643,7 @@
             btn.disabled = false;
             btn.classList.add("pulse-button");
             btn.querySelector(".btn-text").innerText = "دخول المنصة";
-            showMsg(msgDiv, data.message, true);
+            showMsg(data.message, true);
           }
         }).catch(err => {
           userInput.disabled = false;
@@ -621,15 +652,8 @@
           btn.disabled = false;
           btn.classList.add("pulse-button");
           btn.querySelector(".btn-text").innerText = "دخول المنصة";
-          showMsg(msgDiv, "خطأ في الاتصال بالخادم.", true);
+          showMsg("خطأ في الاتصال بالخادم.", true);
         });
-      }
-
-      function showMsg(element, text, isError) {
-        element.innerText = text;
-        element.className = isError ? "status-message error-msg" : "status-message success-msg";
-        element.style.display = "block";
-        setTimeout(() => element.style.display = "none", 4000);
       }
 
       function switchTab(tabId, btnElement) {
@@ -915,7 +939,7 @@
 
         if(endDate < startDate) {
            document.getElementById("endDateInput").value = startStr;
-           customAlert("لا يمكن أن يسبق تاريخ النهاية تاريخ البداية.");
+           showMsg("لا يمكن أن يسبق تاريخ النهاية تاريخ البداية.", true);
            generateCheckboxes(); 
            return;
         }
@@ -926,7 +950,7 @@
         const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
         if(diffDays > 60) {
-            customAlert("الفترة المحددة طويلة جداً. أقصى حد هو 60 يوماً.");
+            showMsg("الفترة المحددة طويلة جداً. أقصى حد هو 60 يوماً.", true);
             return;
         }
 
@@ -969,7 +993,6 @@
         if (!auth) return;
 
         const btn = document.getElementById("saveActionBtn");
-        const msgDiv = document.getElementById("adminMessage");
         
         const teacherCode = document.getElementById("selectedTeacherCode").value;
         const teacherName = document.getElementById("selectedTeacherName").innerText;
@@ -987,11 +1010,11 @@
           const mode = document.querySelector('input[name="dateMode"]:checked').value;
           if (mode === "single") {
             const singleDate = document.getElementById("singleDateInput").value;
-            if (!singleDate) { showMsg(msgDiv, "يرجى اختيار التاريخ", true); return; }
+            if (!singleDate) { showMsg("يرجى اختيار التاريخ", true); return; }
             records.push({ code: teacherCode, name: teacherName, type: type, dateStr: singleDate, timeStr: "", minutes: 1, notes: notes });
           } else {
             const boxes = document.querySelectorAll(".day-check-item:checked");
-            if(boxes.length === 0) { showMsg(msgDiv, "اختر يوماً واحداً على الأقل", true); return; }
+            if(boxes.length === 0) { showMsg("اختر يوماً واحداً على الأقل", true); return; }
             boxes.forEach(box => {
               records.push({ code: teacherCode, name: teacherName, type: type, dateStr: box.value, timeStr: "", minutes: 1, notes: notes });
             });
@@ -1010,18 +1033,18 @@
           btn.classList.add("pulse-success");
           btn.querySelector(".btn-text").innerText = "تسجيل وحفظ";
           if(data.status === "success") {
-            showMsg(msgDiv, data.message, false);
+            showMsg(data.message, false);
             document.getElementById("actionCard").style.display = "none";
             document.getElementById("adminSearchInput").value = "";
             document.getElementById("adminTeacherSelect").value = "";
           } else {
-            showMsg(msgDiv, data.message, true);
+            showMsg(data.message, true);
           }
         }).catch(err => { 
             btn.disabled = false; 
             btn.classList.add("pulse-success");
             btn.querySelector(".btn-text").innerText = "تسجيل وحفظ"; 
-            showMsg(msgDiv, "خطأ في الاتصال", true); 
+            showMsg("خطأ في الاتصال", true); 
         });
       }
 
@@ -1045,11 +1068,11 @@
             renderTodayDashboard(data.totals);
             renderTodayTable(data.history);
           } else {
-            customAlert("خطأ: " + data.message);
+            showMsg("خطأ: " + data.message, true);
           }
         }).catch(err => {
           document.getElementById("todayLoader").style.display = "none";
-          customAlert("خطأ في الاتصال");
+          showMsg("خطأ في الاتصال", true);
         });
       }
 
@@ -1096,6 +1119,125 @@
         emptyMsg.style.display = "none";
       }
 
+      function toggleAllHistory(isChecked) {
+        const boxes = document.querySelectorAll(".history-check-item");
+        boxes.forEach(box => box.checked = isChecked);
+        updateBulkActionState();
+      }
+
+      function updateBulkActionState() {
+        const boxes = document.querySelectorAll(".history-check-item:checked");
+        const bulkActions = document.getElementById("bulkActions");
+        const bulkCount = document.getElementById("bulkCount");
+        const selectAll = document.getElementById("selectAllHistory");
+        const allBoxes = document.querySelectorAll(".history-check-item");
+        
+        if(allBoxes.length > 0) {
+          if (selectAll) selectAll.checked = (boxes.length === allBoxes.length);
+        } else {
+          if (selectAll) selectAll.checked = false;
+        }
+        
+        if (boxes.length > 0) {
+          bulkActions.style.display = "flex";
+          bulkCount.innerText = "تم تحديد " + boxes.length + " سجل";
+        } else {
+          bulkActions.style.display = "none";
+        }
+      }
+
+      async function bulkDeleteRecords() {
+        customConfirm("هل أنت متأكد من حذف السجلات المحددة نهائياً؟", async function() {
+          const auth = getAuth();
+          if (!auth) return;
+          
+          const loader = document.getElementById("historyLoader");
+          loader.style.display = "block";
+          
+          const boxes = document.querySelectorAll(".history-check-item:checked");
+          let hasError = false;
+          
+          for(let i = 0; i < boxes.length; i++) {
+            const item = JSON.parse(decodeURIComponent(boxes[i].value));
+            try {
+              let res = await fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "deleteRecord", token: auth.token, date: item.date, name: item.name, type: item.type, amount: item.amount })
+              });
+              let data = await res.json();
+              if (data.status !== "success") hasError = true;
+            } catch(e) {
+              hasError = true;
+            }
+          }
+          
+          if(hasError) {
+             showMsg("حدثت بعض الأخطاء أثناء الحذف.", true);
+          } else {
+             showMsg("تم حذف السجلات بنجاح.", false);
+          }
+          
+          fetchHistoryData(true);
+        });
+      }
+
+      function openBulkEditModal() {
+        document.getElementById("bulkEditModal").style.display = "flex";
+        document.getElementById("bulkEditNewType").value = "تأخر صباحي";
+        document.getElementById("bulkEditNewAmount").value = "";
+        document.getElementById("bulkEditNewNotes").value = "";
+      }
+
+      function closeBulkEditModal() {
+        document.getElementById("bulkEditModal").style.display = "none";
+      }
+
+      async function submitBulkEditRecord() {
+        const auth = getAuth();
+        if (!auth) return;
+        
+        const newType = document.getElementById("bulkEditNewType").value;
+        const newAmount = document.getElementById("bulkEditNewAmount").value;
+        const newNotes = document.getElementById("bulkEditNewNotes").value;
+        
+        if(!newAmount) {
+           showMsg("يرجى تعبئة الكمية / الدقائق", true);
+           return;
+        }
+        
+        document.getElementById("historyLoader").style.display = "block";
+        closeBulkEditModal();
+        
+        const boxes = document.querySelectorAll(".history-check-item:checked");
+        let hasError = false;
+
+        for(let i = 0; i < boxes.length; i++) {
+          const item = JSON.parse(decodeURIComponent(boxes[i].value));
+          try {
+            let res = await fetch(APPS_SCRIPT_URL, {
+              method: "POST",
+              body: JSON.stringify({
+                action: "editRecord", token: auth.token,
+                oldDate: item.date, oldName: item.name, oldType: item.type, oldAmount: item.amount,
+                newType: newType, newAmount: newAmount, newNotes: newNotes
+              })
+            });
+            let data = await res.json();
+            if (data.status !== "success") hasError = true;
+          } catch(e) {
+            hasError = true;
+          }
+        }
+        
+        if(hasError) {
+           showMsg("حدثت بعض الأخطاء أثناء التعديل.", true);
+        } else {
+           showMsg("تم تعديل السجلات بنجاح.", false);
+        }
+        
+        fetchHistoryData(true);
+      }
+
       function fetchHistoryData(isSilentUpdate = false) {
         const auth = getAuth();
         if (!auth) return;
@@ -1105,7 +1247,7 @@
         const tCode = document.getElementById("historyTeacherSelect").value;
         
         if(!start || !end) {
-          customAlert("يرجى تحديد فترة البداية والنهاية.");
+          showMsg("يرجى تحديد فترة البداية والنهاية.", true);
           return;
         }
 
@@ -1113,29 +1255,33 @@
         const dashboard = document.getElementById("historyDashboard");
         const container = document.getElementById("historyTableContainer");
         const emptyMsg = document.getElementById("historyEmpty");
-        
-        loader.style.display = "block";
+        const bulkActions = document.getElementById("bulkActions");
+        const selectAll = document.getElementById("selectAllHistory");
         
         if (!isSilentUpdate) {
+          loader.style.display = "block";
           dashboard.style.display = "none";
           container.style.display = "none";
           emptyMsg.style.display = "none";
+          bulkActions.style.display = "none";
+          if(selectAll) selectAll.checked = false;
         }
 
         fetch(APPS_SCRIPT_URL, {
           method: "POST",
           body: JSON.stringify({ action: "getReports", token: auth.token, startDate: start, endDate: end, teacherCode: tCode })
         }).then(res => res.json()).then(data => {
-          loader.style.display = "none";
+          if (!isSilentUpdate) loader.style.display = "none";
+          
           if(data.status === "success") {
             renderReportsDashboard(data.totals);
             renderHistoryTable(data.history);
           } else {
-            customAlert("حدث خطأ: " + data.message);
+            showMsg("حدث خطأ: " + data.message, true);
           }
         }).catch(err => {
-          loader.style.display = "none";
-          customAlert("خطأ في الاتصال");
+          if (!isSilentUpdate) loader.style.display = "none";
+          showMsg("خطأ في الاتصال", true);
         });
       }
 
@@ -1178,8 +1324,14 @@
           let safeType = row.type.replace(/'/g, "\\'");
           let safeNotes = (row.notes || '').replace(/'/g, "\\'");
 
+          let rowData = { date: dateOnly, name: row.name, type: row.type, amount: row.amount, notes: row.notes };
+          let encodedData = encodeURIComponent(JSON.stringify(rowData));
+
           let tr = document.createElement("tr");
           tr.innerHTML = `
+            <td style="vertical-align: middle;">
+              <input type="checkbox" class="history-check-item" value="${encodedData}" onchange="updateBulkActionState()" style="transform:scale(1.2); accent-color:#0056b3; cursor:pointer;">
+            </td>
             <td style="color:#555;">${dateOnly}</td>
             <td><strong>${row.name}</strong></td>
             <td><span class="badge ${badgeClass}">${row.type}</span></td>
@@ -1197,6 +1349,11 @@
         
         container.style.display = "block";
         emptyMsg.style.display = "none";
+
+        const selectAll = document.getElementById("selectAllHistory");
+        if(selectAll) selectAll.checked = false;
+        updateBulkActionState();
+        document.getElementById("historyLoader").style.display = "none";
       }
 
       function openEditModal(date, name, type, amount, notes) {
@@ -1246,13 +1403,14 @@
           })
         }).then(res => res.json()).then(data => {
           if(data.status === "success") {
+            showMsg("تم التعديل بنجاح", false);
             fetchHistoryData(true);
           } else {
-            customAlert("خطأ: " + data.message);
+            showMsg("خطأ: " + data.message, true);
             document.getElementById("historyLoader").style.display = "none";
           }
         }).catch(err => {
-          customAlert("خطأ في الاتصال");
+          showMsg("خطأ في الاتصال", true);
           document.getElementById("historyLoader").style.display = "none";
         });
       }
@@ -1276,13 +1434,14 @@
             })
           }).then(res => res.json()).then(data => {
             if(data.status === "success") {
+              showMsg("تم الحذف بنجاح", false);
               fetchHistoryData(true); 
             } else {
-              customAlert("خطأ: " + data.message);
+              showMsg("خطأ: " + data.message, true);
               document.getElementById("historyLoader").style.display = "none";
             }
           }).catch(err => {
-            customAlert("خطأ في الاتصال");
+            showMsg("خطأ في الاتصال", true);
             document.getElementById("historyLoader").style.display = "none";
           });
         });
@@ -1344,7 +1503,7 @@
               lBtn.classList.add("pulse-button");
               lBtn.querySelector(".btn-text").innerText = "دخول المنصة";
               document.getElementById("inputsWrapper").style.display = "block";
-              showMsg(document.getElementById("loginMessage"), "حدث خطأ في جلب البيانات.", true);
+              showMsg("حدث خطأ في جلب البيانات.", true);
             }
         });
       }
