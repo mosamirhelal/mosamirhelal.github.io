@@ -896,7 +896,7 @@
           onclick="addRipple(event, this); showPresentConfirm()"
         >
           <span class="btn-text">🔄 حضور للكل</span>
-        </button> 
+        </button>
         -->
       </div>
 
@@ -939,6 +939,7 @@
       <table id="studentsTable">
         <thead>
           <tr>
+            <th style="width: 50px">م</th>
             <th>اسم الطالب</th>
             <th>الدرجة</th>
           </tr>
@@ -1848,6 +1849,9 @@
           row.style.animationDelay = `${Math.min(index * 0.02, 0.4)}s`;
 
           row.innerHTML = `
+            <td style='font-weight:bold; color:#6c757d; width: 50px;'>${
+              start + index + 1
+            }</td>
             <td style='font-weight:600; color:#0056b3; vertical-align: middle;'>${escapeHTML(
               student.name
             )}</td>
