@@ -184,7 +184,7 @@
       <div id="tab-record" class="tab-content active">
         <div class="dual-search">
           <div class="search-container">
-            <input type="text" id="adminSearchInput" class="form-control" placeholder="ابحث باسم المعلم أو الكود..." oninput="handleLiveSearch()" onfocus="this.select()" onclick="this.select()" autocomplete="off" style="margin-bottom:0;" />
+            <input type="text" id="adminSearchInput" class="form-control" placeholder="ابحث باسم المعلم أو الكود..." oninput="debounceLiveSearch()" onfocus="this.select()" onclick="this.select()" autocomplete="off" style="margin-bottom:0;" />
             <div id="searchResults" class="autocomplete-items" style="display: none;"></div>
           </div>
           <select id="adminTeacherSelect" class="form-control" onchange="selectTeacherFromDropdown()">
@@ -397,9 +397,11 @@
       <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
     </div>
 
+
     <div id="editModal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; direction:rtl;">
       <div style="background:#fff; padding:25px; border-radius:12px; width:90%; max-width:400px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.2); animation: popIn 0.3s ease;">
         <h3 style="color:#0056b3; margin-top:0; border-bottom:2px solid #eee; padding-bottom:10px;">تعديل السجل</h3>
+        <input type="hidden" id="editRowId">
         <input type="hidden" id="editOldDate">
         <input type="hidden" id="editOldName">
         <input type="hidden" id="editOldType">
@@ -479,6 +481,7 @@
       let currentSearchFocus = -1;
       let confirmCallback = null;
       let lastTodayFetch = 0;
+      let liveSearchTimeout = null;
 
       document.addEventListener('keydown', e => { 
         if(e.key === 'Escape'){ 
@@ -498,6 +501,7 @@
         try {
           const response = await fetch(APPS_SCRIPT_URL, {
             method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
             body: JSON.stringify(payload) 
           });
           return await response.json();
@@ -511,17 +515,15 @@
         let activeContainer = containers.find(c => c && c.style.display !== "none");
         if (!activeContainer) activeContainer = containers[0];
 
+        const existingMsgs = activeContainer.querySelectorAll(".status-message");
+        existingMsgs.forEach(m => m.remove());
+
         const msgDiv = document.createElement("div");
         msgDiv.innerText = text;
         msgDiv.className = isError ? "status-message error-msg" : "status-message success-msg";
         msgDiv.style.display = "block";
 
-        const creditDiv = activeContainer.querySelector(".designer-credit");
-        if (creditDiv) {
-          activeContainer.insertBefore(msgDiv, creditDiv);
-        } else {
-          activeContainer.appendChild(msgDiv);
-        }
+        activeContainer.appendChild(msgDiv);
 
         setTimeout(() => {
           if (msgDiv.parentNode) {
@@ -766,6 +768,11 @@
         });
       }
 
+      function debounceLiveSearch() {
+        clearTimeout(liveSearchTimeout);
+        liveSearchTimeout = setTimeout(handleLiveSearch, 200);
+      }
+
       function handleLiveSearch() {
         const term = document.getElementById("adminSearchInput").value.trim().toLowerCase();
         const resultsContainer = document.getElementById("searchResults");
@@ -790,7 +797,9 @@
 
         filtered.forEach(t => {
           let item = document.createElement("div");
-          item.innerHTML = `<strong>${t.name}</strong> <span style="color:#888; font-size:13px;">(كود: ${t.code})</span>`;
+          let eName = escHtml(t.name);
+          let eCode = escHtml(t.code);
+          item.innerHTML = `<strong>${eName}</strong> <span style="color:#888; font-size:13px;">(كود: ${eCode})</span>`;
           item.onclick = function() {
             resultsContainer.style.display = "none";
             selectTeacherByCode(t.code);
@@ -937,6 +946,13 @@
           return; 
         }
 
+        if (type === "خروج بدون إذن" || type === "خروج بإذن") {
+          resultArea.style.display = "flex";
+          delayInput.value = "";
+          delayInput.placeholder = "أدخل المدة بالدقائق";
+          return;
+        }
+
         const actualTime = document.getElementById("actionTimeInput").value;
         let expectedTime = document.getElementById("selectedTeacherStart").value; 
         
@@ -991,7 +1007,7 @@
         const daysName = ["الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
         
         const diffTime = Math.abs(endDate - startDate);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
 
         if(diffDays > 60) {
             showMsg("الفترة المحددة طويلة جداً. أقصى حد هو 60 يوماً.", true);
@@ -1101,9 +1117,26 @@
         const auth = getAuth();
         if (!auth) return;
 
-        if (!isManual && Date.now() - lastTodayFetch <= 60000) return;
+        if (!isManual && Date.now() - lastTodayFetch <= 60000) {
+          const seconds = Math.floor((Date.now() - lastTodayFetch) / 1000);
+          let msgBox = document.getElementById("cacheUpdateMsg");
+          if (!msgBox) {
+            msgBox = document.createElement("div");
+            msgBox.id = "cacheUpdateMsg";
+            msgBox.style.textAlign = "center";
+            msgBox.style.color = "#666";
+            msgBox.style.fontSize = "13px";
+            msgBox.style.marginBottom = "10px";
+            const todayLoader = document.getElementById("todayLoader");
+            todayLoader.parentNode.insertBefore(msgBox, todayLoader.nextSibling);
+          }
+          msgBox.innerText = `البيانات محدّثة - آخر تحديث: قبل ${seconds} ثانية`;
+          msgBox.style.display = "block";
+          setTimeout(() => { msgBox.style.display = "none"; }, 3000);
+          return;
+        }
+        
         lastTodayFetch = Date.now();
-
         const today = getLocalDate();
         
         document.getElementById("todayLoader").style.display = "block";
@@ -1209,19 +1242,35 @@
           loader.style.display = "block";
           
           const boxes = document.querySelectorAll(".history-check-item:checked");
-          try {
-            let promises = Array.from(boxes).map(box => {
-              const item = JSON.parse(decodeURIComponent(box.value));
-              return apiPost({ action: "deleteRecord", token: auth.token, date: item.date, name: item.name, type: item.type, amount: item.amount });
-            });
-            let results = await Promise.all(promises);
-            if (results.some(res => res.status !== "success")) {
-              showMsg("حدثت بعض الأخطاء أثناء الحذف.", true);
-            } else {
-              showMsg("تم حذف السجلات بنجاح.", false);
+          const total = boxes.length;
+
+          const msgDiv = document.createElement("div");
+          msgDiv.className = "status-message success-msg";
+          msgDiv.id = "bulkProgressMsg";
+          msgDiv.style.display = "block";
+          const activeContainer = [...document.querySelectorAll(".container")].find(c => c.style.display !== "none") || document.querySelector(".container");
+          activeContainer.insertBefore(msgDiv, activeContainer.firstChild);
+          
+          let hasError = false;
+          let count = 0;
+
+          for (let box of boxes) {
+            count++;
+            document.getElementById("bulkProgressMsg").innerText = `جاري حذف ${count} من ${total}...`;
+            const item = JSON.parse(decodeURIComponent(box.value));
+            try {
+              let res = await apiPost({ action: "deleteRecord", token: auth.token, rowId: item.rowId, date: item.date, name: item.name, type: item.type, amount: item.amount });
+              if (res.status !== "success") hasError = true;
+            } catch(e) {
+              hasError = true;
             }
-          } catch(e) {
+          }
+
+          document.getElementById("bulkProgressMsg").remove();
+          if (hasError) {
             showMsg("حدثت بعض الأخطاء أثناء الحذف.", true);
+          } else {
+            showMsg("تم حذف السجلات بنجاح.", false);
           }
           fetchHistoryData(true);
         });
@@ -1236,6 +1285,9 @@
 
       function closeBulkEditModal() {
         document.getElementById("bulkEditModal").style.display = "none";
+        document.getElementById("bulkEditNewType").value = "تأخر صباحي";
+        document.getElementById("bulkEditNewAmount").value = "";
+        document.getElementById("bulkEditNewNotes").value = "";
       }
 
       async function submitBulkEditRecord() {
@@ -1259,7 +1311,7 @@
           let promises = Array.from(boxes).map(box => {
             const item = JSON.parse(decodeURIComponent(box.value));
             return apiPost({
-              action: "editRecord", token: auth.token,
+              action: "editRecord", token: auth.token, rowId: item.rowId,
               oldDate: item.date, oldName: item.name, oldType: item.type, oldAmount: item.amount,
               newType: newType, newAmount: newAmount, newNotes: newNotes
             });
@@ -1286,6 +1338,11 @@
         
         if(!start || !end) {
           showMsg("يرجى تحديد فترة البداية والنهاية.", true);
+          return;
+        }
+
+        if (start > end) {
+          showMsg("تاريخ البداية يجب أن يكون قبل تاريخ النهاية", true);
           return;
         }
 
@@ -1360,7 +1417,7 @@
           let eType = escHtml(row.type);
           let eAdmin = escHtml(row.admin);
 
-          let rowData = { date: dateOnly, name: row.name, type: row.type, amount: row.amount, notes: row.notes };
+          let rowData = { rowId: row.rowId, date: dateOnly, name: row.name, type: row.type, amount: row.amount, notes: row.notes };
 
           let tr = document.createElement("tr");
           tr.dataset.rowInfo = encodeURIComponent(JSON.stringify(rowData));
@@ -1384,7 +1441,7 @@
           tr.querySelector('.edit-btn').addEventListener('click', () => openEditModal(JSON.parse(decodeURIComponent(tr.dataset.rowInfo))));
           tr.querySelector('.delete-btn').addEventListener('click', () => {
             let info = JSON.parse(decodeURIComponent(tr.dataset.rowInfo));
-            deleteRecord(info.date, info.name, info.type, info.amount);
+            deleteRecord(info.rowId, info.date, info.name, info.type, info.amount);
           });
 
           tbody.appendChild(tr);
@@ -1401,6 +1458,7 @@
 
       function openEditModal(obj) {
         document.getElementById("editModal").style.display = "flex";
+        document.getElementById("editRowId").value = obj.rowId || "";
         document.getElementById("editOldDate").value = obj.date;
         document.getElementById("editOldName").value = obj.name;
         document.getElementById("editOldType").value = obj.type;
@@ -1413,12 +1471,16 @@
 
       function closeEditModal() {
         document.getElementById("editModal").style.display = "none";
+        document.getElementById("editNewType").value = "تأخر صباحي";
+        document.getElementById("editNewAmount").value = "";
+        document.getElementById("editNewNotes").value = "";
       }
 
       function submitEditRecord() {
         const auth = getAuth();
         if (!auth) return;
         
+        const rowId = document.getElementById("editRowId").value;
         const oldDate = document.getElementById("editOldDate").value;
         const oldName = document.getElementById("editOldName").value;
         const oldType = document.getElementById("editOldType").value;
@@ -1434,6 +1496,7 @@
         apiPost({
           action: "editRecord",
           token: auth.token,
+          rowId: rowId,
           oldDate: oldDate,
           oldName: oldName,
           oldType: oldType,
@@ -1455,7 +1518,7 @@
         });
       }
 
-      function deleteRecord(date, name, type, amount) {
+      function deleteRecord(rowId, date, name, type, amount) {
         customConfirm("هل أنت متأكد من حذف هذا السجل نهائياً؟ لا يمكن التراجع عن هذه الخطوة.", function() {
           const auth = getAuth();
           if (!auth) return;
@@ -1465,6 +1528,7 @@
           apiPost({
             action: "deleteRecord",
             token: auth.token,
+            rowId: rowId,
             date: date,
             name: name,
             type: type,
