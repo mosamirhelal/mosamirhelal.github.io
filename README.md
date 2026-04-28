@@ -495,21 +495,15 @@ A `null` return (silence) displays as `∞` in the UI rather than a meaningless 
 ---
 
 <details>
-<summary><b>🏫 4. Al-Khateeb System — /alkhateeb*</b></summary>
+<summary><b>🏠 4. Al-Khateeb Landing — /alkhateeb</b></summary>
 
 <br>
-
-A full school management ecosystem built for **Al-Khateeb Official Language School**, consisting of four interconnected web applications backed by two purpose-built Google Apps Script backends.
-
----
-
-### 4a. 🏠 Landing Page — `/alkhateeb`
 
 The unified entry point for the school's digital system. Every detail — from the floating ambient dots to the button ripple effect — is implemented from scratch.
 
 ---
 
-#### 🟣 Floating Ambient Dots
+### 🟣 Floating Ambient Dots
 
 Five `<div class="dot">` elements are positioned absolutely across the page using inline styles. Each has a unique size, position, and `animation-duration` / `animation-delay`. They animate with `floatDot` — a simple translateY loop — and have `pointer-events: none` so they never interfere with clicks:
 
@@ -522,7 +516,7 @@ Five `<div class="dot">` elements are positioned absolutely across the page usin
 
 ---
 
-#### 💧 Ripple Effect — Click Coordinate Precision
+### 💧 Ripple Effect — Click Coordinate Precision
 
 The ripple function calculates the exact click position relative to the button's bounding box, creates a `<span>` sized to cover the full button, and appends it. It handles three input types — mouse click, touch, and keyboard (falls back to center):
 
@@ -541,7 +535,7 @@ The ripple span is removed from the DOM after 450ms.
 
 ---
 
-#### 🔄 Navigation Overlay — Back-Navigation Safe
+### 🔄 Navigation Overlay — Back-Navigation Safe
 
 When a portal button is clicked, `navigateWithRipple()` fires the ripple, waits 150ms, then shows a full-screen overlay with a spinner and pulsing dots before navigating. On the *destination* page, a `pageshow` event listener removes any leftover overlay — which is necessary because browsers may restore the overlay from the bfcache when the user presses Back:
 
@@ -551,15 +545,23 @@ window.addEventListener("pageshow", function(event) {
 });
 ```
 
+**🛠️ Tech Used**
+`HTML5` · `CSS3` · `Vanilla JavaScript`
+
+</details>
+
 ---
 
-### 4b. 📊 Student Results Portal — `/alkhateeb-results`
+<details>
+<summary><b>📊 5. Al-Khateeb Results — /alkhateeb-results</b></summary>
+
+<br>
 
 A public-facing portal for students and parents to look up exam results by student ID or name.
 
 ---
 
-#### 🔍 Unified Smart Search — Auto-Mode Detection
+### 🔍 Unified Smart Search — Auto-Mode Detection
 
 A single input field serves both search modes. `getGrade()` checks if the input is purely numeric:
 
@@ -576,7 +578,7 @@ No separate buttons or fields. The search mode is invisible to the user.
 
 ---
 
-#### 🃏 Name Search Results — Staggered Card Animation
+### 🃏 Name Search Results — Staggered Card Animation
 
 When a name search returns multiple students, each result renders as a card with a CSS animation delay calculated from its index:
 
@@ -591,7 +593,7 @@ Each card shows the student's name, grade, section, and ID number, with a "Show 
 
 ---
 
-#### 🔢 Count-Up Animation — Cubic Easing
+### 🔢 Count-Up Animation — Cubic Easing
 
 All score numbers animate from 0 to their final value using a `requestAnimationFrame` loop with cubic ease-out (`1 - (1-p)^3`):
 
@@ -612,7 +614,7 @@ The total score and percentage each run independent count-ups with different dur
 
 ---
 
-#### 🎉 Confetti & Falling Emoji System
+### 🎉 Confetti & Falling Emoji System
 
 Passing students (≥50%) trigger `confetti()` from the `canvas-confetti` library with 150 particles. Both passing and failing trigger `showEmojis()` — which drops 15 falling emoji characters from random horizontal positions with staggered delays:
 
@@ -633,7 +635,7 @@ function showEmojis(isSuccess) {
 
 ---
 
-#### 📸 Share as Image — `html2canvas` with Clone Callback
+### 📸 Share as Image — `html2canvas` with Clone Callback
 
 `shareResult()` uses `html2canvas` to rasterize the result card at 2× scale. The `onclone` callback — which runs on a cloned DOM before capture — does several critical things:
 
@@ -657,25 +659,33 @@ On mobile with Web Share API support, the image is shared as a `File` object via
 
 ---
 
-#### 💬 Inline Feedback System
+### 💬 Inline Feedback System
 
 After viewing results, students can submit feedback. The form appears in-page (no navigation) and sends the student's name, ID, grade, and section alongside the feedback text to the backend — giving the school administration full context on who submitted what. After a successful send, the form is replaced with a "Search another student" button.
 
 ---
 
-#### 👁️ Results Visibility Flag
+### 👁️ Results Visibility Flag
 
 The backend can globally hide results via a settings sheet. When `resultsHidden: true` is returned, the portal shows the student's name and grade but replaces the score table with a "results not available yet" message — without revealing any actual scores.
 
+**🛠️ Tech Used**
+`HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script` · `html2canvas` · `canvas-confetti`
+
+</details>
+
 ---
 
-### 4c. ✏️ Teacher Grades Portal — `/alkhateeb-degrees`
+<details>
+<summary><b>✏️ 6. Al-Khateeb Degrees — /alkhateeb-degrees</b></summary>
+
+<br>
 
 A secure multi-step grade entry portal for teachers. Every interaction from login to save is engineered to prevent data loss and handle concurrent access.
 
 ---
 
-#### 🔐 Authentication — `localStorage` Token Storage
+### 🔐 Authentication — `localStorage` Token Storage
 
 After login, the server returns a token and the teacher's name. These are stored in `localStorage` as a JSON object. On every page load, `checkAuth()` reads this object and decides which container to show:
 
@@ -693,7 +703,7 @@ function checkAuth() {
 
 ---
 
-#### 📝 Draft Auto-Save — Expiring `localStorage` Snapshot
+### 📝 Draft Auto-Save — Expiring `localStorage` Snapshot
 
 Every time the teacher changes a grade or navigates between pages, `saveStateLocally()` writes the complete application state to `localStorage`:
 
@@ -721,7 +731,7 @@ This means a teacher who closes the browser mid-session can reopen it and contin
 
 ---
 
-#### 🔢 Arabic Numeral Conversion
+### 🔢 Arabic Numeral Conversion
 
 Teachers may type Arabic-Indic numerals (٠١٢٣٤٥٦٧٨٩) from Arabic keyboards. `convertToEnglishNumbers()` maps each Arabic digit to its ASCII equivalent, then strips any remaining non-numeric characters:
 
@@ -738,13 +748,13 @@ This conversion runs on every keystroke in `handleScoreInput()`, making the inpu
 
 ---
 
-#### 🟩 Modified Cell Highlighting
+### 🟩 Modified Cell Highlighting
 
 When a score differs from `originalScore` (the value returned from the server), the input gets a green border and background via `checkModifiedState()`. When the score is reverted to the original value, the green styling is removed. The `suppressGreen` flag prevents bulk-action results (like "set all to 90") from being individually green-highlighted, since those are bulk changes not requiring per-cell visual emphasis.
 
 ---
 
-#### ⌨️ Enter Key Navigation
+### ⌨️ Enter Key Navigation
 
 `handleEnter()` intercepts the Enter key on score inputs. It finds the current input's index in the `.student-score` NodeList, skips disabled inputs (absent students), and focuses the next available input. At the end of the current page, it automatically advances to the next pagination page and focuses the first available input there:
 
@@ -762,7 +772,7 @@ if (nextIndex < inputs.length) {
 
 ---
 
-#### 💾 Smart Save — Validation, Scroll, and Diff
+### 💾 Smart Save — Validation, Scroll, and Diff
 
 `saveData()` runs three phases before any network request:
 
@@ -774,13 +784,13 @@ After a successful save, the backend response includes a summary (grade, section
 
 ---
 
-#### 📊 Dynamic Subject List per Grade
+### 📊 Dynamic Subject List per Grade
 
 `subjectsConfig` maps each of 6 grade levels to an array of subject objects. When the teacher selects a grade, `populateSubjects()` rebuilds the subject dropdown entirely from this map. This means the frontend enforces the correct curriculum structure without a backend round-trip.
 
 ---
 
-#### 🔢 Bulk Score Broadcast
+### 🔢 Bulk Score Broadcast
 
 The bulk score feature allows entering one score and applying it to all *present* students in a single action. Students marked as absent (`غ` / `غائب`) are explicitly excluded from the bulk fill:
 
@@ -796,7 +806,7 @@ All bulk operations (apply, clear all, absent all, present all) go through the c
 
 ---
 
-#### ⚠️ Unsaved Changes Warning
+### ⚠️ Unsaved Changes Warning
 
 A `beforeunload` event listener checks if any student has `score !== originalScore`. If so, the browser's native "Leave page?" dialog is triggered:
 
@@ -809,15 +819,23 @@ window.addEventListener("beforeunload", function(e) {
 
 The logout button also checks for unsaved changes and shows the custom confirmation modal if any exist.
 
+**🛠️ Tech Used**
+`HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script` · `Google Sheets` · `LockService`
+
+</details>
+
 ---
 
-### 4d. 👔 Staff HR Portal — `/alkhateeb-teachers`
+<details>
+<summary><b>👔 7. Al-Khateeb HR — /alkhateeb-teachers</b></summary>
+
+<br>
 
 A dual-role HR management system — currently in active development — with an Admin panel for recording and reviewing staff operations, and a Teacher panel for personal statistics.
 
 ---
 
-#### 🔐 Authentication — `sessionStorage` (not `localStorage`)
+### 🔐 Authentication — `sessionStorage` (not `localStorage`)
 
 Unlike the Degrees portal, this system uses `sessionStorage`. This means the session is automatically invalidated when the browser tab is closed — more appropriate for HR data. The teacher list is also cached in `sessionStorage` to avoid re-fetching on every navigation:
 
@@ -828,13 +846,13 @@ sessionStorage.setItem("alkhateeb_teachers", JSON.stringify(allTeachers));
 
 ---
 
-#### 👥 Dual-Role Dashboard
+### 👥 Dual-Role Dashboard
 
 After login, the backend's response includes a `role` field. The frontend shows a completely different container based on this value — `adminContainer` or `teacherContainer`. There is no client-side role logic beyond this routing; all privileged actions are validated server-side using the token.
 
 ---
 
-#### 🔎 Live Autocomplete Search with Keyboard Navigation
+### 🔎 Live Autocomplete Search with Keyboard Navigation
 
 The teacher search input uses a custom autocomplete implementation. Results are filtered in real time from the locally cached teacher list. The dropdown supports full keyboard navigation:
 
@@ -853,7 +871,7 @@ A `document.addEventListener("click")` closes the dropdown when clicking anywher
 
 ---
 
-#### ⏱️ Automatic Delay Calculation
+### ⏱️ Automatic Delay Calculation
 
 For time-based operations (morning tardiness, early departure, etc.), the form shows a time picker. When the time changes, `calculateDelay()` parses both the selected time and the teacher's scheduled start time (stored in the hidden `selectedTeacherStart` field) and computes the difference in minutes:
 
@@ -867,7 +885,7 @@ A "Now" button fills the time picker with the current system time and triggers t
 
 ---
 
-#### 📅 Multi-Day Checkbox Grid
+### 📅 Multi-Day Checkbox Grid
 
 For non-time-based operations (absences, leaves), the admin can switch to "multiple days" mode. `generateCheckboxes()` builds a grid of checkboxes for every day in the selected range (max 60 days):
 
@@ -883,7 +901,7 @@ A "Select All" master checkbox syncs with individual checkboxes and updates when
 
 ---
 
-#### 📊 Circular Chart Animations — SVG `stroke-dasharray`
+### 📊 Circular Chart Animations — SVG `stroke-dasharray`
 
 The teacher dashboard uses three SVG circular progress charts. Animation is achieved by setting `stroke-dasharray` from `"0, 100"` to `"${percentage}, 100"` via JavaScript — the CSS `transition` on the `circle` element animates the change:
 
@@ -901,7 +919,7 @@ Three charts display: attendance rate (%), remaining annual leave (days), and to
 
 ---
 
-#### 🗑️ Bulk Edit & Delete
+### 🗑️ Bulk Edit & Delete
 
 The history table supports row selection with checkboxes. When rows are selected, a bulk actions bar appears showing the count. Bulk delete runs as a sequential `async/await` loop, executing one API call per record and collecting errors:
 
@@ -918,12 +936,12 @@ Row metadata (date, name, type, amount) is `JSON.stringify`-d and `encodeURIComp
 
 ---
 
-#### 🔒 Custom Confirm Dialog
+### 🔒 Custom Confirm Dialog
 
 The native `window.confirm()` is replaced entirely with `customConfirm(msg, callback)` — a modal that accepts a callback function executed only when the user clicks "Confirm." This provides consistent styling and prevents the browser-default dialog from appearing.
 
 **🛠️ Tech Used**
-`HTML5` · `CSS3` · `JavaScript` · `Google Apps Script` · `Google Sheets` · `html2canvas` · `canvas-confetti` · `LockService`
+`HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script` · `Google Sheets`
 
 </details>
 
