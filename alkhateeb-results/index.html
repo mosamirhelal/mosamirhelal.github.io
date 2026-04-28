@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>نتيجة الطلاب - مدرسة الشهيد محمود علي الخطيب</title>
+    <title>بيانات ونتيجة الطلاب - مدرسة الشهيد محمود علي الخطيب</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -20,9 +20,12 @@
     ></script>
     <meta
       property="og:title"
-      content="نتيجة الطلاب - مدرسة الشهيد محمود علي الخطيب"
+      content="بيانات ونتيجة الطلاب - مدرسة الشهيد محمود علي الخطيب"
     />
-    <meta property="og:description" content="بوابة الاستعلام عن النتيجة" />
+    <meta
+      property="og:description"
+      content="بوابة الاستعلام عن بيانات ونتيجة الطالب"
+    />
     <meta
       property="og:image"
       content="https://mosamirhelal.com/alkhateeb-results/logo_3.webp"
@@ -231,7 +234,7 @@
         font-family: inherit;
       }
       input {
-        direction: ltr;
+        direction: auto;
         text-align: center;
         padding-right: 45px !important;
       }
@@ -461,6 +464,41 @@
       #export-footer {
         display: none;
       }
+      .name-card {
+        background: white;
+        border: 2px solid #e1e1e1;
+        border-radius: 11px;
+        padding: 20px;
+        margin-top: 15px;
+        text-align: center;
+        opacity: 0;
+        animation: slideInUp 0.5s ease-out forwards;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+      .name-card-title {
+        color: #0056b3;
+        font-weight: 800;
+        font-size: 18px;
+        margin-top: 0;
+        margin-bottom: 5px;
+      }
+      .name-card-subtitle {
+        color: #6c757d;
+        font-size: 14px;
+        margin-top: 0;
+        margin-bottom: 12px;
+      }
+      .name-card-id {
+        color: #28a745;
+        font-weight: 800;
+        font-size: 16px;
+        margin-top: 0;
+        margin-bottom: 15px;
+      }
+      .name-card-btn {
+        max-width: 200px;
+        margin: 0 auto;
+      }
       @media (min-width: 768px) {
         .top-logos img {
           max-height: 160px;
@@ -567,17 +605,16 @@
           alt="مدرسة الشهيد محمود علي الخطيب الرسمية للغات"
         />
       </div>
-      <h2>استعلام عن النتيجة</h2>
+      <h2>بيانات ونتيجة الطلاب</h2>
       <div class="input-group">
         <span class="input-group-icon">👤</span>
         <input
           type="text"
-          inputmode="numeric"
-          maxlength="14"
+          inputmode="text"
+          maxlength="50"
           id="studentIdInput"
           class="form-control"
-          placeholder="أدخل رقم الطالب"
-          oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+          placeholder="أدخل رقم الطالب أو الاسم"
         />
       </div>
       <button
@@ -588,6 +625,7 @@
         <span class="btn-text">🔎 بحث</span>
       </button>
       <div class="loader" id="loader"></div>
+      <div id="nameSearchResults"></div>
       <div id="result"></div>
       <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
     </div>
@@ -702,6 +740,7 @@
 
       function resetSearch() {
         document.getElementById("result").innerHTML = "";
+        document.getElementById("nameSearchResults").innerHTML = "";
         var natIdInput = document.getElementById("studentIdInput");
         natIdInput.value = "";
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -851,19 +890,104 @@
         }
       }
 
-      function getGrade() {
+      function selectStudentAndSearch(studentId) {
         var idInput = document.getElementById("studentIdInput");
-        var id = idInput.value;
+        idInput.value = studentId;
+        getGrade();
+      }
+
+      function searchByName(nameQuery) {
+        var idInput = document.getElementById("studentIdInput");
         var resultDiv = document.getElementById("result");
+        var nameSearchResultsDiv = document.getElementById("nameSearchResults");
         var loader = document.getElementById("loader");
         var searchBtn = document.getElementById("searchBtn");
         var searchBtnText = searchBtn.querySelector(".btn-text");
 
         resultDiv.innerHTML = "";
+        nameSearchResultsDiv.innerHTML = "";
+
+        idInput.blur();
+        loader.style.display = "block";
+        searchBtn.disabled = true;
+        idInput.disabled = true;
+        searchBtn.classList.remove("pulse-button");
+        searchBtnText.innerText = "⏳ جاري البحث...";
+
+        var url =
+          "https://script.google.com/macros/s/AKfycbx8JBu5aQKAf3cKN9kEss8RiFHoW9DiqbgSlLO3JiIRxtXEzsJh3MU1sgIU2cVPP-rNkw/exec?name=" +
+          encodeURIComponent(nameQuery);
+
+        fetch(url)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              var html = "";
+              data.results.forEach((student, index) => {
+                var delay = 0.08 * (index + 1);
+                var safeName = escapeHTML(student.name);
+                var safeGrade = escapeHTML(student.grade);
+                var safeSection = escapeHTML(student.section);
+                var safeId = escapeHTML(student.id);
+
+                html += `
+                  <div class="name-card" style="animation-delay: ${delay}s">
+                    <p class="name-card-title">${safeName}</p>
+                    <p class="name-card-subtitle">الصف: ${safeGrade} | الفصل: ${safeSection}</p>
+                    <p class="name-card-id">رقمك هو: ${safeId}</p>
+                    <button class="form-control name-card-btn" onclick="addRipple(event,this); selectStudentAndSearch('${safeId}')">
+                      <span class="btn-text">📊 عرض النتيجة</span>
+                    </button>
+                  </div>
+                `;
+              });
+              nameSearchResultsDiv.innerHTML = html;
+            } else {
+              nameSearchResultsDiv.innerHTML = `<div style='color:red; margin-top:15px; font-weight:bold;' class='student-info-appear'>${escapeHTML(
+                data.message
+              )}</div>`;
+            }
+            setTimeout(() => {
+              window.scrollTo({
+                top: nameSearchResultsDiv.offsetTop - 20,
+                behavior: "smooth",
+              });
+            }, 200);
+          })
+          .catch(() => {
+            nameSearchResultsDiv.innerHTML =
+              "<div style='color:red; margin-top:15px;' class='student-info-appear'>حدث خطأ في الاتصال بقاعدة البيانات. تأكد من اتصالك بالإنترنت.</div>";
+          })
+          .finally(() => {
+            loader.style.display = "none";
+            searchBtn.disabled = false;
+            idInput.disabled = false;
+            searchBtn.classList.add("pulse-button");
+            searchBtnText.innerText = "🔎 بحث";
+          });
+      }
+
+      function getGrade() {
+        var idInput = document.getElementById("studentIdInput");
+        var id = idInput.value;
+        var resultDiv = document.getElementById("result");
+        var nameSearchResultsDiv = document.getElementById("nameSearchResults");
+        var loader = document.getElementById("loader");
+        var searchBtn = document.getElementById("searchBtn");
+        var searchBtnText = searchBtn.querySelector(".btn-text");
+
+        resultDiv.innerHTML = "";
+        nameSearchResultsDiv.innerHTML = "";
 
         if (!id) {
           resultDiv.innerHTML =
-            "<div style='color:red; margin-top:15px;' class='student-info-appear'>الرجاء إدخال رقم الطالب أولاً</div>";
+            "<div style='color:red; margin-top:15px;' class='student-info-appear'>الرجاء إدخال رقم الطالب أو الاسم أولاً</div>";
+          return;
+        }
+
+        const isNumeric = /^\d+$/.test(id.trim());
+        if (!isNumeric) {
+          searchByName(id.trim());
           return;
         }
 
