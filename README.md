@@ -9,8 +9,11 @@
   <img src="https://img.shields.io/github/repo-size/mosamirhelal/mosamirhelal.github.io?label=📦+Repo+Size&color=f97316&labelColor=1a1a2e&style=flat-square" alt="Repo Size" />
   <img src="https://img.shields.io/github/last-commit/mosamirhelal/mosamirhelal.github.io?color=22c55e&label=🔄+Last+Update&labelColor=1a1a2e&style=flat-square" />
 </p>
+</div>
 
-> 🚀 **Mission:** Bridging the gap between medical precision and technical innovation.
+<div align="center">
+
+> **العربية متاحة:** [اقرأ بالعربي](README-AR.md)
 
 </div>
 
@@ -29,6 +32,11 @@ I enjoy building things that actually get used — from student portals and scho
 | 🌐 **Website** | [mosamirhelal.com](https://mosamirhelal.com) |
 | 📱 **Everywhere** | [@mosamirhelal](https://mosamirhelal.com) |
 | 🚀 **This Repo** | Official host for my personal website & all sub-projects |
+
+
+<div align="center">
+  <blockquote>🚀 <strong>Mission:</strong> Bridging the gap between medical precision and technical innovation.</blockquote>
+</div>
 
 ---
 
