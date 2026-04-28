@@ -4,11 +4,11 @@
 
 ### 🦷 Dental Student · 💻 Programmer · 🎨 Graphic Designer
 
-<p align="center">
-  <img src="https://hits.sh/github.com/mosamirhelal/mosamirhelal.github.io.svg?style=flat-square&label=👁️+Visitors&color=0e75b6&labelColor=1a1a2e" alt="Visitors" />
-  <img src="https://img.shields.io/github/repo-size/mosamirhelal/mosamirhelal.github.io?label=📦+Repo+Size&color=f97316&labelColor=1a1a2e&style=flat-square" alt="Repo Size" />
-  <img src="https://img.shields.io/github/last-commit/mosamirhelal/mosamirhelal.github.io?color=22c55e&label=🔄+Last+Update&labelColor=1a1a2e&style=flat-square" />
-</p>
+![Visitors](https://hits.sh/github.com/mosamirhelal/mosamirhelal.github.io.svg?style=flat-square&label=Visitors&color=0e75b6)
+
+![Repo Size](https://img.shields.io/github/repo-size/mosamirhelal/mosamirhelal.github.io?style=flat-square)
+
+![Last Commit](https://img.shields.io/github/last-commit/mosamirhelal/mosamirhelal.github.io?style=flat-square)
 </div>
 
 <div align="center">
