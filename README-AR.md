@@ -11,7 +11,10 @@
   
   <img src="https://img.shields.io/github/last-commit/mosamirhelal/mosamirhelal.github.io?style=flat-square&label=%F0%9F%94%84+Last+Update&color=22c55e&labelColor=1a1a2e" />
 </p>
-> 🚀 **الهدف:** ربط الدقة الطبية بالابتكار التقني.
+
+<div align="center">
+  <blockquote>🚀 <strong>الهدف:</strong> سد الفجوة بين الدقة الطبية والابتكار التقني.</blockquote>
+</div>
 
 </div>
 
