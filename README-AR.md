@@ -1256,10 +1256,10 @@ mosamirhelal.github.io/
 
 <p>
 <a href="https://mosamirhelal.com" target="_blank">
-  <img src="https://img.shields.io/badge/🌐 الموقع-mosamirhelal.com-2ea44f?style=for-the-badge" />
+  <img src="https://img.shields.io/badge/🌐 Website-mosamirhelal.com-2ea44f?style=for-the-badge" />
 </a>
 <a href="mailto:mosamirhelal@outlook.com" target="_blank">
-  <img src="https://img.shields.io/badge/📧 البريد-mosamirhelal@outlook.com-0078D4?style=for-the-badge&logo=microsoft-outlook&logoColor=white" />
+  <img src="https://img.shields.io/badge/📧 Email-mosamirhelal@outlook.com-0078D4?style=for-the-badge&logo=microsoft-outlook&logoColor=white" />
 </a>
 </p>
 
