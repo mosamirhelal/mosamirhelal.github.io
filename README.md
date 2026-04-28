@@ -507,31 +507,47 @@ Rather than calculating stats at query time (slow for large datasets), this func
 ```
 mosamirhelal.github.io/
 │
-├── 📄 index.html                    ← Personal website (mosamirhelal.com)
-├── 🌐 CNAME                         ← Custom domain configuration
-├── 📱 site.webmanifest              ← PWA manifest
-├── 🖼️ favicon.ico / .svg / .png     ← Favicons & touch icons
-├── 🌙 dark.webp                     ← Dark mode hero image
-├── ☀️ light.webp                    ← Light mode hero image
-├── 👤 profile.webp                  ← Profile image
+├── 📄 index.html                        ← Personal website (mosamirhelal.com)
+├── 🌐 CNAME                             ← Custom domain configuration
+├── 📱 site.webmanifest                  ← PWA manifest
+├── 🖼️ favicon.ico / .svg                ← Favicons
+├── 🖼️ favicon-96x96.png                 ← Favicon (96px)
+├── 🖼️ apple-touch-icon.png              ← iOS touch icon
+├── 🖼️ web-app-manifest-192x192.png      ← PWA icon (192px)
+├── 🖼️ web-app-manifest-512x512.png      ← PWA icon (512px)
+├── 🌙 dark.webp                         ← Dark mode hero image
+├── ☀️ light.webp                        ← Light mode hero image
+├── 👤 profile.webp                      ← Profile image
 │
-├── 📂 motasks/                      ← Study task tracker
+├── 📂 motasks/                          ← Study task tracker
 │   └── index.html
 │
-├── 📂 audiomonitor/                 ← In-browser audio monitor
+├── 📂 audiomonitor/                     ← In-browser audio monitor
 │   └── index.html
 │
-├── 📂 alkhateeb/                    ← School system landing page
-│   └── index.html
+├── 📂 alkhateeb/                        ← School system landing page
+│   ├── index.html
+│   ├── logo_1.webp
+│   ├── logo_2.webp
+│   └── logo_3.webp
 │
-├── 📂 alkhateeb-results/            ← Student results portal
-│   └── index.html
+├── 📂 alkhateeb-results/                ← Student results portal
+│   ├── index.html
+│   ├── logo_1.webp
+│   ├── logo_2.webp
+│   └── logo_3.webp
 │
-├── 📂 alkhateeb-degrees/            ← Teacher grades portal
-│   └── index.html
+├── 📂 alkhateeb-degrees/                ← Teacher grades portal
+│   ├── index.html
+│   ├── logo_1.webp
+│   ├── logo_2.webp
+│   └── logo_3.webp
 │
-└── 📂 alkhateeb-teachers/           ← Staff HR portal
-    └── index.html
+└── 📂 alkhateeb-teachers/               ← Staff HR portal
+    ├── index.html
+    ├── logo_1.webp
+    ├── logo_2.webp
+    └── logo_3.webp
 ```
 
 > **Note:** Backend source code for the Al-Khateeb system is intentionally not included in this repository for security reasons. Both Google Apps Script backends are deployed as private web apps.
