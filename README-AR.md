@@ -5,11 +5,12 @@
 ### 🦷 طالب أسنان · 💻 مبرمج · 🎨 مصمم جرافيك
 
 <p align="center">
-  <img src="https://hits.sh/github.com/mosamirhelal/mosamirhelal.github.io.svg?style=flat-square&label=👁️+Visitors&color=0e75b6&labelColor=1a1a2e" alt="Visitors" />
-  <img src="https://img.shields.io/github/repo-size/mosamirhelal/mosamirhelal.github.io?label=📦+Repo+Size&color=f97316&labelColor=1a1a2e&style=flat-square" alt="Repo Size" />
-  <img src="https://img.shields.io/github/last-commit/mosamirhelal/mosamirhelal.github.io?color=22c55e&label=🔄+Last+Update&labelColor=1a1a2e&style=flat-square" />
+  <img src="https://hits.sh/github.com/mosamirhelal/mosamirhelal.github.io.svg?style=flat-square&label=%F0%9F%91%81%EF%B8%8F+Visitors&color=0e75b6&labelColor=1a1a2e" />
+  
+  <img src="https://img.shields.io/github/repo-size/mosamirhelal/mosamirhelal.github.io?style=flat-square&label=%F0%9F%93%A6+Repo+Size&color=f97316&labelColor=1a1a2e" />
+  
+  <img src="https://img.shields.io/github/last-commit/mosamirhelal/mosamirhelal.github.io?style=flat-square&label=%F0%9F%94%84+Last+Update&color=22c55e&labelColor=1a1a2e" />
 </p>
-
 > 🚀 **الهدف:** ربط الدقة الطبية بالابتكار التقني.
 
 </div>
