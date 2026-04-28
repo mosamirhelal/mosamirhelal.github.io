@@ -77,7 +77,7 @@
       .badge-danger { background: #ffeeba; color: #dc3545; }
       .badge-warning { background: #fff3cd; color: #856404; }
       .badge-success { background: #d4edda; color: #155724; }
-      .status-message { position: fixed; bottom: 50px; left: 0; right: 0; margin: 0 auto; padding: 15px 25px; border-radius: 8px; font-size: 16px; font-weight: bold; width: calc(100% - 40px); max-width: 600px; z-index: 9999; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.2); display: none; animation: slideInUp 0.3s ease-out forwards; }
+      .status-message { padding: 15px 25px; border-radius: 8px; font-size: 16px; font-weight: bold; width: 100%; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.1); display: none; animation: slideInUp 0.3s ease-out forwards; position: relative; margin: 15px auto; }
       .success-msg { background-color: #008000; color: #f2e8cf; border: 1px solid #c3e6cb; }
       .error-msg { background-color: #b23a48; color: #fed0bb; border: 1px solid #f5c6cb; }
       .loader { border: 4px solid #f3f3f3; border-top: 4px solid #0056b3; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; margin: 20px auto; display: none; }
@@ -142,8 +142,6 @@
     <div class="dot" style="width: 120px; height: 120px; top: 55%; left: 2%; animation-duration: 10s; animation-delay: 2s;"></div>
     <div class="dot" style="width: 50px; height: 50px; top: 70%; right: 4%; animation-duration: 7s; animation-delay: 0.5s;"></div>
     <div class="dot" style="width: 80px; height: 80px; top: 38%; right: 11%; animation-duration: 9s; animation-delay: 3s;"></div>
-
-    <div id="globalMessage" class="status-message"></div>
 
     <div class="container" id="loginContainer">
       <div class="top-logos">
@@ -214,6 +212,11 @@
 
           <div id="dynamicArea" class="dynamic-area" style="display: none;">
             <div id="timeCalcArea" style="display: none;">
+              <div class="date-row">
+                <span style="font-weight:bold;">التاريخ:</span>
+                <input type="date" id="timeActionDateInput" class="form-control" style="width:180px; margin:0;" />
+                <button onclick="addRipple(event, this); setToday('timeActionDateInput')" class="btn-today"><span class="btn-text">اليوم</span></button>
+              </div>
               <div class="time-input-group">
                 <span style="font-weight:bold;">وقت الإجراء:</span>
                 <input type="time" id="actionTimeInput" class="form-control" style="width:130px; margin:0; direction: ltr;" onchange="calculateDelay()" />
@@ -274,7 +277,7 @@
       <div id="tab-today" class="tab-content">
         <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 15px;">
           <h3 style="margin:0; color:#0056b3;">نظرة عامة على أحداث اليوم</h3>
-          <button onclick="addRipple(event, this); fetchTodayStatus()" class="btn-info">
+          <button onclick="addRipple(event, this); fetchTodayStatus(true)" class="btn-info">
               <span class="btn-text">تحديث البيانات</span>
           </button>
         </div>
@@ -461,10 +464,10 @@
 
     <div id="customConfirmModal" style="display:none; position:fixed; z-index:2000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.5); align-items:center; justify-content:center; direction:rtl;">
       <div style="background:#fff; padding:25px; border-radius:12px; width:90%; max-width:400px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.2); animation: popIn 0.3s ease;">
-        <h3 style="color:#dc3545; margin-top:0; border-bottom:2px solid #eee; padding-bottom:10px;">تأكيد الحذف</h3>
+        <h3 style="color:#dc3545; margin-top:0; border-bottom:2px solid #eee; padding-bottom:10px;">تأكيد الإجراء</h3>
         <p id="customConfirmText" style="font-size:16px; color:#333; margin:20px 0;"></p>
         <div style="display:flex; gap:10px; justify-content:center;">
-          <button class="btn-logout" onclick="executeConfirmAction()" style="margin:0; width:100px;">حذف</button>
+          <button class="btn-logout" id="customConfirmBtn" onclick="executeConfirmAction()" style="margin:0; width:100px;">تأكيد</button>
           <button class="btn-today" onclick="closeCustomConfirm()" style="margin:0; width:100px;">إلغاء</button>
         </div>
       </div>
@@ -475,13 +478,56 @@
       let allTeachers = []; 
       let currentSearchFocus = -1;
       let confirmCallback = null;
+      let lastTodayFetch = 0;
+
+      document.addEventListener('keydown', e => { 
+        if(e.key === 'Escape'){ 
+          closeEditModal(); 
+          closeBulkEditModal(); 
+          closeCustomConfirm(); 
+        } 
+      });
+
+      function escHtml(str) { 
+        const d = document.createElement('div'); 
+        d.textContent = String(str || ''); 
+        return d.innerHTML; 
+      }
+
+      async function apiPost(payload) {
+        try {
+          const response = await fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            body: JSON.stringify(payload) 
+          });
+          return await response.json();
+        } catch (error) {
+          throw error;
+        }
+      }
 
       function showMsg(text, isError) {
-        const msgDiv = document.getElementById("globalMessage");
+        const containers = [document.getElementById("loginContainer"), document.getElementById("adminContainer"), document.getElementById("teacherContainer")];
+        let activeContainer = containers.find(c => c && c.style.display !== "none");
+        if (!activeContainer) activeContainer = containers[0];
+
+        const msgDiv = document.createElement("div");
         msgDiv.innerText = text;
         msgDiv.className = isError ? "status-message error-msg" : "status-message success-msg";
         msgDiv.style.display = "block";
-        setTimeout(() => msgDiv.style.display = "none", 4000);
+
+        const creditDiv = activeContainer.querySelector(".designer-credit");
+        if (creditDiv) {
+          activeContainer.insertBefore(msgDiv, creditDiv);
+        } else {
+          activeContainer.appendChild(msgDiv);
+        }
+
+        setTimeout(() => {
+          if (msgDiv.parentNode) {
+            msgDiv.parentNode.removeChild(msgDiv);
+          }
+        }, 4000);
       }
 
       function customConfirm(msg, callback) {
@@ -519,12 +565,16 @@
 
       function executeLogout() {
         const authData = sessionStorage.getItem("alkhateeb_hr_auth");
+        const btns = document.querySelectorAll(".btn-logout");
+        btns.forEach(b => { 
+          b.disabled = true; 
+          const s = b.querySelector(".btn-text"); 
+          if(s) s.innerText = "جاري الخروج..."; else b.innerText = "جاري الخروج..."; 
+        });
+
         if (authData) {
           const auth = JSON.parse(authData);
-          fetch(APPS_SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify({ action: "logout", token: auth.token })
-          }).finally(() => {
+          apiPost({ action: "logout", token: auth.token }).finally(() => {
             executeLogoutLocal();
           });
         } else {
@@ -619,11 +669,7 @@
         btn.classList.remove("pulse-button");
         btn.querySelector(".btn-text").innerText = "جاري جلب البيانات...";
 
-        fetch(APPS_SCRIPT_URL, {
-          method: "POST",
-          body: JSON.stringify({ action: "login", username: user, password: pass })
-        })
-        .then(res => res.json())
+        apiPost({ action: "login", username: user, password: pass })
         .then(data => {
           if (data.status === "success") {
             inputsWrapper.style.display = "none";
@@ -664,7 +710,7 @@
         btnElement.classList.add('active');
 
         if(tabId === 'tab-today') {
-          fetchTodayStatus();
+          fetchTodayStatus(false);
         }
       }
 
@@ -672,9 +718,7 @@
         const loader = document.getElementById("adminLoader");
         if(!fromLogin && allTeachers.length === 0) loader.style.display = "block";
         
-        fetch(APPS_SCRIPT_URL, {
-          method: "POST", body: JSON.stringify({ action: "getTeachersList", token: token })
-        }).then(res => res.json()).then(data => {
+        apiPost({ action: "getTeachersList", token: token }).then(data => {
           loader.style.display = "none";
           if (data.status === "success") {
             allTeachers = data.teachers;
@@ -864,6 +908,7 @@
         if (timeBased.includes(type)) {
           dateArea.style.display = "none"; 
           timeArea.style.display = "block";
+          setToday('timeActionDateInput');
           setNowTime();
         } else {
           timeArea.style.display = "none"; 
@@ -940,7 +985,6 @@
         if(endDate < startDate) {
            document.getElementById("endDateInput").value = startStr;
            showMsg("لا يمكن أن يسبق تاريخ النهاية تاريخ البداية.", true);
-           generateCheckboxes(); 
            return;
         }
 
@@ -1004,8 +1048,10 @@
         
         if (timeBased.includes(type)) {
           const time = document.getElementById("actionTimeInput").value;
+          const timeActionDate = document.getElementById("timeActionDateInput").value;
+          if (!timeActionDate) { showMsg("يرجى اختيار التاريخ", true); return; }
           let mins = document.getElementById("manualDelayInput").value || 0;
-          records.push({ code: teacherCode, name: teacherName, type: type, dateStr: getLocalDate(), timeStr: time, minutes: mins, notes: notes });
+          records.push({ code: teacherCode, name: teacherName, type: type, dateStr: timeActionDate, timeStr: time, minutes: mins, notes: notes });
         } else {
           const mode = document.querySelector('input[name="dateMode"]:checked').value;
           if (mode === "single") {
@@ -1021,36 +1067,42 @@
           }
         }
 
-        btn.disabled = true; 
-        btn.classList.remove("pulse-success");
-        btn.querySelector(".btn-text").innerText = "جاري الحفظ...";
+        let daysCount = records.length;
+        let durationText = timeBased.includes(type) ? records[0].minutes + " دقيقة" : daysCount + " يوم";
         
-        fetch(APPS_SCRIPT_URL, {
-          method: "POST",
-          body: JSON.stringify({ action: "saveAttendanceRecord", token: auth.token, records: records })
-        }).then(res => res.json()).then(data => {
-          btn.disabled = false; 
-          btn.classList.add("pulse-success");
-          btn.querySelector(".btn-text").innerText = "تسجيل وحفظ";
-          if(data.status === "success") {
-            showMsg(data.message, false);
-            document.getElementById("actionCard").style.display = "none";
-            document.getElementById("adminSearchInput").value = "";
-            document.getElementById("adminTeacherSelect").value = "";
-          } else {
-            showMsg(data.message, true);
-          }
-        }).catch(err => { 
+        customConfirm(`سيتم تسجيل ${type} للمعلم ${teacherName} - ${durationText}، هل تأكد؟`, () => {
+          btn.disabled = true; 
+          btn.classList.remove("pulse-success");
+          btn.querySelector(".btn-text").innerText = "جاري الحفظ...";
+          
+          apiPost({ action: "saveAttendanceRecord", token: auth.token, records: records })
+          .then(data => {
             btn.disabled = false; 
             btn.classList.add("pulse-success");
-            btn.querySelector(".btn-text").innerText = "تسجيل وحفظ"; 
-            showMsg("خطأ في الاتصال", true); 
+            btn.querySelector(".btn-text").innerText = "تسجيل وحفظ";
+            if(data.status === "success") {
+              showMsg(data.message, false);
+              document.getElementById("actionCard").style.display = "none";
+              document.getElementById("adminSearchInput").value = "";
+              document.getElementById("adminTeacherSelect").value = "";
+            } else {
+              showMsg(data.message, true);
+            }
+          }).catch(err => { 
+              btn.disabled = false; 
+              btn.classList.add("pulse-success");
+              btn.querySelector(".btn-text").innerText = "تسجيل وحفظ"; 
+              showMsg("خطأ في الاتصال", true); 
+          });
         });
       }
 
-      function fetchTodayStatus() {
+      function fetchTodayStatus(isManual = false) {
         const auth = getAuth();
         if (!auth) return;
+
+        if (!isManual && Date.now() - lastTodayFetch <= 60000) return;
+        lastTodayFetch = Date.now();
 
         const today = getLocalDate();
         
@@ -1059,10 +1111,8 @@
         document.getElementById("todayTableContainer").style.display = "none";
         document.getElementById("todayEmpty").style.display = "none";
 
-        fetch(APPS_SCRIPT_URL, {
-          method: "POST",
-          body: JSON.stringify({ action: "getReports", token: auth.token, startDate: today, endDate: today, teacherCode: "" })
-        }).then(res => res.json()).then(data => {
+        apiPost({ action: "getReports", token: auth.token, startDate: today, endDate: today, teacherCode: "" })
+        .then(data => {
           document.getElementById("todayLoader").style.display = "none";
           if(data.status === "success") {
             renderTodayDashboard(data.totals);
@@ -1106,11 +1156,15 @@
           let tr = document.createElement("tr");
           let suffix = ["تأخر صباحي", "تأخر بإذن", "خروج بدون إذن", "خروج بإذن"].includes(row.type) ? "ق" : "يوم";
           
+          let eName = escHtml(row.name);
+          let eType = escHtml(row.type);
+          let eNotes = escHtml(row.notes || '-');
+
           tr.innerHTML = `
-            <td><strong>${row.name}</strong></td>
-            <td><span class="badge ${badgeClass}">${row.type}</span></td>
+            <td><strong>${eName}</strong></td>
+            <td><span class="badge ${badgeClass}">${eType}</span></td>
             <td style="font-weight:bold; color:#0056b3;">${row.amount} ${suffix}</td>
-            <td style="color:#666; font-size:13px;">${row.notes || '-'}</td>
+            <td style="color:#666; font-size:13px;">${eNotes}</td>
           `;
           tbody.appendChild(tr);
         });
@@ -1155,28 +1209,20 @@
           loader.style.display = "block";
           
           const boxes = document.querySelectorAll(".history-check-item:checked");
-          let hasError = false;
-          
-          for(let i = 0; i < boxes.length; i++) {
-            const item = JSON.parse(decodeURIComponent(boxes[i].value));
-            try {
-              let res = await fetch(APPS_SCRIPT_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "deleteRecord", token: auth.token, date: item.date, name: item.name, type: item.type, amount: item.amount })
-              });
-              let data = await res.json();
-              if (data.status !== "success") hasError = true;
-            } catch(e) {
-              hasError = true;
+          try {
+            let promises = Array.from(boxes).map(box => {
+              const item = JSON.parse(decodeURIComponent(box.value));
+              return apiPost({ action: "deleteRecord", token: auth.token, date: item.date, name: item.name, type: item.type, amount: item.amount });
+            });
+            let results = await Promise.all(promises);
+            if (results.some(res => res.status !== "success")) {
+              showMsg("حدثت بعض الأخطاء أثناء الحذف.", true);
+            } else {
+              showMsg("تم حذف السجلات بنجاح.", false);
             }
+          } catch(e) {
+            showMsg("حدثت بعض الأخطاء أثناء الحذف.", true);
           }
-          
-          if(hasError) {
-             showMsg("حدثت بعض الأخطاء أثناء الحذف.", true);
-          } else {
-             showMsg("تم حذف السجلات بنجاح.", false);
-          }
-          
           fetchHistoryData(true);
         });
       }
@@ -1209,32 +1255,24 @@
         closeBulkEditModal();
         
         const boxes = document.querySelectorAll(".history-check-item:checked");
-        let hasError = false;
-
-        for(let i = 0; i < boxes.length; i++) {
-          const item = JSON.parse(decodeURIComponent(boxes[i].value));
-          try {
-            let res = await fetch(APPS_SCRIPT_URL, {
-              method: "POST",
-              body: JSON.stringify({
-                action: "editRecord", token: auth.token,
-                oldDate: item.date, oldName: item.name, oldType: item.type, oldAmount: item.amount,
-                newType: newType, newAmount: newAmount, newNotes: newNotes
-              })
+        try {
+          let promises = Array.from(boxes).map(box => {
+            const item = JSON.parse(decodeURIComponent(box.value));
+            return apiPost({
+              action: "editRecord", token: auth.token,
+              oldDate: item.date, oldName: item.name, oldType: item.type, oldAmount: item.amount,
+              newType: newType, newAmount: newAmount, newNotes: newNotes
             });
-            let data = await res.json();
-            if (data.status !== "success") hasError = true;
-          } catch(e) {
-            hasError = true;
+          });
+          let results = await Promise.all(promises);
+          if (results.some(res => res.status !== "success")) {
+            showMsg("حدثت بعض الأخطاء أثناء التعديل.", true);
+          } else {
+            showMsg("تم تعديل السجلات بنجاح.", false);
           }
+        } catch(e) {
+          showMsg("حدثت بعض الأخطاء أثناء التعديل.", true);
         }
-        
-        if(hasError) {
-           showMsg("حدثت بعض الأخطاء أثناء التعديل.", true);
-        } else {
-           showMsg("تم تعديل السجلات بنجاح.", false);
-        }
-        
         fetchHistoryData(true);
       }
 
@@ -1267,10 +1305,8 @@
           if(selectAll) selectAll.checked = false;
         }
 
-        fetch(APPS_SCRIPT_URL, {
-          method: "POST",
-          body: JSON.stringify({ action: "getReports", token: auth.token, startDate: start, endDate: end, teacherCode: tCode })
-        }).then(res => res.json()).then(data => {
+        apiPost({ action: "getReports", token: auth.token, startDate: start, endDate: end, teacherCode: tCode })
+        .then(data => {
           if (!isSilentUpdate) loader.style.display = "none";
           
           if(data.status === "success") {
@@ -1317,33 +1353,40 @@
 
         history.forEach(row => {
           let badgeClass = getBadgeClass(row.type);
-          let dateOnly = row.date.split('T')[0];
+          let dateOnly = escHtml(row.date.split('T')[0]);
           let suffix = ["تأخر صباحي", "تأخر بإذن", "خروج بدون إذن", "خروج بإذن"].includes(row.type) ? "ق" : "يوم";
           
-          let safeName = row.name.replace(/'/g, "\\'");
-          let safeType = row.type.replace(/'/g, "\\'");
-          let safeNotes = (row.notes || '').replace(/'/g, "\\'");
+          let eName = escHtml(row.name);
+          let eType = escHtml(row.type);
+          let eAdmin = escHtml(row.admin);
 
           let rowData = { date: dateOnly, name: row.name, type: row.type, amount: row.amount, notes: row.notes };
-          let encodedData = encodeURIComponent(JSON.stringify(rowData));
 
           let tr = document.createElement("tr");
+          tr.dataset.rowInfo = encodeURIComponent(JSON.stringify(rowData));
           tr.innerHTML = `
             <td style="vertical-align: middle;">
-              <input type="checkbox" class="history-check-item" value="${encodedData}" onchange="updateBulkActionState()" style="transform:scale(1.2); accent-color:#0056b3; cursor:pointer;">
+              <input type="checkbox" class="history-check-item" value="${tr.dataset.rowInfo}" onchange="updateBulkActionState()" style="transform:scale(1.2); accent-color:#0056b3; cursor:pointer;">
             </td>
             <td style="color:#555;">${dateOnly}</td>
-            <td><strong>${row.name}</strong></td>
-            <td><span class="badge ${badgeClass}">${row.type}</span></td>
+            <td><strong>${eName}</strong></td>
+            <td><span class="badge ${badgeClass}">${eType}</span></td>
             <td style="font-weight:bold; color:#0056b3;">${row.amount} ${suffix}</td>
-            <td style="font-size:13px; color:#888;">${row.admin}</td>
+            <td style="font-size:13px; color:#888;">${eAdmin}</td>
             <td style="min-width: 140px; vertical-align: middle;">
               <div style="display:flex; justify-content:center; gap:5px;">
-                <button class="btn-info" style="padding:6px; font-size:12px; margin:0; flex:1; max-width:60px;" onclick="openEditModal('${dateOnly}', '${safeName}', '${safeType}', '${row.amount}', '${safeNotes}')">تعديل</button>
-                <button class="btn-logout" style="padding:6px; font-size:12px; margin:0; flex:1; max-width:60px;" onclick="deleteRecord('${dateOnly}', '${safeName}', '${safeType}', '${row.amount}')">حذف</button>
+                <button class="btn-info edit-btn" style="padding:6px; font-size:12px; margin:0; flex:1; max-width:60px;">تعديل</button>
+                <button class="btn-logout delete-btn" style="padding:6px; font-size:12px; margin:0; flex:1; max-width:60px;">حذف</button>
               </div>
             </td>
           `;
+          
+          tr.querySelector('.edit-btn').addEventListener('click', () => openEditModal(JSON.parse(decodeURIComponent(tr.dataset.rowInfo))));
+          tr.querySelector('.delete-btn').addEventListener('click', () => {
+            let info = JSON.parse(decodeURIComponent(tr.dataset.rowInfo));
+            deleteRecord(info.date, info.name, info.type, info.amount);
+          });
+
           tbody.appendChild(tr);
         });
         
@@ -1356,16 +1399,16 @@
         document.getElementById("historyLoader").style.display = "none";
       }
 
-      function openEditModal(date, name, type, amount, notes) {
+      function openEditModal(obj) {
         document.getElementById("editModal").style.display = "flex";
-        document.getElementById("editOldDate").value = date;
-        document.getElementById("editOldName").value = name;
-        document.getElementById("editOldType").value = type;
-        document.getElementById("editOldAmount").value = amount;
+        document.getElementById("editOldDate").value = obj.date;
+        document.getElementById("editOldName").value = obj.name;
+        document.getElementById("editOldType").value = obj.type;
+        document.getElementById("editOldAmount").value = obj.amount;
         
-        document.getElementById("editNewType").value = type;
-        document.getElementById("editNewAmount").value = amount;
-        document.getElementById("editNewNotes").value = notes !== 'undefined' ? notes : '';
+        document.getElementById("editNewType").value = obj.type;
+        document.getElementById("editNewAmount").value = obj.amount;
+        document.getElementById("editNewNotes").value = obj.notes || '';
       }
 
       function closeEditModal() {
@@ -1388,20 +1431,17 @@
         document.getElementById("historyLoader").style.display = "block";
         closeEditModal();
         
-        fetch(APPS_SCRIPT_URL, {
-          method: "POST",
-          body: JSON.stringify({
-            action: "editRecord",
-            token: auth.token,
-            oldDate: oldDate,
-            oldName: oldName,
-            oldType: oldType,
-            oldAmount: oldAmount,
-            newType: newType,
-            newAmount: newAmount,
-            newNotes: newNotes
-          })
-        }).then(res => res.json()).then(data => {
+        apiPost({
+          action: "editRecord",
+          token: auth.token,
+          oldDate: oldDate,
+          oldName: oldName,
+          oldType: oldType,
+          oldAmount: oldAmount,
+          newType: newType,
+          newAmount: newAmount,
+          newNotes: newNotes
+        }).then(data => {
           if(data.status === "success") {
             showMsg("تم التعديل بنجاح", false);
             fetchHistoryData(true);
@@ -1422,17 +1462,14 @@
           
           document.getElementById("historyLoader").style.display = "block";
           
-          fetch(APPS_SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify({
-              action: "deleteRecord",
-              token: auth.token,
-              date: date,
-              name: name,
-              type: type,
-              amount: amount
-            })
-          }).then(res => res.json()).then(data => {
+          apiPost({
+            action: "deleteRecord",
+            token: auth.token,
+            date: date,
+            name: name,
+            type: type,
+            amount: amount
+          }).then(data => {
             if(data.status === "success") {
               showMsg("تم الحذف بنجاح", false);
               fetchHistoryData(true); 
@@ -1457,9 +1494,8 @@
         const loader = document.getElementById(fromLogin ? "loginLoader" : "teacherLoader");
         if (!fromLogin) loader.style.display = "block";
         
-        fetch(APPS_SCRIPT_URL, {
-          method: "POST", body: JSON.stringify({ action: "getTeacherStats", token: token })
-        }).then(res => res.json()).then(data => {
+        apiPost({ action: "getTeacherStats", token: token })
+        .then(data => {
           loader.style.display = "none";
           if(data.status === "success") {
             if(fromLogin) {
@@ -1474,7 +1510,9 @@
 
             animateCircle("circleAttendance", "textAttendance", Math.round(data.stats.attendanceRate), 100, "%");
             animateCircle("circleCasual", "textCasual", data.stats.remainingCasual, data.stats.maxCasual, "");
-            animateCircle("circleLate", "textLate", data.stats.totalLateMins, 300, "ق");
+            
+            const lateMax = Math.max(data.stats.totalLateMins, 300);
+            animateCircle("circleLate", "textLate", data.stats.totalLateMins, lateMax, "ق");
 
             const detailedGrid = document.getElementById("teacherDetailedStats");
             detailedGrid.innerHTML = `
@@ -1535,11 +1573,24 @@
           
           const div = document.createElement("div");
           div.className = "timeline-item";
-          div.innerHTML = `
-            <div class="timeline-date">${dateStr}</div>
-            <div class="timeline-title">${item.type}</div>
-            ${item.notes ? `<div class="timeline-notes">${item.notes}</div>` : ''}
-          `;
+          
+          const dateDiv = document.createElement("div");
+          dateDiv.className = "timeline-date";
+          dateDiv.textContent = dateStr;
+          div.appendChild(dateDiv);
+          
+          const typeDiv = document.createElement("div");
+          typeDiv.className = "timeline-title";
+          typeDiv.textContent = item.type;
+          div.appendChild(typeDiv);
+          
+          if (item.notes) {
+            const notesDiv = document.createElement("div");
+            notesDiv.className = "timeline-notes";
+            notesDiv.textContent = item.notes;
+            div.appendChild(notesDiv);
+          }
+          
           container.appendChild(div);
         });
       }
