@@ -1013,6 +1013,30 @@
             searchBtnText.innerText = "🔎 بحث";
 
             if (data.status === "success") {
+              if (data.resultsHidden === true) {
+                resultDiv.innerHTML = `
+                  <div class="student-info-appear">
+                    <div id="capture-area">
+                      <h3 class="student-name">الاسم: ${escapeHTML(
+                        data.name
+                      )}</h3>
+                      <h4 style="color: #0056b3; margin-top: 0;">الصف: ${escapeHTML(
+                        data.grade
+                      )}</h4>
+                      <div class="status-message fail-message" style="margin-top: 20px;">
+                        ⏳ ${escapeHTML(data.message)}
+                      </div>
+                    </div>
+                  </div>`;
+                setTimeout(() => {
+                  window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: "smooth",
+                  });
+                }, 200);
+                return;
+              }
+
               var numericPerc = parseFloat(data.percentage);
               var totalDisplay = !isNaN(parseFloat(data.total))
                 ? `<span id="totalNum">0</span>`
@@ -1066,7 +1090,12 @@
                       <h4 style="color: #4a4e69; margin-top: 0; margin-bottom: 25px; border-bottom: 2px dashed #eee; padding-bottom: 15px; font-size: 22px;">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</h4>
                     </div>
                     <h3 class="student-name">الاسم: ${safeStudentName}</h3>
-                    <h4 style="color: #0056b3; margin-top: 0;">الصف: ${safeStudentGrade}</h4>
+                    <h4 style="color: #0056b3; margin-top: 0; margin-bottom: 4px;">الصف: ${safeStudentGrade}</h4>
+                    <p style="color: #4a4e69; font-size: 14px; font-weight: 600; margin: 0 0 10px 0; padding: 6px 12px; background: #f4f6fa; border-radius: 8px; display: inline-block;">
+                      الفصل: ${safeStudentSection} &nbsp;|&nbsp; رقم الطالب: ${escapeHTML(
+                id
+              )}
+                    </p>
                     <table>
                       <thead><tr><th>المادة</th><th>الدرجة النهائية</th><th>درجة الطالب</th></tr></thead>
                       <tbody>
