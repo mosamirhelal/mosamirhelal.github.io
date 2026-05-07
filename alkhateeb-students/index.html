@@ -502,19 +502,80 @@
     </style>
   </head>
   <body>
-    <div class="dot" style="width: 90px; height: 90px; top: 8%; left: 4%; animation-duration: 6s;"></div>
-    <div class="dot" style="width: 60px; height: 60px; top: 20%; right: 6%; animation-duration: 8s; animation-delay: 1s;"></div>
-    <div class="dot" style="width: 120px; height: 120px; top: 55%; left: 2%; animation-duration: 10s; animation-delay: 2s;"></div>
-    <div class="dot" style="width: 50px; height: 50px; top: 70%; right: 4%; animation-duration: 7s; animation-delay: 0.5s;"></div>
-    <div class="dot" style="width: 80px; height: 80px; top: 38%; right: 11%; animation-duration: 9s; animation-delay: 3s;"></div>
+    <div
+      class="dot"
+      style="
+        width: 90px;
+        height: 90px;
+        top: 8%;
+        left: 4%;
+        animation-duration: 6s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 60px;
+        height: 60px;
+        top: 20%;
+        right: 6%;
+        animation-duration: 8s;
+        animation-delay: 1s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 120px;
+        height: 120px;
+        top: 55%;
+        left: 2%;
+        animation-duration: 10s;
+        animation-delay: 2s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 50px;
+        height: 50px;
+        top: 70%;
+        right: 4%;
+        animation-duration: 7s;
+        animation-delay: 0.5s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 80px;
+        height: 80px;
+        top: 38%;
+        right: 11%;
+        animation-duration: 9s;
+        animation-delay: 3s;
+      "
+    ></div>
 
     <div class="container" role="main">
       <div class="top-logos">
-        <img src="logo_2.webp" crossorigin="anonymous" alt="شعار وزارة التربية والتعليم" />
-        <img src="logo_1.webp" crossorigin="anonymous" alt="شعار مدرسة الشهيد محمود علي الخطيب" />
+        <img
+          src="logo_2.webp"
+          crossorigin="anonymous"
+          alt="شعار وزارة التربية والتعليم"
+        />
+        <img
+          src="logo_1.webp"
+          crossorigin="anonymous"
+          alt="شعار مدرسة الشهيد محمود علي الخطيب"
+        />
       </div>
       <div class="header-image">
-        <img src="logo_3.webp" crossorigin="anonymous" alt="مدرسة الشهيد محمود علي الخطيب الرسمية للغات" />
+        <img
+          src="logo_3.webp"
+          crossorigin="anonymous"
+          alt="مدرسة الشهيد محمود علي الخطيب الرسمية للغات"
+        />
       </div>
       <h2>بيانات ولجان الطلاب</h2>
       <div class="input-group">
@@ -529,16 +590,22 @@
           aria-label="أدخل رقم الجلوس أو الاسم"
         />
       </div>
-      <button
-        onclick="addRipple(event, this); getGrade()"
-        id="searchBtn"
-        class="form-control pulse-button"
-      >
+      <button id="searchBtn" class="form-control pulse-button">
         <span class="btn-text">🔎 بحث</span>
       </button>
-      <div class="loader" id="loader" role="status" aria-label="جاري البحث..."></div>
+      <div
+        class="loader"
+        id="loader"
+        role="status"
+        aria-label="جاري البحث..."
+      ></div>
       <div id="nameSearchResults" role="status" aria-live="polite"></div>
-      <div id="result" role="status" aria-live="polite" aria-atomic="true"></div>
+      <div
+        id="result"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      ></div>
       <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
     </div>
     <div class="visit-counter">
@@ -546,7 +613,8 @@
     </div>
 
     <script>
-      const API_URL = "https://script.google.com/macros/s/AKfycbwBTXJdYieo6LWZCs-bNKkYpU_ASyifPdj9ZxXueL272ygjDQVcScwUl9L3WBboplfCCQ/exec";
+      const API_URL =
+        "https://script.google.com/macros/s/AKfycbwBTXJdYieo6LWZCs-bNKkYpU_ASyifPdj9ZxXueL272ygjDQVcScwUl9L3WBboplfCCQ/exec";
       let shareCount = 0;
       let isSearching = false;
 
@@ -568,13 +636,18 @@
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), timeoutMs);
         try {
-          const response = await fetch(url, { ...options, signal: controller.signal });
+          const response = await fetch(url, {
+            ...options,
+            signal: controller.signal,
+          });
           clearTimeout(timeout);
           return response;
         } catch (err) {
           clearTimeout(timeout);
           if (err.name === "AbortError") {
-            throw new Error("انتهت مهلة الاتصال، يرجى التحقق من الإنترنت أو المحاولة لاحقاً");
+            throw new Error(
+              "انتهت مهلة الاتصال، يرجى التحقق من الإنترنت أو المحاولة لاحقاً"
+            );
           }
           throw err;
         }
@@ -583,20 +656,30 @@
       fetch("https://api.counterapi.dev/v1/alkhateeb-students/visits/up")
         .then((res) => res.json())
         .then((data) => {
-          document.getElementById("visitCount").innerText = data.count.toLocaleString("ar-EG");
+          document.getElementById("visitCount").innerText =
+            data.count.toLocaleString("ar-EG");
         })
         .catch(() => {
           document.getElementById("visitCount").innerText = "-";
         });
 
-      document.getElementById("studentIdInput").addEventListener("keypress", function (event) {
-        if (event.key === "Enter") {
-          event.preventDefault();
-          const btn = document.getElementById("searchBtn");
-          addRipple(event, btn);
+      document
+        .getElementById("studentIdInput")
+        .addEventListener("keypress", function (event) {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            const btn = document.getElementById("searchBtn");
+            addRipple(event, btn);
+            getGrade();
+          }
+        });
+
+      document
+        .getElementById("searchBtn")
+        .addEventListener("click", function (event) {
+          addRipple(event, this);
           getGrade();
-        }
-      });
+        });
 
       function addRipple(e, btn) {
         const rect = btn.getBoundingClientRect();
@@ -652,7 +735,8 @@
         var feedbackTitle = document.getElementById("feedbackTitle");
 
         if (!feedbackText.trim()) {
-          statusMsg.innerHTML = "<span style='color: red;'>الرجاء كتابة رسالتك أولاً.</span>";
+          statusMsg.innerHTML =
+            "<span style='color: red;'>الرجاء كتابة رسالتك أولاً.</span>";
           return;
         }
 
@@ -677,24 +761,26 @@
           .then((data) => {
             if (data.status === "success") {
               btnText.innerText = "✅ تم الإرسال بنجاح!";
-              statusMsg.innerHTML = "<span style='color: green;'>شكراً لك! تم إرسال رسالتك للإدارة.</span>";
+              statusMsg.innerHTML =
+                "<span style='color: green;'>شكراً لك! تم إرسال رسالتك للإدارة.</span>";
               setTimeout(() => {
                 btn.style.display = "none";
                 feedbackTitle.style.display = "none";
                 document.getElementById("feedbackInput").style.display = "none";
-                
-                statusMsg.innerHTML = "<span style='color: green; display: block; margin-bottom: 15px;'>شكراً لك! تم إرسال رسالتك للإدارة.</span>";
+
+                statusMsg.innerHTML =
+                  "<span style='color: green; display: block; margin-bottom: 15px;'>شكراً لك! تم إرسال رسالتك للإدارة.</span>";
                 var resetBtn = document.createElement("button");
                 resetBtn.className = "form-control";
                 resetBtn.style.backgroundColor = "#890620";
                 resetBtn.style.color = "white";
-                resetBtn.innerHTML = "<span class='btn-text'>🔄 للبحث عن طالب آخر</span>";
-                resetBtn.addEventListener("click", function(e) {
+                resetBtn.innerHTML =
+                  "<span class='btn-text'>🔄 للبحث عن طالب آخر</span>";
+                resetBtn.addEventListener("click", function (e) {
                   addRipple(e, this);
                   resetSearch();
                 });
                 statusMsg.appendChild(resetBtn);
-
               }, 1500);
             } else {
               throw new Error("فشل الحفظ");
@@ -703,7 +789,8 @@
           .catch(() => {
             btn.disabled = false;
             btnText.innerText = "📨 إرسال الرسالة";
-            statusMsg.innerHTML = "<span style='color: red;'>حدث خطأ، يرجى المحاولة لاحقاً.</span>";
+            statusMsg.innerHTML =
+              "<span style='color: red;'>حدث خطأ، يرجى المحاولة لاحقاً.</span>";
           });
       }
 
@@ -738,13 +825,21 @@
             },
           });
 
-          const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+          const blob = await new Promise((resolve) =>
+            canvas.toBlob(resolve, "image/png")
+          );
           shareCount++;
           const fileName = `بيانات_${studentName}_${shareCount}.png`;
           const file = new File([blob], fileName, { type: "image/png" });
-          const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+          const isMobile = /Android|iPhone|iPad|iPod/i.test(
+            navigator.userAgent
+          );
 
-          if (isMobile && navigator.canShare && navigator.canShare({ files: [file] })) {
+          if (
+            isMobile &&
+            navigator.canShare &&
+            navigator.canShare({ files: [file] })
+          ) {
             try {
               await navigator.share({
                 title: `بيانات ${studentName}`,
@@ -773,8 +868,10 @@
           btnText.innerText = originalText;
           shareBtn.disabled = false;
           var errorDiv = document.createElement("div");
-          errorDiv.style.cssText = "color: red; margin-top: 10px; font-weight: bold;";
-          errorDiv.textContent = "حدث خطأ أثناء تحضير الصورة، يرجى المحاولة مرة أخرى";
+          errorDiv.style.cssText =
+            "color: red; margin-top: 10px; font-weight: bold;";
+          errorDiv.textContent =
+            "حدث خطأ أثناء تحضير الصورة، يرجى المحاولة مرة أخرى";
           shareBtn.parentNode.insertBefore(errorDiv, shareBtn.nextSibling);
           setTimeout(() => errorDiv.remove(), 4000);
         }
@@ -823,10 +920,11 @@
           .then((data) => {
             if (data.status === "success") {
               if (data.results.length === 1) {
+                setSearchLoading(false);
                 selectStudentAndSearch(data.results[0].seatNum);
                 return;
               }
-              
+
               var html = "";
               data.results.forEach((student, index) => {
                 var delay = 0.08 * (index + 1);
@@ -835,30 +933,31 @@
                 var safeSeatNum = escapeHTML(student.seatNum);
 
                 html += `
-                  <div class="name-card" style="animation-delay: ${delay}s">
-                    <p class="name-card-title">${safeName}</p>
-                    <p class="name-card-subtitle">الصف: ${safeGrade}</p>
-                    <p class="name-card-id">رقم الجلوس: ${safeSeatNum}</p>
-                    <button id="cardBtn_${index}" class="form-control name-card-btn" data-seat="${safeSeatNum}">
-                      <span class="btn-text">📊 عرض البيانات واللجنة</span>
-                    </button>
-                  </div>
-                `;
+                <div class="name-card" style="animation-delay: ${delay}s">
+                  <p class="name-card-title">${safeName}</p>
+                  <p class="name-card-subtitle">الصف: ${safeGrade}</p>
+                  <p class="name-card-id">رقم الجلوس: ${safeSeatNum}</p>
+                  <button id="cardBtn_${index}" class="form-control name-card-btn" data-seat="${safeSeatNum}">
+                    <span class="btn-text">📊 عرض البيانات واللجنة</span>
+                  </button>
+                </div>
+              `;
               });
               nameSearchResultsDiv.innerHTML = html;
-              
+
               data.results.forEach((student, index) => {
                 const btn = document.getElementById(`cardBtn_${index}`);
-                if(btn) {
-                  btn.addEventListener('click', function(e) {
+                if (btn) {
+                  btn.addEventListener("click", function (e) {
                     addRipple(e, this);
-                    selectStudentAndSearch(this.getAttribute('data-seat'));
+                    selectStudentAndSearch(this.getAttribute("data-seat"));
                   });
                 }
               });
-
             } else {
-              nameSearchResultsDiv.innerHTML = `<div style='color:red; margin-top:15px; font-weight:bold;' class='student-info-appear'>${escapeHTML(data.message)}</div>`;
+              nameSearchResultsDiv.innerHTML = `<div style='color:red; margin-top:15px; font-weight:bold;' class='student-info-appear'>${escapeHTML(
+                data.message
+              )}</div>`;
             }
             setTimeout(() => {
               if (data.results && data.results.length > 1) {
@@ -870,7 +969,9 @@
             }, 200);
           })
           .catch((err) => {
-            nameSearchResultsDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${escapeHTML(err.message || "حدث خطأ في الاتصال بقاعدة البيانات.")}</div>`;
+            nameSearchResultsDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${escapeHTML(
+              err.message || "حدث خطأ في الاتصال بقاعدة البيانات."
+            )}</div>`;
           })
           .finally(() => {
             if (document.getElementById("studentIdInput").value === nameQuery) {
@@ -890,7 +991,8 @@
         nameSearchResultsDiv.innerHTML = "";
 
         if (!id) {
-          resultDiv.innerHTML = "<div style='color:red; margin-top:15px;' class='student-info-appear'>الرجاء إدخال رقم الجلوس أو الاسم أولاً</div>";
+          resultDiv.innerHTML =
+            "<div style='color:red; margin-top:15px;' class='student-info-appear'>الرجاء إدخال رقم الجلوس أو الاسم أولاً</div>";
           return;
         }
 
@@ -913,16 +1015,21 @@
             if (data.status === "success") {
               if (data.resultsHidden === true) {
                 resultDiv.innerHTML = `
-                  <div class="student-info-appear">
-                    <div id="capture-area">
-                      <h3 class="student-name">الاسم: ${escapeHTML(data.name)}</h3>
-                      <div class="status-message fail-message" style="margin-top: 20px;">
-                        ⏳ ${escapeHTML(data.message)}
-                      </div>
+                <div class="student-info-appear">
+                  <div id="capture-area">
+                    <h3 class="student-name">الاسم: ${escapeHTML(
+                      data.name
+                    )}</h3>
+                    <div class="status-message fail-message" style="margin-top: 20px;">
+                      ⏳ ${escapeHTML(data.message)}
                     </div>
-                  </div>`;
+                  </div>
+                </div>`;
                 setTimeout(() => {
-                  window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+                  window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: "smooth",
+                  });
                 }, 200);
                 return;
               }
@@ -934,80 +1041,96 @@
               var safeFloor = escapeHTML(data.floor);
 
               var html = `
-                <div class="student-info-appear">
-                  <div id="capture-area">
-                    <div id="export-header" style="display: none;">
-                      <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 25px; width: 100%; gap: 30px;">
-                        <img src="logo_2.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
-                        <img src="logo_1.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
-                      </div>
-                      <h4 style="color: #4a4e69; margin-top: 0; margin-bottom: 25px; border-bottom: 2px dashed #eee; padding-bottom: 15px; font-size: 22px;">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</h4>
+              <div class="student-info-appear">
+                <div id="capture-area">
+                  <div id="export-header" style="display: none;">
+                    <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 25px; width: 100%; gap: 30px;">
+                      <img src="logo_2.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
+                      <img src="logo_1.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
                     </div>
-                    
-                    <div class="id-card row-anim" style="animation-delay: 0.1s">
-                      <div class="id-card-header-bar">بطاقة رقم الجلوس واللجنة</div>
-                      <div class="id-card-body">
-                        <div class="id-card-name">${safeStudentName}</div>
-                        <div class="id-card-grade">الصف: ${safeStudentGrade}</div>
-                        
-                        <div class="id-details-list">
-                          <div class="id-detail-row">
-                            <span class="id-detail-label">رقم الجلوس</span>
-                            <span class="id-detail-value highlight-seat">${safeSeatNumber}</span>
-                          </div>
-                          <div class="id-detail-row">
-                            <span class="id-detail-label">اللجنة</span>
-                            <span class="id-detail-value highlight-comm">${safeCommittee}</span>
-                          </div>
-                          <div class="id-detail-row">
-                            <span class="id-detail-label">الدور</span>
-                            <span class="id-detail-value">${safeFloor}</span>
-                          </div>
+                    <h4 style="color: #4a4e69; margin-top: 0; margin-bottom: 25px; border-bottom: 2px dashed #eee; padding-bottom: 15px; font-size: 22px;">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</h4>
+                  </div>
+                  
+                  <div class="id-card row-anim" style="animation-delay: 0.1s">
+                    <div class="id-card-header-bar">بطاقة رقم الجلوس واللجنة</div>
+                    <div class="id-card-body">
+                      <div class="id-card-name">${safeStudentName}</div>
+                      <div class="id-card-grade">الصف: ${safeStudentGrade}</div>
+                      
+                      <div class="id-details-list">
+                        <div class="id-detail-row">
+                          <span class="id-detail-label">رقم الجلوس</span>
+                          <span class="id-detail-value highlight-seat">${safeSeatNumber}</span>
+                        </div>
+                        <div class="id-detail-row">
+                          <span class="id-detail-label">اللجنة</span>
+                          <span class="id-detail-value highlight-comm">${safeCommittee}</span>
+                        </div>
+                        <div class="id-detail-row">
+                          <span class="id-detail-label">الدور</span>
+                          <span class="id-detail-value">${safeFloor}</span>
                         </div>
                       </div>
                     </div>
-                    
-                    <div id="export-footer" style="display: none; margin-top: 30px; font-size: 16px; color: #4a4e69; text-align: center; font-weight: bold; border-top: 2px solid #eee; padding-top: 15px;">تصميم وتنفيذ : سمير هلال</div>
                   </div>
-                  <button id="shareBtn" class="form-control btn-share"><span class="btn-text">📸 حفظ البيانات كصورة</span></button>
-                  <div class="feedback-section">
-                    <button id="showFeedbackBtn" class="form-control pulse-button"><span class="btn-text">💬 تواصل معنا</span></button>
-                    <div id="feedbackFormContainer" style="display: none; text-align: center;">
-                      <h4 id="feedbackTitle" style="color: #333; margin-bottom: 15px; font-size: 18px;">تواصل معنا:</h4>
-                      <textarea id="feedbackInput" rows="3" placeholder="اكتب رسالتك هنا..." lang="ar" dir="rtl"></textarea>
-                      <button id="submitFeedbackBtn" class="form-control btn-success"><span class="btn-text">📨 إرسال الرسالة</span></button>
-                      <div id="feedbackStatus" style="margin-top: 10px; font-weight: bold; text-align: center;"></div>
-                    </div>
+                  
+                  <div id="export-footer" style="display: none; margin-top: 30px; font-size: 16px; color: #4a4e69; text-align: center; font-weight: bold; border-top: 2px solid #eee; padding-top: 15px;">تصميم وتنفيذ : سمير هلال</div>
+                </div>
+                <button id="shareBtn" class="form-control btn-share"><span class="btn-text">📸 حفظ البيانات كصورة</span></button>
+                <div class="feedback-section">
+                  <button id="showFeedbackBtn" class="form-control pulse-button"><span class="btn-text">💬 تواصل معنا</span></button>
+                  <div id="feedbackFormContainer" style="display: none; text-align: center;">
+                    <h4 id="feedbackTitle" style="color: #333; margin-bottom: 15px; font-size: 18px;">تواصل معنا:</h4>
+                    <textarea id="feedbackInput" rows="3" placeholder="اكتب رسالتك هنا..." lang="ar" dir="rtl"></textarea>
+                    <button id="submitFeedbackBtn" class="form-control btn-success"><span class="btn-text">📨 إرسال الرسالة</span></button>
+                    <div id="feedbackStatus" style="margin-top: 10px; font-weight: bold; text-align: center;"></div>
                   </div>
-                </div>`;
+                </div>
+              </div>`;
 
               resultDiv.innerHTML = html;
 
-              document.getElementById("shareBtn").addEventListener("click", function(e) {
-                addRipple(e, this);
-                shareResult(safeStudentName);
-              });
-              
-              document.getElementById("showFeedbackBtn").addEventListener("click", function(e) {
-                addRipple(e, this);
-                toggleFeedbackForm();
-              });
-              
-              document.getElementById("submitFeedbackBtn").addEventListener("click", function(e) {
-                addRipple(e, this);
-                sendFeedback(safeStudentName, safeSeatNumber, safeStudentGrade);
-              });
+              document
+                .getElementById("shareBtn")
+                .addEventListener("click", function (e) {
+                  addRipple(e, this);
+                  shareResult(safeStudentName);
+                });
 
+              document
+                .getElementById("showFeedbackBtn")
+                .addEventListener("click", function (e) {
+                  addRipple(e, this);
+                  toggleFeedbackForm();
+                });
+
+              document
+                .getElementById("submitFeedbackBtn")
+                .addEventListener("click", function (e) {
+                  addRipple(e, this);
+                  sendFeedback(
+                    safeStudentName,
+                    safeSeatNumber,
+                    safeStudentGrade
+                  );
+                });
             } else {
-              resultDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${escapeHTML(data.message)}</div>`;
+              resultDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${escapeHTML(
+                data.message
+              )}</div>`;
             }
             setTimeout(() => {
-              window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+              window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: "smooth",
+              });
             }, 200);
           })
           .catch((err) => {
             setSearchLoading(false);
-            resultDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${escapeHTML(err.message || "حدث خطأ في الاتصال بقاعدة البيانات.")}</div>`;
+            resultDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${escapeHTML(
+              err.message || "حدث خطأ في الاتصال بقاعدة البيانات."
+            )}</div>`;
           });
       }
     </script>
