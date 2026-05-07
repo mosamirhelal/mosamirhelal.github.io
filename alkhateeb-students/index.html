@@ -298,12 +298,6 @@
       .student-info-appear {
         animation: slideInUp 0.5s ease-out forwards;
       }
-      #capture-area {
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 15px;
-      }
       .id-card {
         background: #ffffff;
         border: 2px solid #e1e8f0;
@@ -668,8 +662,7 @@
         .addEventListener("keypress", function (event) {
           if (event.key === "Enter") {
             event.preventDefault();
-            const btn = document.getElementById("searchBtn");
-            addRipple(event, btn);
+            addRipple(event, document.getElementById("searchBtn"));
             getGrade();
           }
         });
@@ -704,17 +697,17 @@
         setTimeout(() => span.remove(), 600);
       }
 
-      function toggleFeedbackForm() {
-        document.getElementById("showFeedbackBtn").style.display = "none";
-        var formContainer = document.getElementById("feedbackFormContainer");
+      function toggleFeedbackForm(containerId, inputId, btnEl) {
+        btnEl.style.display = "none";
+        var formContainer = document.getElementById(containerId);
         formContainer.style.display = "block";
         formContainer.style.animation = "fadeIn 0.5s ease-out forwards";
         setTimeout(() => {
           window.scrollTo({
-            top: document.body.scrollHeight,
+            top: formContainer.offsetTop - 20,
             behavior: "smooth",
           });
-          document.getElementById("feedbackInput").focus();
+          document.getElementById(inputId).focus();
         }, 100);
       }
 
@@ -727,12 +720,14 @@
         setTimeout(() => natIdInput.focus(), 500);
       }
 
-      function sendFeedback(studentName, seatNumber, studentGrade) {
-        var feedbackText = document.getElementById("feedbackInput").value;
-        var btn = document.getElementById("submitFeedbackBtn");
+      function sendFeedback(studentName, seatNumber, studentGrade, idx) {
+        var feedbackText = document.getElementById(
+          `feedbackInput_${idx}`
+        ).value;
+        var btn = document.getElementById(`submitFeedbackBtn_${idx}`);
         var btnText = btn.querySelector(".btn-text");
-        var statusMsg = document.getElementById("feedbackStatus");
-        var feedbackTitle = document.getElementById("feedbackTitle");
+        var statusMsg = document.getElementById(`feedbackStatus_${idx}`);
+        var feedbackTitle = document.getElementById(`feedbackTitle_${idx}`);
 
         if (!feedbackText.trim()) {
           statusMsg.innerHTML =
@@ -766,7 +761,8 @@
               setTimeout(() => {
                 btn.style.display = "none";
                 feedbackTitle.style.display = "none";
-                document.getElementById("feedbackInput").style.display = "none";
+                document.getElementById(`feedbackInput_${idx}`).style.display =
+                  "none";
 
                 statusMsg.innerHTML =
                   "<span style='color: green; display: block; margin-bottom: 15px;'>شكراً لك! تم إرسال رسالتك للإدارة.</span>";
@@ -794,9 +790,8 @@
           });
       }
 
-      async function shareResult(studentName) {
-        var captureDiv = document.getElementById("capture-area");
-        var shareBtn = document.getElementById("shareBtn");
+      async function shareResult(studentName, captureAreaId, shareBtn, idx) {
+        var captureDiv = document.getElementById(captureAreaId);
         var btnText = shareBtn.querySelector(".btn-text");
         var originalText = btnText.innerText;
 
@@ -814,14 +809,16 @@
               noAnimStyle.innerHTML =
                 "* { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }";
               clonedDoc.head.appendChild(noAnimStyle);
-              var clonedArea = clonedDoc.getElementById("capture-area");
+              var clonedArea = clonedDoc.getElementById(captureAreaId);
               clonedArea.style.width = "800px";
               clonedArea.style.maxWidth = "none";
               clonedArea.style.padding = "40px";
               clonedArea.style.margin = "0 auto";
               clonedArea.style.overflow = "visible";
-              clonedDoc.getElementById("export-header").style.display = "block";
-              clonedDoc.getElementById("export-footer").style.display = "block";
+              clonedDoc.getElementById(`export-header_${idx}`).style.display =
+                "block";
+              clonedDoc.getElementById(`export-footer_${idx}`).style.display =
+                "block";
             },
           });
 
@@ -901,6 +898,98 @@
           searchBtn.classList.add("pulse-button");
           searchBtnText.innerText = "🔎 بحث";
         }
+      }
+
+      function renderStudentCard(studentObj, idx, container) {
+        var safeStudentName = escapeHTML(studentObj.name);
+        var safeStudentGrade = escapeHTML(studentObj.grade);
+        var safeSeatNumber = escapeHTML(String(studentObj.seatNumber)) || "-";
+        var safeCommittee = escapeHTML(String(studentObj.committee)) || "-";
+        var safeFloor = escapeHTML(String(studentObj.floor)) || "-";
+
+        var html = `
+          <div class="student-info-appear">
+            <div id="capture-area_${idx}" style="background-color: white; padding: 20px; border-radius: 10px; margin-bottom: 15px;">
+              <div id="export-header_${idx}" style="display: none;">
+                <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 25px; width: 100%; gap: 30px;">
+                  <img src="logo_2.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
+                  <img src="logo_1.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
+                </div>
+                <h4 style="color: #4a4e69; margin-top: 0; margin-bottom: 25px; border-bottom: 2px dashed #eee; padding-bottom: 15px; font-size: 22px;">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</h4>
+              </div>
+
+              <div class="id-card row-anim" style="animation-delay: 0.1s">
+                <div class="id-card-header-bar">بطاقة رقم الجلوس واللجنة</div>
+                <div class="id-card-body">
+                  <div class="id-card-name">${safeStudentName}</div>
+                  <div class="id-card-grade">الصف: ${safeStudentGrade}</div>
+                  <div class="id-details-list">
+                    <div class="id-detail-row">
+                      <span class="id-detail-label">رقم الجلوس</span>
+                      <span class="id-detail-value highlight-seat">${safeSeatNumber}</span>
+                    </div>
+                    <div class="id-detail-row">
+                      <span class="id-detail-label">اللجنة</span>
+                      <span class="id-detail-value highlight-comm">${safeCommittee}</span>
+                    </div>
+                    <div class="id-detail-row">
+                      <span class="id-detail-label">الدور</span>
+                      <span class="id-detail-value">${safeFloor}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="export-footer_${idx}" style="display: none; margin-top: 30px; font-size: 16px; color: #4a4e69; text-align: center; font-weight: bold; border-top: 2px solid #eee; padding-top: 15px;">تصميم وتنفيذ : سمير هلال</div>
+            </div>
+
+            <button id="shareBtn_${idx}" class="form-control btn-share">
+              <span class="btn-text">📸 حفظ البيانات كصورة</span>
+            </button>
+            <div class="feedback-section">
+              <button id="showFeedbackBtn_${idx}" class="form-control pulse-button">
+                <span class="btn-text">💬 تواصل معنا</span>
+              </button>
+              <div id="feedbackFormContainer_${idx}" style="display: none; text-align: center;">
+                <h4 id="feedbackTitle_${idx}" style="color: #333; margin-bottom: 15px; font-size: 18px;">تواصل معنا:</h4>
+                <textarea id="feedbackInput_${idx}" rows="3" placeholder="اكتب رسالتك هنا..." lang="ar" dir="rtl"></textarea>
+                <button id="submitFeedbackBtn_${idx}" class="form-control btn-success">
+                  <span class="btn-text">📨 إرسال الرسالة</span>
+                </button>
+                <div id="feedbackStatus_${idx}" style="margin-top: 10px; font-weight: bold; text-align: center;"></div>
+              </div>
+            </div>
+          </div>`;
+
+        container.innerHTML = html;
+
+        document
+          .getElementById(`shareBtn_${idx}`)
+          .addEventListener("click", function (e) {
+            addRipple(e, this);
+            shareResult(safeStudentName, `capture-area_${idx}`, this, idx);
+          });
+        document
+          .getElementById(`showFeedbackBtn_${idx}`)
+          .addEventListener("click", function (e) {
+            addRipple(e, this);
+            toggleFeedbackForm(
+              `feedbackFormContainer_${idx}`,
+              `feedbackInput_${idx}`,
+              this
+            );
+          });
+        document
+          .getElementById(`submitFeedbackBtn_${idx}`)
+          .addEventListener("click", function (e) {
+            addRipple(e, this);
+            sendFeedback(
+              safeStudentName,
+              safeSeatNumber,
+              safeStudentGrade,
+              idx
+            );
+          });
       }
 
       function searchByName(nameQuery) {
@@ -1014,17 +1103,21 @@
 
             if (data.status === "success") {
               if (data.resultsHidden === true) {
-                resultDiv.innerHTML = `
-                <div class="student-info-appear">
-                  <div id="capture-area">
-                    <h3 class="student-name">الاسم: ${escapeHTML(
-                      data.name
-                    )}</h3>
-                    <div class="status-message fail-message" style="margin-top: 20px;">
-                      ⏳ ${escapeHTML(data.message)}
+                let hiddenHtml = "";
+                data.students.forEach((studentObj) => {
+                  hiddenHtml += `
+                  <div class="student-info-appear" style="margin-bottom: 20px;">
+                    <div id="capture-area">
+                      <h3 class="student-name">الاسم: ${escapeHTML(
+                        studentObj.name
+                      )}</h3>
+                      <div class="status-message fail-message" style="margin-top: 20px;">
+                        ⏳ ${escapeHTML(data.message)}
+                      </div>
                     </div>
-                  </div>
-                </div>`;
+                  </div>`;
+                });
+                resultDiv.innerHTML = hiddenHtml;
                 setTimeout(() => {
                   window.scrollTo({
                     top: document.body.scrollHeight,
@@ -1034,97 +1127,64 @@
                 return;
               }
 
-              var safeStudentName = escapeHTML(data.name);
-              var safeStudentGrade = escapeHTML(data.grade);
-              var safeSeatNumber = escapeHTML(data.seatNumber);
-              var safeCommittee = escapeHTML(data.committee);
-              var safeFloor = escapeHTML(data.floor);
+              if (data.students.length === 1) {
+                renderStudentCard(data.students[0], 0, resultDiv);
+                setTimeout(() => {
+                  window.scrollTo({
+                    top: document.body.scrollHeight,
+                    behavior: "smooth",
+                  });
+                }, 200);
+                return;
+              }
 
-              var html = `
-              <div class="student-info-appear">
-                <div id="capture-area">
-                  <div id="export-header" style="display: none;">
-                    <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 25px; width: 100%; gap: 30px;">
-                      <img src="logo_2.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
-                      <img src="logo_1.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
-                    </div>
-                    <h4 style="color: #4a4e69; margin-top: 0; margin-bottom: 25px; border-bottom: 2px dashed #eee; padding-bottom: 15px; font-size: 22px;">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</h4>
-                  </div>
-                  
-                  <div class="id-card row-anim" style="animation-delay: 0.1s">
-                    <div class="id-card-header-bar">بطاقة رقم الجلوس واللجنة</div>
-                    <div class="id-card-body">
-                      <div class="id-card-name">${safeStudentName}</div>
-                      <div class="id-card-grade">الصف: ${safeStudentGrade}</div>
-                      
-                      <div class="id-details-list">
-                        <div class="id-detail-row">
-                          <span class="id-detail-label">رقم الجلوس</span>
-                          <span class="id-detail-value highlight-seat">${safeSeatNumber}</span>
-                        </div>
-                        <div class="id-detail-row">
-                          <span class="id-detail-label">اللجنة</span>
-                          <span class="id-detail-value highlight-comm">${safeCommittee}</span>
-                        </div>
-                        <div class="id-detail-row">
-                          <span class="id-detail-label">الدور</span>
-                          <span class="id-detail-value">${safeFloor}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-                  <div id="export-footer" style="display: none; margin-top: 30px; font-size: 16px; color: #4a4e69; text-align: center; font-weight: bold; border-top: 2px solid #eee; padding-top: 15px;">تصميم وتنفيذ : سمير هلال</div>
+              var html = "";
+              data.students.forEach((student, index) => {
+                var delay = 0.08 * (index + 1);
+                var safeName = escapeHTML(student.name);
+                var safeGrade = escapeHTML(student.grade);
+                var safeSeatNum = escapeHTML(String(student.seatNumber));
+
+                html += `
+                <div class="name-card" style="animation-delay: ${delay}s">
+                  <p class="name-card-title">${safeName}</p>
+                  <p class="name-card-subtitle">الصف: ${safeGrade}</p>
+                  <p class="name-card-id">رقم الجلوس: ${safeSeatNum}</p>
+                  <button id="dupBtn_${index}" class="form-control name-card-btn">
+                    <span class="btn-text">📊 عرض البيانات واللجنة</span>
+                  </button>
                 </div>
-                <button id="shareBtn" class="form-control btn-share"><span class="btn-text">📸 حفظ البيانات كصورة</span></button>
-                <div class="feedback-section">
-                  <button id="showFeedbackBtn" class="form-control pulse-button"><span class="btn-text">💬 تواصل معنا</span></button>
-                  <div id="feedbackFormContainer" style="display: none; text-align: center;">
-                    <h4 id="feedbackTitle" style="color: #333; margin-bottom: 15px; font-size: 18px;">تواصل معنا:</h4>
-                    <textarea id="feedbackInput" rows="3" placeholder="اكتب رسالتك هنا..." lang="ar" dir="rtl"></textarea>
-                    <button id="submitFeedbackBtn" class="form-control btn-success"><span class="btn-text">📨 إرسال الرسالة</span></button>
-                    <div id="feedbackStatus" style="margin-top: 10px; font-weight: bold; text-align: center;"></div>
-                  </div>
-                </div>
-              </div>`;
+              `;
+              });
+              nameSearchResultsDiv.innerHTML = html;
 
-              resultDiv.innerHTML = html;
+              data.students.forEach((student, index) => {
+                document
+                  .getElementById(`dupBtn_${index}`)
+                  .addEventListener("click", function (e) {
+                    addRipple(e, this);
+                    nameSearchResultsDiv.innerHTML = "";
+                    renderStudentCard(student, index, resultDiv);
+                    setTimeout(() => {
+                      window.scrollTo({
+                        top: document.body.scrollHeight,
+                        behavior: "smooth",
+                      });
+                    }, 200);
+                  });
+              });
 
-              document
-                .getElementById("shareBtn")
-                .addEventListener("click", function (e) {
-                  addRipple(e, this);
-                  shareResult(safeStudentName);
+              setTimeout(() => {
+                window.scrollTo({
+                  top: nameSearchResultsDiv.offsetTop - 20,
+                  behavior: "smooth",
                 });
-
-              document
-                .getElementById("showFeedbackBtn")
-                .addEventListener("click", function (e) {
-                  addRipple(e, this);
-                  toggleFeedbackForm();
-                });
-
-              document
-                .getElementById("submitFeedbackBtn")
-                .addEventListener("click", function (e) {
-                  addRipple(e, this);
-                  sendFeedback(
-                    safeStudentName,
-                    safeSeatNumber,
-                    safeStudentGrade
-                  );
-                });
+              }, 200);
             } else {
               resultDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${escapeHTML(
                 data.message
               )}</div>`;
             }
-            setTimeout(() => {
-              window.scrollTo({
-                top: document.body.scrollHeight,
-                behavior: "smooth",
-              });
-            }, 200);
           })
           .catch((err) => {
             setSearchLoading(false);
