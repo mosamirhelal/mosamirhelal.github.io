@@ -314,7 +314,6 @@
         padding: 12px;
         font-size: 16px;
         font-weight: 800;
-        letter-spacing: 1px;
       }
       .id-card-body {
         padding: 25px 20px;
@@ -703,10 +702,7 @@
         formContainer.style.display = "block";
         formContainer.style.animation = "fadeIn 0.5s ease-out forwards";
         setTimeout(() => {
-          window.scrollTo({
-            top: formContainer.offsetTop - 20,
-            behavior: "smooth",
-          });
+          formContainer.scrollIntoView({ behavior: "smooth", block: "center" });
           document.getElementById(inputId).focus();
         }, 100);
       }
@@ -944,11 +940,11 @@
             </div>
 
             <button id="shareBtn_${idx}" class="form-control btn-share">
-              <span class="btn-text">📸 حفظ البيانات كصورة</span>
+              <span class="btn-text">📸 مشاركة البيانات كصورة</span>
             </button>
             <div class="feedback-section">
               <button id="showFeedbackBtn_${idx}" class="form-control pulse-button">
-                <span class="btn-text">💬 تواصل معنا</span>
+                <span class="btn-text">💬 تواصل مع إدارة المدرسة</span>
               </button>
               <div id="feedbackFormContainer_${idx}" style="display: none; text-align: center;">
                 <h4 id="feedbackTitle_${idx}" style="color: #333; margin-bottom: 15px; font-size: 18px;">تواصل معنا:</h4>
