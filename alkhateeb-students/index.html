@@ -1119,7 +1119,7 @@
                 resultDiv.innerHTML = hiddenHtml;
                 setTimeout(() => {
                   window.scrollTo({
-                    top: document.body.scrollHeight,
+                    top: resultDiv.offsetTop + 65,
                     behavior: "smooth",
                   });
                 }, 200);
@@ -1130,7 +1130,7 @@
                 renderStudentCard(data.students[0], 0, resultDiv);
                 setTimeout(() => {
                   window.scrollTo({
-                    top: document.body.scrollHeight,
+                    top: resultDiv.offsetTop + 65,
                     behavior: "smooth",
                   });
                 }, 200);
@@ -1166,7 +1166,7 @@
                     renderStudentCard(student, index, resultDiv);
                     setTimeout(() => {
                       window.scrollTo({
-                        top: document.body.scrollHeight,
+                        top: resultDiv.offsetTop + 65,
                         behavior: "smooth",
                       });
                     }, 200);
