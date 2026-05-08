@@ -347,6 +347,7 @@
         border-radius: 10px;
         border: 1px solid #eef2f7;
         transition: transform 0.2s, box-shadow 0.2s;
+        flex-wrap: nowrap;
       }
       .id-detail-row:hover {
         transform: translateY(-2px);
@@ -357,6 +358,7 @@
         font-size: 15px;
         color: #6c757d;
         font-weight: 700;
+        white-space: nowrap;
       }
       .id-detail-value {
         font-size: 20px;
@@ -364,6 +366,7 @@
         color: #0056b3;
         direction: ltr;
         display: inline-block;
+        white-space: nowrap;
       }
       .id-detail-value.highlight-seat {
         color: #28a745;
@@ -486,6 +489,27 @@
         .input-group,
         textarea {
           max-width: 100%;
+        }
+        .id-card-name {
+          font-size: 20px;
+        }
+        .id-detail-label {
+          font-size: 14px;
+        }
+        .id-detail-value {
+          font-size: 18px;
+        }
+        .id-detail-value.highlight-seat {
+          font-size: 22px;
+        }
+        .id-detail-value.highlight-comm {
+          font-size: 20px;
+        }
+        .id-card-body {
+          padding: 20px 15px;
+        }
+        .id-detail-row {
+          padding: 12px 15px;
         }
       }
     </style>
