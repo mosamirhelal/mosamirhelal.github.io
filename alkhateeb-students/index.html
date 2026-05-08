@@ -897,8 +897,9 @@
         var safeStudentGrade = escapeHTML(studentObj.grade);
         var safeSeatNumber = escapeHTML(String(studentObj.seatNumber)) || "-";
         var safeCommittee = escapeHTML(String(studentObj.committee)) || "-";
+        if (safeCommittee !== "-") safeCommittee = "رقم " + safeCommittee;
         var safeFloor = escapeHTML(String(studentObj.floor)) || "-";
-
+        if (safeFloor !== "-") safeFloor = "الدور " + safeFloor;
         var html = `
           <div class="student-info-appear">
             <div id="capture-area_${idx}" style="background-color: white; padding: 20px; border-radius: 10px; margin-bottom: 15px;">
