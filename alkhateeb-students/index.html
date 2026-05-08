@@ -424,10 +424,6 @@
         z-index: 10;
         position: relative;
       }
-      #export-header,
-      #export-footer {
-        display: none;
-      }
       .name-card {
         background: white;
         border: 2px solid #e1e1e1;
@@ -1103,10 +1099,10 @@
             if (data.status === "success") {
               if (data.resultsHidden === true) {
                 let hiddenHtml = "";
-                data.students.forEach((studentObj) => {
+                data.students.forEach((studentObj, idx) => {
                   hiddenHtml += `
                   <div class="student-info-appear" style="margin-bottom: 20px;">
-                    <div id="capture-area">
+                    <div id="capture-area_hidden_${idx}">
                       <h3 class="student-name">الاسم: ${escapeHTML(
                         studentObj.name
                       )}</h3>
@@ -1118,10 +1114,9 @@
                 });
                 resultDiv.innerHTML = hiddenHtml;
                 setTimeout(() => {
-                  window.scrollTo({
-                    top: resultDiv.offsetTop + 65,
-                    behavior: "smooth",
-                  });
+                  document
+                    .getElementById(`capture-area_hidden_0`)
+                    .scrollIntoView({ behavior: "smooth", block: "center" });
                 }, 200);
                 return;
               }
@@ -1129,10 +1124,9 @@
               if (data.students.length === 1) {
                 renderStudentCard(data.students[0], 0, resultDiv);
                 setTimeout(() => {
-                  window.scrollTo({
-                    top: resultDiv.offsetTop + 65,
-                    behavior: "smooth",
-                  });
+                  document
+                    .getElementById("warningMsg_0")
+                    .scrollIntoView({ behavior: "smooth", block: "center" });
                 }, 200);
                 return;
               }
@@ -1165,10 +1159,12 @@
                     nameSearchResultsDiv.innerHTML = "";
                     renderStudentCard(student, index, resultDiv);
                     setTimeout(() => {
-                      window.scrollTo({
-                        top: resultDiv.offsetTop + 65,
-                        behavior: "smooth",
-                      });
+                      document
+                        .getElementById(`warningMsg_${index}`)
+                        .scrollIntoView({
+                          behavior: "smooth",
+                          block: "center",
+                        });
                     }, 200);
                   });
               });
