@@ -261,6 +261,10 @@
         transform: translateY(1px);
         box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12);
       }
+      .btn-students {
+        background: linear-gradient(135deg, #6f42c1 0%, #8b62cc 100%);
+        box-shadow: 0 4px 16px rgba(111, 66, 193, 0.25);
+      }
       .btn-results {
         background: linear-gradient(135deg, #0056b3 0%, #0070e0 100%);
         box-shadow: 0 4px 16px rgba(0, 86, 179, 0.25);
@@ -495,13 +499,25 @@
       </div>
       <div class="buttons-grid">
         <a
+          href="../alkhateeb-students/"
+          class="portal-btn btn-students"
+          onclick="navigateWithRipple(event, this, '../alkhateeb-students/')"
+        >
+          <div class="btn-content">
+            <span class="btn-icon">📚</span>
+            <span>بوابة بيانات ولجان الطلاب</span>
+          </div>
+          <span class="btn-arrow">&#8592;</span>
+          <div class="btn-shine"></div>
+        </a>
+        <a
           href="../alkhateeb-results/"
           class="portal-btn btn-results"
           onclick="navigateWithRipple(event, this, '../alkhateeb-results/')"
         >
           <div class="btn-content">
             <span class="btn-icon">📊</span>
-            <span>بوابة نتائج وبيانات الطلاب</span>
+            <span>بوابة نتائج الطلاب</span>
           </div>
           <span class="btn-arrow">&#8592;</span>
           <div class="btn-shine"></div>
