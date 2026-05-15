@@ -364,6 +364,19 @@
         animation: slideInUp 0.6s ease-out forwards;
         border-radius: 10px;
         border: 1px solid #eee;
+        position: relative;
+      }
+      .scroll-hint {
+        display: none;
+        background-color: #f8d7da;
+        color: #721c24;
+        padding: 8px;
+        font-size: 13px;
+        font-weight: bold;
+        border-radius: 8px;
+        border: 1px solid #f5c6cb;
+        margin-bottom: 10px;
+        text-align: center;
       }
       table {
         width: 100%;
@@ -443,10 +456,10 @@
         background-color: #218838;
       }
       .btn-edit {
-        background-color: #fd7e14;
+        background-color: #dc3545;
       }
       .btn-edit:hover:not(:disabled) {
-        background-color: #e86e10;
+        background-color: #c82333;
       }
       .modal-overlay {
         display: none;
@@ -551,6 +564,7 @@
         border: 1px solid #e1e1e1;
         margin-top: 15px;
       }
+
       @media (min-width: 768px) {
         .top-logos img {
           max-height: 160px;
@@ -561,44 +575,126 @@
       }
       @media (max-width: 480px) {
         body {
-          padding: 15px 10px;
+          padding: 10px 5px;
         }
         .container {
-          padding: 25px 15px;
+          padding: 15px 10px;
+          border-radius: 10px;
         }
         .top-logos img {
-          max-height: 90px;
+          max-height: 60px;
+          gap: 10px;
         }
         h2 {
-          font-size: 22px;
+          font-size: 18px;
+          margin-bottom: 15px;
         }
         .form-control,
         button {
           max-width: 100%;
+          font-size: 13px;
+          padding: 8px 10px;
         }
         .modal-content {
-          padding: 20px;
+          padding: 15px;
+          width: 95%;
+        }
+        .modal-title {
+          font-size: 17px;
+          margin-bottom: 15px;
+        }
+        .modal-body p {
+          font-size: 12px;
         }
         .modal-buttons {
           flex-direction: column;
-          gap: 10px;
+          gap: 8px;
         }
         .btn-modal-confirm,
         .btn-modal-cancel {
           max-width: 100%;
+          padding: 8px;
+          font-size: 13px;
         }
         #tableControls {
           flex-direction: column;
           text-align: center;
+          padding: 8px;
+          font-size: 12px;
         }
         .pagination-controls {
           flex-direction: column;
-          gap: 10px;
+          gap: 8px;
+          padding: 8px;
+        }
+        .scroll-hint {
+          font-size: 12px;
+          padding: 6px;
+        }
+        table {
+          display: block;
+          width: max-content;
+          min-width: auto;
+        }
+        thead,
+        tbody {
+          display: block;
+        }
+        tr {
+          display: flex;
+          width: max-content;
+          border-bottom: 1px solid #eee;
         }
         th,
         td {
-          padding: 10px;
-          font-size: 14px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 6px 4px;
+          font-size: 12px;
+          border: none;
+          border-left: 1px solid #eee;
+        }
+        td:last-child,
+        th:last-child {
+          border-left: none;
+        }
+        .col-action {
+          order: 1;
+          width: 95px;
+        }
+        .col-name {
+          order: 2;
+          width: 130px;
+        }
+        .col-section {
+          order: 3;
+          width: 45px;
+        }
+        .col-seat {
+          order: 4;
+          width: 70px;
+        }
+        .col-nid {
+          order: 5;
+          width: 110px;
+        }
+        .col-status {
+          order: 6;
+          width: 90px;
+        }
+        .col-serial {
+          order: 7;
+          width: 30px;
+        }
+        .btn-sm {
+          font-size: 10px;
+          padding: 3px 5px;
+          min-width: 40px;
+        }
+        .action-btns {
+          gap: 3px;
+          flex-direction: row;
         }
       }
     </style>
@@ -736,8 +832,8 @@
             <option value="10">10</option>
             <option value="20">20</option>
             <option value="30">30</option>
-            <option value="50" selected>50</option>
-            <option value="10000">الكل</option>
+            <option value="50">50</option>
+            <option value="10000" selected>الكل</option>
           </select>
         </div>
         <div
@@ -746,17 +842,21 @@
         ></div>
       </div>
 
+      <div class="scroll-hint" id="scrollHint">
+        ↔️ اسحب الجدول لليمين واليسار لرؤية باقي البيانات
+      </div>
+
       <div class="table-responsive" id="tableContainer">
         <table id="studentsTable">
           <thead>
             <tr>
-              <th style="width: 50px">م</th>
-              <th>الاسم</th>
-              <th>رقم الجلوس</th>
-              <th>الفصل</th>
-              <th>الرقم القومي</th>
-              <th>الحالة</th>
-              <th>الإجراء</th>
+              <th class="col-serial">م</th>
+              <th class="col-name">الاسم</th>
+              <th class="col-seat">رقم الجلوس</th>
+              <th class="col-section">الفصل</th>
+              <th class="col-nid">الرقم القومي</th>
+              <th class="col-status">الحالة</th>
+              <th class="col-action">الإجراء</th>
             </tr>
           </thead>
           <tbody id="studentsBody"></tbody>
@@ -929,6 +1029,17 @@
             placeholder="اكتب الفصل الجديد (إذا لزم الأمر)"
             inputmode="numeric"
           />
+
+          <p style="margin-top: 15px">
+            ملاحظات إضافية:<span class="curr-val"></span>
+          </p>
+          <textarea
+            id="editNotes"
+            class="form-control"
+            rows="3"
+            placeholder="اكتب أي ملاحظات أخرى هنا..."
+            style="max-width: 100%"
+          ></textarea>
         </div>
         <div class="modal-buttons">
           <button class="btn-modal-confirm btn-text" onclick="executeEdit()">
@@ -979,7 +1090,7 @@
       let allStudents = [];
       let filteredStudents = [];
       let currentPage = 1;
-      let rowsPerPage = 50;
+      let rowsPerPage = 10000;
       let selectedStudentIdx = -1;
 
       fetch("https://api.counterapi.dev/v1/alkhateeb-students/visits/up")
@@ -1030,21 +1141,12 @@
       }
 
       function hideMessageAndTable() {
-        const container = document.getElementById("tableContainer");
-        const search = document.getElementById("searchContainer");
-        const controls = document.getElementById("tableControls");
-        const pagination = document.getElementById("paginationDiv");
-        const feedback = document.getElementById("feedbackSection");
-
-        container.style.animation = "none";
-        search.style.animation = "none";
-        feedback.style.animation = "none";
-
-        container.style.display = "none";
-        search.style.display = "none";
-        controls.style.display = "none";
-        pagination.style.display = "none";
-        feedback.style.display = "none";
+        document.getElementById("tableContainer").style.display = "none";
+        document.getElementById("searchContainer").style.display = "none";
+        document.getElementById("tableControls").style.display = "none";
+        document.getElementById("paginationDiv").style.display = "none";
+        document.getElementById("feedbackSection").style.display = "none";
+        document.getElementById("scrollHint").style.display = "none";
       }
 
       function showSections() {
@@ -1140,14 +1242,22 @@
               const controls = document.getElementById("tableControls");
               const container = document.getElementById("tableContainer");
               const feedback = document.getElementById("feedbackSection");
+              const hint = document.getElementById("scrollHint");
 
               search.style.animation = "slideInUp 0.6s ease-out forwards";
               container.style.animation = "slideInUp 0.6s ease-out forwards";
               feedback.style.animation = "slideInUp 0.6s ease-out forwards";
+
               search.style.display = "block";
               controls.style.display = "flex";
               container.style.display = "block";
               feedback.style.display = "block";
+
+              if (window.innerWidth <= 480) {
+                hint.style.animation = "slideInUp 0.6s ease-out forwards";
+                hint.style.display = "block";
+              }
+
               setTimeout(() => {
                 search.scrollIntoView({ behavior: "smooth", block: "start" });
               }, 100);
@@ -1270,15 +1380,19 @@
           tr.className = "row-anim";
           tr.style.animationDelay = `${delay}s`;
           tr.innerHTML = `
-            <td style="color:#6c757d; font-weight:bold;">${start + idx + 1}</td>
-            <td style="font-weight:700; color:#0056b3;">${escapeHTML(
+            <td class="col-serial" style="color:#6c757d; font-weight:bold;">${
+              start + idx + 1
+            }</td>
+            <td class="col-name" style="font-weight:700; color:#0056b3;">${escapeHTML(
               s.name
             )}</td>
-            <td style="font-weight:bold;">${escapeHTML(s.seatNum) || "—"}</td>
-            <td>${escapeHTML(s.section) || "—"}</td>
-            <td dir="ltr" style="font-weight:bold; letter-spacing:1px;">${nidDisplay}</td>
-            <td><span class="status-badge ${badgeClass}">${badgeText}</span>${statusDisplay}${reqBadge}</td>
-            <td>${actionsHtml}</td>
+            <td class="col-seat" style="font-weight:bold;">${
+              escapeHTML(s.seatNum) || "—"
+            }</td>
+            <td class="col-section">${escapeHTML(s.section) || "—"}</td>
+            <td class="col-nid" dir="ltr" style="font-weight:bold; letter-spacing:1px;">${nidDisplay}</td>
+            <td class="col-status"><span class="status-badge ${badgeClass}">${badgeText}</span>${statusDisplay}${reqBadge}</td>
+            <td class="col-action">${actionsHtml}</td>
           `;
           tbody.appendChild(tr);
         });
@@ -1334,6 +1448,18 @@
 
       function executeConfirm() {
         const s = allStudents[selectedStudentIdx];
+        if (!s.nidMasked || s.nidMasked === "—" || s.nidMasked === "") {
+          closeModals();
+          showToast(
+            "⚠️ الرقم القومي غير مسجل، يرجى تقديم طلب تعديل لإضافته أولاً قبل التأكيد.",
+            true
+          );
+          setTimeout(() => {
+            openEditModal(selectedStudentIdx);
+          }, 1500);
+          return;
+        }
+
         const btn = document.querySelector("#confirmModal .btn-modal-confirm");
         const payload = {
           action: "confirmData",
@@ -1367,6 +1493,7 @@
           document.getElementById("editNewName").value = "";
           document.getElementById("editNewNid").value = "";
           document.getElementById("editNewSec").value = "";
+          document.getElementById("editNotes").value = "";
           document.getElementById("editModal").style.display = "flex";
         }
       }
@@ -1375,20 +1502,33 @@
         const newName = document.getElementById("editNewName").value.trim();
         const newNid = document.getElementById("editNewNid").value.trim();
         const newSec = document.getElementById("editNewSec").value.trim();
+        const notes = document.getElementById("editNotes").value.trim();
 
-        if (!newName && !newNid && !newSec) {
+        const s = allStudents[selectedStudentIdx];
+        const isNidMissing =
+          !s.nidMasked || s.nidMasked === "—" || s.nidMasked === "";
+
+        if (isNidMissing && !newNid) {
           showToast(
-            "⚠️ يرجى كتابة أي تعديل في الحقول الفارغة، أو الضغط على إلغاء.",
+            "⚠️ الرقم القومي غير مسجل حالياً، يجب إدخاله كإجراء إجباري.",
             true
           );
           return;
         }
+
+        if (!newName && !newNid && !newSec && !notes) {
+          showToast(
+            "⚠️ يرجى كتابة أي تعديل أو ملاحظات، أو الضغط على إلغاء.",
+            true
+          );
+          return;
+        }
+
         if (newNid && newNid.length !== 14) {
           showToast("⚠️ الرقم القومي يجب أن يتكون من 14 رقم بالضبط.", true);
           return;
         }
 
-        const s = allStudents[selectedStudentIdx];
         const btn = document.querySelector("#editModal .btn-modal-confirm");
         const payload = {
           action: "requestEdit",
@@ -1397,6 +1537,7 @@
           newName: newName,
           newNid: newNid,
           newSection: newSec,
+          notes: notes,
         };
 
         postBackendAction(payload, btn, "إرسال الطلب", function (res) {
