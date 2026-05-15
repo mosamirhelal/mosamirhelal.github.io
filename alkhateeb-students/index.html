@@ -1030,11 +1030,21 @@
       }
 
       function hideMessageAndTable() {
-        document.getElementById("tableContainer").style.display = "none";
-        document.getElementById("searchContainer").style.display = "none";
-        document.getElementById("tableControls").style.display = "none";
-        document.getElementById("paginationDiv").style.display = "none";
-        document.getElementById("feedbackSection").style.display = "none";
+        const container = document.getElementById("tableContainer");
+        const search = document.getElementById("searchContainer");
+        const controls = document.getElementById("tableControls");
+        const pagination = document.getElementById("paginationDiv");
+        const feedback = document.getElementById("feedbackSection");
+
+        container.style.animation = "none";
+        search.style.animation = "none";
+        feedback.style.animation = "none";
+
+        container.style.display = "none";
+        search.style.display = "none";
+        controls.style.display = "none";
+        pagination.style.display = "none";
+        feedback.style.display = "none";
       }
 
       function showSections() {
@@ -1125,16 +1135,22 @@
               document.getElementById("liveSearchInput").value = "";
 
               renderTable();
-              document.getElementById("searchContainer").style.display =
-                "block";
-              document.getElementById("tableControls").style.display = "flex";
-              document.getElementById("tableContainer").style.display = "block";
-              document.getElementById("feedbackSection").style.display =
-                "block";
+
+              const search = document.getElementById("searchContainer");
+              const controls = document.getElementById("tableControls");
+              const container = document.getElementById("tableContainer");
+              const feedback = document.getElementById("feedbackSection");
+
+              search.style.animation = "popIn 0.5s ease-out";
+              container.style.animation = "popIn 0.5s ease-out";
+              feedback.style.animation = "popIn 0.5s ease-out";
+
+              search.style.display = "block";
+              controls.style.display = "flex";
+              container.style.display = "block";
+              feedback.style.display = "block";
               setTimeout(() => {
-                document
-                  .getElementById("searchContainer")
-                  .scrollIntoView({ behavior: "smooth", block: "start" });
+                search.scrollIntoView({ behavior: "smooth", block: "start" });
               }, 100);
             }
           })
@@ -1210,32 +1226,33 @@
             (xs) => xs.seatNum === s.seatNum
           );
           const delay = Math.min(idx * 0.05, 0.5);
-          const badgeClass = s.isConfirmed
-            ? "status-confirmed"
-            : "status-pending";
-          const badgeText = s.isConfirmed ? "✅ مؤكد" : "⏳ لم يؤكد";
+          const isPending =
+            !s.isConfirmed &&
+            (!s.reqStatus || s.reqStatus === "" || s.reqStatus === "تم الرفض");
+          const badgeClass = isPending ? "status-pending" : "status-confirmed";
+          const badgeText = isPending ? "⏳ لم يؤكد" : "✅ مؤكد";
 
           let statusDisplay = "";
-          if (s.reqStatus) {
+          if (s.reqStatus && s.reqStatus !== "") {
             let color = "#6c757d";
             if (s.reqStatus === "تم القبول") color = "#28a745";
             if (s.reqStatus === "تم الرفض") color = "#dc3545";
             if (s.reqStatus === "قيد المراجعة") color = "#fd7e14";
 
             statusDisplay = `<div style="margin-top: 5px;">
-        <span class="status-badge" style="background-color: white; color: ${color}; border: 1px solid ${color}; font-size: 11px;">
-          الحالة: ${escapeHTML(s.reqStatus)}
-        </span>
-      </div>`;
+              <span class="status-badge" style="background-color: white; color: ${color}; border: 1px solid ${color}; font-size: 11px;">
+                الحالة: ${escapeHTML(s.reqStatus)}
+              </span>
+            </div>`;
           }
 
           let reqBadge = "";
-          if (s.reqCount > 0) {
+          if (s.reqCount > 0 && isPending) {
             reqBadge = `<div style="margin-top: 5px;"><span class="status-badge" style="background-color: #e2e3e5; color: #383d41; border: 1px solid #d6d8db; font-size: 11px;">📝 أرسلت ${s.reqCount} طلب تعديل</span></div>`;
           }
 
           let actionsHtml = "";
-          if (s.isConfirmed) {
+          if (!isPending) {
             actionsHtml = `<button class="form-control btn-sm btn-edit btn-text" onclick="addRipple(event, this); openEditModal(${actualIdx})">✏️ طلب تعديل؟</button>`;
           } else {
             actionsHtml = `
@@ -1263,7 +1280,7 @@
             <td dir="ltr" style="font-weight:bold; letter-spacing:1px;">${nidDisplay}</td>
             <td><span class="status-badge ${badgeClass}">${badgeText}</span>${statusDisplay}${reqBadge}</td>
             <td>${actionsHtml}</td>
-    `;
+          `;
           tbody.appendChild(tr);
         });
       }
@@ -1328,6 +1345,7 @@
         };
         postBackendAction(payload, btn, "نعم، أؤكد", function (res) {
           s.isConfirmed = true;
+          s.reqStatus = "تم التأكيد";
           closeModals();
           renderTable();
           showToast("✅ تم تأكيد البيانات بنجاح.");
@@ -1389,6 +1407,7 @@
             openEditModal(selectedStudentIdx);
           } else {
             s.reqCount = (s.reqCount || 0) + 1;
+            s.reqStatus = "قيد المراجعة";
             closeModals();
             renderTable();
             showToast(
