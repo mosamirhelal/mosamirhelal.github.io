@@ -1215,6 +1215,20 @@
             : "status-pending";
           const badgeText = s.isConfirmed ? "✅ مؤكد" : "⏳ لم يؤكد";
 
+          let statusDisplay = "";
+          if (s.reqStatus) {
+            let color = "#6c757d";
+            if (s.reqStatus === "تم القبول") color = "#28a745";
+            if (s.reqStatus === "تم الرفض") color = "#dc3545";
+            if (s.reqStatus === "قيد المراجعة") color = "#fd7e14";
+
+            statusDisplay = `<div style="margin-top: 5px;">
+        <span class="status-badge" style="background-color: white; color: ${color}; border: 1px solid ${color}; font-size: 11px;">
+          الحالة: ${escapeHTML(s.reqStatus)}
+        </span>
+      </div>`;
+          }
+
           let reqBadge = "";
           if (s.reqCount > 0) {
             reqBadge = `<div style="margin-top: 5px;"><span class="status-badge" style="background-color: #e2e3e5; color: #383d41; border: 1px solid #d6d8db; font-size: 11px;">📝 أرسلت ${s.reqCount} طلب تعديل</span></div>`;
@@ -1247,9 +1261,9 @@
             <td style="font-weight:bold;">${escapeHTML(s.seatNum) || "—"}</td>
             <td>${escapeHTML(s.section) || "—"}</td>
             <td dir="ltr" style="font-weight:bold; letter-spacing:1px;">${nidDisplay}</td>
-            <td><span class="status-badge ${badgeClass}">${badgeText}</span>${reqBadge}</td>
+            <td><span class="status-badge ${badgeClass}">${badgeText}</span>${statusDisplay}${reqBadge}</td>
             <td>${actionsHtml}</td>
-          `;
+    `;
           tbody.appendChild(tr);
         });
       }
