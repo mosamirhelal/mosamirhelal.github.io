@@ -1111,9 +1111,9 @@
                   </div>
                   <button id="shareBtn" class="form-control btn-share" onclick="addRipple(event,this); shareResult('${safeStudentName}')"><span class="btn-text">📸 مشاركة النتيجة كصورة</span></button>
                   <div class="feedback-section">
-                    <button id="showFeedbackBtn" class="form-control pulse-button" onclick="addRipple(event,this); toggleFeedbackForm()"><span class="btn-text">💬 إضافة رأي أو مقترح</span></button>
+                    <button id="showFeedbackBtn" class="form-control pulse-button" onclick="addRipple(event,this); toggleFeedbackForm()"><span class="btn-text">💬 تواصل مع إدارة المدرسة</span></button>
                     <div id="feedbackFormContainer" style="display: none; text-align: center;">
-                      <h4 id="feedbackTitle" style="color: #333; margin-bottom: 15px; font-size: 18px;">سجل رأيك أو مقترحاتك:</h4>
+                      <h4 id="feedbackTitle" style="color: #333; margin-bottom: 15px; font-size: 18px;">سجل مقترحك أو شكواك:</h4>
                       <textarea id="feedbackInput" rows="3" placeholder="اكتب رسالتك هنا..." lang="ar" dir="rtl"></textarea>
                       <button id="submitFeedbackBtn" class="form-control btn-success" onclick="addRipple(event,this); sendFeedback('${safeStudentName}', '${id}', '${safeStudentGrade}', '${safeStudentSection}')"><span class="btn-text">📨 إرسال الاقتراح</span></button>
                       <div id="feedbackStatus" style="margin-top: 10px; font-weight: bold; text-align: center;"></div>
