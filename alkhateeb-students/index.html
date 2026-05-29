@@ -3,20 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>مراجعة وتأكيد بيانات الطلاب - مدرسة الشهيد محمود علي الخطيب</title>
+    <title>بيانات لجان الطلاب - مدرسة الشهيد محمود علي الخطيب</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap"
       rel="stylesheet"
     />
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+      defer
+    ></script>
     <meta
       property="og:title"
-      content="مراجعة وتأكيد بيانات الطلاب - مدرسة الشهيد محمود علي الخطيب"
+      content="بيانات لجان الطلاب - مدرسة الشهيد محمود علي الخطيب"
     />
     <meta
       property="og:description"
-      content="بوابة مراجعة وتأكيد بيانات الطلاب"
+      content="بوابة الاستعلام عن بيانات وأرقام جلوس الطلاب"
     />
     <meta
       property="og:image"
@@ -58,6 +62,23 @@
           transform: translateY(0);
         }
       }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes floatDot {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-18px);
+        }
+      }
       @keyframes popIn {
         0% {
           opacity: 0;
@@ -71,24 +92,33 @@
           transform: scale(1);
         }
       }
-      @keyframes floatDot {
-        0%,
-        100% {
-          transform: translateY(0);
+      @keyframes rowIn {
+        from {
+          opacity: 0;
+          transform: translateX(-12px);
         }
-        50% {
-          transform: translateY(-18px);
+        to {
+          opacity: 1;
+          transform: translateX(0);
         }
       }
       @keyframes pulseGlow {
         0% {
+          transform: scale(1);
           box-shadow: 0 0 0 0 rgba(0, 86, 179, 0.7);
         }
         70% {
+          transform: scale(1.02);
           box-shadow: 0 0 0 15px rgba(0, 86, 179, 0);
         }
         100% {
+          transform: scale(1);
           box-shadow: 0 0 0 0 rgba(0, 86, 179, 0);
+        }
+      }
+      @keyframes spin {
+        100% {
+          transform: rotate(360deg);
         }
       }
       @keyframes ripple {
@@ -99,21 +129,6 @@
         to {
           transform: scale(3.5);
           opacity: 0;
-        }
-      }
-      @keyframes spin {
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-      @keyframes rowIn {
-        from {
-          opacity: 0;
-          transform: translateX(-12px);
-        }
-        to {
-          opacity: 1;
-          transform: translateX(0);
         }
       }
       .dot {
@@ -129,7 +144,7 @@
         padding: 40px;
         border-radius: 15px;
         width: 100%;
-        max-width: 1000px;
+        max-width: 800px;
         margin: auto;
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
         animation: slideInUp 0.8s ease-out;
@@ -173,14 +188,49 @@
         border-radius: 11px;
         display: block;
         font-family: inherit;
+      }
+      .input-group {
+        position: relative;
         width: 100%;
         max-width: 350px;
         margin: 0 auto 15px auto;
-        border: 2px solid #e1e1e1;
-        text-align: center;
-        transition: all 0.3s ease;
       }
-      .form-control:focus {
+      .input-group-icon {
+        position: absolute;
+        top: 50%;
+        right: 15px;
+        transform: translateY(-50%);
+        color: #aab0bb;
+        font-size: 18px;
+        pointer-events: none;
+        z-index: 2;
+      }
+      input,
+      textarea {
+        width: 100%;
+        display: block;
+        border: 2px solid #e1e1e1;
+        transition: all 0.3s ease;
+        font-family: inherit;
+      }
+      input {
+        direction: auto;
+        text-align: center;
+        padding-right: 45px !important;
+      }
+      input:disabled {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+      }
+      textarea {
+        resize: vertical;
+        padding: 12px 15px;
+        border-radius: 11px;
+        max-width: 450px;
+        margin: 0 auto 15px auto;
+      }
+      input:focus,
+      textarea:focus {
         border-color: #0056b3;
         box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
         outline: none;
@@ -199,8 +249,6 @@
         position: relative;
         overflow: hidden;
         font-family: inherit;
-        padding: 12px 15px;
-        border-radius: 11px;
       }
       button:hover:not(:disabled) {
         background-color: #004494;
@@ -211,25 +259,13 @@
         transform: translateY(1px);
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
       }
-      button:disabled,
-      button.form-control:disabled {
-        background-color: #6c757d !important;
+      button:disabled {
+        background-color: #6c757d;
         cursor: not-allowed;
-        transform: none;
-        box-shadow: none;
-        opacity: 0.9;
-        color: white !important;
-      }
-      input:disabled,
-      select:disabled {
-        color: #6c757d !important;
-        background-color: #f5f5f5 !important;
       }
       .btn-text {
         position: relative;
         z-index: 2;
-        color: #ffffff !important;
-        display: inline-block;
       }
       .ripple-span {
         position: absolute;
@@ -243,11 +279,127 @@
       .pulse-button {
         animation: pulseGlow 1.5s infinite;
       }
+      .btn-share {
+        background-color: #008080;
+        margin-top: 25px;
+      }
+      .btn-share:hover:not(:disabled) {
+        background-color: #006666;
+      }
       .btn-success {
         background-color: #28a745;
       }
       .btn-success:hover:not(:disabled) {
         background-color: #218838;
+      }
+      #result:not(:empty) {
+        margin-top: 20px;
+      }
+      .student-info-appear {
+        animation: slideInUp 0.5s ease-out forwards;
+      }
+      .id-card {
+        background: #ffffff;
+        border: 2px solid #e1e8f0;
+        border-radius: 16px;
+        max-width: 450px;
+        margin: 25px auto 0 auto;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        position: relative;
+      }
+      .id-card-header-bar {
+        background: linear-gradient(135deg, #0056b3, #004494);
+        color: white;
+        padding: 12px;
+        font-size: 16px;
+        font-weight: 800;
+      }
+      .id-card-body {
+        padding: 25px 20px;
+      }
+      .id-card-name {
+        font-size: 22px;
+        font-weight: 900;
+        color: #8f250c;
+        margin-bottom: 6px;
+        line-height: 1.4;
+      }
+      .id-card-grade {
+        font-size: 16px;
+        color: #4a4e69;
+        font-weight: 700;
+        margin-bottom: 25px;
+        padding-bottom: 15px;
+        border-bottom: 2px dashed #e1e8f0;
+      }
+      .id-details-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .id-detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f8fbff;
+        padding: 14px 20px;
+        border-radius: 10px;
+        border: 1px solid #eef2f7;
+        transition: transform 0.2s, box-shadow 0.2s;
+        flex-wrap: nowrap;
+      }
+      .id-detail-row:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0, 86, 179, 0.06);
+        border-color: #cce0ff;
+      }
+      .id-detail-label {
+        font-size: 15px;
+        color: #6c757d;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .id-detail-value {
+        font-size: 20px;
+        font-weight: 900;
+        color: #0056b3;
+        direction: ltr;
+        display: inline-block;
+        white-space: nowrap;
+      }
+      .id-detail-value.highlight-seat {
+        color: #28a745;
+        font-size: 24px;
+      }
+      .id-detail-value.highlight-comm {
+        color: #8f250c;
+        font-size: 22px;
+      }
+      .row-anim {
+        opacity: 0;
+        animation: rowIn 0.35s ease forwards;
+      }
+      .status-message {
+        padding: 12px;
+        border-radius: 8px;
+        margin-top: 20px;
+        font-size: 16px;
+        font-weight: bold;
+        width: 100%;
+        animation: popIn 0.5s 0.1s ease-out both;
+      }
+      .fail-message {
+        background-color: #b23a48;
+        color: #fed0bb;
+        border: 1px solid #f5c6cb;
+      }
+      .feedback-section {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 2px dashed #eee;
+        animation: fadeIn 0.5s ease-out 1s forwards;
+        opacity: 0;
       }
       .loader {
         border: 4px solid #f3f3f3;
@@ -258,44 +410,6 @@
         animation: spin 1s linear infinite;
         margin: 20px auto;
         display: none;
-      }
-      #toastContainer {
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 9999;
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        pointer-events: none;
-        width: 90%;
-        max-width: 400px;
-      }
-      .custom-toast {
-        padding: 15px 20px;
-        border-radius: 8px;
-        color: white;
-        font-weight: bold;
-        font-size: 15px;
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-        animation: slideInUp 0.3s ease, fadeOut 0.4s ease 3s forwards;
-        text-align: center;
-      }
-      .toast-success {
-        background-color: #28a745;
-        border: 1px solid #218838;
-      }
-      .toast-error {
-        background-color: #dc3545;
-        border: 1px solid #c82333;
-      }
-      @keyframes fadeOut {
-        to {
-          opacity: 0;
-          visibility: hidden;
-          transform: translateY(-20px);
-        }
       }
       .designer-credit {
         margin-top: 15px;
@@ -313,258 +427,41 @@
         z-index: 10;
         position: relative;
       }
-      #tableControls {
-        display: none;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        margin-top: 20px;
-        background: #f8f9fa;
-        border-radius: 10px;
-        padding: 10px 15px;
-        border: 1px solid #eee;
-        gap: 10px;
-      }
-      #searchContainer {
-        display: none;
-        width: 100%;
-        margin-top: 20px;
-        animation: slideInUp 0.6s ease-out forwards;
-      }
-      .pagination-controls {
-        display: none;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: 20px;
-        background: #f8f9fa;
-        padding: 10px 20px;
-        border-radius: 10px;
-        border: 1px solid #eee;
-      }
-      .page-btn {
-        background-color: #4a4e69;
-        padding: 8px 15px;
-        max-width: 100px;
-        margin: 0;
-        font-size: 14px;
-      }
-      .page-btn:hover:not(:disabled) {
-        background-color: #333652;
-      }
-      .page-info {
-        font-weight: bold;
-        color: #0056b3;
-      }
-      .table-responsive {
-        width: 100%;
-        overflow-x: auto;
-        margin-top: 10px;
-        display: none;
-        animation: slideInUp 0.6s ease-out forwards;
-        border-radius: 10px;
-        border: 1px solid #eee;
-        position: relative;
-      }
-      .scroll-hint {
-        display: none;
-        background-color: #f8d7da;
-        color: #721c24;
-        padding: 8px;
-        font-size: 13px;
-        font-weight: bold;
-        border-radius: 8px;
-        border: 1px solid #f5c6cb;
-        margin-bottom: 10px;
-        text-align: center;
-      }
-      table {
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 0;
-        background-color: white;
-        min-width: 650px;
-      }
-      th,
-      td {
-        border-bottom: 1px solid #eee;
-        border-left: 1px solid #eee;
-        padding: 15px;
-        text-align: center;
-        font-size: 15px;
-      }
-      th:last-child,
-      td:last-child {
-        border-left: none;
-      }
-      tr:last-child td {
-        border-bottom: none;
-      }
-      th {
-        background-color: #0056b3;
-        color: white;
-        font-weight: 700;
-        white-space: nowrap;
-      }
-      tbody tr {
-        transition: background 0.15s;
-      }
-      tbody tr:nth-child(even) {
-        background-color: #fbfbfb;
-      }
-      tbody tr:hover {
-        background: #eef4ff;
-      }
-      .row-anim {
-        opacity: 0;
-        animation: rowIn 0.35s ease forwards;
-      }
-      .status-badge {
-        display: inline-block;
-        padding: 5px 10px;
-        border-radius: 20px;
-        font-weight: bold;
-        font-size: 13px;
-        white-space: nowrap;
-      }
-      .status-confirmed {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
-      }
-      .status-pending {
-        background-color: #fff3cd;
-        color: #856404;
-        border: 1px solid #ffeeba;
-      }
-      .action-btns {
-        display: flex;
-        gap: 8px;
-        justify-content: center;
-        flex-wrap: wrap;
-      }
-      .btn-sm {
-        max-width: max-content;
-        padding: 8px 12px;
-        font-size: 13px;
-        margin: 0;
-      }
-      .btn-confirm {
-        background-color: #28a745;
-      }
-      .btn-confirm:hover:not(:disabled) {
-        background-color: #218838;
-      }
-      .btn-edit {
-        background-color: #dc3545;
-      }
-      .btn-edit:hover:not(:disabled) {
-        background-color: #c82333;
-      }
-      .modal-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.6);
-        z-index: 1000;
-        justify-content: center;
-        align-items: center;
-        animation: fadeInPage 0.3s;
-      }
-      .modal-content {
+      .name-card {
         background: white;
-        padding: 30px;
-        border-radius: 15px;
+        border: 2px solid #e1e1e1;
+        border-radius: 11px;
+        padding: 20px;
+        margin-top: 15px;
         text-align: center;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        animation: popIn 0.3s ease-out;
-        max-width: 90%;
-        width: 450px;
-        max-height: 90vh;
-        overflow-y: auto;
+        opacity: 0;
+        animation: slideInUp 0.5s ease-out forwards;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
       }
-      .modal-title {
-        color: #0056b3;
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 20px;
-        line-height: 1.5;
-      }
-      .modal-body {
-        text-align: right;
-        margin-bottom: 20px;
-        background: #f8f9fa;
-        padding: 15px;
-        border-radius: 10px;
-        border: 1px solid #eee;
-      }
-      .modal-body p {
-        margin: 0 0 10px 0;
-        font-weight: 600;
-        color: #4a4e69;
-        font-size: 14px;
-      }
-      .modal-body span.curr-val {
+      .name-card-title {
         color: #0056b3;
         font-weight: 800;
-        margin-right: 5px;
+        font-size: 18px;
+        margin-top: 0;
+        margin-bottom: 5px;
       }
-      .modal-body input,
-      .modal-body textarea {
+      .name-card-subtitle {
+        color: #6c757d;
+        font-size: 14px;
+        margin-top: 0;
+        margin-bottom: 12px;
+      }
+      .name-card-id {
+        color: #28a745;
+        font-weight: 800;
+        font-size: 16px;
+        margin-top: 0;
         margin-bottom: 15px;
-        width: 100%;
-        max-width: 100%;
       }
-      .modal-body input:last-child,
-      .modal-body textarea:last-child {
-        margin-bottom: 0;
+      .name-card-btn {
+        max-width: 200px;
+        margin: 0 auto;
       }
-      .modal-buttons {
-        display: flex;
-        justify-content: center;
-        gap: 15px;
-        flex-wrap: wrap;
-      }
-      .btn-modal-confirm,
-      .btn-modal-cancel {
-        margin: 0;
-        padding: 10px 20px;
-        max-width: 150px;
-        border-radius: 11px;
-        flex: 1;
-        min-width: 120px;
-      }
-      .btn-modal-confirm {
-        background-color: #28a745;
-      }
-      .btn-modal-confirm:hover:not(:disabled) {
-        background-color: #218838;
-      }
-      .btn-modal-cancel {
-        background-color: #dc3545;
-      }
-      .btn-modal-cancel:hover:not(:disabled) {
-        background-color: #c82333;
-      }
-      .feedback-section {
-        margin-top: 20px;
-        width: 100%;
-        display: none;
-        animation: slideInUp 0.6s ease-out forwards;
-      }
-      #feedbackFormContainer {
-        display: none;
-        text-align: center;
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 15px;
-        border: 1px solid #e1e1e1;
-        margin-top: 15px;
-      }
-
       @media (min-width: 768px) {
         .top-logos img {
           max-height: 160px;
@@ -575,126 +472,44 @@
       }
       @media (max-width: 480px) {
         body {
-          padding: 10px 5px;
+          padding: 15px 10px;
         }
         .container {
-          padding: 15px 10px;
+          padding: 25px 20px;
           border-radius: 10px;
         }
         .top-logos img {
-          max-height: 60px;
-          gap: 10px;
+          max-height: 90px;
         }
         h2 {
-          font-size: 18px;
-          margin-bottom: 15px;
+          font-size: 22px;
         }
         .form-control,
-        button {
+        button,
+        .input-group,
+        textarea {
           max-width: 100%;
-          font-size: 13px;
-          padding: 8px 10px;
         }
-        .modal-content {
-          padding: 15px;
-          width: 95%;
+        .id-card-name {
+          font-size: 20px;
         }
-        .modal-title {
-          font-size: 17px;
-          margin-bottom: 15px;
+        .id-detail-label {
+          font-size: 14px;
         }
-        .modal-body p {
-          font-size: 12px;
+        .id-detail-value {
+          font-size: 18px;
         }
-        .modal-buttons {
-          flex-direction: column;
-          gap: 8px;
+        .id-detail-value.highlight-seat {
+          font-size: 22px;
         }
-        .btn-modal-confirm,
-        .btn-modal-cancel {
-          max-width: 100%;
-          padding: 8px;
-          font-size: 13px;
+        .id-detail-value.highlight-comm {
+          font-size: 20px;
         }
-        #tableControls {
-          flex-direction: column;
-          text-align: center;
-          padding: 8px;
-          font-size: 12px;
+        .id-card-body {
+          padding: 20px 15px;
         }
-        .pagination-controls {
-          flex-direction: column;
-          gap: 8px;
-          padding: 8px;
-        }
-        .scroll-hint {
-          font-size: 12px;
-          padding: 6px;
-        }
-        table {
-          display: block;
-          width: max-content;
-          min-width: auto;
-        }
-        thead,
-        tbody {
-          display: block;
-        }
-        tr {
-          display: flex;
-          width: max-content;
-          border-bottom: 1px solid #eee;
-        }
-        th,
-        td {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 6px 4px;
-          font-size: 12px;
-          border: none;
-          border-left: 1px solid #eee;
-        }
-        td:last-child,
-        th:last-child {
-          border-left: none;
-        }
-        .col-action {
-          order: 1;
-          width: 95px;
-        }
-        .col-name {
-          order: 2;
-          width: 130px;
-        }
-        .col-section {
-          order: 3;
-          width: 45px;
-        }
-        .col-seat {
-          order: 4;
-          width: 70px;
-        }
-        .col-nid {
-          order: 5;
-          width: 110px;
-        }
-        .col-status {
-          order: 6;
-          width: 90px;
-        }
-        .col-serial {
-          order: 7;
-          width: 30px;
-        }
-        .btn-sm {
-          font-size: 10px;
-          padding: 3px 5px;
-          min-width: 40px;
-        }
-        .action-btns {
-          gap: 3px;
-          flex-direction: row;
+        .id-detail-row {
+          padding: 12px 15px;
         }
       }
     </style>
@@ -755,347 +570,101 @@
       "
     ></div>
 
-    <div id="toastContainer"></div>
-
     <div class="container" role="main">
       <div class="top-logos">
-        <img src="logo_2.webp" alt="شعار وزارة التربية والتعليم" />
-        <img src="logo_1.webp" alt="شعار مدرسة الشهيد محمود علي الخطيب" />
+        <img
+          src="logo_2.webp"
+          crossorigin="anonymous"
+          alt="شعار وزارة التربية والتعليم"
+        />
+        <img
+          src="logo_1.webp"
+          crossorigin="anonymous"
+          alt="شعار مدرسة الشهيد محمود علي الخطيب"
+        />
       </div>
       <div class="header-image">
         <img
           src="logo_3.webp"
+          crossorigin="anonymous"
           alt="مدرسة الشهيد محمود علي الخطيب الرسمية للغات"
         />
       </div>
-      <h2>مراجعة وتأكيد بيانات الطلاب</h2>
-
-      <select id="gradeSelect" class="form-control" onchange="showSections()">
-        <option value="">-- اختر الصف الدراسي --</option>
-        <option value="KG 1">KG 1</option>
-        <option value="KG 2">KG 2</option>
-        <option value="الأول الابتدائي">الصف الأول الابتدائي</option>
-        <option value="الثاني الابتدائي">الصف الثاني الابتدائي</option>
-        <option value="الثالث الابتدائي">الصف الثالث الابتدائي</option>
-        <option value="الرابع الابتدائي">الصف الرابع الابتدائي</option>
-        <option value="الخامس الابتدائي">الصف الخامس الابتدائي</option>
-        <option value="السادس الابتدائي">الصف السادس الابتدائي</option>
-        <option value="الأول الإعدادي">الصف الأول الإعدادي</option>
-        <option value="الثاني الإعدادي">الصف الثاني الإعدادي</option>
-        <option value="الثالث الإعدادي">الصف الثالث الإعدادي</option>
-      </select>
-
-      <select
-        id="sectionSelect"
-        class="form-control"
-        style="display: none"
-        onchange="showSearchBtn()"
-      >
-        <option value="">-- اختر رقم الفصل --</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-        <option value="5">5</option>
-        <option value="6">6</option>
-      </select>
-
-      <button
-        id="searchBtn"
-        class="form-control pulse-button"
-        style="display: none"
-        onclick="addRipple(event, this); fetchStudents()"
-      >
-        <span class="btn-text">🔎 عرض الطلاب</span>
-      </button>
-
-      <div class="loader" id="loader"></div>
-
-      <div id="searchContainer">
+      <h2>بيانات لجان الطلاب</h2>
+      <div class="input-group">
+        <span class="input-group-icon">👤</span>
         <input
           type="text"
-          id="liveSearchInput"
+          inputmode="text"
+          maxlength="50"
+          id="studentIdInput"
           class="form-control"
-          placeholder="🔎 بحث باسم الطالب أو رقم الجلوس..."
-          style="max-width: 100%; margin: 0"
-          oninput="filterTable()"
+          placeholder="أدخل رقم الجلوس أو الاسم"
+          aria-label="أدخل رقم الجلوس أو الاسم"
         />
       </div>
-
-      <div id="tableControls">
-        <div style="display: flex; align-items: center; gap: 10px">
-          <span style="font-weight: bold; color: #0056b3; font-size: 15px"
-            >عرض بالصفحة:</span
-          >
-          <select
-            id="rowsPerPageSelect"
-            class="form-control"
-            style="max-width: 80px; margin: 0; padding: 8px; text-align: center"
-            onchange="updateRowsPerPage()"
-          >
-            <option value="10">10</option>
-            <option value="20">20</option>
-            <option value="30">30</option>
-            <option value="50">50</option>
-            <option value="10000" selected>الكل</option>
-          </select>
-        </div>
-        <div
-          id="studentCountInfo"
-          style="font-weight: bold; color: #4a4e69; font-size: 14px"
-        ></div>
-      </div>
-
-      <div class="scroll-hint" id="scrollHint">
-        ↔️ اسحب الجدول لليمين واليسار لرؤية باقي البيانات
-      </div>
-
-      <div class="table-responsive" id="tableContainer">
-        <table id="studentsTable">
-          <thead>
-            <tr>
-              <th class="col-serial">م</th>
-              <th class="col-name">الاسم</th>
-              <th class="col-seat">رقم الجلوس</th>
-              <th class="col-section">الفصل</th>
-              <th class="col-nid">الرقم القومي</th>
-              <th class="col-status">الحالة</th>
-              <th class="col-action">الإجراء</th>
-            </tr>
-          </thead>
-          <tbody id="studentsBody"></tbody>
-        </table>
-      </div>
-
-      <div id="paginationDiv" class="pagination-controls">
-        <button
-          id="prevBtn"
-          class="page-btn btn-text"
-          onclick="addRipple(event, this); changePage(-1)"
-        >
-          السابق
-        </button>
-        <span class="page-info"
-          >صفحة <span id="currentPageNum">1</span> من
-          <span id="totalPagesNum">1</span></span
-        >
-        <button
-          id="nextBtn"
-          class="page-btn btn-text"
-          onclick="addRipple(event, this); changePage(1)"
-        >
-          التالي
-        </button>
-      </div>
-
-      <div class="feedback-section" id="feedbackSection">
-        <button
-          id="showFeedbackBtn"
-          class="form-control"
-          style="
-            background-color: #4a4e69;
-            margin: 0 auto;
-            max-width: 250px;
-            font-size: 14px;
-          "
-          onclick="addRipple(event,this); toggleFeedbackForm()"
-        >
-          <span class="btn-text">💬 التواصل مع إدارة المدرسة</span>
-        </button>
-        <div id="feedbackFormContainer">
-          <h4
-            style="
-              color: #0056b3;
-              margin-top: 0;
-              margin-bottom: 15px;
-              font-size: 18px;
-            "
-          >
-            سجل بياناتك ومقترحك أو شكواك:
-          </h4>
-          <input
-            type="text"
-            id="fbName"
-            class="form-control"
-            placeholder="اسم الطالب كاملاً"
-            style="max-width: 100%"
-          />
-          <input
-            type="text"
-            id="fbSeat"
-            class="form-control"
-            placeholder="رقم الجلوس أو القومي"
-            style="max-width: 100%"
-            inputmode="numeric"
-          />
-          <input
-            type="text"
-            id="fbGrade"
-            class="form-control"
-            placeholder="الصف والفصل"
-            style="max-width: 100%"
-          />
-          <textarea
-            id="fbMsg"
-            class="form-control"
-            rows="4"
-            placeholder="اكتب تفاصيل الرسالة هنا..."
-            style="max-width: 100%"
-          ></textarea>
-          <div
-            style="
-              display: flex;
-              gap: 10px;
-              justify-content: center;
-              flex-wrap: wrap;
-            "
-          >
-            <button
-              id="submitFeedbackBtn"
-              class="form-control btn-success"
-              style="margin: 0; max-width: 180px"
-              onclick="addRipple(event,this); sendFeedbackGeneral()"
-            >
-              <span class="btn-text">📨 إرسال للإدارة</span>
-            </button>
-            <button
-              class="form-control"
-              style="background-color: #dc3545; margin: 0; max-width: 120px"
-              onclick="addRipple(event,this); closeFeedbackForm()"
-            >
-              <span class="btn-text">إلغاء</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
+      <button id="searchBtn" class="form-control pulse-button">
+        <span class="btn-text">🔎 بحث</span>
+      </button>
+      <div
+        class="loader"
+        id="loader"
+        role="status"
+        aria-label="جاري البحث..."
+      ></div>
+      <div id="nameSearchResults" role="status" aria-live="polite"></div>
+      <div
+        id="result"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      ></div>
       <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
     </div>
     <div class="visit-counter">
       عدد زيارات الموقع : <span id="visitCount">...</span>
     </div>
 
-    <div id="confirmModal" class="modal-overlay">
-      <div class="modal-content">
-        <h3 class="modal-title">تأكيد البيانات</h3>
-        <p style="margin-bottom: 25px; color: #4a4e69; font-weight: 600">
-          هل أنت متأكد أن جميع بيانات الطالب
-          <span
-            id="confirmStudentName"
-            style="color: #0056b3; font-weight: bold"
-          ></span>
-          صحيحة تماماً؟
-        </p>
-        <div class="modal-buttons">
-          <button class="btn-modal-confirm btn-text" onclick="executeConfirm()">
-            نعم، أؤكد
-          </button>
-          <button class="btn-modal-cancel btn-text" onclick="closeModals()">
-            إلغاء
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div id="editModal" class="modal-overlay">
-      <div class="modal-content">
-        <h3 class="modal-title">طلب تعديل بيانات</h3>
-        <div class="modal-body">
-          <p>الاسم الحالي:<span id="editCurrName" class="curr-val"></span></p>
-          <input
-            type="text"
-            id="editNewName"
-            class="form-control"
-            placeholder="اكتب الاسم الجديد (إذا لزم الأمر)"
-          />
-
-          <p>
-            الرقم القومي الحالي:<span
-              id="editCurrNid"
-              class="curr-val"
-              dir="ltr"
-            ></span>
-          </p>
-          <input
-            type="text"
-            id="editNewNid"
-            class="form-control"
-            placeholder="اكتب الرقم القومي كاملاً (14 رقم)"
-            inputmode="numeric"
-            maxlength="14"
-          />
-
-          <p>الفصل الحالي:<span id="editCurrSec" class="curr-val"></span></p>
-          <input
-            type="text"
-            id="editNewSec"
-            class="form-control"
-            placeholder="اكتب الفصل الجديد (إذا لزم الأمر)"
-            inputmode="numeric"
-          />
-
-          <p style="margin-top: 15px">
-            ملاحظات إضافية:<span class="curr-val"></span>
-          </p>
-          <textarea
-            id="editNotes"
-            class="form-control"
-            rows="3"
-            placeholder="اكتب أي ملاحظات أخرى هنا..."
-            style="max-width: 100%"
-          ></textarea>
-        </div>
-        <div class="modal-buttons">
-          <button class="btn-modal-confirm btn-text" onclick="executeEdit()">
-            إرسال الطلب
-          </button>
-          <button class="btn-modal-cancel btn-text" onclick="closeModals()">
-            إلغاء
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <div id="contactModal" class="modal-overlay">
-      <div class="modal-content">
-        <h3 class="modal-title" style="color: #dc3545">
-          ⚠️ وصلت للحد المسموح للتعديلات
-        </h3>
-        <div class="modal-body">
-          <p style="text-align: center; margin-bottom: 15px">
-            لقد استنفذت الـ 3 محاولات لتعديل بياناتك. يرجى شرح مشكلتك بالتفصيل
-            للإدارة لمساعدتك.
-          </p>
-          <textarea
-            id="contactMessage"
-            class="form-control"
-            rows="4"
-            placeholder="اكتب تفاصيل المشكلة هنا... (إجباري)"
-          ></textarea>
-        </div>
-        <div class="modal-buttons">
-          <button
-            class="btn-modal-confirm btn-text"
-            style="background-color: #0056b3"
-            onclick="executeContact()"
-          >
-            إرسال للإدارة
-          </button>
-          <button class="btn-modal-cancel btn-text" onclick="closeModals()">
-            إلغاء
-          </button>
-        </div>
-      </div>
-    </div>
-
     <script>
       const API_URL =
         "https://script.google.com/macros/s/AKfycbwBTXJdYieo6LWZCs-bNKkYpU_ASyifPdj9ZxXueL272ygjDQVcScwUl9L3WBboplfCCQ/exec";
-      let allStudents = [];
-      let filteredStudents = [];
-      let currentPage = 1;
-      let rowsPerPage = 10000;
-      let selectedStudentIdx = -1;
+      let shareCount = 0;
+      let isSearching = false;
+
+      function escapeHTML(str) {
+        if (str === null || str === undefined) return "";
+        return String(str).replace(/[&<>'"]/g, function (tag) {
+          const charsToReplace = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "'": "&#39;",
+            '"': "&quot;",
+          };
+          return charsToReplace[tag] || tag;
+        });
+      }
+
+      async function fetchWithTimeout(url, options = {}, timeoutMs = 15000) {
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), timeoutMs);
+        try {
+          const response = await fetch(url, {
+            ...options,
+            signal: controller.signal,
+          });
+          clearTimeout(timeout);
+          return response;
+        } catch (err) {
+          clearTimeout(timeout);
+          if (err.name === "AbortError") {
+            throw new Error(
+              "انتهت مهلة الاتصال، يرجى التحقق من الإنترنت أو المحاولة لاحقاً"
+            );
+          }
+          throw err;
+        }
+      }
 
       fetch("https://api.counterapi.dev/v1/alkhateeb-students/visits/up")
         .then((res) => res.json())
@@ -1107,8 +676,24 @@
           document.getElementById("visitCount").innerText = "-";
         });
 
+      document
+        .getElementById("studentIdInput")
+        .addEventListener("keypress", function (event) {
+          if (event.key === "Enter") {
+            event.preventDefault();
+            addRipple(event, document.getElementById("searchBtn"));
+            getGrade();
+          }
+        });
+
+      document
+        .getElementById("searchBtn")
+        .addEventListener("click", function (event) {
+          addRipple(event, this);
+          getGrade();
+        });
+
       function addRipple(e, btn) {
-        if (btn.disabled) return;
         const rect = btn.getBoundingClientRect();
         let x, y;
         if (e.clientX !== undefined && e.clientX !== 0) {
@@ -1131,500 +716,502 @@
         setTimeout(() => span.remove(), 600);
       }
 
-      function showToast(msg, isError = false) {
-        const container = document.getElementById("toastContainer");
-        const toast = document.createElement("div");
-        toast.className = `custom-toast ${
-          isError ? "toast-error" : "toast-success"
-        }`;
-        toast.innerText = msg;
-        container.appendChild(toast);
-        setTimeout(() => {
-          if (container.contains(toast)) container.removeChild(toast);
-        }, 3500);
-      }
-
-      function hideMessageAndTable() {
-        document.getElementById("tableContainer").style.display = "none";
-        document.getElementById("searchContainer").style.display = "none";
-        document.getElementById("tableControls").style.display = "none";
-        document.getElementById("paginationDiv").style.display = "none";
-        document.getElementById("feedbackSection").style.display = "none";
-        document.getElementById("scrollHint").style.display = "none";
-      }
-
-      function showSections() {
-        hideMessageAndTable();
-        const grade = document.getElementById("gradeSelect").value;
-        const sectionSelect = document.getElementById("sectionSelect");
-        const searchBtn = document.getElementById("searchBtn");
-        sectionSelect.value = "";
-        searchBtn.style.display = "none";
-        if (grade) {
-          sectionSelect.style.display = "block";
-          sectionSelect.style.animation = "slideInUp 0.3s ease-out";
-        } else {
-          sectionSelect.style.display = "none";
-        }
-      }
-
-      function showSearchBtn() {
-        hideMessageAndTable();
-        const section = document.getElementById("sectionSelect").value;
-        const searchBtn = document.getElementById("searchBtn");
-        if (section) {
-          searchBtn.style.display = "block";
-          searchBtn.style.animation = "slideInUp 0.3s ease-out";
-          setTimeout(() => {
-            searchBtn.style.animation = "";
-          }, 300);
-        } else {
-          searchBtn.style.display = "none";
-        }
-      }
-
-      function escapeHTML(str) {
-        if (str === null || str === undefined) return "";
-        return String(str).replace(/[&<>'"]/g, function (tag) {
-          const chars = {
-            "&": "&amp;",
-            "<": "&lt;",
-            ">": "&gt;",
-            "'": "&#39;",
-            '"': "&quot;",
-          };
-          return chars[tag] || tag;
-        });
-      }
-
-      function fetchStudents() {
-        const grade = document.getElementById("gradeSelect").value;
-        const section = document.getElementById("sectionSelect").value;
-        if (!grade || !section) return;
-
-        hideMessageAndTable();
-        const loader = document.getElementById("loader");
-        const searchBtn = document.getElementById("searchBtn");
-        const searchBtnText = searchBtn.querySelector(".btn-text");
-
-        loader.style.display = "block";
-        searchBtn.disabled = true;
-        searchBtn.classList.remove("pulse-button");
-        searchBtnText.innerText = "⏳ جاري البحث...";
-        document.getElementById("gradeSelect").disabled = true;
-        document.getElementById("sectionSelect").disabled = true;
-
-        const url = `${API_URL}?action=getStudentsBySection&grade=${encodeURIComponent(
-          grade
-        )}&section=${encodeURIComponent(section)}`;
-
-        fetch(url)
-          .then((res) => res.json())
-          .then((data) => {
-            loader.style.display = "none";
-            searchBtn.disabled = false;
-            searchBtn.classList.add("pulse-button");
-            searchBtnText.innerText = "🔎 عرض الطلاب";
-            document.getElementById("gradeSelect").disabled = false;
-            document.getElementById("sectionSelect").disabled = false;
-
-            if (data.status === "error") {
-              showToast(data.message, true);
-            } else if (data.resultsHidden) {
-              showToast(data.message, true);
-            } else if (data.students.length === 0) {
-              showToast("لا توجد بيانات مسجلة في هذا الفصل.", true);
-            } else {
-              allStudents = data.students;
-              filteredStudents = [...allStudents];
-              currentPage = 1;
-              document.getElementById("liveSearchInput").value = "";
-
-              renderTable();
-
-              const search = document.getElementById("searchContainer");
-              const controls = document.getElementById("tableControls");
-              const container = document.getElementById("tableContainer");
-              const feedback = document.getElementById("feedbackSection");
-              const hint = document.getElementById("scrollHint");
-
-              search.style.animation = "slideInUp 0.6s ease-out forwards";
-              container.style.animation = "slideInUp 0.6s ease-out forwards";
-              feedback.style.animation = "slideInUp 0.6s ease-out forwards";
-
-              search.style.display = "block";
-              controls.style.display = "flex";
-              container.style.display = "block";
-              feedback.style.display = "block";
-
-              if (window.innerWidth <= 480) {
-                hint.style.animation = "slideInUp 0.6s ease-out forwards";
-                hint.style.display = "block";
-              }
-
-              setTimeout(() => {
-                search.scrollIntoView({ behavior: "smooth", block: "start" });
-              }, 100);
-            }
-          })
-          .catch(() => {
-            loader.style.display = "none";
-            searchBtn.disabled = false;
-            searchBtn.classList.add("pulse-button");
-            searchBtnText.innerText = "🔎 عرض الطلاب";
-            document.getElementById("gradeSelect").disabled = false;
-            document.getElementById("sectionSelect").disabled = false;
-            showToast(
-              "حدث خطأ في الاتصال بالخادم، يرجى المحاولة لاحقاً.",
-              true
-            );
-          });
-      }
-
-      function filterTable() {
-        const term = document
-          .getElementById("liveSearchInput")
-          .value.toLowerCase();
-        filteredStudents = allStudents.filter(
-          (s) =>
-            String(s.name).toLowerCase().includes(term) ||
-            String(s.seatNum).includes(term)
-        );
-        currentPage = 1;
-        renderTable();
-      }
-
-      function updateRowsPerPage() {
-        rowsPerPage = parseInt(
-          document.getElementById("rowsPerPageSelect").value
-        );
-        currentPage = 1;
-        renderTable();
-      }
-
-      function changePage(direction) {
-        currentPage += direction;
-        renderTable();
-      }
-
-      function renderTable() {
-        const tbody = document.getElementById("studentsBody");
-        tbody.innerHTML = "";
-
-        const totalPages = Math.ceil(filteredStudents.length / rowsPerPage);
-        document.getElementById("currentPageNum").innerText = currentPage;
-        document.getElementById("totalPagesNum").innerText =
-          totalPages > 0 ? totalPages : 1;
-        const pagination = document.getElementById("paginationDiv");
-
-        if (totalPages > 1) {
-          pagination.style.display = "flex";
-          document.getElementById("prevBtn").disabled = currentPage === 1;
-          document.getElementById("nextBtn").disabled =
-            currentPage === totalPages;
-        } else {
-          pagination.style.display = "none";
-        }
-
-        const start = (currentPage - 1) * rowsPerPage;
-        const end = Math.min(start + rowsPerPage, filteredStudents.length);
-        const pageStudents = filteredStudents.slice(start, end);
-
-        document.getElementById(
-          "studentCountInfo"
-        ).innerText = `إجمالي الفصل: ${allStudents.length} | الظاهر بالصفحة: ${pageStudents.length}`;
-
-        pageStudents.forEach((s, idx) => {
-          const actualIdx = allStudents.findIndex(
-            (xs) => xs.seatNum === s.seatNum
-          );
-          const delay = Math.min(idx * 0.05, 0.5);
-          const isPending =
-            !s.isConfirmed &&
-            (!s.reqStatus || s.reqStatus === "" || s.reqStatus === "تم الرفض");
-          const badgeClass = isPending ? "status-pending" : "status-confirmed";
-          const badgeText = isPending ? "⏳ لم يؤكد" : "✅ مؤكد";
-
-          let statusDisplay = "";
-          if (s.reqStatus && s.reqStatus !== "") {
-            let color = "#6c757d";
-            if (s.reqStatus === "تم القبول") color = "#28a745";
-            if (s.reqStatus === "تم الرفض") color = "#dc3545";
-            if (s.reqStatus === "قيد المراجعة") color = "#fd7e14";
-
-            statusDisplay = `<div style="margin-top: 5px;">
-              <span class="status-badge" style="background-color: white; color: ${color}; border: 1px solid ${color}; font-size: 11px;">
-                الحالة: ${escapeHTML(s.reqStatus)}
-              </span>
-            </div>`;
-          }
-
-          let reqBadge = "";
-          if (s.reqCount > 0 && isPending) {
-            reqBadge = `<div style="margin-top: 5px;"><span class="status-badge" style="background-color: #e2e3e5; color: #383d41; border: 1px solid #d6d8db; font-size: 11px;">📝 أرسلت ${s.reqCount} طلب تعديل</span></div>`;
-          }
-
-          let actionsHtml = "";
-          if (!isPending) {
-            actionsHtml = `<button class="form-control btn-sm btn-edit btn-text" onclick="addRipple(event, this); openEditModal(${actualIdx})">✏️ طلب تعديل؟</button>`;
-          } else {
-            actionsHtml = `
-              <div class="action-btns">
-                <button class="form-control btn-sm btn-confirm btn-text" onclick="addRipple(event, this); openConfirmModal(${actualIdx})">✅ تأكيد</button>
-                <button class="form-control btn-sm btn-edit btn-text" onclick="addRipple(event, this); openEditModal(${actualIdx})">✏️ تعديل</button>
-              </div>`;
-          }
-
-          const nidDisplay =
-            !s.nidMasked || s.nidMasked === "—" || s.nidMasked === ""
-              ? '<span style="color: #dc3545; font-weight: 800; font-size: 13px;">غير مسجل</span>'
-              : escapeHTML(s.nidMasked);
-
-          const tr = document.createElement("tr");
-          tr.className = "row-anim";
-          tr.style.animationDelay = `${delay}s`;
-          tr.innerHTML = `
-            <td class="col-serial" style="color:#6c757d; font-weight:bold;">${
-              start + idx + 1
-            }</td>
-            <td class="col-name" style="font-weight:700; color:#0056b3;">${escapeHTML(
-              s.name
-            )}</td>
-            <td class="col-seat" style="font-weight:bold;">${
-              escapeHTML(s.seatNum) || "—"
-            }</td>
-            <td class="col-section">${escapeHTML(s.section) || "—"}</td>
-            <td class="col-nid" dir="ltr" style="font-weight:bold; letter-spacing:1px;">${nidDisplay}</td>
-            <td class="col-status"><span class="status-badge ${badgeClass}">${badgeText}</span>${statusDisplay}${reqBadge}</td>
-            <td class="col-action">${actionsHtml}</td>
-          `;
-          tbody.appendChild(tr);
-        });
-      }
-
-      function closeModals() {
-        document.getElementById("confirmModal").style.display = "none";
-        document.getElementById("editModal").style.display = "none";
-        document.getElementById("contactModal").style.display = "none";
-        selectedStudentIdx = -1;
-      }
-
-      function postBackendAction(
-        payload,
-        btnEl,
-        originalText,
-        successCallback
-      ) {
-        btnEl.disabled = true;
-        btnEl.innerText = "⏳ جاري الإرسال...";
-
-        fetch(API_URL, {
-          method: "POST",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify(payload),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            btnEl.disabled = false;
-            btnEl.innerText = originalText;
-            if (data.status === "error") {
-              showToast("❌ خطأ: " + data.message, true);
-            } else {
-              successCallback(data);
-            }
-          })
-          .catch(() => {
-            btnEl.disabled = false;
-            btnEl.innerText = originalText;
-            showToast(
-              "❌ حدث خطأ في الاتصال. تأكد من الإنترنت وحاول مجدداً.",
-              true
-            );
-          });
-      }
-
-      function openConfirmModal(idx) {
-        selectedStudentIdx = idx;
-        const s = allStudents[idx];
-        document.getElementById("confirmStudentName").innerText = s.name;
-        document.getElementById("confirmModal").style.display = "flex";
-      }
-
-      function executeConfirm() {
-        const s = allStudents[selectedStudentIdx];
-        if (!s.nidMasked || s.nidMasked === "—" || s.nidMasked === "") {
-          closeModals();
-          showToast(
-            "⚠️ الرقم القومي غير مسجل، يرجى تقديم طلب تعديل لإضافته أولاً قبل التأكيد.",
-            true
-          );
-          setTimeout(() => {
-            openEditModal(selectedStudentIdx);
-          }, 1500);
-          return;
-        }
-
-        const btn = document.querySelector("#confirmModal .btn-modal-confirm");
-        const payload = {
-          action: "confirmData",
-          name: s.name,
-          seatNum: s.seatNum,
-          grade: document.getElementById("gradeSelect").value,
-          section: s.section,
-        };
-        postBackendAction(payload, btn, "نعم، أؤكد", function (res) {
-          s.isConfirmed = true;
-          s.reqStatus = "تم التأكيد";
-          closeModals();
-          renderTable();
-          showToast("✅ تم تأكيد البيانات بنجاح.");
-        });
-      }
-
-      function openEditModal(idx) {
-        selectedStudentIdx = idx;
-        const s = allStudents[idx];
-        if (s.reqCount >= 3) {
-          document.getElementById("contactMessage").value = "";
-          document.getElementById("contactModal").style.display = "flex";
-        } else {
-          document.getElementById("editCurrName").innerText = s.name || "—";
-          document.getElementById("editCurrNid").innerHTML =
-            !s.nidMasked || s.nidMasked === "—"
-              ? '<span style="color: #dc3545; font-size: 13px;">غير مسجل</span>'
-              : escapeHTML(s.nidMasked);
-          document.getElementById("editCurrSec").innerText = s.section || "—";
-          document.getElementById("editNewName").value = "";
-          document.getElementById("editNewNid").value = "";
-          document.getElementById("editNewSec").value = "";
-          document.getElementById("editNotes").value = "";
-          document.getElementById("editModal").style.display = "flex";
-        }
-      }
-
-      function executeEdit() {
-        const newName = document.getElementById("editNewName").value.trim();
-        const newNid = document.getElementById("editNewNid").value.trim();
-        const newSec = document.getElementById("editNewSec").value.trim();
-        const notes = document.getElementById("editNotes").value.trim();
-
-        const s = allStudents[selectedStudentIdx];
-        const isNidMissing =
-          !s.nidMasked || s.nidMasked === "—" || s.nidMasked === "";
-
-        if (isNidMissing && !newNid) {
-          showToast(
-            "⚠️ الرقم القومي غير مسجل حالياً، يجب إدخاله كإجراء إجباري.",
-            true
-          );
-          return;
-        }
-
-        if (!newName && !newNid && !newSec && !notes) {
-          showToast(
-            "⚠️ يرجى كتابة أي تعديل أو ملاحظات، أو الضغط على إلغاء.",
-            true
-          );
-          return;
-        }
-
-        if (newNid && newNid.length !== 14) {
-          showToast("⚠️ الرقم القومي يجب أن يتكون من 14 رقم بالضبط.", true);
-          return;
-        }
-
-        const btn = document.querySelector("#editModal .btn-modal-confirm");
-        const payload = {
-          action: "requestEdit",
-          name: s.name,
-          seatNum: s.seatNum,
-          newName: newName,
-          newNid: newNid,
-          newSection: newSec,
-          notes: notes,
-        };
-
-        postBackendAction(payload, btn, "إرسال الطلب", function (res) {
-          if (res.status === "limit_reached") {
-            s.reqCount = 3;
-            closeModals();
-            openEditModal(selectedStudentIdx);
-          } else {
-            s.reqCount = (s.reqCount || 0) + 1;
-            s.reqStatus = "قيد المراجعة";
-            closeModals();
-            renderTable();
-            showToast(
-              "✅ تم إرسال طلب التعديل بنجاح وسيتم مراجعته من الإدارة."
-            );
-          }
-        });
-      }
-
-      function executeContact() {
-        const msg = document.getElementById("contactMessage").value.trim();
-        if (!msg) {
-          showToast("⚠️ يرجى كتابة تفاصيل المشكلة أولاً.", true);
-          return;
-        }
-        const s = allStudents[selectedStudentIdx];
-        const btn = document.querySelector("#contactModal .btn-modal-confirm");
-        const payload = {
-          action: "contactAdmin",
-          name: s.name,
-          seatNum: s.seatNum,
-          message: msg,
-        };
-        postBackendAction(payload, btn, "إرسال للإدارة", function (res) {
-          closeModals();
-          showToast("✅ تم إرسال رسالتك للإدارة، شكراً لتواصلك.");
-        });
-      }
-
-      function toggleFeedbackForm() {
-        document.getElementById("showFeedbackBtn").style.display = "none";
-        const formContainer = document.getElementById("feedbackFormContainer");
+      function toggleFeedbackForm(containerId, inputId, btnEl) {
+        btnEl.style.display = "none";
+        var formContainer = document.getElementById(containerId);
         formContainer.style.display = "block";
         formContainer.style.animation = "fadeIn 0.5s ease-out forwards";
         setTimeout(() => {
           formContainer.scrollIntoView({ behavior: "smooth", block: "center" });
-          document.getElementById("fbName").focus();
+          document.getElementById(inputId).focus();
         }, 100);
       }
 
-      function closeFeedbackForm() {
-        document.getElementById("feedbackFormContainer").style.display = "none";
-        document.getElementById("showFeedbackBtn").style.display = "block";
+      function resetSearch() {
+        document.getElementById("result").innerHTML = "";
+        document.getElementById("nameSearchResults").innerHTML = "";
+        var natIdInput = document.getElementById("studentIdInput");
+        natIdInput.value = "";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        setTimeout(() => natIdInput.focus(), 500);
       }
 
-      function sendFeedbackGeneral() {
-        const fbName = document.getElementById("fbName").value.trim();
-        const fbSeat = document.getElementById("fbSeat").value.trim();
-        const fbGrade = document.getElementById("fbGrade").value.trim();
-        const fbMsg = document.getElementById("fbMsg").value.trim();
-        const btn = document.getElementById("submitFeedbackBtn");
+      function sendFeedback(studentName, seatNumber, studentGrade, idx) {
+        var feedbackText = document.getElementById(
+          `feedbackInput_${idx}`
+        ).value;
+        var btn = document.getElementById(`submitFeedbackBtn_${idx}`);
+        var btnText = btn.querySelector(".btn-text");
+        var statusMsg = document.getElementById(`feedbackStatus_${idx}`);
+        var feedbackTitle = document.getElementById(`feedbackTitle_${idx}`);
 
-        if (!fbMsg) {
-          showToast("⚠️ الرجاء كتابة تفاصيل الرسالة أولاً.", true);
+        if (!feedbackText.trim()) {
+          statusMsg.innerHTML =
+            "<span style='color: red;'>الرجاء كتابة رسالتك أولاً.</span>";
           return;
         }
 
-        const payload = {
+        btn.disabled = true;
+        btnText.innerText = "⏳ جاري الإرسال...";
+        statusMsg.innerHTML = "";
+
+        var payload = {
           action: "submitFeedback",
-          studentName: fbName,
-          seatNumber: fbSeat,
-          studentGrade: fbGrade,
-          feedbackText: fbMsg,
+          studentName: studentName,
+          seatNumber: seatNumber,
+          studentGrade: studentGrade,
+          feedbackText: feedbackText,
         };
 
-        postBackendAction(payload, btn, "📨 إرسال للإدارة", function (res) {
-          showToast("✅ تم إرسال رسالتك للإدارة بنجاح.");
-          document.getElementById("fbName").value = "";
-          document.getElementById("fbSeat").value = "";
-          document.getElementById("fbGrade").value = "";
-          document.getElementById("fbMsg").value = "";
-          closeFeedbackForm();
-        });
+        fetchWithTimeout(API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              btnText.innerText = "✅ تم الإرسال بنجاح!";
+              statusMsg.innerHTML =
+                "<span style='color: green;'>شكراً لك! تم إرسال رسالتك للإدارة.</span>";
+              setTimeout(() => {
+                btn.style.display = "none";
+                feedbackTitle.style.display = "none";
+                document.getElementById(`feedbackInput_${idx}`).style.display =
+                  "none";
+
+                statusMsg.innerHTML =
+                  "<span style='color: green; display: block; margin-bottom: 15px;'>شكراً لك! تم إرسال رسالتك للإدارة.</span>";
+                var resetBtn = document.createElement("button");
+                resetBtn.className = "form-control";
+                resetBtn.style.backgroundColor = "#890620";
+                resetBtn.style.color = "white";
+                resetBtn.innerHTML =
+                  "<span class='btn-text'>🔄 للبحث عن طالب آخر</span>";
+                resetBtn.addEventListener("click", function (e) {
+                  addRipple(e, this);
+                  resetSearch();
+                });
+                statusMsg.appendChild(resetBtn);
+              }, 1500);
+            } else {
+              throw new Error("فشل الحفظ");
+            }
+          })
+          .catch(() => {
+            btn.disabled = false;
+            btnText.innerText = "📨 إرسال الرسالة";
+            statusMsg.innerHTML =
+              "<span style='color: red;'>حدث خطأ، يرجى المحاولة لاحقاً.</span>";
+          });
+      }
+
+      async function shareResult(studentName, captureAreaId, shareBtn, idx) {
+        var captureDiv = document.getElementById(captureAreaId);
+        var btnText = shareBtn.querySelector(".btn-text");
+        var originalText = btnText.innerText;
+
+        btnText.innerText = "⏳ جاري تحضير الصورة...";
+        shareBtn.disabled = true;
+
+        try {
+          const canvas = await html2canvas(captureDiv, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: "#ffffff",
+            scrollY: -window.scrollY,
+            onclone: function (clonedDoc) {
+              var noAnimStyle = clonedDoc.createElement("style");
+              noAnimStyle.innerHTML =
+                "* { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }";
+              clonedDoc.head.appendChild(noAnimStyle);
+              var clonedArea = clonedDoc.getElementById(captureAreaId);
+              clonedArea.style.width = "800px";
+              clonedArea.style.maxWidth = "none";
+              clonedArea.style.padding = "40px";
+              clonedArea.style.margin = "0 auto";
+              clonedArea.style.overflow = "visible";
+              clonedDoc.getElementById(`export-header_${idx}`).style.display =
+                "block";
+              clonedDoc.getElementById(`export-footer_${idx}`).style.display =
+                "block";
+            },
+          });
+
+          const blob = await new Promise((resolve) =>
+            canvas.toBlob(resolve, "image/png")
+          );
+          shareCount++;
+          const fileName = `بيانات_${studentName}_${shareCount}.png`;
+          const file = new File([blob], fileName, { type: "image/png" });
+          const isMobile = /Android|iPhone|iPad|iPod/i.test(
+            navigator.userAgent
+          );
+
+          if (
+            isMobile &&
+            navigator.canShare &&
+            navigator.canShare({ files: [file] })
+          ) {
+            try {
+              await navigator.share({
+                title: `بيانات ${studentName}`,
+                text: `بيانات ورقم جلوس الطالب ${studentName} - مدرسة الشهيد محمود علي الخطيب`,
+                files: [file],
+              });
+            } catch (err) {}
+            btnText.innerText = originalText;
+            shareBtn.disabled = false;
+          } else {
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            shareBtn.style.backgroundColor = "#28a745";
+            btnText.innerText = "✅ تم مشاركة الصورة بنجاح!";
+            setTimeout(() => {
+              shareBtn.style.backgroundColor = "";
+              btnText.innerText = originalText;
+              shareBtn.disabled = false;
+            }, 5000);
+          }
+        } catch (error) {
+          btnText.innerText = originalText;
+          shareBtn.disabled = false;
+          var errorDiv = document.createElement("div");
+          errorDiv.style.cssText =
+            "color: red; margin-top: 10px; font-weight: bold;";
+          errorDiv.textContent =
+            "حدث خطأ أثناء تحضير الصورة، يرجى المحاولة مرة أخرى";
+          shareBtn.parentNode.insertBefore(errorDiv, shareBtn.nextSibling);
+          setTimeout(() => errorDiv.remove(), 4000);
+        }
+      }
+
+      function selectStudentAndSearch(seatNum) {
+        var idInput = document.getElementById("studentIdInput");
+        idInput.value = seatNum;
+        getGrade();
+      }
+
+      function setSearchLoading(state) {
+        isSearching = state;
+        const loader = document.getElementById("loader");
+        const searchBtn = document.getElementById("searchBtn");
+        const searchBtnText = searchBtn.querySelector(".btn-text");
+        const idInput = document.getElementById("studentIdInput");
+
+        loader.style.display = state ? "block" : "none";
+        searchBtn.disabled = state;
+        idInput.disabled = state;
+
+        if (state) {
+          searchBtn.classList.remove("pulse-button");
+          searchBtnText.innerText = "⏳ جاري البحث...";
+        } else {
+          searchBtn.classList.add("pulse-button");
+          searchBtnText.innerText = "🔎 بحث";
+        }
+      }
+
+      function renderStudentCard(studentObj, idx, container) {
+        var safeStudentName = escapeHTML(studentObj.name);
+        var safeStudentGrade = escapeHTML(studentObj.grade);
+        var safeSeatNumber = escapeHTML(String(studentObj.seatNumber)) || "-";
+        var safeCommittee = escapeHTML(String(studentObj.committee)) || "-";
+        if (safeCommittee !== "-") safeCommittee = "رقم " + safeCommittee;
+        var safeFloor = escapeHTML(String(studentObj.floor)) || "-";
+        if (safeFloor !== "-") safeFloor = "الدور " + safeFloor;
+        var html = `
+          <div class="student-info-appear">
+            <div id="capture-area_${idx}" style="background-color: white; padding: 20px; border-radius: 10px; margin-bottom: 15px;">
+              <div id="export-header_${idx}" style="display: none;">
+                <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 25px; width: 100%; gap: 30px;">
+                  <img src="logo_2.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
+                  <img src="logo_1.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
+                </div>
+                <h4 style="color: #4a4e69; margin-top: 0; margin-bottom: 25px; border-bottom: 2px dashed #eee; padding-bottom: 15px; font-size: 22px;">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</h4>
+              </div>
+
+              <div class="id-card row-anim" style="animation-delay: 0.1s">
+                <div class="id-card-header-bar">بطاقة رقم الجلوس واللجنة</div>
+                <div class="id-card-body">
+                  <div class="id-card-name">${safeStudentName}</div>
+                  <div class="id-card-grade">الصف: ${safeStudentGrade}</div>
+                  <div class="id-details-list">
+                    <div class="id-detail-row">
+                      <span class="id-detail-label">رقم الجلوس</span>
+                      <span class="id-detail-value highlight-seat">${safeSeatNumber}</span>
+                    </div>
+                    <div class="id-detail-row">
+                      <span class="id-detail-label">اللجنة</span>
+                      <span class="id-detail-value highlight-comm">${safeCommittee}</span>
+                    </div>
+                    <div class="id-detail-row">
+                      <span class="id-detail-label">مكان اللجنة</span>
+                      <span class="id-detail-value">${safeFloor}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="export-footer_${idx}" style="display: none; margin-top: 30px; font-size: 16px; color: #4a4e69; text-align: center; font-weight: bold; border-top: 2px solid #eee; padding-top: 15px;">تصميم وتنفيذ : سمير هلال</div>
+            </div>
+
+            <button id="shareBtn_${idx}" class="form-control btn-share">
+              <span class="btn-text">📸 مشاركة البيانات كصورة</span>
+            </button>
+            <div id="warningMsg_${idx}" style="background-color: #fce4e4; color: #cc0000; border: 1px solid #f8b4b4; border-radius: 8px; padding: 10px; font-size: 14px; font-weight: 700; margin: 20px auto -10px auto; max-width: 350px; line-height: 1.5;">
+            ⚠️ يرجى التأكد من صحة اسم الطالب، وفي حال وجود خطأ أبلغنا عبر الزر أدناه.
+            </div>
+            <div class="feedback-section">
+              <button id="showFeedbackBtn_${idx}" class="form-control pulse-button">
+                <span class="btn-text">💬 تواصل مع إدارة المدرسة</span>
+              </button>
+              <div id="feedbackFormContainer_${idx}" style="display: none; text-align: center;">
+                <h4 id="feedbackTitle_${idx}" style="color: #333; margin-bottom: 15px; font-size: 18px;">تواصل معنا:</h4>
+                <textarea id="feedbackInput_${idx}" rows="3" placeholder="اكتب رسالتك هنا..." lang="ar" dir="rtl"></textarea>
+                <button id="submitFeedbackBtn_${idx}" class="form-control btn-success">
+                  <span class="btn-text">📨 إرسال الرسالة</span>
+                </button>
+                <div id="feedbackStatus_${idx}" style="margin-top: 10px; font-weight: bold; text-align: center;"></div>
+              </div>
+            </div>
+          </div>`;
+
+        container.innerHTML = html;
+
+        document
+          .getElementById(`shareBtn_${idx}`)
+          .addEventListener("click", function (e) {
+            addRipple(e, this);
+            shareResult(safeStudentName, `capture-area_${idx}`, this, idx);
+          });
+        document
+          .getElementById(`showFeedbackBtn_${idx}`)
+          .addEventListener("click", function (e) {
+            addRipple(e, this);
+            toggleFeedbackForm(
+              `feedbackFormContainer_${idx}`,
+              `feedbackInput_${idx}`,
+              this
+            );
+          });
+        document
+          .getElementById(`submitFeedbackBtn_${idx}`)
+          .addEventListener("click", function (e) {
+            addRipple(e, this);
+            sendFeedback(
+              safeStudentName,
+              safeSeatNumber,
+              safeStudentGrade,
+              idx
+            );
+          });
+      }
+
+      function searchByName(nameQuery) {
+        if (isSearching) return;
+        var resultDiv = document.getElementById("result");
+        var nameSearchResultsDiv = document.getElementById("nameSearchResults");
+
+        resultDiv.innerHTML = "";
+        nameSearchResultsDiv.innerHTML = "";
+        document.getElementById("studentIdInput").blur();
+        setSearchLoading(true);
+
+        var url = API_URL + "?name=" + encodeURIComponent(nameQuery);
+
+        fetchWithTimeout(url)
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              if (data.results.length === 1) {
+                setSearchLoading(false);
+                selectStudentAndSearch(data.results[0].seatNum);
+                return;
+              }
+
+              var html = "";
+              data.results.forEach((student, index) => {
+                var delay = 0.08 * (index + 1);
+                var safeName = escapeHTML(student.name);
+                var safeGrade = escapeHTML(student.grade);
+                var safeSeatNum = escapeHTML(student.seatNum);
+
+                html += `
+                <div class="name-card" style="animation-delay: ${delay}s">
+                  <p class="name-card-title">${safeName}</p>
+                  <p class="name-card-subtitle">الصف: ${safeGrade}</p>
+                  <p class="name-card-id">رقم الجلوس: ${safeSeatNum}</p>
+                  <button id="cardBtn_${index}" class="form-control name-card-btn" data-seat="${safeSeatNum}">
+                    <span class="btn-text">📊 عرض البيانات واللجنة</span>
+                  </button>
+                </div>
+              `;
+              });
+              nameSearchResultsDiv.innerHTML = html;
+
+              data.results.forEach((student, index) => {
+                const btn = document.getElementById(`cardBtn_${index}`);
+                if (btn) {
+                  btn.addEventListener("click", function (e) {
+                    addRipple(e, this);
+                    selectStudentAndSearch(this.getAttribute("data-seat"));
+                  });
+                }
+              });
+            } else {
+              nameSearchResultsDiv.innerHTML = `<div style='color:red; margin-top:15px; font-weight:bold;' class='student-info-appear'>${escapeHTML(
+                data.message
+              )}</div>`;
+            }
+            setTimeout(() => {
+              if (data.results && data.results.length > 1) {
+                window.scrollTo({
+                  top: nameSearchResultsDiv.offsetTop - 20,
+                  behavior: "smooth",
+                });
+              }
+            }, 200);
+          })
+          .catch((err) => {
+            nameSearchResultsDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${escapeHTML(
+              err.message || "حدث خطأ في الاتصال بقاعدة البيانات."
+            )}</div>`;
+          })
+          .finally(() => {
+            if (document.getElementById("studentIdInput").value === nameQuery) {
+              setSearchLoading(false);
+            }
+          });
+      }
+
+      function getGrade() {
+        if (isSearching) return;
+        var idInput = document.getElementById("studentIdInput");
+        var id = idInput.value;
+        var resultDiv = document.getElementById("result");
+        var nameSearchResultsDiv = document.getElementById("nameSearchResults");
+
+        resultDiv.innerHTML = "";
+        nameSearchResultsDiv.innerHTML = "";
+
+        if (!id) {
+          resultDiv.innerHTML =
+            "<div style='color:red; margin-top:15px;' class='student-info-appear'>الرجاء إدخال رقم الجلوس أو الاسم أولاً</div>";
+          return;
+        }
+
+        const isNumeric = /^\d+$/.test(id.trim());
+        if (!isNumeric) {
+          searchByName(id.trim());
+          return;
+        }
+
+        idInput.blur();
+        setSearchLoading(true);
+
+        var url = API_URL + "?id=" + encodeURIComponent(id);
+
+        fetchWithTimeout(url)
+          .then((response) => response.json())
+          .then((data) => {
+            setSearchLoading(false);
+
+            if (data.status === "success") {
+              if (data.resultsHidden === true) {
+                let hiddenHtml = "";
+                data.students.forEach((studentObj, idx) => {
+                  hiddenHtml += `
+                  <div class="student-info-appear" style="margin-bottom: 20px;">
+                    <div id="capture-area_hidden_${idx}">
+                      <h3 class="student-name">الاسم: ${escapeHTML(
+                        studentObj.name
+                      )}</h3>
+                      <div class="status-message fail-message" style="margin-top: 20px;">
+                        ⏳ ${escapeHTML(data.message)}
+                      </div>
+                    </div>
+                  </div>`;
+                });
+                resultDiv.innerHTML = hiddenHtml;
+                setTimeout(() => {
+                  document
+                    .getElementById(`capture-area_hidden_0`)
+                    .scrollIntoView({ behavior: "smooth", block: "center" });
+                }, 200);
+                return;
+              }
+
+              if (data.students.length === 1) {
+                renderStudentCard(data.students[0], 0, resultDiv);
+                setTimeout(() => {
+                  document
+                    .getElementById("warningMsg_0")
+                    .scrollIntoView({ behavior: "smooth", block: "center" });
+                }, 200);
+                return;
+              }
+
+              var html = "";
+              data.students.forEach((student, index) => {
+                var delay = 0.08 * (index + 1);
+                var safeName = escapeHTML(student.name);
+                var safeGrade = escapeHTML(student.grade);
+                var safeSeatNum = escapeHTML(String(student.seatNumber));
+
+                html += `
+                <div class="name-card" style="animation-delay: ${delay}s">
+                  <p class="name-card-title">${safeName}</p>
+                  <p class="name-card-subtitle">الصف: ${safeGrade}</p>
+                  <p class="name-card-id">رقم الجلوس: ${safeSeatNum}</p>
+                  <button id="dupBtn_${index}" class="form-control name-card-btn">
+                    <span class="btn-text">📊 عرض البيانات واللجنة</span>
+                  </button>
+                </div>
+              `;
+              });
+              nameSearchResultsDiv.innerHTML = html;
+
+              data.students.forEach((student, index) => {
+                document
+                  .getElementById(`dupBtn_${index}`)
+                  .addEventListener("click", function (e) {
+                    addRipple(e, this);
+                    nameSearchResultsDiv.innerHTML = "";
+                    renderStudentCard(student, index, resultDiv);
+                    setTimeout(() => {
+                      document
+                        .getElementById(`warningMsg_${index}`)
+                        .scrollIntoView({
+                          behavior: "smooth",
+                          block: "center",
+                        });
+                    }, 200);
+                  });
+              });
+
+              setTimeout(() => {
+                window.scrollTo({
+                  top: nameSearchResultsDiv.offsetTop - 20,
+                  behavior: "smooth",
+                });
+              }, 200);
+            } else {
+              resultDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${escapeHTML(
+                data.message
+              )}</div>`;
+            }
+          })
+          .catch((err) => {
+            setSearchLoading(false);
+            resultDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${escapeHTML(
+              err.message || "حدث خطأ في الاتصال بقاعدة البيانات."
+            )}</div>`;
+          });
       }
     </script>
   </body>
