@@ -1,0 +1,1542 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>العشرة الأوائل - مدرسة الشهيد محمود علي الخطيب</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"
+      defer
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+      defer
+    ></script>
+
+    <meta
+      property="og:title"
+      content="العشرة الأوائل - مدرسة الشهيد محمود علي الخطيب"
+    />
+    <meta property="og:description" content="قائمة أوائل الطلاب لكل صف دراسي" />
+    <meta
+      property="og:image"
+      content="https://mosamirhelal.com/alkhateeb-results/logo_3.webp"
+    />
+    <meta property="og:type" content="website" />
+
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font-family: "Cairo", sans-serif;
+        text-align: center;
+        margin: 0;
+        padding: 40px 20px;
+        background-color: #c9d0d9;
+        animation: fadeInPage 0.55s ease-out;
+        overflow-x: hidden;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      @keyframes fadeInPage {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes slideInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes popIn {
+        0% {
+          opacity: 0;
+          transform: scale(0.85);
+        }
+        70% {
+          transform: scale(1.04);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes floatDot {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-18px);
+        }
+      }
+      @keyframes rowIn {
+        from {
+          opacity: 0;
+          transform: translateX(-12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      @keyframes spin {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes ripple {
+        from {
+          transform: scale(0);
+          opacity: 1;
+        }
+        to {
+          transform: scale(3.5);
+          opacity: 0;
+        }
+      }
+      @keyframes pulseGlow {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(0, 86, 179, 0.7);
+        }
+        70% {
+          transform: scale(1.02);
+          box-shadow: 0 0 0 15px rgba(0, 86, 179, 0);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(0, 86, 179, 0);
+        }
+      }
+      @keyframes floatDown {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 0;
+        }
+        10% {
+          opacity: 1;
+        }
+        90% {
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(105vh) rotate(45deg) translateX(20px);
+          opacity: 0;
+        }
+      }
+
+      @keyframes glowRank1 {
+        0% {
+          box-shadow: 0 12px 40px rgba(217, 119, 6, 0.45);
+        }
+        50% {
+          box-shadow:
+            0 12px 40px rgba(217, 119, 6, 0.45),
+            0 0 20px rgba(217, 119, 6, 0.6);
+        }
+        100% {
+          box-shadow: 0 12px 40px rgba(217, 119, 6, 0.45);
+        }
+      }
+      @keyframes glowRank2 {
+        0% {
+          box-shadow: 0 9px 28px rgba(107, 114, 128, 0.35);
+        }
+        50% {
+          box-shadow:
+            0 9px 28px rgba(107, 114, 128, 0.35),
+            0 0 16px rgba(107, 114, 128, 0.5);
+        }
+        100% {
+          box-shadow: 0 9px 28px rgba(107, 114, 128, 0.35);
+        }
+      }
+      @keyframes glowRank3 {
+        0% {
+          box-shadow: 0 8px 24px rgba(194, 65, 12, 0.3);
+        }
+        50% {
+          box-shadow:
+            0 8px 24px rgba(194, 65, 12, 0.3),
+            0 0 14px rgba(194, 65, 12, 0.45);
+        }
+        100% {
+          box-shadow: 0 8px 24px rgba(194, 65, 12, 0.3);
+        }
+      }
+      @keyframes glowRank4 {
+        0% {
+          box-shadow: 0 7px 20px rgba(67, 56, 202, 0.25);
+        }
+        50% {
+          box-shadow:
+            0 7px 20px rgba(67, 56, 202, 0.25),
+            0 0 11px rgba(67, 56, 202, 0.38);
+        }
+        100% {
+          box-shadow: 0 7px 20px rgba(67, 56, 202, 0.25);
+        }
+      }
+      @keyframes glowRank5 {
+        0% {
+          box-shadow: 0 6px 18px rgba(13, 148, 136, 0.22);
+        }
+        50% {
+          box-shadow:
+            0 6px 18px rgba(13, 148, 136, 0.22),
+            0 0 9px rgba(13, 148, 136, 0.33);
+        }
+        100% {
+          box-shadow: 0 6px 18px rgba(13, 148, 136, 0.22);
+        }
+      }
+      @keyframes glowRank6 {
+        0% {
+          box-shadow: 0 5px 15px rgba(22, 163, 74, 0.2);
+        }
+        50% {
+          box-shadow:
+            0 5px 15px rgba(22, 163, 74, 0.2),
+            0 0 8px rgba(22, 163, 74, 0.28);
+        }
+        100% {
+          box-shadow: 0 5px 15px rgba(22, 163, 74, 0.2);
+        }
+      }
+      @keyframes glowRank7 {
+        0% {
+          box-shadow: 0 4px 12px rgba(2, 132, 199, 0.18);
+        }
+        50% {
+          box-shadow:
+            0 4px 12px rgba(2, 132, 199, 0.18),
+            0 0 6px rgba(2, 132, 199, 0.24);
+        }
+        100% {
+          box-shadow: 0 4px 12px rgba(2, 132, 199, 0.18);
+        }
+      }
+      @keyframes glowRank8 {
+        0% {
+          box-shadow: 0 4px 10px rgba(147, 51, 234, 0.15);
+        }
+        50% {
+          box-shadow:
+            0 4px 10px rgba(147, 51, 234, 0.15),
+            0 0 5px rgba(147, 51, 234, 0.2);
+        }
+        100% {
+          box-shadow: 0 4px 10px rgba(147, 51, 234, 0.15);
+        }
+      }
+      @keyframes glowRank9 {
+        0% {
+          box-shadow: 0 3px 8px rgba(225, 29, 72, 0.13);
+        }
+        50% {
+          box-shadow:
+            0 3px 8px rgba(225, 29, 72, 0.13),
+            0 0 4px rgba(225, 29, 72, 0.16);
+        }
+        100% {
+          box-shadow: 0 3px 8px rgba(225, 29, 72, 0.13);
+        }
+      }
+      @keyframes glowRank10 {
+        0% {
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+        50% {
+          box-shadow:
+            0 2px 6px rgba(0, 0, 0, 0.08),
+            0 0 3px rgba(100, 116, 139, 0.12);
+        }
+        100% {
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+      }
+
+      .dot {
+        position: fixed;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+        background: rgba(0, 86, 179, 0.05);
+        animation: floatDot ease-in-out infinite;
+      }
+
+      .container {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        width: 100%;
+        max-width: 800px;
+        margin: auto;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        animation: slideInUp 0.8s ease-out;
+        position: relative;
+        z-index: 10;
+      }
+
+      .top-logos {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 15px;
+        width: 100%;
+        gap: 20px;
+      }
+      .top-logos img {
+        max-height: 120px;
+        max-width: 45%;
+        width: auto;
+        object-fit: contain;
+      }
+      .header-image {
+        text-align: center;
+        margin-bottom: 25px;
+        padding: 0 10px;
+      }
+      .header-image img {
+        width: 100%;
+        max-width: 500px;
+        height: auto;
+      }
+
+      h2 {
+        color: #0056b3;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        font-size: 26px;
+        font-weight: 800;
+      }
+
+      button {
+        background-color: #0056b3;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto;
+        display: block;
+        transition:
+          transform 0.18s,
+          box-shadow 0.18s,
+          background 0.18s;
+        position: relative;
+        overflow: hidden;
+        font-family: inherit;
+        border-radius: 11px;
+        padding: 12px 15px;
+        font-size: 16px;
+      }
+      button:hover:not(:disabled) {
+        background-color: #004494;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      button:active:not(:disabled) {
+        transform: translateY(1px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      button:disabled {
+        background-color: #6c757d;
+        cursor: not-allowed;
+      }
+
+      .btn-text {
+        position: relative;
+        z-index: 2;
+      }
+      .ripple-span {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        transform: scale(0);
+        animation: ripple 0.6s ease-out forwards;
+        pointer-events: none;
+        z-index: 1;
+      }
+      .pulse-button {
+        animation: pulseGlow 1.5s infinite;
+      }
+
+      .loader {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #0056b3;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+        display: none;
+      }
+
+      .designer-credit {
+        margin-top: 15px;
+        font-size: 13px;
+        color: #4a4e69;
+        text-align: center;
+        font-weight: bold;
+      }
+      .visit-counter {
+        margin-top: 15px;
+        font-size: 12px;
+        color: #4a4e69;
+        font-weight: bold;
+        animation: slideInUp 0.8s ease-out;
+        z-index: 10;
+        position: relative;
+      }
+      .falling-emoji {
+        position: fixed;
+        top: -50px;
+        font-size: 35px;
+        z-index: 9999;
+        pointer-events: none;
+        animation: floatDown linear forwards;
+      }
+
+      .select-wrapper {
+        position: relative;
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto 15px auto;
+      }
+      .select-wrapper::after {
+        content: "▼";
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #0056b3;
+        pointer-events: none;
+        font-size: 12px;
+        z-index: 2;
+      }
+      .grade-select {
+        width: 100%;
+        padding: 13px 15px 13px 35px;
+        border: 2px solid #0056b3;
+        border-radius: 11px;
+        font-family: "Cairo", sans-serif;
+        font-size: 16px;
+        font-weight: 700;
+        color: #0056b3;
+        background: white;
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        text-align: center;
+        transition: all 0.3s;
+        direction: rtl;
+        box-shadow: 0 2px 8px rgba(0, 86, 179, 0.1);
+      }
+      .grade-select:focus {
+        outline: none;
+        border-color: #004494;
+        box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.15);
+      }
+      .grade-select option {
+        color: #1a1a2e;
+        font-weight: 600;
+        font-family: "Cairo", sans-serif;
+      }
+
+      #capture-area {
+        background-color: white;
+        padding: 20px 40px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        overflow: visible;
+      }
+
+      .rank-card-wrapper {
+        perspective: 900px;
+        margin-bottom: 16px;
+      }
+
+      .rank-card {
+        width: 100%;
+        border-radius: 14px;
+        padding: 20px 25px;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        direction: rtl;
+        margin-bottom: 0;
+        animation: popIn 0.5s ease-out both;
+        transform-style: preserve-3d;
+        transition:
+          transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.5s ease;
+        position: relative;
+        overflow: visible;
+      }
+
+      .glass-shimmer {
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.45) 0%,
+          rgba(255, 255, 255, 0) 60%
+        );
+        pointer-events: none;
+        z-index: 1;
+        transition: opacity 0.4s;
+        opacity: 0.7;
+      }
+
+      .rank-badge {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        border-radius: 50%;
+        transform: translate3d(0, 0, 30px);
+        transition: transform 0.5s ease;
+        position: relative;
+        z-index: 2;
+      }
+
+      .rank-info {
+        flex: 1;
+        text-align: right;
+        position: relative;
+        z-index: 2;
+      }
+      .rank-name-text {
+        font-size: 19px;
+        font-weight: 800;
+        margin: 0;
+      }
+      .rank-id-text {
+        font-size: 12px;
+        opacity: 0.75;
+        margin-top: 2px;
+        margin-bottom: 0;
+      }
+
+      .rank-score-block {
+        text-align: center;
+        flex-shrink: 0;
+        position: relative;
+        z-index: 2;
+      }
+      .rank-score-num {
+        font-size: 26px;
+        font-weight: 900;
+        line-height: 1;
+      }
+      .rank-score-sym {
+        font-size: 14px;
+      }
+      .rank-score-label {
+        font-size: 11px;
+        opacity: 0.8;
+        margin-top: 2px;
+      }
+
+      .rank-score-detail {
+        text-align: center;
+        margin-top: 6px;
+        padding-top: 6px;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+      }
+      .rank-score-detail-num {
+        font-size: 15px;
+        font-weight: 900;
+      }
+      .rank-score-detail-sep {
+        font-size: 13px;
+        opacity: 0.6;
+      }
+      .rank-score-detail-max {
+        font-size: 13px;
+        font-weight: 700;
+        opacity: 0.75;
+      }
+      .rank-score-detail-label {
+        font-size: 10px;
+        opacity: 0.65;
+        margin-top: 2px;
+      }
+
+      .rank-card::before,
+      .rank-card::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 28px;
+        height: 70%;
+        max-height: 120px;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+        pointer-events: none;
+        z-index: 0;
+        transition: opacity 0.3s;
+      }
+      .rank-card::before {
+        right: calc(100% + 4px);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 120'%3E%3Cg fill='%23888' opacity='0.9'%3E%3Cellipse cx='15' cy='10' rx='6' ry='9' transform='rotate(-20 15 10)'/%3E%3Cellipse cx='10' cy='28' rx='6' ry='9' transform='rotate(-35 10 28)'/%3E%3Cellipse cx='7' cy='48' rx='6' ry='9' transform='rotate(-45 7 48)'/%3E%3Cellipse cx='8' cy='68' rx='6' ry='9' transform='rotate(-40 8 68)'/%3E%3Cellipse cx='12' cy='87' rx='6' ry='9' transform='rotate(-30 12 87)'/%3E%3Cellipse cx='17' cy='105' rx='6' ry='9' transform='rotate(-15 17 105)'/%3E%3Cpath d='M15 8 Q12 30 9 50 Q8 70 12 88 Q15 100 17 110' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/g%3E%3C/svg%3E");
+      }
+      .rank-card::after {
+        left: calc(100% + 4px);
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 120'%3E%3Cg fill='%23888' opacity='0.9'%3E%3Cellipse cx='15' cy='10' rx='6' ry='9' transform='rotate(20 15 10)'/%3E%3Cellipse cx='20' cy='28' rx='6' ry='9' transform='rotate(35 20 28)'/%3E%3Cellipse cx='23' cy='48' rx='6' ry='9' transform='rotate(45 23 48)'/%3E%3Cellipse cx='22' cy='68' rx='6' ry='9' transform='rotate(40 22 68)'/%3E%3Cellipse cx='18' cy='87' rx='6' ry='9' transform='rotate(30 18 87)'/%3E%3Cellipse cx='13' cy='105' rx='6' ry='9' transform='rotate(15 13 105)'/%3E%3Cpath d='M15 8 Q18 30 21 50 Q22 70 18 88 Q15 100 13 110' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/g%3E%3C/svg%3E");
+      }
+
+      @media (hover: hover) {
+        .rank-card-wrapper:hover .rank-card {
+          transform: rotate3d(0.3, 1, 0, 5deg);
+        }
+        .rank-card-wrapper:hover .rank-badge {
+          transform: translate3d(0, 0, 50px) scale(1.08);
+        }
+        .rank-card-wrapper:hover .glass-shimmer {
+          opacity: 1;
+        }
+
+        .rank-card-wrapper:hover .rank-card.rank-1 {
+          transform: rotate3d(0.8, 1, 0, 10deg);
+        }
+        .rank-card-wrapper:hover .rank-card.rank-2 {
+          transform: rotate3d(0.6, 1, 0, 8deg);
+        }
+        .rank-card-wrapper:hover .rank-card.rank-3 {
+          transform: rotate3d(0.5, 1, 0, 7deg);
+        }
+
+        .rank-card-wrapper:hover .rank-card.rank-1::before,
+        .rank-card-wrapper:hover .rank-card.rank-1::after {
+          opacity: 0.95;
+        }
+        .rank-card-wrapper:hover .rank-card.rank-2::before,
+        .rank-card-wrapper:hover .rank-card.rank-2::after {
+          opacity: 0.75;
+        }
+        .rank-card-wrapper:hover .rank-card.rank-3::before,
+        .rank-card-wrapper:hover .rank-card.rank-3::after {
+          opacity: 0.85;
+        }
+        .rank-card-wrapper:hover .rank-card.rank-4::before,
+        .rank-card-wrapper:hover .rank-card.rank-4::after {
+          opacity: 0.7;
+        }
+        .rank-card-wrapper:hover .rank-card.rank-5::before,
+        .rank-card-wrapper:hover .rank-card.rank-5::after {
+          opacity: 0.65;
+        }
+        .rank-card-wrapper:hover .rank-card.rank-6::before,
+        .rank-card-wrapper:hover .rank-card.rank-6::after {
+          opacity: 0.62;
+        }
+        .rank-card-wrapper:hover .rank-card.rank-7::before,
+        .rank-card-wrapper:hover .rank-card.rank-7::after {
+          opacity: 0.58;
+        }
+        .rank-card-wrapper:hover .rank-card.rank-8::before,
+        .rank-card-wrapper:hover .rank-card.rank-8::after {
+          opacity: 0.55;
+        }
+        .rank-card-wrapper:hover .rank-card.rank-9::before,
+        .rank-card-wrapper:hover .rank-card.rank-9::after {
+          opacity: 0.5;
+        }
+        .rank-card-wrapper:hover .rank-card.rank-10::before,
+        .rank-card-wrapper:hover .rank-card.rank-10::after {
+          opacity: 0.42;
+        }
+      }
+
+      .rank-1 {
+        background: linear-gradient(135deg, #fffbeb, #fde68a);
+        border: 3px solid #d97706;
+        animation:
+          popIn 0.5s ease-out both,
+          glowRank1 1.6s ease-in-out infinite alternate;
+      }
+      .rank-1 .rank-badge {
+        width: 72px;
+        height: 72px;
+        background: #d97706;
+        color: #fff;
+        font-size: 30px;
+        font-weight: 900;
+      }
+      .rank-1 .rank-name-text {
+        color: #78350f;
+      }
+      .rank-1 .rank-score-num,
+      .rank-1 .rank-score-sym,
+      .rank-1 .rank-score-label {
+        color: #92400e;
+      }
+      .rank-1 .rank-score-detail-num {
+        color: #92400e;
+      }
+      .rank-1 .rank-id-text {
+        color: #a16207;
+      }
+      .rank-1::before,
+      .rank-1::after {
+        opacity: 0.75;
+        filter: sepia(1) saturate(3) hue-rotate(15deg) brightness(0.85);
+      }
+
+      .rank-2 {
+        background: linear-gradient(135deg, #f9fafb, #e5e7eb);
+        border: 2px solid #9ca3af;
+        animation:
+          popIn 0.5s ease-out both,
+          glowRank2 2s ease-in-out infinite alternate;
+      }
+      .rank-2 .rank-badge {
+        width: 66px;
+        height: 66px;
+        background: #6b7280;
+        color: #fff;
+        font-size: 26px;
+        font-weight: 900;
+      }
+      .rank-2 .rank-name-text {
+        color: #111827;
+      }
+      .rank-2 .rank-score-num,
+      .rank-2 .rank-score-sym,
+      .rank-2 .rank-score-label {
+        color: #374151;
+      }
+      .rank-2 .rank-score-detail-num {
+        color: #374151;
+      }
+      .rank-2 .rank-id-text {
+        color: #6b7280;
+      }
+      .rank-2::before,
+      .rank-2::after {
+        opacity: 0.55;
+        filter: grayscale(1) brightness(0.8);
+      }
+
+      .rank-3 {
+        background: linear-gradient(135deg, #fff7ed, #fed7aa);
+        border: 2px solid #c2410c;
+        animation:
+          popIn 0.5s ease-out both,
+          glowRank3 2.4s ease-in-out infinite alternate;
+      }
+      .rank-3 .rank-badge {
+        width: 62px;
+        height: 62px;
+        background: #c2410c;
+        color: #fff;
+        font-size: 24px;
+        font-weight: 900;
+      }
+      .rank-3 .rank-name-text {
+        color: #7c2d12;
+      }
+      .rank-3 .rank-score-num,
+      .rank-3 .rank-score-sym,
+      .rank-3 .rank-score-label {
+        color: #9a3412;
+      }
+      .rank-3 .rank-score-detail-num {
+        color: #9a3412;
+      }
+      .rank-3 .rank-id-text {
+        color: #c2410c;
+      }
+      .rank-3::before,
+      .rank-3::after {
+        opacity: 0.65;
+        filter: sepia(1) saturate(2) hue-rotate(-20deg) brightness(0.8);
+      }
+
+      .rank-4 {
+        background: linear-gradient(135deg, #eef2ff, #e0e7ff);
+        border: 2px solid #4338ca;
+        animation:
+          popIn 0.5s ease-out both,
+          glowRank4 2.8s ease-in-out infinite alternate;
+      }
+      .rank-4 .rank-badge {
+        width: 60px;
+        height: 60px;
+        background: #4338ca;
+        color: #fff;
+        font-size: 22px;
+        font-weight: 900;
+      }
+      .rank-4 .rank-name-text {
+        color: #1e1b4b;
+      }
+      .rank-4 .rank-score-num,
+      .rank-4 .rank-score-sym,
+      .rank-4 .rank-score-label {
+        color: #4338ca;
+      }
+      .rank-4 .rank-score-detail-num {
+        color: #4338ca;
+      }
+      .rank-4 .rank-id-text {
+        color: #6366f1;
+      }
+      .rank-4::before,
+      .rank-4::after {
+        opacity: 0.5;
+        filter: sepia(1) saturate(3) hue-rotate(200deg) brightness(0.75);
+      }
+
+      .rank-5 {
+        background: linear-gradient(135deg, #f0fdfa, #ccfbf1);
+        border: 2px solid #0d9488;
+        animation:
+          popIn 0.5s ease-out both,
+          glowRank5 3.2s ease-in-out infinite alternate;
+      }
+      .rank-5 .rank-badge {
+        width: 58px;
+        height: 58px;
+        background: #0d9488;
+        color: #fff;
+        font-size: 21px;
+        font-weight: 800;
+      }
+      .rank-5 .rank-name-text {
+        color: #134e4a;
+      }
+      .rank-5 .rank-score-num,
+      .rank-5 .rank-score-sym,
+      .rank-5 .rank-score-label {
+        color: #0d9488;
+      }
+      .rank-5 .rank-score-detail-num {
+        color: #0d9488;
+      }
+      .rank-5 .rank-id-text {
+        color: #0f766e;
+      }
+      .rank-5::before,
+      .rank-5::after {
+        opacity: 0.45;
+        filter: sepia(1) saturate(3) hue-rotate(140deg) brightness(0.75);
+      }
+
+      .rank-6 {
+        background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        border: 2px solid #16a34a;
+        animation:
+          popIn 0.5s ease-out both,
+          glowRank6 3.6s ease-in-out infinite alternate;
+      }
+      .rank-6 .rank-badge {
+        width: 56px;
+        height: 56px;
+        background: #16a34a;
+        color: #fff;
+        font-size: 20px;
+        font-weight: 800;
+      }
+      .rank-6 .rank-name-text {
+        color: #14532d;
+      }
+      .rank-6 .rank-score-num,
+      .rank-6 .rank-score-sym,
+      .rank-6 .rank-score-label {
+        color: #16a34a;
+      }
+      .rank-6 .rank-score-detail-num {
+        color: #16a34a;
+      }
+      .rank-6 .rank-id-text {
+        color: #15803d;
+      }
+      .rank-6::before,
+      .rank-6::after {
+        opacity: 0.42;
+        filter: sepia(1) saturate(3) hue-rotate(100deg) brightness(0.7);
+      }
+
+      .rank-7 {
+        background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+        border: 1px solid #0284c7;
+        animation:
+          popIn 0.5s ease-out both,
+          glowRank7 4s ease-in-out infinite alternate;
+      }
+      .rank-7 .rank-badge {
+        width: 54px;
+        height: 54px;
+        background: #0284c7;
+        color: #fff;
+        font-size: 19px;
+        font-weight: 800;
+      }
+      .rank-7 .rank-name-text {
+        color: #0c4a6e;
+      }
+      .rank-7 .rank-score-num,
+      .rank-7 .rank-score-sym,
+      .rank-7 .rank-score-label {
+        color: #0284c7;
+      }
+      .rank-7 .rank-score-detail-num {
+        color: #0284c7;
+      }
+      .rank-7 .rank-id-text {
+        color: #0369a1;
+      }
+      .rank-7::before,
+      .rank-7::after {
+        opacity: 0.38;
+        filter: sepia(1) saturate(3) hue-rotate(175deg) brightness(0.7);
+      }
+
+      .rank-8 {
+        background: linear-gradient(135deg, #fdf4ff, #fae8ff);
+        border: 1px solid #9333ea;
+        animation:
+          popIn 0.5s ease-out both,
+          glowRank8 4.4s ease-in-out infinite alternate;
+      }
+      .rank-8 .rank-badge {
+        width: 52px;
+        height: 52px;
+        background: #9333ea;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 800;
+      }
+      .rank-8 .rank-name-text {
+        color: #3b0764;
+      }
+      .rank-8 .rank-score-num,
+      .rank-8 .rank-score-sym,
+      .rank-8 .rank-score-label {
+        color: #9333ea;
+      }
+      .rank-8 .rank-score-detail-num {
+        color: #9333ea;
+      }
+      .rank-8 .rank-id-text {
+        color: #a855f7;
+      }
+      .rank-8::before,
+      .rank-8::after {
+        opacity: 0.35;
+        filter: sepia(1) saturate(3) hue-rotate(240deg) brightness(0.7);
+      }
+
+      .rank-9 {
+        background: linear-gradient(135deg, #fff1f2, #ffe4e6);
+        border: 1px solid #e11d48;
+        animation:
+          popIn 0.5s ease-out both,
+          glowRank9 4.8s ease-in-out infinite alternate;
+      }
+      .rank-9 .rank-badge {
+        width: 50px;
+        height: 50px;
+        background: #e11d48;
+        color: #fff;
+        font-size: 17px;
+        font-weight: 700;
+      }
+      .rank-9 .rank-name-text {
+        color: #881337;
+      }
+      .rank-9 .rank-score-num,
+      .rank-9 .rank-score-sym,
+      .rank-9 .rank-score-label {
+        color: #e11d48;
+      }
+      .rank-9 .rank-score-detail-num {
+        color: #e11d48;
+      }
+      .rank-9 .rank-id-text {
+        color: #be123c;
+      }
+      .rank-9::before,
+      .rank-9::after {
+        opacity: 0.3;
+        filter: sepia(1) saturate(2) hue-rotate(310deg) brightness(0.8);
+      }
+
+      .rank-10 {
+        background: #fafafa;
+        border: 1px solid #cbd5e1;
+        animation:
+          popIn 0.5s ease-out both,
+          glowRank10 5.5s ease-in-out infinite alternate;
+      }
+      .rank-10 .rank-badge {
+        width: 48px;
+        height: 48px;
+        background: #64748b;
+        color: #fff;
+        font-size: 16px;
+        font-weight: 700;
+      }
+      .rank-10 .rank-name-text {
+        color: #334155;
+      }
+      .rank-10 .rank-score-num,
+      .rank-10 .rank-score-sym,
+      .rank-10 .rank-score-label {
+        color: #64748b;
+      }
+      .rank-10 .rank-score-detail-num {
+        color: #64748b;
+      }
+      .rank-10 .rank-id-text {
+        color: #94a3b8;
+      }
+      .rank-10::before,
+      .rank-10::after {
+        opacity: 0.22;
+        filter: grayscale(1) brightness(0.7);
+      }
+
+      .error-msg {
+        color: #b23a48;
+        margin-top: 15px;
+        font-weight: bold;
+        animation: popIn 0.5s ease-out both;
+      }
+
+      @media (min-width: 768px) {
+        .top-logos img {
+          max-height: 160px;
+        }
+        .header-image img {
+          max-width: 580px;
+        }
+      }
+      @media (max-width: 480px) {
+        body {
+          padding: 15px 10px;
+        }
+        .container {
+          padding: 25px 20px;
+          border-radius: 10px;
+        }
+        .top-logos img {
+          max-height: 90px;
+        }
+        h2 {
+          font-size: 22px;
+        }
+        button {
+          max-width: 100%;
+        }
+        .rank-card {
+          flex-direction: column;
+          text-align: center;
+          padding: 15px;
+          gap: 10px;
+        }
+        .rank-info {
+          text-align: center;
+        }
+        .rank-card::before,
+        .rank-card::after {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="dot"
+      style="
+        width: 90px;
+        height: 90px;
+        top: 8%;
+        left: 4%;
+        animation-duration: 6s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 60px;
+        height: 60px;
+        top: 20%;
+        right: 6%;
+        animation-duration: 8s;
+        animation-delay: 1s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 120px;
+        height: 120px;
+        top: 55%;
+        left: 2%;
+        animation-duration: 10s;
+        animation-delay: 2s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 50px;
+        height: 50px;
+        top: 70%;
+        right: 4%;
+        animation-duration: 7s;
+        animation-delay: 0.5s;
+      "
+    ></div>
+    <div
+      class="dot"
+      style="
+        width: 80px;
+        height: 80px;
+        top: 38%;
+        right: 11%;
+        animation-duration: 9s;
+        animation-delay: 3s;
+      "
+    ></div>
+
+    <div class="container">
+      <div class="top-logos">
+        <img src="logo_2.webp" alt="شعار وزارة التربية والتعليم" />
+        <img src="logo_1.webp" alt="شعار مدرسة الشهيد محمود علي الخطيب" />
+      </div>
+      <div class="header-image">
+        <img
+          src="logo_3.webp"
+          alt="مدرسة الشهيد محمود علي الخطيب الرسمية للغات"
+        />
+      </div>
+
+      <h2>🏆 العشرة الأوائل</h2>
+
+      <div id="gradeSelectorSection">
+        <p
+          style="
+            color: #4a4e69;
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 12px;
+          "
+        >
+          اختر الصف الدراسي
+        </p>
+        <div class="select-wrapper">
+          <select id="gradeSelect" class="grade-select">
+            <option value="" disabled selected>-- اختر الصف --</option>
+            <option value="ثالث ابتدائي">ثالث ابتدائي</option>
+            <option value="رابع ابتدائي">رابع ابتدائي</option>
+            <option value="خامس ابتدائي">خامس ابتدائي</option>
+            <option value="سادس ابتدائي">سادس ابتدائي</option>
+            <option value="أول اعدادي">أول اعدادي</option>
+            <option value="ثاني اعدادي">ثاني اعدادي</option>
+          </select>
+        </div>
+        <button
+          id="showTopBtn"
+          class="pulse-button"
+          onclick="
+            addRipple(event, this);
+            fetchTop10();
+          "
+          disabled
+          style="margin-top: 5px"
+        >
+          <span class="btn-text">🏅 عرض العشرة الأوائل</span>
+        </button>
+      </div>
+
+      <div class="loader" id="loader"></div>
+
+      <div id="top10Result"></div>
+
+      <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
+    </div>
+
+    <div class="visit-counter">
+      عدد زيارات الموقع : <span id="visitCount">...</span>
+    </div>
+
+    <script>
+      const SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbyKm4X7PVe4hHNZs6PyO3X0FTHSJTpN-JCAG9z0hRBW1KSJZUYa3qqAnIEFiqxIArFBmw/exec";
+      let activeGrade = "";
+
+      function escapeHTML(str) {
+        if (str === null || str === undefined) return "";
+        return String(str).replace(/[&<>'"]/g, function (tag) {
+          const charsToReplace = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "'": "&#39;",
+            '"': "&quot;",
+          };
+          return charsToReplace[tag] || tag;
+        });
+      }
+
+      fetch("https://api.counterapi.dev/v1/alkhateeb_school/visits/up")
+        .then((res) => res.json())
+        .then((data) => {
+          document.getElementById("visitCount").innerText =
+            data.count.toLocaleString("ar-EG");
+        })
+        .catch(() => {
+          document.getElementById("visitCount").innerText = "-";
+        });
+
+      function addRipple(e, btn) {
+        const rect = btn.getBoundingClientRect();
+        let x, y;
+        if (e.clientX !== undefined && e.clientX !== 0) {
+          x = e.clientX - rect.left;
+          y = e.clientY - rect.top;
+        } else if (e.touches && e.touches.length > 0) {
+          x = e.touches[0].clientX - rect.left;
+          y = e.touches[0].clientY - rect.top;
+        } else {
+          x = rect.width / 2;
+          y = rect.height / 2;
+        }
+        const size = Math.max(rect.width, rect.height);
+        const span = document.createElement("span");
+        span.className = "ripple-span";
+        span.style.width = span.style.height = size + "px";
+        span.style.left = x - size / 2 + "px";
+        span.style.top = y - size / 2 + "px";
+        btn.appendChild(span);
+        setTimeout(() => span.remove(), 600);
+      }
+
+      function countUp(el, target, duration, decimals = 0) {
+        const start = performance.now();
+        function tick(now) {
+          const p = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - p, 3);
+          const val = eased * target;
+          el.innerText = val.toFixed(decimals);
+          if (p < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }
+
+      function showEmojis() {
+        const emojisToUse = ["🥇", "🏆", "⭐", "🎉", "👏", "🌟", "🎓"];
+        for (let i = 0; i < 15; i++) {
+          setTimeout(() => {
+            const emoji = document.createElement("div");
+            emoji.classList.add("falling-emoji");
+            emoji.innerText =
+              emojisToUse[Math.floor(Math.random() * emojisToUse.length)];
+            emoji.style.left = Math.random() * 100 + "vw";
+            emoji.style.animationDuration = Math.random() * 3 + 4 + "s";
+            document.body.appendChild(emoji);
+            setTimeout(() => emoji.remove(), 7000);
+          }, i * 150);
+        }
+      }
+
+      document
+        .getElementById("gradeSelect")
+        .addEventListener("change", function () {
+          activeGrade = this.value;
+          document.getElementById("showTopBtn").disabled = !activeGrade;
+        });
+
+      function toggleInputs(disabled) {
+        document.getElementById("gradeSelect").disabled = disabled;
+        document.getElementById("showTopBtn").disabled = disabled;
+      }
+
+      function fetchTop10() {
+        activeGrade = document.getElementById("gradeSelect").value;
+        if (!activeGrade) return;
+
+        const resultDiv = document.getElementById("top10Result");
+        const loader = document.getElementById("loader");
+        const showBtn = document.getElementById("showTopBtn");
+        const btnText = showBtn.querySelector(".btn-text");
+
+        resultDiv.innerHTML = "";
+        loader.style.display = "block";
+        toggleInputs(true);
+        showBtn.classList.remove("pulse-button");
+        btnText.innerText = "⏳ جاري البحث...";
+
+        fetch(SCRIPT_URL + "?grade=" + encodeURIComponent(activeGrade))
+          .then((r) => r.json())
+          .then((data) => {
+            loader.style.display = "none";
+            toggleInputs(false);
+            showBtn.classList.add("pulse-button");
+            btnText.innerText = "🏅 عرض العشرة الأوائل";
+
+            if (data.status !== "success") {
+              resultDiv.innerHTML = `<div class='error-msg'>${escapeHTML(data.message)}</div>`;
+            } else {
+              renderTop10Cards(data.students, activeGrade);
+            }
+          })
+          .catch(() => {
+            loader.style.display = "none";
+            toggleInputs(false);
+            showBtn.classList.add("pulse-button");
+            btnText.innerText = "🏅 عرض العشرة الأوائل";
+            resultDiv.innerHTML =
+              "<div class='error-msg'>حدث خطأ في الاتصال. تأكد من اتصالك بالإنترنت.</div>";
+          });
+      }
+
+      function renderTop10Cards(students, gradeName) {
+        const resultDiv = document.getElementById("top10Result");
+
+        if (!students || students.length === 0) {
+          resultDiv.innerHTML =
+            "<div class='error-msg'>لا توجد بيانات كافية لعرض الأوائل</div>";
+          return;
+        }
+
+        const dateStr = new Date().toLocaleDateString("ar-EG", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        });
+
+        let html = `
+          <div id="capture-area" style="animation: slideInUp 0.5s ease-out forwards;">
+            <div id="export-header" style="display: none;">
+              <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 25px; width: 100%; gap: 30px;">
+                <img src="logo_2.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
+                <img src="logo_1.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
+              </div>
+              <h4 style="color: #4a4e69; margin-top: 0; margin-bottom: 25px; border-bottom: 2px dashed #eee; padding-bottom: 15px; font-size: 22px;">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</h4>
+            </div>
+            
+            <h3 style="color:#0056b3; font-size:22px; font-weight:800; margin-top:10px; margin-bottom:5px;">🏆 العشرة الأوائل - ${escapeHTML(gradeName)}</h3>
+            <p style="color:#4a4e69; font-size:14px; margin-top:0; margin-bottom:20px;">${escapeHTML(dateStr)}</p>
+            
+            <div id="cards-container">
+        `;
+
+        students.forEach((student, index) => {
+          var rank = parseInt(student.rank);
+          var rankClass = rank >= 1 && rank <= 10 ? "rank-" + rank : "rank-10";
+
+          var badgeContent = String(rank);
+          if (rank === 1) {
+            badgeContent =
+              '<div style="font-size:20px;line-height:1.1;">👑</div><div>' +
+              rank +
+              "</div>";
+          } else if (rank === 2) {
+            badgeContent =
+              '<div style="font-size:17px;line-height:1.1;">🥈</div><div>' +
+              rank +
+              "</div>";
+          } else if (rank === 3) {
+            badgeContent =
+              '<div style="font-size:17px;line-height:1.1;">🥉</div><div>' +
+              rank +
+              "</div>";
+          }
+
+          const safeName = escapeHTML(student.name);
+          const safeId = escapeHTML(student.id);
+          const delay = 0.08 * index;
+          const glowDelay = index * 0.15;
+
+          let scoreDetailHtml = "";
+          if (student.totalScore && student.totalMax) {
+            scoreDetailHtml = `
+              <div class="rank-score-detail">
+                <span class="rank-score-detail-num">${escapeHTML(student.totalScore)}</span>
+                <span class="rank-score-detail-sep"> / </span>
+                <span class="rank-score-detail-max">${escapeHTML(student.totalMax)}</span>
+                <div class="rank-score-detail-label">الدرجة الكلية</div>
+              </div>
+            `;
+          }
+
+          html += `
+            <div class="rank-card-wrapper">
+              <div class="rank-card ${rankClass}" style="animation-delay: ${delay}s, ${glowDelay}s;">
+                <div class="glass-shimmer"></div>
+                <div class="rank-badge">${badgeContent}</div>
+                <div class="rank-info">
+                  <p class="rank-name-text">${safeName}</p>
+                  ${student.id ? '<p class="rank-id-text">رقم الطالب: ' + safeId + "</p>" : ""}
+                </div>
+                <div class="rank-score-block">
+                  <div class="rank-score-num"><span class="anim-perc" data-val="${student.percentage}">0</span><span class="rank-score-sym">%</span></div>
+                  <div class="rank-score-label">النسبة المئوية</div>
+                  ${scoreDetailHtml}
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
+        html += `
+            </div>
+            <div id="export-footer" style="display: none; margin-top: 30px; font-size: 16px; color: #4a4e69; text-align: center; font-weight: bold; border-top: 2px solid #eee; padding-top: 15px;">تصميم وتنفيذ : سمير هلال</div>
+          </div>
+          <button id="shareBtn" style="margin-top:15px; background:#008080; animation: slideInUp 0.8s ease-out;" onclick="addRipple(event,this); shareResult('${escapeHTML(gradeName)}')">
+            <span class="btn-text">📸 مشاركة القائمة كصورة</span>
+          </button>
+          <button id="resetBtn" style="margin-top:12px; background:#890620; animation: slideInUp 0.8s ease-out;" onclick="addRipple(event,this); resetPage()">
+            <span class="btn-text">🔄 اختيار صف آخر</span>
+          </button>
+        `;
+
+        resultDiv.innerHTML = html;
+
+        setTimeout(() => {
+          const animElements = document.querySelectorAll(".anim-perc");
+          animElements.forEach((el, i) => {
+            const val = parseFloat(el.getAttribute("data-val"));
+            setTimeout(() => {
+              countUp(el, val, 1200, val % 1 !== 0 ? 2 : 0);
+            }, i * 80);
+          });
+        }, 200);
+
+        setTimeout(() => {
+          confetti({
+            particleCount: 120,
+            spread: 70,
+            origin: { y: 0.5 },
+            zIndex: 9999,
+          });
+          showEmojis();
+        }, 400);
+
+        setTimeout(() => {
+          window.scrollTo({
+            top: document.getElementById("top10Result").offsetTop - 20,
+            behavior: "smooth",
+          });
+        }, 200);
+      }
+
+      async function shareResult(gradeName) {
+        var captureDiv = document.getElementById("capture-area");
+        var shareBtn = document.getElementById("shareBtn");
+        var btnText = shareBtn.querySelector(".btn-text");
+        var originalText = btnText.innerText;
+
+        btnText.innerText = "⏳ جاري تحضير الصورة...";
+        shareBtn.disabled = true;
+
+        try {
+          const canvas = await html2canvas(captureDiv, {
+            scale: 2,
+            useCORS: true,
+            backgroundColor: "#ffffff",
+            scrollY: -window.scrollY,
+            onclone: function (clonedDoc) {
+              var noAnimStyle = clonedDoc.createElement("style");
+              noAnimStyle.innerHTML =
+                "* { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }";
+              clonedDoc.head.appendChild(noAnimStyle);
+              var clonedArea = clonedDoc.getElementById("capture-area");
+              clonedArea.style.width = "800px";
+              clonedArea.style.maxWidth = "none";
+              clonedArea.style.padding = "40px";
+              clonedArea.style.margin = "0 auto";
+              clonedArea.style.overflow = "visible";
+              clonedDoc.getElementById("export-header").style.display = "block";
+              clonedDoc.getElementById("export-footer").style.display = "block";
+            },
+          });
+
+          const blob = await new Promise((resolve) =>
+            canvas.toBlob(resolve, "image/png"),
+          );
+          const fileName = `أوائل_${gradeName}.png`;
+          const file = new File([blob], fileName, { type: "image/png" });
+          const isMobile = /Android|iPhone|iPad|iPod/i.test(
+            navigator.userAgent,
+          );
+
+          if (
+            isMobile &&
+            navigator.canShare &&
+            navigator.canShare({ files: [file] })
+          ) {
+            try {
+              await navigator.share({
+                title: `العشرة الأوائل - ${gradeName}`,
+                text: `قائمة العشرة الأوائل للصف ${gradeName} - مدرسة الشهيد محمود علي الخطيب`,
+                files: [file],
+              });
+            } catch (err) {}
+            btnText.innerText = originalText;
+            shareBtn.disabled = false;
+          } else {
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            shareBtn.style.backgroundColor = "#28a745";
+            btnText.innerText = "✅ تم مشاركة الصورة بنجاح!";
+            setTimeout(() => {
+              shareBtn.style.backgroundColor = "#008080";
+              btnText.innerText = originalText;
+              shareBtn.disabled = false;
+            }, 5000);
+          }
+        } catch (error) {
+          btnText.innerText = originalText;
+          shareBtn.disabled = false;
+          alert("حدث خطأ أثناء تحضير الصورة");
+        }
+      }
+
+      function resetPage() {
+        document.getElementById("top10Result").innerHTML = "";
+        document.getElementById("gradeSelect").value = "";
+        document.getElementById("gradeSelect").disabled = false;
+        document.getElementById("showTopBtn").disabled = true;
+        activeGrade = "";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    </script>
+  </body>
+</html>
