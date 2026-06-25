@@ -209,7 +209,7 @@
           filter: brightness(1.08);
         }
         to {
-          filter: brightness(1.38);
+          filter: brightness(1.52);
         }
       }
       .dot {
@@ -436,7 +436,8 @@
         transform-style: preserve-3d;
         transition:
           transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-          box-shadow 0.5s ease;
+          box-shadow 0.5s ease,
+          border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1);
         position: relative;
         overflow: visible;
       }
@@ -461,12 +462,12 @@
         position: absolute;
         top: -30%;
         left: 0;
-        width: 55%;
+        width: 82%;
         height: 160%;
         background: linear-gradient(
           90deg,
           transparent 0%,
-          rgba(255, 255, 255, 0.52) 50%,
+          rgba(255, 255, 255, 0.78) 50%,
           transparent 100%
         );
         transform: skewX(-18deg) translateX(-220%);
@@ -607,74 +608,94 @@
           animation: hoverPulse 0.6s ease-in-out infinite alternate;
         }
         .rank-card-wrapper:hover .rank-card.rank-1 {
-          transform: scale(1.08) rotate(1.8deg) translateY(-14px);
+          transform: scale(1.12) rotate(4deg) translateY(-14px);
+          border-color: rgba(255, 255, 255, 0.82);
           box-shadow:
-            0 20px 55px rgba(180, 100, 0, 0.65),
-            0 0 40px rgba(215, 150, 0, 0.55),
-            0 0 80px rgba(245, 158, 11, 0.4);
+            0 0 28px rgba(245, 158, 11, 0.92),
+            0 0 58px rgba(245, 158, 11, 0.62),
+            0 0 115px rgba(180, 100, 0, 0.52),
+            0 20px 55px rgba(180, 100, 0, 0.65);
         }
         .rank-card-wrapper:hover .rank-card.rank-2 {
-          transform: scale(1.07) rotate(1.5deg) translateY(-12px);
+          transform: scale(1.12) rotate(4deg) translateY(-14px);
+          border-color: rgba(255, 255, 255, 0.82);
           box-shadow:
-            0 18px 48px rgba(100, 116, 139, 0.56),
-            0 0 32px rgba(148, 163, 184, 0.44),
-            0 0 60px rgba(148, 163, 184, 0.28);
+            0 0 26px rgba(148, 163, 184, 0.92),
+            0 0 54px rgba(100, 116, 139, 0.62),
+            0 0 108px rgba(71, 85, 105, 0.52),
+            0 18px 48px rgba(100, 116, 139, 0.58);
         }
         .rank-card-wrapper:hover .rank-card.rank-3 {
-          transform: scale(1.065) rotate(1.3deg) translateY(-11px);
+          transform: scale(1.12) rotate(4deg) translateY(-14px);
+          border-color: rgba(255, 255, 255, 0.82);
           box-shadow:
-            0 18px 45px rgba(194, 65, 12, 0.56),
-            0 0 30px rgba(234, 88, 12, 0.46),
-            0 0 55px rgba(251, 146, 60, 0.32);
+            0 0 26px rgba(251, 146, 60, 0.92),
+            0 0 54px rgba(234, 88, 12, 0.62),
+            0 0 108px rgba(194, 65, 12, 0.52),
+            0 18px 45px rgba(194, 65, 12, 0.58);
         }
         .rank-card-wrapper:hover .rank-card.rank-4 {
-          transform: scale(1.06) rotate(1.2deg) translateY(-10px);
+          transform: scale(1.12) rotate(4deg) translateY(-14px);
+          border-color: rgba(255, 255, 255, 0.82);
           box-shadow:
-            0 16px 40px rgba(79, 70, 229, 0.52),
-            0 0 25px rgba(99, 102, 241, 0.42),
-            0 0 48px rgba(129, 140, 248, 0.28);
+            0 0 25px rgba(129, 140, 248, 0.92),
+            0 0 52px rgba(99, 102, 241, 0.62),
+            0 0 104px rgba(79, 70, 229, 0.52),
+            0 16px 40px rgba(79, 70, 229, 0.54);
         }
         .rank-card-wrapper:hover .rank-card.rank-5 {
-          transform: scale(1.06) rotate(1.1deg) translateY(-10px);
+          transform: scale(1.12) rotate(4deg) translateY(-14px);
+          border-color: rgba(255, 255, 255, 0.82);
           box-shadow:
-            0 16px 38px rgba(37, 99, 235, 0.5),
-            0 0 23px rgba(59, 130, 246, 0.4),
-            0 0 44px rgba(96, 165, 250, 0.26);
+            0 0 25px rgba(96, 165, 250, 0.92),
+            0 0 52px rgba(59, 130, 246, 0.62),
+            0 0 104px rgba(37, 99, 235, 0.52),
+            0 16px 38px rgba(37, 99, 235, 0.52);
         }
         .rank-card-wrapper:hover .rank-card.rank-6 {
-          transform: scale(1.055) rotate(1deg) translateY(-9px);
+          transform: scale(1.12) rotate(4deg) translateY(-14px);
+          border-color: rgba(255, 255, 255, 0.82);
           box-shadow:
-            0 15px 36px rgba(8, 145, 178, 0.48),
-            0 0 21px rgba(6, 182, 212, 0.38),
-            0 0 40px rgba(34, 211, 238, 0.24);
+            0 0 25px rgba(34, 211, 238, 0.92),
+            0 0 52px rgba(6, 182, 212, 0.62),
+            0 0 104px rgba(8, 145, 178, 0.52),
+            0 15px 36px rgba(8, 145, 178, 0.5);
         }
         .rank-card-wrapper:hover .rank-card.rank-7 {
-          transform: scale(1.055) rotate(1deg) translateY(-9px);
+          transform: scale(1.12) rotate(4deg) translateY(-14px);
+          border-color: rgba(255, 255, 255, 0.82);
           box-shadow:
-            0 15px 34px rgba(5, 150, 105, 0.46),
-            0 0 19px rgba(16, 185, 129, 0.36),
-            0 0 38px rgba(52, 211, 153, 0.22);
+            0 0 24px rgba(52, 211, 153, 0.92),
+            0 0 50px rgba(16, 185, 129, 0.62),
+            0 0 100px rgba(5, 150, 105, 0.52),
+            0 15px 34px rgba(5, 150, 105, 0.48);
         }
         .rank-card-wrapper:hover .rank-card.rank-8 {
-          transform: scale(1.05) rotate(0.8deg) translateY(-8px);
+          transform: scale(1.12) rotate(4deg) translateY(-14px);
+          border-color: rgba(255, 255, 255, 0.82);
           box-shadow:
-            0 14px 32px rgba(124, 58, 237, 0.44),
-            0 0 18px rgba(139, 92, 246, 0.34),
-            0 0 34px rgba(167, 139, 250, 0.22);
+            0 0 24px rgba(167, 139, 250, 0.92),
+            0 0 50px rgba(139, 92, 246, 0.62),
+            0 0 100px rgba(124, 58, 237, 0.52),
+            0 14px 32px rgba(124, 58, 237, 0.46);
         }
         .rank-card-wrapper:hover .rank-card.rank-9 {
-          transform: scale(1.05) rotate(0.8deg) translateY(-8px);
+          transform: scale(1.12) rotate(4deg) translateY(-14px);
+          border-color: rgba(255, 255, 255, 0.82);
           box-shadow:
-            0 14px 30px rgba(225, 29, 72, 0.42),
-            0 0 16px rgba(244, 63, 94, 0.32),
-            0 0 32px rgba(251, 113, 133, 0.2);
+            0 0 24px rgba(251, 113, 133, 0.92),
+            0 0 50px rgba(244, 63, 94, 0.62),
+            0 0 100px rgba(225, 29, 72, 0.52),
+            0 14px 30px rgba(225, 29, 72, 0.44);
         }
         .rank-card-wrapper:hover .rank-card.rank-10 {
-          transform: scale(1.045) rotate(0.6deg) translateY(-7px);
+          transform: scale(1.12) rotate(4deg) translateY(-14px);
+          border-color: rgba(255, 255, 255, 0.82);
           box-shadow:
-            0 13px 28px rgba(100, 116, 139, 0.36),
-            0 0 14px rgba(148, 163, 184, 0.28),
-            0 0 28px rgba(148, 163, 184, 0.18);
+            0 0 22px rgba(148, 163, 184, 0.88),
+            0 0 46px rgba(100, 116, 139, 0.58),
+            0 0 92px rgba(71, 85, 105, 0.48),
+            0 13px 28px rgba(100, 116, 139, 0.38);
         }
         .rank-card-wrapper:hover .rank-badge {
           transform: scale(1.12) translateY(-3px);
@@ -683,7 +704,7 @@
           opacity: 1;
         }
         .rank-card-wrapper:hover .glass-shimmer::after {
-          animation: cardShinePass 0.75s ease-out forwards !important;
+          animation: cardShinePass 0.42s ease-out forwards !important;
           animation-delay: 0s !important;
         }
         .rank-card-wrapper:hover .rank-1 .laurel-r,
@@ -728,8 +749,8 @@
         }
       }
       .rank-card:active {
-        transform: scale(1.04) rotate(0.5deg) translateY(-5px) !important;
-        filter: brightness(1.2) !important;
+        transform: scale(1.08) rotate(2.5deg) translateY(-9px) !important;
+        filter: brightness(1.38) !important;
         transition:
           transform 0.1s ease,
           filter 0.1s ease !important;
