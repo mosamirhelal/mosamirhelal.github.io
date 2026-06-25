@@ -18,7 +18,7 @@
     <meta property="og:description" content="قائمة أوائل الطلاب لكل صف دراسي" />
     <meta
       property="og:image"
-      content="https://mosamirhelal.com/alkhateeb-results/logo_3.webp"
+      content="https://mosamirhelal.github.io/alkhateeb-stars/logo_3.webp"
     />
     <meta property="og:type" content="website" />
     <style>
@@ -172,44 +172,20 @@
           background-position: 400% center;
         }
       }
-      @keyframes cardShinePass {
-        0% {
-          transform: skewX(-18deg) translateX(-220%);
-          opacity: 0;
+      @keyframes shine {
+        from {
+          transform: translateX(-100%) rotate(45deg);
         }
-        8% {
-          opacity: 0.85;
-        }
-        52% {
-          transform: skewX(-18deg) translateX(280%);
-          opacity: 0.85;
-        }
-        60%,
-        100% {
-          transform: skewX(-18deg) translateX(280%);
-          opacity: 0;
-        }
-      }
-      @keyframes cardTapFlash {
-        0% {
-          transform: scale(1);
-          box-shadow: var(--glow-rest);
-        }
-        35% {
-          transform: scale(0.972);
-          box-shadow: var(--glow-active);
-        }
-        100% {
-          transform: scale(1);
-          box-shadow: var(--glow-rest);
+        to {
+          transform: translateX(100%) rotate(45deg);
         }
       }
       @keyframes hoverPulse {
         from {
-          filter: brightness(1.08);
+          filter: brightness(1);
         }
         to {
-          filter: brightness(1.52);
+          filter: brightness(1.4);
         }
       }
       .dot {
@@ -434,10 +410,7 @@
         margin-bottom: 0;
         animation: popIn 0.5s ease-out both;
         transform-style: preserve-3d;
-        transition:
-          transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-          box-shadow 0.5s ease,
-          border-color 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        transition: all 0.6s ease;
         position: relative;
         overflow: visible;
       }
@@ -460,50 +433,20 @@
       .glass-shimmer::after {
         content: "";
         position: absolute;
-        top: -30%;
-        left: 0;
-        width: 82%;
-        height: 160%;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
         background: linear-gradient(
-          90deg,
-          transparent 0%,
-          rgba(255, 255, 255, 0.78) 50%,
-          transparent 100%
+          45deg,
+          transparent,
+          rgba(255, 255, 255, 0.5),
+          transparent
         );
-        transform: skewX(-18deg) translateX(-220%);
-        animation: cardShinePass 8s ease-in-out infinite;
+        transform: rotate(45deg) translateX(-100%);
+        opacity: 0;
         pointer-events: none;
         border-radius: 0;
-      }
-      .rank-1 .glass-shimmer::after {
-        animation-delay: 0s;
-      }
-      .rank-2 .glass-shimmer::after {
-        animation-delay: 0.8s;
-      }
-      .rank-3 .glass-shimmer::after {
-        animation-delay: 1.6s;
-      }
-      .rank-4 .glass-shimmer::after {
-        animation-delay: 2.4s;
-      }
-      .rank-5 .glass-shimmer::after {
-        animation-delay: 3.2s;
-      }
-      .rank-6 .glass-shimmer::after {
-        animation-delay: 4s;
-      }
-      .rank-7 .glass-shimmer::after {
-        animation-delay: 4.8s;
-      }
-      .rank-8 .glass-shimmer::after {
-        animation-delay: 5.6s;
-      }
-      .rank-9 .glass-shimmer::after {
-        animation-delay: 6.4s;
-      }
-      .rank-10 .glass-shimmer::after {
-        animation-delay: 7.2s;
       }
       .rank-badge {
         flex-shrink: 0;
@@ -529,12 +472,14 @@
         margin: 0;
         animation: nameReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
         animation-delay: calc(var(--anim-delay, 0s) + 0.12s);
+        transition: color 0.4s ease;
       }
       .rank-id-text {
         font-size: 12px;
         opacity: 0.75;
         margin-top: 2px;
         margin-bottom: 0;
+        transition: color 0.4s ease;
       }
       .rank-score-block {
         text-align: center;
@@ -546,14 +491,17 @@
         font-size: 26px;
         font-weight: 900;
         line-height: 1;
+        transition: color 0.4s ease;
       }
       .rank-score-sym {
         font-size: 14px;
+        transition: color 0.4s ease;
       }
       .rank-score-label {
         font-size: 11px;
         opacity: 0.8;
         margin-top: 2px;
+        transition: color 0.4s ease;
       }
       .rank-score-detail {
         text-align: center;
@@ -564,20 +512,24 @@
       .rank-score-detail-num {
         font-size: 15px;
         font-weight: 900;
+        transition: color 0.4s ease;
       }
       .rank-score-detail-sep {
         font-size: 13px;
         opacity: 0.6;
+        transition: color 0.4s ease;
       }
       .rank-score-detail-max {
         font-size: 13px;
         font-weight: 700;
         opacity: 0.75;
+        transition: color 0.4s ease;
       }
       .rank-score-detail-label {
         font-size: 10px;
         opacity: 0.65;
         margin-top: 2px;
+        transition: color 0.4s ease;
       }
       .laurel-r,
       .laurel-l {
@@ -592,7 +544,9 @@
         background-position: center;
         pointer-events: none;
         z-index: 0;
-        transition: opacity 0.3s;
+        transition:
+          opacity 0.3s,
+          filter 0.3s;
       }
       .laurel-r {
         right: calc(100% + 4px);
@@ -602,163 +556,102 @@
         left: calc(100% + 4px);
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 120'%3E%3Cg fill='%23888' opacity='0.9'%3E%3Cellipse cx='15' cy='10' rx='6' ry='9' transform='rotate(20 15 10)'/%3E%3Cellipse cx='20' cy='28' rx='6' ry='9' transform='rotate(35 20 28)'/%3E%3Cellipse cx='23' cy='48' rx='6' ry='9' transform='rotate(45 23 48)'/%3E%3Cellipse cx='22' cy='68' rx='6' ry='9' transform='rotate(40 22 68)'/%3E%3Cellipse cx='18' cy='87' rx='6' ry='9' transform='rotate(30 18 87)'/%3E%3Cellipse cx='13' cy='105' rx='6' ry='9' transform='rotate(15 13 105)'/%3E%3Cpath d='M15 8 Q18 30 21 50 Q22 70 18 88 Q15 100 13 110' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/g%3E%3C/svg%3E");
       }
+
+      /* Hover Global Effects */
       @media (hover: hover) {
         .rank-card-wrapper:hover .rank-card {
-          transform: scale(1.06) rotate(1deg) translateY(-10px);
-          animation: hoverPulse 0.6s ease-in-out infinite alternate;
-        }
-        .rank-card-wrapper:hover .rank-card.rank-1 {
-          transform: scale(1.12) rotate(4deg) translateY(-14px);
-          border-color: rgba(255, 255, 255, 0.82);
+          transform: scale(1.2) rotate(5deg) translateY(-15px) !important;
+          background: linear-gradient(
+            135deg,
+            #00eaff,
+            #0066ff,
+            #8a2be2
+          ) !important;
           box-shadow:
-            0 0 28px rgba(245, 158, 11, 0.92),
-            0 0 58px rgba(245, 158, 11, 0.62),
-            0 0 115px rgba(180, 100, 0, 0.52),
-            0 20px 55px rgba(180, 100, 0, 0.65);
+            0 0 20px #00eaff,
+            0 0 40px #00eaff,
+            0 0 80px #0066ff !important;
+          border-color: white !important;
+          animation: hoverPulse 0.8s infinite alternate !important;
         }
-        .rank-card-wrapper:hover .rank-card.rank-2 {
-          transform: scale(1.12) rotate(4deg) translateY(-14px);
-          border-color: rgba(255, 255, 255, 0.82);
-          box-shadow:
-            0 0 26px rgba(148, 163, 184, 0.92),
-            0 0 54px rgba(100, 116, 139, 0.62),
-            0 0 108px rgba(71, 85, 105, 0.52),
-            0 18px 48px rgba(100, 116, 139, 0.58);
+        .rank-card-wrapper:hover .rank-name-text,
+        .rank-card-wrapper:hover .rank-id-text,
+        .rank-card-wrapper:hover .rank-score-num,
+        .rank-card-wrapper:hover .rank-score-sym,
+        .rank-card-wrapper:hover .rank-score-label,
+        .rank-card-wrapper:hover .rank-score-detail-num,
+        .rank-card-wrapper:hover .rank-score-detail-max,
+        .rank-card-wrapper:hover .rank-score-detail-label,
+        .rank-card-wrapper:hover .rank-score-detail-sep {
+          color: #ffffff !important;
+          -webkit-text-fill-color: #ffffff !important;
+          background: none !important;
+          text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
-        .rank-card-wrapper:hover .rank-card.rank-3 {
-          transform: scale(1.12) rotate(4deg) translateY(-14px);
-          border-color: rgba(255, 255, 255, 0.82);
-          box-shadow:
-            0 0 26px rgba(251, 146, 60, 0.92),
-            0 0 54px rgba(234, 88, 12, 0.62),
-            0 0 108px rgba(194, 65, 12, 0.52),
-            0 18px 45px rgba(194, 65, 12, 0.58);
-        }
-        .rank-card-wrapper:hover .rank-card.rank-4 {
-          transform: scale(1.12) rotate(4deg) translateY(-14px);
-          border-color: rgba(255, 255, 255, 0.82);
-          box-shadow:
-            0 0 25px rgba(129, 140, 248, 0.92),
-            0 0 52px rgba(99, 102, 241, 0.62),
-            0 0 104px rgba(79, 70, 229, 0.52),
-            0 16px 40px rgba(79, 70, 229, 0.54);
-        }
-        .rank-card-wrapper:hover .rank-card.rank-5 {
-          transform: scale(1.12) rotate(4deg) translateY(-14px);
-          border-color: rgba(255, 255, 255, 0.82);
-          box-shadow:
-            0 0 25px rgba(96, 165, 250, 0.92),
-            0 0 52px rgba(59, 130, 246, 0.62),
-            0 0 104px rgba(37, 99, 235, 0.52),
-            0 16px 38px rgba(37, 99, 235, 0.52);
-        }
-        .rank-card-wrapper:hover .rank-card.rank-6 {
-          transform: scale(1.12) rotate(4deg) translateY(-14px);
-          border-color: rgba(255, 255, 255, 0.82);
-          box-shadow:
-            0 0 25px rgba(34, 211, 238, 0.92),
-            0 0 52px rgba(6, 182, 212, 0.62),
-            0 0 104px rgba(8, 145, 178, 0.52),
-            0 15px 36px rgba(8, 145, 178, 0.5);
-        }
-        .rank-card-wrapper:hover .rank-card.rank-7 {
-          transform: scale(1.12) rotate(4deg) translateY(-14px);
-          border-color: rgba(255, 255, 255, 0.82);
-          box-shadow:
-            0 0 24px rgba(52, 211, 153, 0.92),
-            0 0 50px rgba(16, 185, 129, 0.62),
-            0 0 100px rgba(5, 150, 105, 0.52),
-            0 15px 34px rgba(5, 150, 105, 0.48);
-        }
-        .rank-card-wrapper:hover .rank-card.rank-8 {
-          transform: scale(1.12) rotate(4deg) translateY(-14px);
-          border-color: rgba(255, 255, 255, 0.82);
-          box-shadow:
-            0 0 24px rgba(167, 139, 250, 0.92),
-            0 0 50px rgba(139, 92, 246, 0.62),
-            0 0 100px rgba(124, 58, 237, 0.52),
-            0 14px 32px rgba(124, 58, 237, 0.46);
-        }
-        .rank-card-wrapper:hover .rank-card.rank-9 {
-          transform: scale(1.12) rotate(4deg) translateY(-14px);
-          border-color: rgba(255, 255, 255, 0.82);
-          box-shadow:
-            0 0 24px rgba(251, 113, 133, 0.92),
-            0 0 50px rgba(244, 63, 94, 0.62),
-            0 0 100px rgba(225, 29, 72, 0.52),
-            0 14px 30px rgba(225, 29, 72, 0.44);
-        }
-        .rank-card-wrapper:hover .rank-card.rank-10 {
-          transform: scale(1.12) rotate(4deg) translateY(-14px);
-          border-color: rgba(255, 255, 255, 0.82);
-          box-shadow:
-            0 0 22px rgba(148, 163, 184, 0.88),
-            0 0 46px rgba(100, 116, 139, 0.58),
-            0 0 92px rgba(71, 85, 105, 0.48),
-            0 13px 28px rgba(100, 116, 139, 0.38);
+        .rank-card-wrapper:hover .laurel-r,
+        .rank-card-wrapper:hover .laurel-l {
+          filter: brightness(0) invert(1) opacity(0.6) !important;
         }
         .rank-card-wrapper:hover .rank-badge {
           transform: scale(1.12) translateY(-3px);
+          box-shadow: 0 0 10px rgba(255, 255, 255, 0.4);
+          border: 2px solid white;
         }
         .rank-card-wrapper:hover .glass-shimmer {
           opacity: 1;
         }
         .rank-card-wrapper:hover .glass-shimmer::after {
-          animation: cardShinePass 0.42s ease-out forwards !important;
-          animation-delay: 0s !important;
-        }
-        .rank-card-wrapper:hover .rank-1 .laurel-r,
-        .rank-card-wrapper:hover .rank-1 .laurel-l {
-          opacity: 0.9;
-        }
-        .rank-card-wrapper:hover .rank-2 .laurel-r,
-        .rank-card-wrapper:hover .rank-2 .laurel-l {
-          opacity: 0.7;
-        }
-        .rank-card-wrapper:hover .rank-3 .laurel-r,
-        .rank-card-wrapper:hover .rank-3 .laurel-l {
-          opacity: 0.8;
-        }
-        .rank-card-wrapper:hover .rank-4 .laurel-r,
-        .rank-card-wrapper:hover .rank-4 .laurel-l {
-          opacity: 0.65;
-        }
-        .rank-card-wrapper:hover .rank-5 .laurel-r,
-        .rank-card-wrapper:hover .rank-5 .laurel-l {
-          opacity: 0.6;
-        }
-        .rank-card-wrapper:hover .rank-6 .laurel-r,
-        .rank-card-wrapper:hover .rank-6 .laurel-l {
-          opacity: 0.58;
-        }
-        .rank-card-wrapper:hover .rank-7 .laurel-r,
-        .rank-card-wrapper:hover .rank-7 .laurel-l {
-          opacity: 0.55;
-        }
-        .rank-card-wrapper:hover .rank-8 .laurel-r,
-        .rank-card-wrapper:hover .rank-8 .laurel-l {
-          opacity: 0.5;
-        }
-        .rank-card-wrapper:hover .rank-9 .laurel-r,
-        .rank-card-wrapper:hover .rank-9 .laurel-l {
-          opacity: 0.48;
-        }
-        .rank-card-wrapper:hover .rank-10 .laurel-r,
-        .rank-card-wrapper:hover .rank-10 .laurel-l {
-          opacity: 0.38;
+          animation: shine 1s linear forwards !important;
+          opacity: 1;
         }
       }
+
+      /* Active Global Effects (Mobile) */
       .rank-card:active {
-        transform: scale(1.08) rotate(2.5deg) translateY(-9px) !important;
-        filter: brightness(1.38) !important;
+        transform: scale(1.2) rotate(5deg) translateY(-15px) !important;
+        background: linear-gradient(
+          135deg,
+          #00eaff,
+          #0066ff,
+          #8a2be2
+        ) !important;
+        box-shadow:
+          0 0 20px #00eaff,
+          0 0 40px #00eaff,
+          0 0 80px #0066ff !important;
+        border-color: white !important;
+        animation: hoverPulse 0.8s infinite alternate !important;
         transition:
           transform 0.1s ease,
           filter 0.1s ease !important;
       }
-      .rank-card:active .glass-shimmer::after {
-        animation: cardShinePass 0.55s ease-out forwards !important;
-        animation-delay: 0s !important;
+      .rank-card:active .rank-name-text,
+      .rank-card:active .rank-id-text,
+      .rank-card:active .rank-score-num,
+      .rank-card:active .rank-score-sym,
+      .rank-card:active .rank-score-label,
+      .rank-card:active .rank-score-detail-num,
+      .rank-card:active .rank-score-detail-max,
+      .rank-card:active .rank-score-detail-label,
+      .rank-card:active .rank-score-detail-sep {
+        color: #ffffff !important;
+        -webkit-text-fill-color: #ffffff !important;
+        background: none !important;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
       }
+      .rank-card:active .laurel-r,
+      .rank-card:active .laurel-l {
+        filter: brightness(0) invert(1) opacity(0.6) !important;
+      }
+      .rank-card:active .glass-shimmer {
+        opacity: 1;
+      }
+      .rank-card:active .glass-shimmer::after {
+        animation: shine 1s linear forwards !important;
+        opacity: 1;
+      }
+
+      /* Base Rank Styles */
       .rank-1 {
         background: linear-gradient(135deg, #fffdf0, #fef3c7, #fde68a);
         border: 2.5px solid #b45309;
@@ -1299,6 +1192,29 @@
         font-weight: bold;
         animation: popIn 0.5s ease-out both;
       }
+      .disclaimer-notice {
+        margin-top: 15px;
+        padding: 10px 18px;
+        background-color: rgba(255, 255, 255, 0.55);
+        border: 1px solid rgba(0, 86, 179, 0.15);
+        border-radius: 12px;
+        font-size: 13.5px;
+        color: #1e293b;
+        font-weight: 700;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        animation: slideInUp 0.8s ease-out;
+        position: relative;
+        z-index: 10;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+      }
+      .disclaimer-notice span {
+        font-size: 16px;
+      }
       @media (min-width: 768px) {
         .top-logos img {
           max-height: 160px;
@@ -1386,29 +1302,6 @@
           display: none;
         }
       }
-      .disclaimer-notice {
-        margin-top: 15px;
-        padding: 10px 18px;
-        background-color: rgba(255, 255, 255, 0.55);
-        border: 1px solid rgba(0, 86, 179, 0.15);
-        border-radius: 12px;
-        font-size: 13.5px;
-        color: #1e293b;
-        font-weight: 700;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        animation: slideInUp 0.8s ease-out;
-        position: relative;
-        z-index: 10;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-        backdrop-filter: blur(4px);
-        -webkit-backdrop-filter: blur(4px);
-      }
-      .disclaimer-notice span {
-        font-size: 16px;
-      }
     </style>
   </head>
   <body>
@@ -1477,7 +1370,7 @@
           alt="مدرسة الشهيد محمود علي الخطيب الرسمية للغات"
         />
       </div>
-      <h2>🏆نجوم مدرسة الشهيد محمود علي الخطيب🏆</h2>
+      <h2>🏆 نجوم مدرسة الشهيد محمود علي الخطيب 🏆</h2>
       <div id="gradeSelectorSection">
         <p
           style="
