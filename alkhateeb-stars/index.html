@@ -172,6 +172,46 @@
           background-position: 400% center;
         }
       }
+      @keyframes cardShinePass {
+        0% {
+          transform: skewX(-18deg) translateX(-220%);
+          opacity: 0;
+        }
+        8% {
+          opacity: 0.85;
+        }
+        52% {
+          transform: skewX(-18deg) translateX(280%);
+          opacity: 0.85;
+        }
+        60%,
+        100% {
+          transform: skewX(-18deg) translateX(280%);
+          opacity: 0;
+        }
+      }
+      @keyframes cardTapFlash {
+        0% {
+          transform: scale(1);
+          box-shadow: var(--glow-rest);
+        }
+        35% {
+          transform: scale(0.972);
+          box-shadow: var(--glow-active);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: var(--glow-rest);
+        }
+      }
+      @keyframes hoverPulse {
+        from {
+          filter: brightness(1.08);
+        }
+        to {
+          filter: brightness(1.38);
+        }
+      }
       .dot {
         position: fixed;
         border-radius: 50%;
@@ -380,13 +420,8 @@
         overflow: visible;
       }
       .rank-card-wrapper {
-        perspective: 1200px;
+        perspective: 900px;
         margin-bottom: 16px;
-        position: relative;
-        z-index: 1;
-      }
-      .rank-card-wrapper:hover {
-        z-index: 10;
       }
       .rank-card {
         width: 100%;
@@ -400,7 +435,7 @@
         animation: popIn 0.5s ease-out both;
         transform-style: preserve-3d;
         transition:
-          transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+          transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
           box-shadow 0.5s ease;
         position: relative;
         overflow: visible;
@@ -416,10 +451,58 @@
         );
         pointer-events: none;
         z-index: 1;
-        transition:
-          opacity 0.5s ease,
-          background 0.5s ease;
+        transition: opacity 0.4s;
         opacity: 0.7;
+        overflow: hidden;
+        border-radius: 14px;
+      }
+      .glass-shimmer::after {
+        content: "";
+        position: absolute;
+        top: -30%;
+        left: 0;
+        width: 55%;
+        height: 160%;
+        background: linear-gradient(
+          90deg,
+          transparent 0%,
+          rgba(255, 255, 255, 0.52) 50%,
+          transparent 100%
+        );
+        transform: skewX(-18deg) translateX(-220%);
+        animation: cardShinePass 8s ease-in-out infinite;
+        pointer-events: none;
+        border-radius: 0;
+      }
+      .rank-1 .glass-shimmer::after {
+        animation-delay: 0s;
+      }
+      .rank-2 .glass-shimmer::after {
+        animation-delay: 0.8s;
+      }
+      .rank-3 .glass-shimmer::after {
+        animation-delay: 1.6s;
+      }
+      .rank-4 .glass-shimmer::after {
+        animation-delay: 2.4s;
+      }
+      .rank-5 .glass-shimmer::after {
+        animation-delay: 3.2s;
+      }
+      .rank-6 .glass-shimmer::after {
+        animation-delay: 4s;
+      }
+      .rank-7 .glass-shimmer::after {
+        animation-delay: 4.8s;
+      }
+      .rank-8 .glass-shimmer::after {
+        animation-delay: 5.6s;
+      }
+      .rank-9 .glass-shimmer::after {
+        animation-delay: 6.4s;
+      }
+      .rank-10 .glass-shimmer::after {
+        animation-delay: 7.2s;
       }
       .rank-badge {
         flex-shrink: 0;
@@ -429,7 +512,7 @@
         flex-direction: column;
         border-radius: 50%;
         transform: translate3d(0, 0, 30px);
-        transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transition: transform 0.5s ease;
         position: relative;
         z-index: 2;
       }
@@ -438,8 +521,6 @@
         text-align: right;
         position: relative;
         z-index: 2;
-        transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        transform: translateZ(0px);
       }
       .rank-name-text {
         font-size: 19px;
@@ -459,8 +540,6 @@
         flex-shrink: 0;
         position: relative;
         z-index: 2;
-        transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-        transform: translateZ(0px);
       }
       .rank-score-num {
         font-size: 26px;
@@ -499,9 +578,8 @@
         opacity: 0.65;
         margin-top: 2px;
       }
-      .rank-card::before,
-      .rank-card::after {
-        content: "";
+      .laurel-r,
+      .laurel-l {
         position: absolute;
         top: 50%;
         transform: translateY(-50%);
@@ -513,41 +591,152 @@
         background-position: center;
         pointer-events: none;
         z-index: 0;
-        transition: opacity 0.5s ease;
+        transition: opacity 0.3s;
       }
-      .rank-card::before {
+      .laurel-r {
         right: calc(100% + 4px);
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 120'%3E%3Cg fill='%23888' opacity='0.9'%3E%3Cellipse cx='15' cy='10' rx='6' ry='9' transform='rotate(-20 15 10)'/%3E%3Cellipse cx='10' cy='28' rx='6' ry='9' transform='rotate(-35 10 28)'/%3E%3Cellipse cx='7' cy='48' rx='6' ry='9' transform='rotate(-45 7 48)'/%3E%3Cellipse cx='8' cy='68' rx='6' ry='9' transform='rotate(-40 8 68)'/%3E%3Cellipse cx='12' cy='87' rx='6' ry='9' transform='rotate(-30 12 87)'/%3E%3Cellipse cx='17' cy='105' rx='6' ry='9' transform='rotate(-15 17 105)'/%3E%3Cpath d='M15 8 Q12 30 9 50 Q8 70 12 88 Q15 100 17 110' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/g%3E%3C/svg%3E");
       }
-      .rank-card::after {
+      .laurel-l {
         left: calc(100% + 4px);
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 120'%3E%3Cg fill='%23888' opacity='0.9'%3E%3Cellipse cx='15' cy='10' rx='6' ry='9' transform='rotate(20 15 10)'/%3E%3Cellipse cx='20' cy='28' rx='6' ry='9' transform='rotate(35 20 28)'/%3E%3Cellipse cx='23' cy='48' rx='6' ry='9' transform='rotate(45 23 48)'/%3E%3Cellipse cx='22' cy='68' rx='6' ry='9' transform='rotate(40 22 68)'/%3E%3Cellipse cx='18' cy='87' rx='6' ry='9' transform='rotate(30 18 87)'/%3E%3Cellipse cx='13' cy='105' rx='6' ry='9' transform='rotate(15 13 105)'/%3E%3Cpath d='M15 8 Q18 30 21 50 Q22 70 18 88 Q15 100 13 110' stroke='%23888' stroke-width='1.5' fill='none'/%3E%3C/g%3E%3C/svg%3E");
       }
       @media (hover: hover) {
         .rank-card-wrapper:hover .rank-card {
-          transform: translateY(-8px) rotateX(5deg) rotateY(-3deg) scale(1.03);
+          transform: scale(1.06) rotate(1deg) translateY(-10px);
+          animation: hoverPulse 0.6s ease-in-out infinite alternate;
+        }
+        .rank-card-wrapper:hover .rank-card.rank-1 {
+          transform: scale(1.08) rotate(1.8deg) translateY(-14px);
+          box-shadow:
+            0 20px 55px rgba(180, 100, 0, 0.65),
+            0 0 40px rgba(215, 150, 0, 0.55),
+            0 0 80px rgba(245, 158, 11, 0.4);
+        }
+        .rank-card-wrapper:hover .rank-card.rank-2 {
+          transform: scale(1.07) rotate(1.5deg) translateY(-12px);
+          box-shadow:
+            0 18px 48px rgba(100, 116, 139, 0.56),
+            0 0 32px rgba(148, 163, 184, 0.44),
+            0 0 60px rgba(148, 163, 184, 0.28);
+        }
+        .rank-card-wrapper:hover .rank-card.rank-3 {
+          transform: scale(1.065) rotate(1.3deg) translateY(-11px);
+          box-shadow:
+            0 18px 45px rgba(194, 65, 12, 0.56),
+            0 0 30px rgba(234, 88, 12, 0.46),
+            0 0 55px rgba(251, 146, 60, 0.32);
+        }
+        .rank-card-wrapper:hover .rank-card.rank-4 {
+          transform: scale(1.06) rotate(1.2deg) translateY(-10px);
+          box-shadow:
+            0 16px 40px rgba(79, 70, 229, 0.52),
+            0 0 25px rgba(99, 102, 241, 0.42),
+            0 0 48px rgba(129, 140, 248, 0.28);
+        }
+        .rank-card-wrapper:hover .rank-card.rank-5 {
+          transform: scale(1.06) rotate(1.1deg) translateY(-10px);
+          box-shadow:
+            0 16px 38px rgba(37, 99, 235, 0.5),
+            0 0 23px rgba(59, 130, 246, 0.4),
+            0 0 44px rgba(96, 165, 250, 0.26);
+        }
+        .rank-card-wrapper:hover .rank-card.rank-6 {
+          transform: scale(1.055) rotate(1deg) translateY(-9px);
+          box-shadow:
+            0 15px 36px rgba(8, 145, 178, 0.48),
+            0 0 21px rgba(6, 182, 212, 0.38),
+            0 0 40px rgba(34, 211, 238, 0.24);
+        }
+        .rank-card-wrapper:hover .rank-card.rank-7 {
+          transform: scale(1.055) rotate(1deg) translateY(-9px);
+          box-shadow:
+            0 15px 34px rgba(5, 150, 105, 0.46),
+            0 0 19px rgba(16, 185, 129, 0.36),
+            0 0 38px rgba(52, 211, 153, 0.22);
+        }
+        .rank-card-wrapper:hover .rank-card.rank-8 {
+          transform: scale(1.05) rotate(0.8deg) translateY(-8px);
+          box-shadow:
+            0 14px 32px rgba(124, 58, 237, 0.44),
+            0 0 18px rgba(139, 92, 246, 0.34),
+            0 0 34px rgba(167, 139, 250, 0.22);
+        }
+        .rank-card-wrapper:hover .rank-card.rank-9 {
+          transform: scale(1.05) rotate(0.8deg) translateY(-8px);
+          box-shadow:
+            0 14px 30px rgba(225, 29, 72, 0.42),
+            0 0 16px rgba(244, 63, 94, 0.32),
+            0 0 32px rgba(251, 113, 133, 0.2);
+        }
+        .rank-card-wrapper:hover .rank-card.rank-10 {
+          transform: scale(1.045) rotate(0.6deg) translateY(-7px);
+          box-shadow:
+            0 13px 28px rgba(100, 116, 139, 0.36),
+            0 0 14px rgba(148, 163, 184, 0.28),
+            0 0 28px rgba(148, 163, 184, 0.18);
         }
         .rank-card-wrapper:hover .rank-badge {
-          transform: translateZ(40px) scale(1.1);
-        }
-        .rank-card-wrapper:hover .rank-info {
-          transform: translateZ(25px);
-        }
-        .rank-card-wrapper:hover .rank-score-block {
-          transform: translateZ(30px);
+          transform: scale(1.12) translateY(-3px);
         }
         .rank-card-wrapper:hover .glass-shimmer {
           opacity: 1;
-          background: linear-gradient(
-            135deg,
-            rgba(255, 255, 255, 0.7) 0%,
-            rgba(255, 255, 255, 0) 80%
-          );
         }
-        .rank-card-wrapper:hover .rank-card::before,
-        .rank-card-wrapper:hover .rank-card::after {
-          opacity: 0.8 !important;
+        .rank-card-wrapper:hover .glass-shimmer::after {
+          animation: cardShinePass 0.75s ease-out forwards !important;
+          animation-delay: 0s !important;
         }
+        .rank-card-wrapper:hover .rank-1 .laurel-r,
+        .rank-card-wrapper:hover .rank-1 .laurel-l {
+          opacity: 0.9;
+        }
+        .rank-card-wrapper:hover .rank-2 .laurel-r,
+        .rank-card-wrapper:hover .rank-2 .laurel-l {
+          opacity: 0.7;
+        }
+        .rank-card-wrapper:hover .rank-3 .laurel-r,
+        .rank-card-wrapper:hover .rank-3 .laurel-l {
+          opacity: 0.8;
+        }
+        .rank-card-wrapper:hover .rank-4 .laurel-r,
+        .rank-card-wrapper:hover .rank-4 .laurel-l {
+          opacity: 0.65;
+        }
+        .rank-card-wrapper:hover .rank-5 .laurel-r,
+        .rank-card-wrapper:hover .rank-5 .laurel-l {
+          opacity: 0.6;
+        }
+        .rank-card-wrapper:hover .rank-6 .laurel-r,
+        .rank-card-wrapper:hover .rank-6 .laurel-l {
+          opacity: 0.58;
+        }
+        .rank-card-wrapper:hover .rank-7 .laurel-r,
+        .rank-card-wrapper:hover .rank-7 .laurel-l {
+          opacity: 0.55;
+        }
+        .rank-card-wrapper:hover .rank-8 .laurel-r,
+        .rank-card-wrapper:hover .rank-8 .laurel-l {
+          opacity: 0.5;
+        }
+        .rank-card-wrapper:hover .rank-9 .laurel-r,
+        .rank-card-wrapper:hover .rank-9 .laurel-l {
+          opacity: 0.48;
+        }
+        .rank-card-wrapper:hover .rank-10 .laurel-r,
+        .rank-card-wrapper:hover .rank-10 .laurel-l {
+          opacity: 0.38;
+        }
+      }
+      .rank-card:active {
+        transform: scale(1.04) rotate(0.5deg) translateY(-5px) !important;
+        filter: brightness(1.2) !important;
+        transition:
+          transform 0.1s ease,
+          filter 0.1s ease !important;
+      }
+      .rank-card:active .glass-shimmer::after {
+        animation: cardShinePass 0.55s ease-out forwards !important;
+        animation-delay: 0s !important;
       }
       .rank-1 {
         background: linear-gradient(135deg, #fffdf0, #fef3c7, #fde68a);
@@ -588,7 +777,7 @@
         background-clip: text;
         animation:
           nameReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) both,
-          goldShimmer 4.5s linear infinite;
+          goldShimmer 9s linear infinite;
         animation-delay: calc(var(--anim-delay, 0s) + 0.12s), 0s;
       }
       .rank-1 .rank-score-num,
@@ -600,8 +789,8 @@
       .rank-1 .rank-id-text {
         color: #b45309;
       }
-      .rank-1::before,
-      .rank-1::after {
+      .rank-1 .laurel-r,
+      .rank-1 .laurel-l {
         opacity: 0.7;
         filter: sepia(1) saturate(3) hue-rotate(15deg) brightness(0.85);
       }
@@ -642,7 +831,7 @@
         background-clip: text;
         animation:
           nameReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) both,
-          goldShimmer 5s linear infinite;
+          goldShimmer 10s linear infinite;
         animation-delay: calc(var(--anim-delay, 0s) + 0.12s), 0s;
       }
       .rank-2 .rank-score-num,
@@ -654,8 +843,8 @@
       .rank-2 .rank-id-text {
         color: #64748b;
       }
-      .rank-2::before,
-      .rank-2::after {
+      .rank-2 .laurel-r,
+      .rank-2 .laurel-l {
         opacity: 0.5;
         filter: grayscale(1) brightness(0.8);
       }
@@ -695,7 +884,7 @@
         background-clip: text;
         animation:
           nameReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) both,
-          goldShimmer 5.5s linear infinite;
+          goldShimmer 11s linear infinite;
         animation-delay: calc(var(--anim-delay, 0s) + 0.12s), 0s;
       }
       .rank-3 .rank-score-num,
@@ -707,8 +896,8 @@
       .rank-3 .rank-id-text {
         color: #c2410c;
       }
-      .rank-3::before,
-      .rank-3::after {
+      .rank-3 .laurel-r,
+      .rank-3 .laurel-l {
         opacity: 0.6;
         filter: sepia(1) saturate(2) hue-rotate(-20deg) brightness(0.8);
       }
@@ -748,7 +937,7 @@
         background-clip: text;
         animation:
           nameReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) both,
-          goldShimmer 6s linear infinite;
+          goldShimmer 12s linear infinite;
         animation-delay: calc(var(--anim-delay, 0s) + 0.12s), 0s;
       }
       .rank-4 .rank-score-num,
@@ -760,8 +949,8 @@
       .rank-4 .rank-id-text {
         color: #6366f1;
       }
-      .rank-4::before,
-      .rank-4::after {
+      .rank-4 .laurel-r,
+      .rank-4 .laurel-l {
         opacity: 0.45;
         filter: sepia(1) saturate(3) hue-rotate(200deg) brightness(0.75);
       }
@@ -801,7 +990,7 @@
         background-clip: text;
         animation:
           nameReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) both,
-          goldShimmer 6.5s linear infinite;
+          goldShimmer 13s linear infinite;
         animation-delay: calc(var(--anim-delay, 0s) + 0.12s), 0s;
       }
       .rank-5 .rank-score-num,
@@ -813,8 +1002,8 @@
       .rank-5 .rank-id-text {
         color: #3b82f6;
       }
-      .rank-5::before,
-      .rank-5::after {
+      .rank-5 .laurel-r,
+      .rank-5 .laurel-l {
         opacity: 0.4;
         filter: sepia(1) saturate(3) hue-rotate(175deg) brightness(0.75);
       }
@@ -854,7 +1043,7 @@
         background-clip: text;
         animation:
           nameReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) both,
-          goldShimmer 7s linear infinite;
+          goldShimmer 14s linear infinite;
         animation-delay: calc(var(--anim-delay, 0s) + 0.12s), 0s;
       }
       .rank-6 .rank-score-num,
@@ -866,8 +1055,8 @@
       .rank-6 .rank-id-text {
         color: #0891b2;
       }
-      .rank-6::before,
-      .rank-6::after {
+      .rank-6 .laurel-r,
+      .rank-6 .laurel-l {
         opacity: 0.38;
         filter: sepia(1) saturate(3) hue-rotate(155deg) brightness(0.7);
       }
@@ -907,7 +1096,7 @@
         background-clip: text;
         animation:
           nameReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) both,
-          goldShimmer 7.5s linear infinite;
+          goldShimmer 15s linear infinite;
         animation-delay: calc(var(--anim-delay, 0s) + 0.12s), 0s;
       }
       .rank-7 .rank-score-num,
@@ -919,8 +1108,8 @@
       .rank-7 .rank-id-text {
         color: #059669;
       }
-      .rank-7::before,
-      .rank-7::after {
+      .rank-7 .laurel-r,
+      .rank-7 .laurel-l {
         opacity: 0.35;
         filter: sepia(1) saturate(3) hue-rotate(100deg) brightness(0.7);
       }
@@ -960,7 +1149,7 @@
         background-clip: text;
         animation:
           nameReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) both,
-          goldShimmer 8s linear infinite;
+          goldShimmer 16s linear infinite;
         animation-delay: calc(var(--anim-delay, 0s) + 0.12s), 0s;
       }
       .rank-8 .rank-score-num,
@@ -972,8 +1161,8 @@
       .rank-8 .rank-id-text {
         color: #7c3aed;
       }
-      .rank-8::before,
-      .rank-8::after {
+      .rank-8 .laurel-r,
+      .rank-8 .laurel-l {
         opacity: 0.3;
         filter: sepia(1) saturate(3) hue-rotate(240deg) brightness(0.7);
       }
@@ -1013,7 +1202,7 @@
         background-clip: text;
         animation:
           nameReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) both,
-          goldShimmer 8.5s linear infinite;
+          goldShimmer 17s linear infinite;
         animation-delay: calc(var(--anim-delay, 0s) + 0.12s), 0s;
       }
       .rank-9 .rank-score-num,
@@ -1025,8 +1214,8 @@
       .rank-9 .rank-id-text {
         color: #e11d48;
       }
-      .rank-9::before,
-      .rank-9::after {
+      .rank-9 .laurel-r,
+      .rank-9 .laurel-l {
         opacity: 0.28;
         filter: sepia(1) saturate(2) hue-rotate(310deg) brightness(0.8);
       }
@@ -1066,7 +1255,7 @@
         background-clip: text;
         animation:
           nameReveal 0.65s cubic-bezier(0.22, 1, 0.36, 1) both,
-          goldShimmer 9s linear infinite;
+          goldShimmer 18s linear infinite;
         animation-delay: calc(var(--anim-delay, 0s) + 0.12s), 0s;
       }
       .rank-10 .rank-score-num,
@@ -1078,8 +1267,8 @@
       .rank-10 .rank-id-text {
         color: #94a3b8;
       }
-      .rank-10::before,
-      .rank-10::after {
+      .rank-10 .laurel-r,
+      .rank-10 .laurel-l {
         opacity: 0.18;
         filter: grayscale(1) brightness(0.7);
       }
@@ -1121,8 +1310,8 @@
           width: 54px;
           height: 54px;
         }
-        .rank-card::before,
-        .rank-card::after {
+        .laurel-r,
+        .laurel-l {
           display: none;
         }
       }
@@ -1152,8 +1341,8 @@
         .rank-info {
           text-align: center;
         }
-        .rank-card::before,
-        .rank-card::after {
+        .laurel-r,
+        .laurel-l {
           display: none;
         }
       }
@@ -1244,7 +1433,7 @@
           alt="مدرسة الشهيد محمود علي الخطيب الرسمية للغات"
         />
       </div>
-      <h2>🏆 نجوم مدرسة الشهيد محمود علي الخطيب 🏆</h2>
+      <h2>🏆 العشرة الأوائل</h2>
       <div id="gradeSelectorSection">
         <p
           style="
@@ -1350,11 +1539,38 @@
             emoji.style.left = Math.random() * 100 + "vw";
             emoji.style.animationDuration = Math.random() * 3 + 4 + "s";
             document.body.appendChild(emoji);
-            setTimeout(function () {
+            emoji.addEventListener("animationend", function () {
               emoji.remove();
-            }, 7000);
+            });
           }, i * 150);
         }
+      }
+      function addRipple(e, btn) {
+        var rect = btn.getBoundingClientRect();
+        var clientX =
+          e.clientX !== undefined
+            ? e.clientX
+            : e.touches && e.touches[0]
+              ? e.touches[0].clientX
+              : rect.left + rect.width / 2;
+        var clientY =
+          e.clientY !== undefined
+            ? e.clientY
+            : e.touches && e.touches[0]
+              ? e.touches[0].clientY
+              : rect.top + rect.height / 2;
+        var x = clientX - rect.left;
+        var y = clientY - rect.top;
+        var size = Math.max(rect.width, rect.height) * 1.6;
+        var span = document.createElement("span");
+        span.className = "ripple-span";
+        span.style.width = span.style.height = size + "px";
+        span.style.left = x - size / 2 + "px";
+        span.style.top = y - size / 2 + "px";
+        btn.appendChild(span);
+        setTimeout(function () {
+          if (span.parentNode) span.remove();
+        }, 700);
       }
       document
         .getElementById("gradeSelect")
@@ -1363,6 +1579,11 @@
           document.getElementById("showTopBtn").disabled = !activeGrade;
           document.getElementById("top10Result").innerHTML = "";
           confettiFired = false;
+        });
+      document
+        .getElementById("showTopBtn")
+        .addEventListener("click", function (e) {
+          addRipple(e, this);
         });
       function toggleInputs(disabled) {
         document.getElementById("gradeSelect").disabled = disabled;
@@ -1421,12 +1642,7 @@
           month: "long",
           day: "numeric",
         });
-        const isMobileRender = /Android|iPhone|iPad|iPod/i.test(
-          navigator.userAgent,
-        );
-        const shareLabel = isMobileRender
-          ? "📸 مشاركة القائمة كصورة"
-          : "⬇️ تحميل الصورة";
+        const shareLabel = "تحميل الصورة";
         let html =
           "<div id='capture-area' style='animation: slideInUp 0.5s ease-out forwards;'>" +
           "<div id='export-header' style='display: none;'>" +
@@ -1497,6 +1713,7 @@
             "s, " +
             glowDelay +
             "s;'>" +
+            "<div class='laurel-r'></div><div class='laurel-l'></div>" +
             "<div class='glass-shimmer'></div>" +
             "<div class='rank-badge'>" +
             badgeContent +
@@ -1534,12 +1751,24 @@
           "<span class='btn-text'>🔄 اختيار صف آخر</span>" +
           "</button>";
         resultDiv.innerHTML = html;
+        var shareBtn = document.getElementById("shareBtn");
+        var resetBtn = document.getElementById("resetBtn");
+        if (shareBtn)
+          shareBtn.addEventListener("click", function (e) {
+            addRipple(e, this);
+          });
+        if (resetBtn)
+          resetBtn.addEventListener("click", function (e) {
+            addRipple(e, this);
+          });
         setTimeout(function () {
-          const animElements = document.querySelectorAll(".anim-perc");
+          var animElements = document.querySelectorAll(".anim-perc");
           animElements.forEach(function (el, i) {
-            const val = parseFloat(el.getAttribute("data-val"));
+            var val = parseFloat(el.getAttribute("data-val"));
             setTimeout(function () {
-              countUp(el, val, 1200, val % 1 !== 0 ? 2 : 0);
+              if (el && document.body.contains(el)) {
+                countUp(el, val, 1200, val % 1 !== 0 ? 2 : 0);
+              }
             }, i * 80);
           });
         }, 200);
@@ -1583,20 +1812,26 @@
             scale: 2,
             useCORS: true,
             backgroundColor: "#ffffff",
-            windowWidth: document.documentElement.clientWidth,
+            windowWidth: 900,
             onclone: function (clonedDoc) {
-              var noAnimStyle = clonedDoc.createElement("style");
-              noAnimStyle.innerHTML =
-                "* { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; } .rank-card::before, .rank-card::after { content: none !important; display: none !important; background: none !important; background-image: none !important; visibility: hidden !important; }";
-              clonedDoc.head.appendChild(noAnimStyle);
+              var freezeStyle = clonedDoc.createElement("style");
+              freezeStyle.innerHTML =
+                "* { animation: none !important; transition: none !important; } .rank-card { opacity: 1 !important; transform: none !important; transform-style: flat !important; } .rank-card-wrapper { perspective: none !important; transform-style: flat !important; overflow: visible !important; } .rank-badge { transform: none !important; } .rank-name-text { opacity: 1 !important; transform: none !important; letter-spacing: normal !important; } #capture-area { opacity: 1 !important; } .glass-shimmer { display: none !important; }";
+              clonedDoc.head.appendChild(freezeStyle);
               var clonedArea = clonedDoc.getElementById("capture-area");
               clonedArea.style.width = "800px";
               clonedArea.style.maxWidth = "none";
               clonedArea.style.padding = "40px";
               clonedArea.style.margin = "0 auto";
-              clonedArea.style.overflow = "hidden";
+              clonedArea.style.overflow = "visible";
               clonedDoc.getElementById("export-header").style.display = "block";
               clonedDoc.getElementById("export-footer").style.display = "block";
+              clonedDoc
+                .querySelectorAll(".rank-card-wrapper")
+                .forEach(function (w) {
+                  w.style.overflow = "visible";
+                  w.style.borderRadius = "14px";
+                });
               var textFixStyle = clonedDoc.createElement("style");
               textFixStyle.innerHTML =
                 ".rank-name-text { background: none !important; -webkit-background-clip: unset !important; background-clip: unset !important; -webkit-text-fill-color: initial !important; } .rank-1 .rank-name-text { color: #78350f !important; } .rank-2 .rank-name-text { color: #0f172a !important; } .rank-3 .rank-name-text { color: #7c2d12 !important; } .rank-4 .rank-name-text { color: #1e1b4b !important; } .rank-5 .rank-name-text { color: #1e3a8a !important; } .rank-6 .rank-name-text { color: #164e63 !important; } .rank-7 .rank-name-text { color: #064e3b !important; } .rank-8 .rank-name-text { color: #2e1065 !important; } .rank-9 .rank-name-text { color: #881337 !important; } .rank-10 .rank-name-text { color: #334155 !important; }";
@@ -1634,6 +1869,7 @@
         document.getElementById("showTopBtn").disabled = true;
         activeGrade = "";
         window.scrollTo({ top: 0, behavior: "smooth" });
+        document.getElementById("showTopBtn").classList.add("pulse-button");
       }
     </script>
   </body>
