@@ -30,6 +30,7 @@
         justify-content: center;
         align-items: center;
       }
+
       @keyframes fadeInPage {
         from {
           opacity: 0;
@@ -126,6 +127,7 @@
         z-index: 0;
         background: rgba(0, 86, 179, 0.05);
         animation: floatDot ease-in-out infinite;
+        will-change: transform;
       }
       .container {
         background: white;
@@ -259,6 +261,32 @@
       .btn-info:hover:not(:disabled) {
         background-color: #138496;
       }
+      .badge-secondary {
+        background-color: #6c757d;
+        color: #fff;
+      }
+
+      .row-deleting {
+        background-color: #ffcccc !important;
+        opacity: 0.6;
+        transition:
+          background-color 0.3s,
+          opacity 0.5s;
+      }
+
+      .animations-paused * {
+        animation-play-state: paused !important;
+      }
+      .btn-secondary {
+        background-color: #6c757d;
+        width: auto;
+        margin: 0;
+        padding: 5px 12px;
+        font-size: 13px;
+      }
+      .btn-secondary:hover:not(:disabled) {
+        background-color: #5a6268;
+      }
       .btn-today {
         background-color: #6c757d;
         width: auto;
@@ -284,6 +312,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
         margin-bottom: 15px;
         border-bottom: 2px solid #eee;
         padding-bottom: 10px;
@@ -1239,6 +1269,49 @@
           >
             فلترة السجل واستخراج التقارير
           </h3>
+          <div
+            style="display: flex; gap: 8px; margin-top: 15px; flex-wrap: wrap"
+          >
+            <button
+              class="btn-secondary"
+              style="
+                margin: 0;
+                padding: 5px 12px;
+                font-size: 13px;
+                min-width: auto;
+                height: auto;
+              "
+              onclick="setHistoryPreset('today')"
+            >
+              اليوم
+            </button>
+            <button
+              class="btn-secondary"
+              style="
+                margin: 0;
+                padding: 5px 12px;
+                font-size: 13px;
+                min-width: auto;
+                height: auto;
+              "
+              onclick="setHistoryPreset('week')"
+            >
+              هذا الأسبوع
+            </button>
+            <button
+              class="btn-secondary"
+              style="
+                margin: 0;
+                padding: 5px 12px;
+                font-size: 13px;
+                min-width: auto;
+                height: auto;
+              "
+              onclick="setHistoryPreset('month')"
+            >
+              هذا الشهر
+            </button>
+          </div>
           <div class="date-row" style="margin-top: 15px">
             <label style="font-weight: bold">من:</label>
             <input
@@ -1322,6 +1395,39 @@
           </div>
         </div>
 
+        <div
+          style="
+            margin-bottom: 15px;
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            flex-wrap: wrap;
+          "
+        >
+          <input
+            type="text"
+            id="historyTableFilter"
+            class="form-control"
+            placeholder="تصفية السجلات المعروضة (الاسم، النوع، الإداري...)"
+            style="max-width: 300px; margin: 0"
+            oninput="filterHistoryTable()"
+          />
+          <button
+            class="btn-success"
+            style="
+              margin: 0;
+              width: auto;
+              padding: 6px 15px;
+              font-size: 14px;
+              background-color: #28a745;
+              color: white;
+            "
+            onclick="exportTableToCSV('historyTable', 'سجل_شئون_العاملين.csv')"
+          >
+            تصدير CSV 📥
+          </button>
+        </div>
+
         <div id="historyTableContainer" class="table-responsive">
           <table id="historyTable">
             <thead>
@@ -1367,7 +1473,7 @@
           "
         >
           <h3 style="margin: 0; color: #0056b3">إدارة الطلبات والاعتمادات</h3>
-          <button class="btn-info" onclick="fetchApprovalsData()">
+          <button class="btn-info" onclick="fetchApprovalsData(true)">
             <span class="btn-text">تحديث</span>
           </button>
         </div>
@@ -1564,6 +1670,8 @@
 
     <div
       id="editModal"
+      role="dialog"
+      aria-modal="true"
       style="
         display: none;
         position: fixed;
@@ -1691,6 +1799,9 @@
 
     <div
       id="bulkEditModal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="bulkEditModalTitle"
       style="
         display: none;
         position: fixed;
@@ -1952,6 +2063,8 @@
 
     <div
       id="newRequestModal"
+      role="dialog"
+      aria-modal="true"
       style="
         display: none;
         position: fixed;
@@ -2154,82 +2267,90 @@
         </div>
 
         <div id="approvalCustomArea" style="display: none; margin-bottom: 15px">
-          <div style="display: flex; flex-direction: column; gap: 10px">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px">
             <div
-              class="date-row"
               style="
-                justify-content: flex-start;
+                display: flex;
+                flex-direction: column;
                 background: #f8f9fa;
                 padding: 10px;
                 border-radius: 8px;
                 border: 1px solid #eee;
+                gap: 5px;
+                text-align: right;
               "
             >
-              <label
-                style="
-                  font-weight: bold;
-                  width: 40px;
-                  text-align: right;
-                  color: #0056b3;
-                "
-                >من:</label
+              <label style="font-weight: bold; color: #0056b3; font-size: 13px"
+                >تاريخ بداية الاعتماد:</label
               >
-              <input
-                type="date"
-                id="customApprovalStart"
-                class="form-control"
-                style="max-width: 150px; margin: 0"
-                onchange="generateApprovalCheckboxes()"
-              />
-              <button
-                onclick="
-                  addRipple(event, this);
-                  setToday('customApprovalStart');
-                  generateApprovalCheckboxes();
-                "
-                class="btn-today"
-                style="margin-right: auto"
-              >
-                <span class="btn-text">اليوم</span>
-              </button>
+              <div style="display: flex; gap: 5px; align-items: center">
+                <input
+                  type="date"
+                  id="customApprovalStart"
+                  class="form-control"
+                  style="margin: 0; flex: 1; padding: 5px; font-size: 13px"
+                  onchange="generateApprovalCheckboxes()"
+                />
+                <button
+                  onclick="
+                    addRipple(event, this);
+                    setToday('customApprovalStart');
+                    generateApprovalCheckboxes();
+                  "
+                  class="btn-today"
+                  style="
+                    margin: 0;
+                    padding: 5px 10px;
+                    font-size: 12px;
+                    min-width: auto;
+                    height: 32px;
+                  "
+                >
+                  <span class="btn-text">اليوم</span>
+                </button>
+              </div>
             </div>
             <div
-              class="date-row"
               style="
-                justify-content: flex-start;
+                display: flex;
+                flex-direction: column;
                 background: #f8f9fa;
                 padding: 10px;
                 border-radius: 8px;
                 border: 1px solid #eee;
+                gap: 5px;
+                text-align: right;
               "
             >
-              <label
-                style="
-                  font-weight: bold;
-                  width: 40px;
-                  text-align: right;
-                  color: #0056b3;
-                "
-                >إلى:</label
+              <label style="font-weight: bold; color: #0056b3; font-size: 13px"
+                >تاريخ نهاية الاعتماد:</label
               >
-              <input
-                type="date"
-                id="customApprovalEnd"
-                class="form-control"
-                style="max-width: 150px; margin: 0"
-                onchange="generateApprovalCheckboxes()"
-              />
-              <button
-                onclick="
-                  addRipple(event, this);
-                  setToday('customApprovalEnd');
-                  generateApprovalCheckboxes();
-                "
-                class="btn-today"
-                style="margin-right: auto"
-              >
-                <span class="btn-text">اليوم</span>
-              </button>
+              <div style="display: flex; gap: 5px; align-items: center">
+                <input
+                  type="date"
+                  id="customApprovalEnd"
+                  class="form-control"
+                  style="margin: 0; flex: 1; padding: 5px; font-size: 13px"
+                  onchange="generateApprovalCheckboxes()"
+                />
+                <button
+                  onclick="
+                    addRipple(event, this);
+                    setToday('customApprovalEnd');
+                    generateApprovalCheckboxes();
+                  "
+                  class="btn-today"
+                  style="
+                    margin: 0;
+                    padding: 5px 10px;
+                    font-size: 12px;
+                    min-width: auto;
+                    height: 32px;
+                  "
+                >
+                  <span class="btn-text">اليوم</span>
+                </button>
+              </div>
             </div>
           </div>
           <div id="customApprovalCheckboxes" class="checkbox-grid"></div>
@@ -2254,21 +2375,45 @@
           <button
             class="btn-success"
             onclick="submitApproval()"
-            style="margin: 0; flex: 1; min-width: 120px"
+            style="
+              margin: 0;
+              flex: 2;
+              min-width: 120px;
+              padding: 10px;
+              font-size: 15px;
+              border-radius: 8px;
+            "
           >
             ✅ قبول واعتماد
           </button>
           <button
             class="btn-logout"
             onclick="submitRejection()"
-            style="margin: 0; flex: 1; min-width: 80px"
+            style="
+              margin: 0;
+              flex: 1;
+              min-width: 80px;
+              padding: 10px;
+              font-size: 15px;
+              border-radius: 8px;
+            "
           >
             ❌ رفض
           </button>
           <button
             class="btn-logout"
             onclick="closeReviewModal()"
-            style="margin: 0; flex: 1; min-width: 80px; background: #6c757d"
+            style="
+              margin: 0;
+              flex: 1;
+              min-width: 80px;
+              padding: 10px;
+              font-size: 15px;
+              border-radius: 8px;
+              background: #6c757d;
+              border-color: #6c757d;
+              color: white;
+            "
           >
             إلغاء
           </button>
@@ -2279,13 +2424,42 @@
     <script>
       const APPS_SCRIPT_URL =
         "https://script.google.com/macros/s/AKfycbx-a6hbMYNAuaAwSLshSygqwRC4RpdhNBgNyOl1M2LlMn7ZkLI8cyxY2WeYzY9yP1Emgw/exec";
-      let allTeachers = [];
-      let currentSearchFocus = -1;
-      let confirmCallback = null;
-      let lastTodayFetch = 0;
-      let liveSearchTimeout = null;
-      let pendingMessages = [];
-      let currentMessageIndex = 0;
+      const TIME_BASED_ACTIONS = [
+        "تأخر صباحي",
+        "تأخر بإذن",
+        "خروج بدون إذن",
+        "خروج بإذن",
+      ];
+      const DAY_BASED_ACTIONS = [
+        "غياب",
+        "غياب بعذر",
+        "اعتيادي",
+        "مرضي",
+        "إذن صباحي",
+      ];
+      const DANGER_BADGE_TYPES = [
+        "غياب",
+        "خروج بدون إذن",
+        "تأخر صباحي",
+        "مرفوض",
+      ];
+      const SUCCESS_BADGE_TYPES = ["اعتيادي", "مرضي", "مقبول"];
+
+      const AppState = {
+        teachers: [],
+        searchFocus: -1,
+        confirmCallbackStack: [],
+        lastTodayFetch: 0,
+        lastApprovalsFetch: 0,
+        liveSearchTimeout: null,
+        pendingMessages: [],
+        currentMessageIndex: 0,
+        hiddenAt: null,
+        cacheUpdateMsgTimeout: null,
+        abortController: null,
+        loginAttempts: 0,
+        rowDataStore: new WeakMap(),
+      };
 
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
@@ -2297,10 +2471,89 @@
         }
       });
 
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          document.body.classList.add("animations-paused");
+          AppState.hiddenAt = Date.now();
+        } else {
+          document.body.classList.remove("animations-paused");
+          if (
+            AppState.hiddenAt &&
+            Date.now() - AppState.hiddenAt > 15 * 60 * 1000
+          ) {
+            if (sessionStorage.getItem("alkhateeb_hr_auth")) {
+              executeLogoutLocal();
+            }
+          }
+          AppState.hiddenAt = null;
+        }
+      });
+
       function escHtml(str) {
         const d = document.createElement("div");
         d.textContent = String(str || "");
         return d.innerHTML;
+      }
+
+      function createDateCheckboxes(
+        startDate,
+        endDate,
+        className,
+        onChangeAttr = "",
+      ) {
+        const daysName = [
+          "الأحد",
+          "الإثنين",
+          "الثلاثاء",
+          "الأربعاء",
+          "الخميس",
+          "الجمعة",
+          "السبت",
+        ];
+        const diffTime = Math.abs(endDate - startDate);
+        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
+        const fragment = document.createDocumentFragment();
+
+        if (diffDays > 60) return { fragment: null, diffDays };
+
+        for (let i = 0; i <= diffDays; i++) {
+          let currentDate = new Date(startDate);
+          currentDate.setDate(startDate.getDate() + i);
+
+          let yyyy = currentDate.getFullYear();
+          let mm = String(currentDate.getMonth() + 1).padStart(2, "0");
+          let dd = String(currentDate.getDate()).padStart(2, "0");
+          let dateStr = `${yyyy}-${mm}-${dd}`;
+
+          let label = `${daysName[currentDate.getDay()]} (${currentDate.getDate()}/${currentDate.getMonth() + 1})`;
+
+          let div = document.createElement("label");
+          div.className = "day-checkbox";
+
+          let input = document.createElement("input");
+          input.type = "checkbox";
+          input.className = className;
+          input.value = dateStr;
+          input.checked = true;
+          if (className === "day-check-item") {
+            input.addEventListener("change", updateSelectAllStatus);
+          }
+
+          div.appendChild(input);
+          div.appendChild(document.createTextNode(" " + label));
+
+          fragment.appendChild(div);
+        }
+        return { fragment, diffDays };
+      }
+
+      function normalizeArabic(text) {
+        if (!text) return "";
+        return text
+          .replace(/[أإآا]/g, "ا")
+          .replace(/ة/g, "ه")
+          .replace(/ي/g, "ى")
+          .replace(/[\u064B-\u065F]/g, ""); // Remove diacritics
       }
 
       function formatDateString(rawDate) {
@@ -2344,17 +2597,25 @@
         return s;
       }
 
-      async function apiPost(payload) {
+      async function apiPost(payload, signal = undefined) {
         try {
           const response = await fetch(APPS_SCRIPT_URL, {
             method: "POST",
             headers: { "Content-Type": "text/plain;charset=utf-8" },
             body: JSON.stringify(payload),
+            ...(signal ? { signal } : {}),
           });
           return await response.json();
         } catch (error) {
+          if (error.name === "AbortError") return null;
           throw error;
         }
+      }
+
+      function apiPostSingle(payload) {
+        if (AppState.abortController) AppState.abortController.abort();
+        AppState.abortController = new AbortController();
+        return apiPost(payload, AppState.abortController.signal);
       }
 
       function showMsg(text, isError) {
@@ -2388,20 +2649,44 @@
         }, 4000);
       }
 
+      function executeLogout() {
+        customConfirm("هل أنت متأكد من تسجيل الخروج؟", () => {
+          const auth = getAuth();
+          if (!auth) return executeLogoutLocal();
+          document.getElementById("loginLoader").style.display = "block";
+          apiPost({ action: "logout", token: auth.token }).finally(() => {
+            executeLogoutLocal();
+          });
+        });
+      }
+
+      function focusFirstInModal(modalId) {
+        setTimeout(() => {
+          const modal = document.getElementById(modalId);
+          if (modal) {
+            const focusable = modal.querySelector(
+              "input, select, textarea, button:not(:disabled)",
+            );
+            if (focusable) focusable.focus();
+          }
+        }, 50);
+      }
+
       function customConfirm(msg, callback) {
         document.getElementById("customConfirmText").innerText = msg;
+        AppState.confirmCallbackStack.push(callback);
         document.getElementById("customConfirmModal").style.display = "flex";
-        confirmCallback = callback;
+        focusFirstInModal("customConfirmModal");
       }
 
       function closeCustomConfirm() {
         document.getElementById("customConfirmModal").style.display = "none";
-        confirmCallback = null;
       }
 
       function executeConfirmAction() {
-        if (confirmCallback) confirmCallback();
+        const callback = AppState.confirmCallbackStack.pop();
         closeCustomConfirm();
+        if (callback) callback();
       }
 
       function getLocalDate() {
@@ -2428,26 +2713,6 @@
         sessionStorage.removeItem("alkhateeb_hr_auth");
         sessionStorage.removeItem("alkhateeb_teachers");
         location.reload();
-      }
-
-      function executeLogout() {
-        const authData = sessionStorage.getItem("alkhateeb_hr_auth");
-        const btns = document.querySelectorAll(".btn-logout");
-        btns.forEach((b) => {
-          b.disabled = true;
-          const s = b.querySelector(".btn-text");
-          if (s) s.innerText = "جاري الخروج...";
-          else b.innerText = "جاري الخروج...";
-        });
-
-        if (authData) {
-          const auth = JSON.parse(authData);
-          apiPost({ action: "logout", token: auth.token }).finally(() => {
-            executeLogoutLocal();
-          });
-        } else {
-          executeLogoutLocal();
-        }
       }
 
       window.onload = function () {
@@ -2496,7 +2761,7 @@
 
             const cachedTeachers = sessionStorage.getItem("alkhateeb_teachers");
             if (cachedTeachers) {
-              allTeachers = JSON.parse(cachedTeachers);
+              AppState.teachers = JSON.parse(cachedTeachers);
               populateDropdowns();
             }
 
@@ -2532,9 +2797,10 @@
       function checkPendingMessages(token) {
         apiPost({ action: "getPendingMessages", token: token })
           .then((data) => {
+            if (!data) return;
             if (data.status === "success" && data.messages.length > 0) {
-              pendingMessages = data.messages;
-              currentMessageIndex = 0;
+              AppState.pendingMessages = data.messages;
+              AppState.currentMessageIndex = 0;
               showNextMessage();
             }
           })
@@ -2542,11 +2808,11 @@
       }
 
       function showNextMessage() {
-        if (currentMessageIndex >= pendingMessages.length) {
+        if (AppState.currentMessageIndex >= AppState.pendingMessages.length) {
           document.getElementById("systemMessageModal").style.display = "none";
           return;
         }
-        const msg = pendingMessages[currentMessageIndex];
+        const msg = AppState.pendingMessages[AppState.currentMessageIndex];
         document.getElementById("sysMessageText").textContent = msg.messageText;
         document.getElementById("sysMessageMeta").innerText =
           "من: " + msg.senderName + " | " + msg.sendDate;
@@ -2554,7 +2820,7 @@
       }
 
       function acknowledgeMessage() {
-        const msg = pendingMessages[currentMessageIndex];
+        const msg = AppState.pendingMessages[AppState.currentMessageIndex];
         const auth = getAuth();
         if (auth) {
           apiPost({
@@ -2563,11 +2829,16 @@
             messageId: msg.messageId,
           });
         }
-        currentMessageIndex++;
+        AppState.currentMessageIndex++;
         showNextMessage();
       }
 
       function doLogin() {
+        if (AppState.loginAttempts >= 5) {
+          showMsg("لقد تجاوزت الحد المسموح. حاول مرة أخرى بعد 5 دقائق.", true);
+          return;
+        }
+
         const userInput = document.getElementById("usernameInput");
         const passInput = document.getElementById("passwordInput");
         const user = userInput.value.trim();
@@ -2590,7 +2861,9 @@
 
         apiPost({ action: "login", username: user, password: pass })
           .then((data) => {
+            if (!data) return;
             if (data.status === "success") {
+              AppState.loginAttempts = 0;
               inputsWrapper.style.display = "none";
               showMsg("تم التسجيل بنجاح", false);
 
@@ -2610,6 +2883,21 @@
                 fetchTeacherStats(data.token, true);
               }
             } else {
+              AppState.loginAttempts++;
+              if (AppState.loginAttempts >= 5) {
+                btn.disabled = true;
+                loader.style.display = "none";
+                showMsg(
+                  "لقد تجاوزت الحد المسموح. حاول مرة أخرى بعد 5 دقائق.",
+                  true,
+                );
+                setTimeout(() => {
+                  AppState.loginAttempts = 0;
+                  btn.disabled = false;
+                }, 300000);
+                return;
+              }
+
               userInput.disabled = false;
               passInput.disabled = false;
               loader.style.display = "none";
@@ -2620,6 +2908,21 @@
             }
           })
           .catch((err) => {
+            AppState.loginAttempts++;
+            if (AppState.loginAttempts >= 5) {
+              btn.disabled = true;
+              loader.style.display = "none";
+              showMsg(
+                "لقد تجاوزت الحد المسموح. حاول مرة أخرى بعد 5 دقائق.",
+                true,
+              );
+              setTimeout(() => {
+                AppState.loginAttempts = 0;
+                btn.disabled = false;
+              }, 300000);
+              return;
+            }
+
             userInput.disabled = false;
             passInput.disabled = false;
             loader.style.display = "none";
@@ -2650,17 +2953,18 @@
 
       function fetchTeachersList(token, fromLogin = false) {
         const loader = document.getElementById("adminLoader");
-        if (!fromLogin && allTeachers.length === 0)
+        if (!fromLogin && AppState.teachers.length === 0)
           loader.style.display = "block";
 
         apiPost({ action: "getTeachersList", token: token })
           .then((data) => {
+            if (!data) return;
             loader.style.display = "none";
             if (data.status === "success") {
-              allTeachers = data.teachers;
+              AppState.teachers = data.teachers;
               sessionStorage.setItem(
                 "alkhateeb_teachers",
-                JSON.stringify(allTeachers),
+                JSON.stringify(AppState.teachers),
               );
               populateDropdowns();
 
@@ -2701,29 +3005,37 @@
         if (select3)
           select3.innerHTML = '<option value="الكل">كل المعلمين</option>';
 
-        allTeachers.forEach((t) => {
+        const frag1 = document.createDocumentFragment();
+        const frag2 = document.createDocumentFragment();
+        const frag3 = select3 ? document.createDocumentFragment() : null;
+
+        AppState.teachers.forEach((t) => {
           let opt1 = document.createElement("option");
           opt1.value = t.code;
           opt1.innerText = t.name + " (" + t.code + ")";
-          select1.appendChild(opt1);
+          frag1.appendChild(opt1);
 
           let opt2 = document.createElement("option");
           opt2.value = t.code;
           opt2.innerText = t.name + " (" + t.code + ")";
-          select2.appendChild(opt2);
+          frag2.appendChild(opt2);
 
           if (select3) {
             let opt3 = document.createElement("option");
             opt3.value = t.code;
             opt3.innerText = t.name + " (" + t.code + ")";
-            select3.appendChild(opt3);
+            frag3.appendChild(opt3);
           }
         });
+
+        select1.appendChild(frag1);
+        select2.appendChild(frag2);
+        if (select3) select3.appendChild(frag3);
       }
 
       function debounceLiveSearch() {
-        clearTimeout(liveSearchTimeout);
-        liveSearchTimeout = setTimeout(handleLiveSearch, 200);
+        clearTimeout(AppState.liveSearchTimeout);
+        AppState.liveSearchTimeout = setTimeout(handleLiveSearch, 200);
       }
 
       function handleLiveSearch() {
@@ -2733,7 +3045,7 @@
           .toLowerCase();
         const resultsContainer = document.getElementById("searchResults");
         resultsContainer.innerHTML = "";
-        currentSearchFocus = -1;
+        AppState.searchFocus = -1;
 
         if (term.length === 0) {
           resultsContainer.style.display = "none";
@@ -2741,7 +3053,7 @@
           return;
         }
 
-        const filtered = allTeachers.filter(
+        const filtered = AppState.teachers.filter(
           (t) =>
             t.name.toLowerCase().includes(term) ||
             String(t.code).includes(term),
@@ -2754,6 +3066,8 @@
           return;
         }
 
+        const fragment = document.createDocumentFragment();
+
         filtered.forEach((t) => {
           let item = document.createElement("div");
           let eName = escHtml(t.name);
@@ -2763,8 +3077,9 @@
             resultsContainer.style.display = "none";
             selectTeacherByCode(t.code);
           };
-          resultsContainer.appendChild(item);
+          fragment.appendChild(item);
         });
+        resultsContainer.appendChild(fragment);
         resultsContainer.style.display = "block";
       }
 
@@ -2777,15 +3092,15 @@
           if (!items || items.length === 0) return;
 
           if (e.key === "ArrowDown") {
-            currentSearchFocus++;
+            AppState.searchFocus++;
             addActiveSearchItem(items);
           } else if (e.key === "ArrowUp") {
-            currentSearchFocus--;
+            AppState.searchFocus--;
             addActiveSearchItem(items);
           } else if (e.key === "Enter") {
             e.preventDefault();
-            if (currentSearchFocus > -1) {
-              items[currentSearchFocus].click();
+            if (AppState.searchFocus > -1) {
+              items[AppState.searchFocus].click();
             } else if (items.length === 1) {
               items[0].click();
             }
@@ -2795,10 +3110,10 @@
       function addActiveSearchItem(items) {
         if (!items) return false;
         removeActiveSearchItem(items);
-        if (currentSearchFocus >= items.length) currentSearchFocus = 0;
-        if (currentSearchFocus < 0) currentSearchFocus = items.length - 1;
-        items[currentSearchFocus].classList.add("autocomplete-active");
-        items[currentSearchFocus].scrollIntoView({ block: "nearest" });
+        if (AppState.searchFocus >= items.length) AppState.searchFocus = 0;
+        if (AppState.searchFocus < 0) AppState.searchFocus = items.length - 1;
+        items[AppState.searchFocus].classList.add("autocomplete-active");
+        items[AppState.searchFocus].scrollIntoView({ block: "nearest" });
       }
 
       function removeActiveSearchItem(items) {
@@ -2824,7 +3139,7 @@
       }
 
       function selectTeacherByCode(code) {
-        const teacher = allTeachers.find(
+        const teacher = AppState.teachers.find(
           (t) => String(t.code) === String(code),
         );
         if (!teacher) return;
@@ -2885,13 +3200,7 @@
         document.getElementById("actionNotes").value = "";
         delayResultArea.style.display = "none";
 
-        const timeBased = [
-          "تأخر صباحي",
-          "تأخر بإذن",
-          "خروج بدون إذن",
-          "خروج بإذن",
-        ];
-        if (timeBased.includes(type)) {
+        if (TIME_BASED_ACTIONS.includes(type)) {
           dateArea.style.display = "none";
           timeArea.style.display = "block";
           setToday("timeActionDateInput");
@@ -2919,13 +3228,7 @@
         const resultArea = document.getElementById("delayResultArea");
         const delayInput = document.getElementById("manualDelayInput");
 
-        const timeBasedTypes = [
-          "تأخر صباحي",
-          "تأخر بإذن",
-          "خروج بدون إذن",
-          "خروج بإذن",
-        ];
-        if (!timeBasedTypes.includes(type)) {
+        if (!TIME_BASED_ACTIONS.includes(type)) {
           resultArea.style.display = "none";
           return;
         }
@@ -2993,40 +3296,19 @@
           return;
         }
 
-        const daysName = [
-          "الأحد",
-          "الإثنين",
-          "الثلاثاء",
-          "الأربعاء",
-          "الخميس",
-          "الجمعة",
-          "السبت",
-        ];
-
-        const diffTime = Math.abs(endDate - startDate);
-        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-
-        if (diffDays > 60) {
-          showMsg("الفترة المحددة طويلة جداً. أقصى حد هو 60 يوماً.", true);
+        const { fragment, diffDays } = createDateCheckboxes(
+          startDate,
+          endDate,
+          "day-check-item",
+          'onchange="updateSelectAllStatus()"',
+        );
+        if (!fragment) {
+          if (diffDays > 60) {
+            showMsg("الفترة المحددة طويلة جداً. أقصى حد هو 60 يوماً.", true);
+          }
           return;
         }
-
-        for (let i = 0; i <= diffDays; i++) {
-          let currentDate = new Date(startDate);
-          currentDate.setDate(startDate.getDate() + i);
-
-          let yyyy = currentDate.getFullYear();
-          let mm = String(currentDate.getMonth() + 1).padStart(2, "0");
-          let dd = String(currentDate.getDate()).padStart(2, "0");
-          let dateStr = `${yyyy}-${mm}-${dd}`;
-
-          let label = `${daysName[currentDate.getDay()]} (${currentDate.getDate()}/${currentDate.getMonth() + 1})`;
-
-          let div = document.createElement("label");
-          div.className = "day-checkbox";
-          div.innerHTML = `<input type="checkbox" class="day-check-item" value="${dateStr}" checked onchange="updateSelectAllStatus()" /> ${label}`;
-          container.appendChild(div);
-        }
+        container.appendChild(fragment);
 
         if (diffDays >= 0) {
           selectAllCont.style.display = "block";
@@ -3061,17 +3343,15 @@
           "selectedTeacherName",
         ).innerText;
         const type = document.getElementById("actionTypeSelect").value;
+        if (!type) {
+          showMsg("يرجى اختيار نوع الإجراء أولاً", true);
+          return;
+        }
         const notes = document.getElementById("actionNotes").value;
 
         let records = [];
-        const timeBased = [
-          "تأخر صباحي",
-          "تأخر بإذن",
-          "خروج بدون إذن",
-          "خروج بإذن",
-        ];
 
-        if (timeBased.includes(type)) {
+        if (TIME_BASED_ACTIONS.includes(type)) {
           const time = document.getElementById("actionTimeInput").value;
           const timeActionDate = document.getElementById(
             "timeActionDateInput",
@@ -3130,7 +3410,7 @@
         }
 
         let daysCount = records.length;
-        let durationText = timeBased.includes(type)
+        let durationText = TIME_BASED_ACTIONS.includes(type)
           ? records[0].minutes + " دقيقة"
           : daysCount + " يوم";
 
@@ -3147,6 +3427,7 @@
               records: records,
             })
               .then((data) => {
+                if (!data) return;
                 btn.disabled = false;
                 btn.classList.add("pulse-success");
                 btn.querySelector(".btn-text").innerText = "تسجيل وحفظ";
@@ -3173,8 +3454,10 @@
         const auth = getAuth();
         if (!auth) return;
 
-        if (!isManual && Date.now() - lastTodayFetch <= 60000) {
-          const seconds = Math.floor((Date.now() - lastTodayFetch) / 1000);
+        if (!isManual && Date.now() - AppState.lastTodayFetch <= 60000) {
+          const seconds = Math.floor(
+            (Date.now() - AppState.lastTodayFetch) / 1000,
+          );
           let msgBox = document.getElementById("cacheUpdateMsg");
           if (!msgBox) {
             msgBox = document.createElement("div");
@@ -3190,14 +3473,16 @@
             );
           }
           msgBox.innerText = `البيانات محدّثة - آخر تحديث: قبل ${seconds} ثانية`;
+          if (AppState.cacheUpdateMsgTimeout)
+            clearTimeout(AppState.cacheUpdateMsgTimeout);
           msgBox.style.display = "block";
-          setTimeout(() => {
+          AppState.cacheUpdateMsgTimeout = setTimeout(() => {
             msgBox.style.display = "none";
           }, 3000);
           return;
         }
 
-        lastTodayFetch = Date.now();
+        AppState.lastTodayFetch = Date.now();
         const today = getLocalDate();
 
         document.getElementById("todayLoader").style.display = "block";
@@ -3213,6 +3498,7 @@
           teacherCode: "",
         })
           .then((data) => {
+            if (!data) return;
             document.getElementById("todayLoader").style.display = "none";
             if (data.status === "success") {
               renderTodayDashboard(data.totals);
@@ -3252,17 +3538,11 @@
           return;
         }
 
+        const fragment = document.createDocumentFragment();
         history.forEach((row) => {
           let badgeClass = getBadgeClass(row.type);
           let tr = document.createElement("tr");
-          let suffix = [
-            "تأخر صباحي",
-            "تأخر بإذن",
-            "خروج بدون إذن",
-            "خروج بإذن",
-          ].includes(row.type)
-            ? "ق"
-            : "يوم";
+          let suffix = TIME_BASED_ACTIONS.includes(row.type) ? "ق" : "يوم";
 
           let eName = escHtml(row.name);
           let eType = escHtml(row.type);
@@ -3274,8 +3554,9 @@
             <td style="font-weight:bold; color:#0056b3;">${row.amount} ${suffix}</td>
             <td style="color:#666; font-size:13px;">${eNotes}</td>
           `;
-          tbody.appendChild(tr);
+          fragment.appendChild(tr);
         });
+        tbody.appendChild(fragment);
 
         container.style.display = "block";
         emptyMsg.style.display = "none";
@@ -3333,28 +3614,33 @@
               ) || document.querySelector(".container");
             activeContainer.insertBefore(msgDiv, activeContainer.firstChild);
 
-            let hasError = false;
-            let count = 0;
+            document.getElementById("bulkProgressMsg").innerText =
+              `جاري حذف ${total} سجل...`;
 
-            for (let box of boxes) {
-              count++;
-              document.getElementById("bulkProgressMsg").innerText =
-                `جاري حذف ${count} من ${total}...`;
-              const item = JSON.parse(decodeURIComponent(box.value));
-              try {
-                let res = await apiPost({
-                  action: "deleteRecord",
-                  token: auth.token,
-                  rowId: item.rowId,
-                  date: item.date,
-                  name: item.name,
-                  type: item.type,
-                  amount: item.amount,
-                });
-                if (res.status !== "success") hasError = true;
-              } catch (e) {
-                hasError = true;
-              }
+            const boxArray = Array.from(boxes);
+            let hasError = false;
+
+            try {
+              const results = await Promise.all(
+                boxArray.map((box) => {
+                  const item =
+                    box._rowData || JSON.parse(decodeURIComponent(box.value));
+                  return apiPost({
+                    action: "deleteRecord",
+                    token: auth.token,
+                    rowId: item.rowId,
+                    date: item.date,
+                    name: item.name,
+                    type: item.type,
+                    amount: item.amount,
+                  });
+                }),
+              );
+              hasError = results.some(
+                (res) => !res || res.status !== "success",
+              );
+            } catch (e) {
+              hasError = true;
             }
 
             document.getElementById("bulkProgressMsg").remove();
@@ -3370,6 +3656,7 @@
 
       function openBulkEditModal() {
         document.getElementById("bulkEditModal").style.display = "flex";
+        focusFirstInModal("bulkEditModal");
         document.getElementById("bulkEditNewType").value = "تأخر صباحي";
         document.getElementById("bulkEditNewAmount").value = "";
         document.getElementById("bulkEditNewNotes").value = "";
@@ -3401,7 +3688,8 @@
         const boxes = document.querySelectorAll(".history-check-item:checked");
         try {
           let promises = Array.from(boxes).map((box) => {
-            const item = JSON.parse(decodeURIComponent(box.value));
+            const item = box._rowData;
+            if (!item) return Promise.resolve({ status: "error" });
             return apiPost({
               action: "editRecord",
               token: auth.token,
@@ -3425,6 +3713,80 @@
           showMsg("حدثت بعض الأخطاء أثناء التعديل.", true);
         }
         fetchHistoryData(true);
+      }
+
+      function exportTableToCSV(tableId, filename) {
+        let csv = [];
+        const rows = document.querySelectorAll(`#${tableId} tr`);
+        for (let i = 0; i < rows.length; i++) {
+          if (rows[i].style.display === "none") continue;
+          let row = [],
+            cols = rows[i].querySelectorAll("td, th");
+          for (let j = 1; j < cols.length; j++) {
+            if (j === cols.length - 1 && i > 0) continue; // Skip actions column
+            let data = cols[j].innerText.replace(/"/g, '""');
+            row.push('"' + data + '"');
+          }
+          if (row.length > 0) csv.push(row.join(","));
+        }
+        let csvFile = new Blob(["\uFEFF" + csv.join("\n")], {
+          type: "text/csv;charset=utf-8;",
+        });
+        let downloadLink = document.createElement("a");
+        downloadLink.download = filename;
+        downloadLink.href = window.URL.createObjectURL(csvFile);
+        downloadLink.style.display = "none";
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
+      }
+
+      function filterHistoryTable() {
+        const query = normalizeArabic(
+          document
+            .getElementById("historyTableFilter")
+            .value.toLowerCase()
+            .trim(),
+        );
+        const rows = document.querySelectorAll("#historyTable tbody tr");
+        rows.forEach((row) => {
+          const txt = normalizeArabic(
+            row.textContent || row.innerText,
+          ).toLowerCase();
+          row.style.display = txt.indexOf(query) > -1 ? "" : "none";
+        });
+      }
+
+      function setHistoryPreset(preset) {
+        const d = new Date();
+        const endStr =
+          d.getFullYear() +
+          "-" +
+          String(d.getMonth() + 1).padStart(2, "0") +
+          "-" +
+          String(d.getDate()).padStart(2, "0");
+        let startStr = endStr;
+
+        if (preset === "week") {
+          const w = new Date(d);
+          w.setDate(w.getDate() - w.getDay());
+          startStr =
+            w.getFullYear() +
+            "-" +
+            String(w.getMonth() + 1).padStart(2, "0") +
+            "-" +
+            String(w.getDate()).padStart(2, "0");
+        } else if (preset === "month") {
+          startStr =
+            d.getFullYear() +
+            "-" +
+            String(d.getMonth() + 1).padStart(2, "0") +
+            "-01";
+        }
+
+        document.getElementById("historyStartDate").value = startStr;
+        document.getElementById("historyEndDate").value = endStr;
+        fetchHistoryData();
       }
 
       function fetchHistoryData(isSilentUpdate = false) {
@@ -3469,6 +3831,7 @@
           teacherCode: tCode,
         })
           .then((data) => {
+            if (!data) return;
             if (!isSilentUpdate) loader.style.display = "none";
 
             if (data.status === "success") {
@@ -3479,7 +3842,7 @@
             }
           })
           .catch((err) => {
-            if (!isSilentUpdate) loader.style.display = "none";
+            loader.style.display = "none";
             showMsg("خطأ في الاتصال", true);
           });
       }
@@ -3514,17 +3877,12 @@
           return;
         }
 
+        const fragment = document.createDocumentFragment();
+
         history.forEach((row) => {
           let badgeClass = getBadgeClass(row.type);
           let dateOnly = escHtml(row.date.split("T")[0]);
-          let suffix = [
-            "تأخر صباحي",
-            "تأخر بإذن",
-            "خروج بدون إذن",
-            "خروج بإذن",
-          ].includes(row.type)
-            ? "ق"
-            : "يوم";
+          let suffix = TIME_BASED_ACTIONS.includes(row.type) ? "ق" : "يوم";
 
           let eName = escHtml(row.name);
           let eType = escHtml(row.type);
@@ -3540,10 +3898,11 @@
           };
 
           let tr = document.createElement("tr");
-          tr.dataset.rowInfo = encodeURIComponent(JSON.stringify(rowData));
+          AppState.rowDataStore.set(tr, rowData);
+
           tr.innerHTML = `
             <td style="vertical-align: middle;">
-              <input type="checkbox" class="history-check-item" value="${tr.dataset.rowInfo}" onchange="updateBulkActionState()" style="transform:scale(1.2); accent-color:#0056b3; cursor:pointer;">
+              <input type="checkbox" class="history-check-item" value="" onchange="updateBulkActionState()" style="transform:scale(1.2); accent-color:#0056b3; cursor:pointer;">
             </td>
             <td style="color:#555;">${dateOnly}</td>
             <td><strong>${eName}</strong></td>
@@ -3558,11 +3917,14 @@
             </td>
           `;
 
+          const checkbox = tr.querySelector(".history-check-item");
+          checkbox._rowData = rowData;
+
           tr.querySelector(".edit-btn").addEventListener("click", () =>
-            openEditModal(JSON.parse(decodeURIComponent(tr.dataset.rowInfo))),
+            openEditModal(AppState.rowDataStore.get(tr)),
           );
           tr.querySelector(".delete-btn").addEventListener("click", () => {
-            let info = JSON.parse(decodeURIComponent(tr.dataset.rowInfo));
+            let info = AppState.rowDataStore.get(tr);
             deleteRecord(
               info.rowId,
               info.date,
@@ -3572,8 +3934,10 @@
             );
           });
 
-          tbody.appendChild(tr);
+          fragment.appendChild(tr);
         });
+
+        tbody.appendChild(fragment);
 
         container.style.display = "block";
         emptyMsg.style.display = "none";
@@ -3581,11 +3945,11 @@
         const selectAll = document.getElementById("selectAllHistory");
         if (selectAll) selectAll.checked = false;
         updateBulkActionState();
-        document.getElementById("historyLoader").style.display = "none";
       }
 
       function openEditModal(obj) {
         document.getElementById("editModal").style.display = "flex";
+        focusFirstInModal("editModal");
         document.getElementById("editRowId").value = obj.rowId || "";
         document.getElementById("editOldDate").value = obj.date;
         document.getElementById("editOldName").value = obj.name;
@@ -3634,6 +3998,7 @@
           newNotes: newNotes,
         })
           .then((data) => {
+            if (!data) return;
             if (data.status === "success") {
               showMsg("تم التعديل بنجاح", false);
               fetchHistoryData(true);
@@ -3655,6 +4020,16 @@
             const auth = getAuth();
             if (!auth) return;
 
+            const allRows = document.querySelectorAll("#historyTable tbody tr");
+            allRows.forEach((tr) => {
+              const data = AppState.rowDataStore.get(tr);
+              if (data && data.rowId === rowId) {
+                tr.style.transition = "background 0.3s, opacity 0.5s";
+                tr.style.background = "#ffcccc";
+                tr.style.opacity = "0.5";
+              }
+            });
+
             document.getElementById("historyLoader").style.display = "block";
 
             apiPost({
@@ -3667,6 +4042,8 @@
               amount: amount,
             })
               .then((data) => {
+                if (!data) return;
+                if (!data) return;
                 if (data.status === "success") {
                   showMsg("تم الحذف بنجاح", false);
                   fetchHistoryData(true);
@@ -3685,9 +4062,8 @@
       }
 
       function getBadgeClass(type) {
-        if (["غياب", "خروج بدون إذن", "تأخر صباحي", "مرفوض"].includes(type))
-          return "badge-danger";
-        if (["اعتيادي", "مرضي", "مقبول"].includes(type)) return "badge-success";
+        if (DANGER_BADGE_TYPES.includes(type)) return "badge-danger";
+        if (SUCCESS_BADGE_TYPES.includes(type)) return "badge-success";
         return "badge-warning";
       }
 
@@ -3699,6 +4075,7 @@
 
         apiPost({ action: "getTeacherStats", token: token })
           .then((data) => {
+            if (!data) return;
             loader.style.display = "none";
             if (data.status === "success") {
               if (fromLogin) {
@@ -3793,6 +4170,7 @@
             "<p style='text-align:center; color:#888;'>لا يوجد سجل إجراءات حالياً.</p>";
           return;
         }
+        const fragment = document.createDocumentFragment();
         history.forEach((item) => {
           let dateStr = "";
           try {
@@ -3821,13 +4199,18 @@
             div.appendChild(notesDiv);
           }
 
-          container.appendChild(div);
+          fragment.appendChild(div);
         });
+        container.appendChild(fragment);
       }
 
-      function fetchApprovalsData() {
+      function fetchApprovalsData(isManual = false) {
         const auth = getAuth();
         if (!auth) return;
+
+        if (!isManual && Date.now() - AppState.lastApprovalsFetch <= 60000) {
+          return;
+        }
 
         const loader = document.getElementById("approvalsLoader");
         const container = document.getElementById("approvalsTableContainer");
@@ -3837,10 +4220,12 @@
         container.style.display = "none";
         emptyMsg.style.display = "none";
 
-        apiPost({ action: "getLeaveRequests", token: auth.token })
+        apiPostSingle({ action: "getLeaveRequests", token: auth.token })
           .then((data) => {
+            if (!data) return;
             loader.style.display = "none";
             if (data.status === "success") {
+              AppState.lastApprovalsFetch = Date.now();
               renderApprovalsTable(data.requests);
             } else {
               showMsg(data.message, true);
@@ -3876,7 +4261,7 @@
             <td style="color:#555;">${escHtml(formatDateString(req.endDate))}</td>
             <td style="font-weight:bold; color:#0056b3;">${escHtml(req.amount)} يوم</td>
             <td style="font-size:13px; color:#666;">${escHtml(req.reason)}</td>
-            <td><span class="badge ${badgeClass}">${escHtml(req.status)}</span></td>
+            <td><span class="badge ${badgeClass}"><span aria-hidden="true" style="margin-left:4px;">${badgeClass === "badge-success" ? "✅" : badgeClass === "badge-danger" ? "❌" : badgeClass === "badge-warning" ? "⏳" : ""}</span>${escHtml(req.status)}</span></td>
             <td class="action-cell"></td>
           `;
 
@@ -3927,34 +4312,12 @@
         const [ey, em, ed] = cleanEnd.split("-").map(Number);
         const endDate = new Date(ey, em - 1, ed);
 
-        const daysName = [
-          "الأحد",
-          "الإثنين",
-          "الثلاثاء",
-          "الأربعاء",
-          "الخميس",
-          "الجمعة",
-          "السبت",
-        ];
-        const diffTime = Math.abs(endDate - startDate);
-        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-
-        for (let i = 0; i <= diffDays; i++) {
-          let currentDate = new Date(startDate);
-          currentDate.setDate(startDate.getDate() + i);
-
-          let yyyy = currentDate.getFullYear();
-          let mm = String(currentDate.getMonth() + 1).padStart(2, "0");
-          let dd = String(currentDate.getDate()).padStart(2, "0");
-          let dateStr = `${yyyy}-${mm}-${dd}`;
-
-          let label = `${daysName[currentDate.getDay()]} (${currentDate.getDate()}/${currentDate.getMonth() + 1})`;
-
-          let div = document.createElement("label");
-          div.className = "day-checkbox";
-          div.innerHTML = `<input type="checkbox" class="req-day-check-item" value="${dateStr}" checked /> ${label}`;
-          container.appendChild(div);
-        }
+        const { fragment } = createDateCheckboxes(
+          startDate,
+          endDate,
+          "req-day-check-item",
+        );
+        if (fragment) container.appendChild(fragment);
 
         document.querySelector(
           'input[name="approvalMode"][value="fromRequest"]',
@@ -3964,7 +4327,11 @@
           "block";
         document.getElementById("adminMessageInput").value = "";
 
+        document.getElementById("customApprovalStart").value = getLocalDate();
+        document.getElementById("customApprovalEnd").value = getLocalDate();
+
         document.getElementById("reviewRequestModal").style.display = "flex";
+        focusFirstInModal("reviewRequestModal");
       }
 
       function toggleApprovalMode() {
@@ -4006,36 +4373,12 @@
 
         if (endDate < startDate) return;
 
-        const daysName = [
-          "الأحد",
-          "الإثنين",
-          "الثلاثاء",
-          "الأربعاء",
-          "الخميس",
-          "الجمعة",
-          "السبت",
-        ];
-        const diffTime = Math.abs(endDate - startDate);
-        const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
-
-        if (diffDays > 60) return;
-
-        for (let i = 0; i <= diffDays; i++) {
-          let currentDate = new Date(startDate);
-          currentDate.setDate(startDate.getDate() + i);
-
-          let yyyy = currentDate.getFullYear();
-          let mm = String(currentDate.getMonth() + 1).padStart(2, "0");
-          let dd = String(currentDate.getDate()).padStart(2, "0");
-          let dateStr = `${yyyy}-${mm}-${dd}`;
-
-          let label = `${daysName[currentDate.getDay()]} (${currentDate.getDate()}/${currentDate.getMonth() + 1})`;
-
-          let div = document.createElement("label");
-          div.className = "day-checkbox";
-          div.innerHTML = `<input type="checkbox" class="custom-day-check-item" value="${dateStr}" checked /> ${label}`;
-          container.appendChild(div);
-        }
+        const { fragment } = createDateCheckboxes(
+          startDate,
+          endDate,
+          "custom-day-check-item",
+        );
+        if (fragment) container.appendChild(fragment);
       }
 
       function submitApproval() {
@@ -4078,6 +4421,7 @@
               adminMessage: adminMessage,
             })
               .then((data) => {
+                if (!data) return;
                 if (data.status === "success") {
                   closeReviewModal();
                   fetchApprovalsData();
@@ -4108,6 +4452,7 @@
             adminMessage: adminMessage,
           })
             .then((data) => {
+              if (!data) return;
               if (data.status === "success") {
                 closeReviewModal();
                 fetchApprovalsData();
@@ -4158,6 +4503,7 @@
             messageText: messageText,
           })
             .then((data) => {
+              if (!data) return;
               if (data.status === "success") {
                 document.getElementById("msgTextArea").value = "";
                 showMsg("تم إرسال الرسالة بنجاح", false);
@@ -4175,6 +4521,7 @@
         document.getElementById("reqStartDate").value = getLocalDate();
         document.getElementById("reqEndDate").value = getLocalDate();
         document.getElementById("newRequestModal").style.display = "flex";
+        focusFirstInModal("newRequestModal");
       }
 
       function closeNewRequestModal() {
@@ -4222,6 +4569,7 @@
           name: auth.name,
         })
           .then((data) => {
+            if (!data) return;
             if (data.status === "success") {
               closeNewRequestModal();
               showMsg("تم إرسال الطلب بنجاح، في انتظار الموافقة", false);
@@ -4246,6 +4594,7 @@
 
         apiPost({ action: "getLeaveRequests", token: token })
           .then((data) => {
+            if (!data) return;
             loader.style.display = "none";
             if (data.status === "success") {
               renderMyRequests(data.requests);
@@ -4280,7 +4629,7 @@
             <td><strong>${escHtml(req.requestType)}</strong></td>
             <td style="color:#555;">${escHtml(formatDateString(req.startDate))}</td>
             <td style="color:#555;">${escHtml(formatDateString(req.endDate))}</td>
-            <td><span class="badge ${badgeClass}">${escHtml(req.status)}</span></td>
+            <td><span class="badge ${badgeClass}"><span aria-hidden="true" style="margin-left:4px;">${badgeClass === "badge-success" ? "✅" : badgeClass === "badge-danger" ? "❌" : badgeClass === "badge-warning" ? "⏳" : ""}</span>${escHtml(req.status)}</span></td>
             <td style="font-size:13px; color:#666;">${escHtml(req.adminMessage) || "-"}</td>
           `;
           tbody.appendChild(tr);
