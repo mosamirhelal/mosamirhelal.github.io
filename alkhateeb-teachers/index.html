@@ -4318,7 +4318,7 @@
           `;
 
           const actionCell = tr.querySelector(".action-cell");
-          if (req.status === "معلق") {
+          if (req.status === "معلق" || req.status === "قيد المراجعة") {
             let btn = document.createElement("button");
             btn.className = "btn-info";
             btn.innerText = "مراجعة";
