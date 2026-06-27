@@ -780,6 +780,63 @@
           flex-direction: column;
         }
       }
+
+      @media print {
+        body {
+          background: white !important;
+          animation: none !important;
+          color: black;
+        }
+        .top-logos,
+        .header-actions,
+        .tabs-container,
+        button,
+        .search-container,
+        input,
+        select,
+        .modal,
+        .date-row,
+        .status-message,
+        .loader {
+          display: none !important;
+        }
+        .container {
+          box-shadow: none !important;
+          border: none !important;
+          background: transparent !important;
+          padding: 0 !important;
+          max-width: 100% !important;
+          margin: 0 !important;
+          backdrop-filter: none !important;
+        }
+        .table-responsive {
+          box-shadow: none !important;
+          border: 1px solid #ccc !important;
+          display: block !important;
+          overflow: visible !important;
+        }
+        th,
+        td {
+          border: 1px solid #ccc !important;
+          padding: 8px !important;
+          color: black !important;
+        }
+        th {
+          background: #f0f0f0 !important;
+        }
+        .badge {
+          border: 1px solid #333 !important;
+          color: black !important;
+        }
+        * {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        h2,
+        h3 {
+          color: black !important;
+        }
+      }
     </style>
   </head>
   <body>
@@ -1413,18 +1470,11 @@
             oninput="filterHistoryTable()"
           />
           <button
-            class="btn-success"
-            style="
-              margin: 0;
-              width: auto;
-              padding: 6px 15px;
-              font-size: 14px;
-              background-color: #28a745;
-              color: white;
-            "
-            onclick="exportTableToCSV('historyTable', 'سجل_شئون_العاملين.csv')"
+            class="btn-secondary"
+            style="margin: 0; width: auto; padding: 6px 15px; font-size: 14px"
+            onclick="window.print()"
           >
-            تصدير CSV 📥
+            تصدير PDF / طباعة 🖨️
           </button>
         </div>
 
@@ -2423,7 +2473,7 @@
 
     <script>
       const APPS_SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbx-a6hbMYNAuaAwSLshSygqwRC4RpdhNBgNyOl1M2LlMn7ZkLI8cyxY2WeYzY9yP1Emgw/exec";
+        "https://script.google.com/macros/s/AKfycbxT1tSZeHN5kjIrP5xg0FBwm32CyOk_EyqAxNM3BBS770eMf_FGcjzTsPYQip94Uy4WhQ/exec";
       const TIME_BASED_ACTIONS = [
         "تأخر صباحي",
         "تأخر بإذن",
@@ -2711,11 +2761,39 @@
 
       function executeLogoutLocal() {
         sessionStorage.removeItem("alkhateeb_hr_auth");
+        AppState.auth = null;
         sessionStorage.removeItem("alkhateeb_teachers");
         location.reload();
       }
 
+      function trapFocus(modalElement) {
+        modalElement.addEventListener("keydown", (e) => {
+          if (e.key !== "Tab") return;
+          const focusable = modalElement.querySelectorAll(
+            'a, button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), [tabindex]:not([tabindex="-1"])',
+          );
+          if (focusable.length === 0) return;
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          if (e.shiftKey) {
+            if (document.activeElement === first) {
+              e.preventDefault();
+              last.focus();
+            }
+          } else {
+            if (document.activeElement === last) {
+              e.preventDefault();
+              first.focus();
+            }
+          }
+        });
+      }
+
       window.onload = function () {
+        trapFocus(document.getElementById("bulkEditModal"));
+        trapFocus(document.getElementById("editModal"));
+        trapFocus(document.getElementById("reviewRequestModal"));
+        trapFocus(document.getElementById("newRequestModal"));
         checkAuth();
       };
 
@@ -3715,32 +3793,6 @@
         fetchHistoryData(true);
       }
 
-      function exportTableToCSV(tableId, filename) {
-        let csv = [];
-        const rows = document.querySelectorAll(`#${tableId} tr`);
-        for (let i = 0; i < rows.length; i++) {
-          if (rows[i].style.display === "none") continue;
-          let row = [],
-            cols = rows[i].querySelectorAll("td, th");
-          for (let j = 1; j < cols.length; j++) {
-            if (j === cols.length - 1 && i > 0) continue; // Skip actions column
-            let data = cols[j].innerText.replace(/"/g, '""');
-            row.push('"' + data + '"');
-          }
-          if (row.length > 0) csv.push(row.join(","));
-        }
-        let csvFile = new Blob(["\uFEFF" + csv.join("\n")], {
-          type: "text/csv;charset=utf-8;",
-        });
-        let downloadLink = document.createElement("a");
-        downloadLink.download = filename;
-        downloadLink.href = window.URL.createObjectURL(csvFile);
-        downloadLink.style.display = "none";
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-      }
-
       function filterHistoryTable() {
         const query = normalizeArabic(
           document
@@ -4532,6 +4584,21 @@
         document.getElementById("reqReason").value = "";
       }
 
+      function fetchMyRequests(token) {
+        const loader = document.getElementById("myRequestsLoader");
+        if (loader) loader.style.display = "block";
+        apiPost({ action: "getMyRequests", token: token })
+          .then((data) => {
+            if (loader) loader.style.display = "none";
+            if (data && data.status === "success") {
+              renderMyRequests(data.requests);
+            }
+          })
+          .catch((err) => {
+            if (loader) loader.style.display = "none";
+          });
+      }
+
       function submitNewRequest() {
         const auth = getAuth();
         if (!auth) return;
@@ -4579,31 +4646,6 @@
             }
           })
           .catch((err) => {
-            showMsg("خطأ في الاتصال", true);
-          });
-      }
-
-      function fetchMyRequests(token) {
-        const loader = document.getElementById("myRequestsLoader");
-        const container = document.getElementById("myRequestsContainer");
-        const emptyMsg = document.getElementById("myRequestsEmpty");
-
-        loader.style.display = "block";
-        container.style.display = "none";
-        emptyMsg.style.display = "none";
-
-        apiPost({ action: "getLeaveRequests", token: token })
-          .then((data) => {
-            if (!data) return;
-            loader.style.display = "none";
-            if (data.status === "success") {
-              renderMyRequests(data.requests);
-            } else {
-              showMsg(data.message, true);
-            }
-          })
-          .catch((err) => {
-            loader.style.display = "none";
             showMsg("خطأ في الاتصال", true);
           });
       }
