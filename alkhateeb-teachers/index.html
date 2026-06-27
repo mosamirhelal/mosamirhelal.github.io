@@ -2154,39 +2154,83 @@
         </div>
 
         <div id="approvalCustomArea" style="display: none; margin-bottom: 15px">
-          <div class="date-row">
-            <input
-              type="date"
-              id="customApprovalStart"
-              class="form-control"
-              style="max-width: 130px; margin: 0"
-              onchange="generateApprovalCheckboxes()"
-            />
-            <button
-              onclick="
-                addRipple(event, this);
-                setToday('customApprovalStart');
+          <div style="display: flex; flex-direction: column; gap: 10px">
+            <div
+              class="date-row"
+              style="
+                justify-content: flex-start;
+                background: #f8f9fa;
+                padding: 10px;
+                border-radius: 8px;
+                border: 1px solid #eee;
               "
-              class="btn-today"
             >
-              <span class="btn-text">اليوم</span>
-            </button>
-            <input
-              type="date"
-              id="customApprovalEnd"
-              class="form-control"
-              style="max-width: 130px; margin: 0"
-              onchange="generateApprovalCheckboxes()"
-            />
-            <button
-              onclick="
-                addRipple(event, this);
-                setToday('customApprovalEnd');
+              <label
+                style="
+                  font-weight: bold;
+                  width: 40px;
+                  text-align: right;
+                  color: #0056b3;
+                "
+                >من:</label
+              >
+              <input
+                type="date"
+                id="customApprovalStart"
+                class="form-control"
+                style="max-width: 150px; margin: 0"
+                onchange="generateApprovalCheckboxes()"
+              />
+              <button
+                onclick="
+                  addRipple(event, this);
+                  setToday('customApprovalStart');
+                  generateApprovalCheckboxes();
+                "
+                class="btn-today"
+                style="margin-right: auto"
+              >
+                <span class="btn-text">اليوم</span>
+              </button>
+            </div>
+            <div
+              class="date-row"
+              style="
+                justify-content: flex-start;
+                background: #f8f9fa;
+                padding: 10px;
+                border-radius: 8px;
+                border: 1px solid #eee;
               "
-              class="btn-today"
             >
-              <span class="btn-text">اليوم</span>
-            </button>
+              <label
+                style="
+                  font-weight: bold;
+                  width: 40px;
+                  text-align: right;
+                  color: #0056b3;
+                "
+                >إلى:</label
+              >
+              <input
+                type="date"
+                id="customApprovalEnd"
+                class="form-control"
+                style="max-width: 150px; margin: 0"
+                onchange="generateApprovalCheckboxes()"
+              />
+              <button
+                onclick="
+                  addRipple(event, this);
+                  setToday('customApprovalEnd');
+                  generateApprovalCheckboxes();
+                "
+                class="btn-today"
+                style="margin-right: auto"
+              >
+                <span class="btn-text">اليوم</span>
+              </button>
+            </div>
           </div>
           <div id="customApprovalCheckboxes" class="checkbox-grid"></div>
         </div>
@@ -2264,12 +2308,24 @@
         let s = String(rawDate).trim();
         if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
         if (/^\d{4}-\d{2}-\d{2}T/.test(s)) return s.split("T")[0];
-        
-        const match = s.match(/^[a-zA-Z]{3}\s([a-zA-Z]{3})\s(\d{1,2})\s(\d{4})/);
+
+        const match = s.match(
+          /^[a-zA-Z]{3}\s([a-zA-Z]{3})\s(\d{1,2})\s(\d{4})/,
+        );
         if (match) {
           const months = {
-            Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06",
-            Jul: "07", Aug: "08", Sep: "09", Oct: "10", Nov: "11", Dec: "12"
+            Jan: "01",
+            Feb: "02",
+            Mar: "03",
+            Apr: "04",
+            May: "05",
+            Jun: "06",
+            Jul: "07",
+            Aug: "08",
+            Sep: "09",
+            Oct: "10",
+            Nov: "11",
+            Dec: "12",
           };
           let month = months[match[1]];
           let day = String(match[2]).padStart(2, "0");
@@ -3923,6 +3979,15 @@
           document.getElementById("approvalFromRequestArea").style.display =
             "none";
           document.getElementById("approvalCustomArea").style.display = "block";
+
+          if (!document.getElementById("customApprovalStart").value) {
+            document.getElementById("customApprovalStart").value =
+              getLocalDate();
+          }
+          if (!document.getElementById("customApprovalEnd").value) {
+            document.getElementById("customApprovalEnd").value = getLocalDate();
+          }
+          generateApprovalCheckboxes();
         }
       }
 
