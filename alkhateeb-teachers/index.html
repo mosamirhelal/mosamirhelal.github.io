@@ -3514,6 +3514,9 @@
                   document.getElementById("actionCard").style.display = "none";
                   document.getElementById("adminSearchInput").value = "";
                   document.getElementById("adminTeacherSelect").value = "";
+                  AppState.lastTodayFetch = 0;
+                  AppState.lastHistoryFetch = 0;
+                  AppState.lastStatsFetch = {};
                 } else {
                   showMsg(data.message, true);
                 }
