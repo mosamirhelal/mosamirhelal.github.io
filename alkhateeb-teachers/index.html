@@ -2195,6 +2195,20 @@
           />
         </div>
 
+        <div
+          id="liveDaysCount"
+          style="
+            text-align: right;
+            margin-bottom: 15px;
+            color: #e67e22;
+            font-weight: bold;
+            display: none;
+          "
+        >
+          عدد أيام العمل (بدون الجمعة والسبت):
+          <span id="liveDaysValue">0</span> يوم
+        </div>
+
         <input
           type="text"
           id="reqReason"
@@ -2512,6 +2526,7 @@
         abortController: null,
         loginAttempts: 0,
         rowDataStore: new WeakMap(),
+        messagePollingInterval: null,
       };
 
       document.addEventListener("keydown", (e) => {
@@ -2535,12 +2550,23 @@
             Date.now() - AppState.hiddenAt > 15 * 60 * 1000
           ) {
             if (sessionStorage.getItem("alkhateeb_hr_auth")) {
-              executeLogoutLocal();
+              silentServerLogout();
             }
           }
           AppState.hiddenAt = null;
         }
       });
+
+      function silentServerLogout() {
+        const auth = getAuth();
+        if (!auth) {
+          executeLogoutLocal();
+          return;
+        }
+        apiPost({ action: "logout", token: auth.token }).finally(
+          executeLogoutLocal,
+        );
+      }
 
       function escHtml(str) {
         const d = document.createElement("div");
@@ -2663,12 +2689,6 @@
           if (error.name === "AbortError") return null;
           throw error;
         }
-      }
-
-      function apiPostSingle(payload) {
-        if (AppState.abortController) AppState.abortController.abort();
-        AppState.abortController = new AbortController();
-        return apiPost(payload, AppState.abortController.signal);
       }
 
       function showMsg(text, isError, timeout = 7000) {
@@ -2865,6 +2885,12 @@
               document.getElementById("teacherNameDisplay").innerText =
                 "أهلاً بك: " + auth.name;
             }
+          }
+          if (!AppState.messagePollingInterval) {
+            AppState.messagePollingInterval = setInterval(
+              () => checkPendingMessages(auth.token),
+              300000,
+            );
           }
         } else {
           document.getElementById("loginContainer").style.display = "block";
@@ -4140,7 +4166,6 @@
             })
               .then((data) => {
                 if (!data) return;
-                if (!data) return;
                 if (data.status === "success") {
                   showMsg("تم الحذف بنجاح", false);
                   fetchHistoryData(true);
@@ -4513,7 +4538,7 @@
               action: "approveLeaveRequest",
               token: auth.token,
               requestId: requestId,
-              approvedDates: selectedDates,
+              approvedDates: selectedDates.join(","),
               approvedAmount: approvedAmount,
               adminMessage: adminMessage,
             })
@@ -4614,10 +4639,51 @@
         });
       }
 
+      function getWorkingDaysCount(startStr, endStr) {
+        if (!startStr || !endStr || startStr > endStr) return 0;
+        const msPerDay = 24 * 60 * 60 * 1000;
+        const startParts = startStr.split("-");
+        const utcStart = Date.UTC(
+          startParts[0],
+          startParts[1] - 1,
+          startParts[2],
+        );
+        const endParts = endStr.split("-");
+        const utcEnd = Date.UTC(endParts[0], endParts[1] - 1, endParts[2]);
+        let count = 0;
+        for (let d = utcStart; d <= utcEnd; d += msPerDay) {
+          const dayOfWeek = new Date(d).getUTCDay();
+          if (dayOfWeek !== 5 && dayOfWeek !== 6) count++;
+        }
+        return count;
+      }
+
+      function updateLiveDaysCount() {
+        const start = document.getElementById("reqStartDate").value;
+        const end = document.getElementById("reqEndDate").value;
+        const countDisplay = document.getElementById("liveDaysCount");
+        const countValue = document.getElementById("liveDaysValue");
+
+        if (start && end && start <= end) {
+          countDisplay.style.display = "block";
+          countValue.innerText = getWorkingDaysCount(start, end);
+        } else {
+          countDisplay.style.display = "none";
+        }
+      }
+
+      document
+        .getElementById("reqStartDate")
+        .addEventListener("change", updateLiveDaysCount);
+      document
+        .getElementById("reqEndDate")
+        .addEventListener("change", updateLiveDaysCount);
+
       function openNewRequestModal() {
         document.getElementById("reqStartDate").value = getLocalDate();
         document.getElementById("reqEndDate").value = getLocalDate();
         document.getElementById("newRequestModal").style.display = "flex";
+        updateLiveDaysCount();
         focusFirstInModal("newRequestModal");
       }
 
@@ -4627,6 +4693,7 @@
         document.getElementById("reqStartDate").value = "";
         document.getElementById("reqEndDate").value = "";
         document.getElementById("reqReason").value = "";
+        document.getElementById("liveDaysCount").style.display = "none";
       }
 
       function fetchMyRequests(token) {
@@ -4663,11 +4730,7 @@
           return;
         }
 
-        const amount =
-          Math.round(
-            (new Date(reqEndDate) - new Date(reqStartDate)) /
-              (1000 * 60 * 60 * 24),
-          ) + 1;
+        const amount = getWorkingDaysCount(reqStartDate, reqEndDate);
 
         apiPost({
           action: "submitLeaveRequest",
