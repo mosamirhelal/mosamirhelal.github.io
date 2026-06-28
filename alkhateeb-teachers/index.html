@@ -911,6 +911,7 @@
           id="usernameInput"
           class="form-control"
           placeholder="اسم المستخدم"
+          aria-label="اسم المستخدم"
           dir="rtl"
           onkeydown="
             if (event.key === 'Enter')
@@ -922,6 +923,7 @@
           id="passwordInput"
           class="form-control"
           placeholder="كلمة المرور"
+          aria-label="كلمة المرور"
           onkeydown="if (event.key === 'Enter') doLogin();"
           dir="ltr"
         />
@@ -1003,6 +1005,7 @@
               id="adminSearchInput"
               class="form-control"
               placeholder="ابحث باسم المعلم أو الكود..."
+              aria-label="بحث المعلمين"
               oninput="debounceLiveSearch()"
               onfocus="this.select()"
               onclick="this.select()"
@@ -2668,7 +2671,7 @@
         return apiPost(payload, AppState.abortController.signal);
       }
 
-      function showMsg(text, isError) {
+      function showMsg(text, isError, timeout = 7000) {
         const containers = [
           document.getElementById("loginContainer"),
           document.getElementById("adminContainer"),
@@ -2696,7 +2699,7 @@
           if (msgDiv.parentNode) {
             msgDiv.parentNode.removeChild(msgDiv);
           }
-        }, 4000);
+        }, timeout);
       }
 
       function executeLogout() {
@@ -3029,12 +3032,22 @@
         }
       }
 
+      let teachersFetchController = null;
+
       function fetchTeachersList(token, fromLogin = false) {
+        if (teachersFetchController) {
+          teachersFetchController.abort();
+        }
+        teachersFetchController = new AbortController();
+
         const loader = document.getElementById("adminLoader");
         if (!fromLogin && AppState.teachers.length === 0)
           loader.style.display = "block";
 
-        apiPost({ action: "getTeachersList", token: token })
+        apiPost(
+          { action: "getTeachersList", token: token },
+          teachersFetchController.signal,
+        )
           .then((data) => {
             if (!data) return;
             loader.style.display = "none";
@@ -3060,6 +3073,7 @@
             }
           })
           .catch((err) => {
+            if (err.name === "AbortError") return; // Ignore aborted requests
             if (fromLogin) {
               document.getElementById("loginLoader").style.display = "none";
               const lBtn = document.getElementById("loginBtn");
@@ -3067,7 +3081,14 @@
               lBtn.disabled = false;
               lBtn.classList.add("pulse-button");
               lBtn.querySelector(".btn-text").innerText = "دخول المنصة";
-              checkAuth(true);
+              document.getElementById("inputsWrapper").style.display = "block";
+              showMsg(
+                "فشل تحميل بيانات المعلمين. تحقق من الاتصال وحاول مجدداً.",
+                true,
+              );
+            } else {
+              loader.style.display = "none";
+              showMsg("حدث خطأ في تحميل قائمة المعلمين", true);
             }
           });
       }
@@ -3131,9 +3152,11 @@
           return;
         }
 
+        const normalizedTerm = normalizeArabic(term);
+
         const filtered = AppState.teachers.filter(
           (t) =>
-            t.name.toLowerCase().includes(term) ||
+            normalizeArabic(t.name.toLowerCase()).includes(normalizedTerm) ||
             String(t.code).includes(term),
         );
 
@@ -3701,25 +3724,30 @@
             const boxArray = Array.from(boxes);
             let hasError = false;
 
+            const rowIds = [];
+            for (const box of boxArray) {
+              const item =
+                box._rowData || JSON.parse(decodeURIComponent(box.value));
+              if (item && item.rowId) {
+                rowIds.push(item.rowId);
+              }
+            }
+
+            if (rowIds.length === 0) {
+              document.getElementById("bulkProgressMsg").remove();
+              loader.style.display = "none";
+              return;
+            }
+
             try {
-              const results = await Promise.all(
-                boxArray.map((box) => {
-                  const item =
-                    box._rowData || JSON.parse(decodeURIComponent(box.value));
-                  return apiPost({
-                    action: "deleteRecord",
-                    token: auth.token,
-                    rowId: item.rowId,
-                    date: item.date,
-                    name: item.name,
-                    type: item.type,
-                    amount: item.amount,
-                  });
-                }),
-              );
-              hasError = results.some(
-                (res) => !res || res.status !== "success",
-              );
+              const res = await apiPost({
+                action: "batchDeleteRecords",
+                token: auth.token,
+                rowIds: rowIds,
+              });
+              if (!res || res.status !== "success") {
+                hasError = true;
+              }
             } catch (e) {
               hasError = true;
             }
@@ -3729,6 +3757,7 @@
               showMsg("حدثت بعض الأخطاء أثناء الحذف.", true);
             } else {
               showMsg("تم حذف السجلات بنجاح.", false);
+              document.getElementById("selectAllHistory").checked = false;
             }
             fetchHistoryData(true);
           },
@@ -3767,31 +3796,40 @@
         closeBulkEditModal();
 
         const boxes = document.querySelectorAll(".history-check-item:checked");
-        try {
-          let promises = Array.from(boxes).map((box) => {
-            const item = box._rowData;
-            if (!item) return Promise.resolve({ status: "error" });
-            return apiPost({
-              action: "editRecord",
-              token: auth.token,
+
+        let edits = [];
+        Array.from(boxes).forEach((box) => {
+          const item = box._rowData;
+          if (item && item.rowId) {
+            edits.push({
               rowId: item.rowId,
-              oldDate: item.date,
-              oldName: item.name,
-              oldType: item.type,
-              oldAmount: item.amount,
               newType: newType,
               newAmount: newAmount,
               newNotes: newNotes,
             });
+          }
+        });
+
+        if (edits.length === 0) {
+          document.getElementById("historyLoader").style.display = "none";
+          return;
+        }
+
+        try {
+          const res = await apiPost({
+            action: "batchEditRecords",
+            token: auth.token,
+            edits: edits,
           });
-          let results = await Promise.all(promises);
-          if (results.some((res) => res.status !== "success")) {
+
+          if (!res || res.status !== "success") {
             showMsg("حدثت بعض الأخطاء أثناء التعديل.", true);
           } else {
             showMsg("تم تعديل السجلات بنجاح.", false);
+            document.getElementById("selectAllHistory").checked = false;
           }
         } catch (e) {
-          showMsg("حدثت بعض الأخطاء أثناء التعديل.", true);
+          showMsg("خطأ في الاتصال", true);
         }
         fetchHistoryData(true);
       }
@@ -3886,12 +3924,18 @@
           teacherCode: tCode,
         })
           .then((data) => {
+            loader.style.display = "none";
             if (!data) return;
-            if (!isSilentUpdate) loader.style.display = "none";
 
             if (data.status === "success") {
               renderReportsDashboard(data.totals);
               renderHistoryTable(data.history);
+              if (data.truncated) {
+                showMsg(
+                  "تنبيه: تم إظهار أحدث 500 سجل فقط لضمان سرعة الاستجابة.",
+                  true,
+                );
+              }
             } else {
               showMsg("حدث خطأ: " + data.message, true);
             }
