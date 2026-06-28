@@ -3726,11 +3726,9 @@
 
             const rowIds = [];
             for (const box of boxArray) {
-              const item =
-                box._rowData || JSON.parse(decodeURIComponent(box.value));
-              if (item && item.rowId) {
-                rowIds.push(item.rowId);
-              }
+              const item = box._rowData;
+              if (!item || !item.rowId) continue;
+              rowIds.push(item.rowId);
             }
 
             if (rowIds.length === 0) {
@@ -4319,7 +4317,7 @@
         container.style.display = "none";
         emptyMsg.style.display = "none";
 
-        apiPostSingle({ action: "getLeaveRequests", token: auth.token })
+        apiPost({ action: "getLeaveRequests", token: auth.token })
           .then((data) => {
             if (!data) return;
             loader.style.display = "none";
