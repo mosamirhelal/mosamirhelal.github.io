@@ -284,8 +284,35 @@
         padding: 5px 12px;
         font-size: 13px;
       }
-      .btn-secondary:hover:not(:disabled) {
-        background-color: #5a6268;
+      .btn-preset {
+        background-color: #0284c7;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 5px 12px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin: 0;
+        font-family: inherit;
+      }
+      .btn-preset:hover {
+        background-color: #0369a1;
+      }
+      .btn-print {
+        background-color: #475569;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 6px 15px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin: 0;
+        font-family: inherit;
+      }
+      .btn-print:hover {
+        background-color: #334155;
       }
       .btn-today {
         background-color: #6c757d;
@@ -1330,68 +1357,72 @@
             فلترة السجل واستخراج التقارير
           </h3>
           <div
-            style="display: flex; gap: 8px; margin-top: 15px; flex-wrap: wrap"
+            style="
+              display: flex;
+              gap: 10px;
+              margin-top: 15px;
+              flex-wrap: nowrap;
+              justify-content: center;
+              overflow-x: auto;
+            "
           >
             <button
-              class="btn-secondary"
-              style="
-                margin: 0;
-                padding: 5px 12px;
-                font-size: 13px;
-                min-width: auto;
-                height: auto;
-              "
+              class="btn-preset"
+              style="width: auto; min-width: 80px; margin: 0"
               onclick="setHistoryPreset('today')"
             >
               اليوم
             </button>
             <button
-              class="btn-secondary"
-              style="
-                margin: 0;
-                padding: 5px 12px;
-                font-size: 13px;
-                min-width: auto;
-                height: auto;
-              "
+              class="btn-preset"
+              style="width: auto; min-width: 80px; margin: 0"
               onclick="setHistoryPreset('week')"
             >
               هذا الأسبوع
             </button>
             <button
-              class="btn-secondary"
-              style="
-                margin: 0;
-                padding: 5px 12px;
-                font-size: 13px;
-                min-width: auto;
-                height: auto;
-              "
+              class="btn-preset"
+              style="width: auto; min-width: 80px; margin: 0"
               onclick="setHistoryPreset('month')"
             >
               هذا الشهر
             </button>
           </div>
-          <div class="date-row" style="margin-top: 15px">
-            <label style="font-weight: bold">من:</label>
-            <input
-              type="date"
-              id="historyStartDate"
-              class="form-control"
-              style="max-width: 140px; margin: 0"
-            />
-            <label style="font-weight: bold; margin-right: 10px">إلى:</label>
-            <input
-              type="date"
-              id="historyEndDate"
-              class="form-control"
-              style="max-width: 140px; margin: 0"
-            />
+          <div
+            class="date-row"
+            style="
+              margin-top: 20px;
+              display: flex;
+              flex-wrap: wrap;
+              gap: 15px;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            <div style="display: flex; align-items: center; gap: 5px">
+              <label style="font-weight: bold; margin: 0">من:</label>
+              <input
+                type="date"
+                id="historyStartDate"
+                class="form-control"
+                style="width: 140px; margin: 0"
+              />
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 5px">
+              <label style="font-weight: bold; margin: 0">إلى:</label>
+              <input
+                type="date"
+                id="historyEndDate"
+                class="form-control"
+                style="width: 140px; margin: 0"
+              />
+            </div>
 
             <select
               id="historyTeacherSelect"
               class="form-control"
-              style="max-width: 200px; margin: 0 15px 0 0"
+              style="width: 200px; margin: 0"
             >
               <option value="">جميع المعلمين</option>
             </select>
@@ -1402,7 +1433,7 @@
                 fetchHistoryData();
               "
               class="btn-info"
-              style="margin: 0 15px 0 0"
+              style="margin: 0; padding: 8px 20px"
             >
               <span class="btn-text">بحث وعرض</span>
             </button>
@@ -1456,12 +1487,17 @@
         </div>
 
         <div
+          id="historyFiltersRow"
           style="
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
             margin-bottom: 15px;
-            display: flex;
+            display: none;
             gap: 10px;
-            justify-content: space-between;
             flex-wrap: wrap;
+            align-items: center;
           "
         >
           <input
@@ -1469,16 +1505,16 @@
             id="historyTableFilter"
             class="form-control"
             placeholder="تصفية السجلات (الاسم، الإداري...)"
-            style="max-width: 200px; margin: 0"
+            style="flex: 1; min-width: 200px; margin: 0"
             oninput="filterHistoryTable()"
           />
           <select
             id="historyTypeFilter"
             class="form-control"
-            style="max-width: 150px; margin: 0"
+            style="flex: 1; min-width: 150px; margin: 0"
             onchange="filterHistoryTable()"
           >
-            <option value="all">الكل</option>
+            <option value="all">كل الأنواع</option>
             <option value="تأخر صباحي">تأخر صباحي</option>
             <option value="غياب">غياب</option>
             <option value="غياب بعذر">غياب بعذر</option>
@@ -1489,13 +1525,22 @@
             <option value="خروج بدون إذن">خروج بدون إذن</option>
             <option value="تأخر بإذن">تأخر بإذن</option>
           </select>
-          <button
-            class="btn-secondary"
-            style="margin: 0; width: auto; padding: 6px 15px; font-size: 14px"
-            onclick="window.print()"
+          <div
+            style="
+              width: 100%;
+              display: flex;
+              justify-content: center;
+              margin-top: 5px;
+            "
           >
-            تصدير PDF / طباعة 🖨️
-          </button>
+            <button
+              class="btn-print"
+              style="width: auto; padding: 5px 15px; font-size: 13px"
+              onclick="window.print()"
+            >
+              تصدير PDF / طباعة 🖨️
+            </button>
+          </div>
         </div>
 
         <div id="historyTableContainer" class="table-responsive">
@@ -3922,13 +3967,26 @@
       }
 
       function filterHistoryTable() {
-        if (AppState.liveSearchTimeout) {
-          clearTimeout(AppState.liveSearchTimeout);
-        }
-        AppState.liveSearchTimeout = setTimeout(() => {
-          AppState.historyPage = 1;
-          fetchHistoryData(false, false);
-        }, 500);
+        const query = normalizeArabic(
+          document
+            .getElementById("historyTableFilter")
+            .value.toLowerCase()
+            .trim(),
+        );
+        const typeFilter = document.getElementById("historyTypeFilter").value;
+        const rows = document.querySelectorAll("#historyTable tbody tr");
+
+        rows.forEach((row) => {
+          const txt = normalizeArabic(
+            row.textContent || row.innerText,
+          ).toLowerCase();
+          const rType = row.getAttribute("data-type");
+
+          const matchesSearch = txt.indexOf(query) > -1;
+          const matchesType = typeFilter === "all" || rType === typeFilter;
+
+          row.style.display = matchesSearch && matchesType ? "" : "none";
+        });
       }
 
       function loadMoreHistory() {
@@ -3967,6 +4025,7 @@
         const bulkActions = document.getElementById("bulkActions");
         const selectAll = document.getElementById("selectAllHistory");
         const loadMoreBtn = document.getElementById("loadMoreHistoryContainer");
+        const historyFiltersRow = document.getElementById("historyFiltersRow");
 
         if (!isSilentUpdate && !append) {
           loader.style.display = "block";
@@ -3975,6 +4034,7 @@
           emptyMsg.style.display = "none";
           bulkActions.style.display = "none";
           if (loadMoreBtn) loadMoreBtn.style.display = "none";
+          if (historyFiltersRow) historyFiltersRow.style.display = "none";
           if (selectAll) selectAll.checked = false;
         } else if (append) {
           loader.style.display = "block";
@@ -3986,10 +4046,8 @@
           startDate: start,
           endDate: end,
           teacherCode: tCode,
-          typeFilter: typeFilter,
-          searchQuery: searchQuery,
           page: AppState.historyPage,
-          limit: 50,
+          limit: 1000,
         })
           .then((data) => {
             loader.style.display = "none";
@@ -4035,6 +4093,7 @@
         const tbody = document.querySelector("#historyTable tbody");
         const container = document.getElementById("historyTableContainer");
         const emptyMsg = document.getElementById("historyEmpty");
+        const historyFiltersRow = document.getElementById("historyFiltersRow");
 
         if (!append) tbody.innerHTML = "";
 
@@ -4043,6 +4102,7 @@
             container.style.display = "none";
             emptyMsg.style.display = "block";
             emptyMsg.innerText = "لا توجد سجلات في هذه الفترة.";
+            if (historyFiltersRow) historyFiltersRow.style.display = "none";
           }
           return;
         }
@@ -4068,6 +4128,7 @@
           };
 
           let tr = document.createElement("tr");
+          tr.setAttribute("data-type", row.type);
           AppState.rowDataStore.set(tr, rowData);
 
           tr.innerHTML = `
@@ -4111,6 +4172,9 @@
 
         container.style.display = "block";
         emptyMsg.style.display = "none";
+        if (historyFiltersRow && !append) {
+          historyFiltersRow.style.display = "flex";
+        }
 
         const selectAll = document.getElementById("selectAllHistory");
         if (selectAll) selectAll.checked = false;
