@@ -1468,10 +1468,27 @@
             type="text"
             id="historyTableFilter"
             class="form-control"
-            placeholder="تصفية السجلات المعروضة (الاسم، النوع، الإداري...)"
-            style="max-width: 300px; margin: 0"
+            placeholder="تصفية السجلات (الاسم، الإداري...)"
+            style="max-width: 200px; margin: 0"
             oninput="filterHistoryTable()"
           />
+          <select
+            id="historyTypeFilter"
+            class="form-control"
+            style="max-width: 150px; margin: 0"
+            onchange="filterHistoryTable()"
+          >
+            <option value="all">الكل</option>
+            <option value="تأخر صباحي">تأخر صباحي</option>
+            <option value="غياب">غياب</option>
+            <option value="غياب بعذر">غياب بعذر</option>
+            <option value="اعتيادي">إجازة اعتيادي</option>
+            <option value="مرضي">إجازة مرضي</option>
+            <option value="إذن صباحي">إذن صباحي</option>
+            <option value="خروج بإذن">خروج بإذن</option>
+            <option value="خروج بدون إذن">خروج بدون إذن</option>
+            <option value="تأخر بإذن">تأخر بإذن</option>
+          </select>
           <button
             class="btn-secondary"
             style="margin: 0; width: auto; padding: 6px 15px; font-size: 14px"
@@ -1511,6 +1528,19 @@
 
         <div id="historyEmpty" class="placeholder-msg" style="display: block">
           لا توجد سجلات. حدد الفترة واضغط بحث وعرض.
+        </div>
+
+        <div
+          id="loadMoreHistoryContainer"
+          style="text-align: center; margin-top: 15px; display: none"
+        >
+          <button
+            class="btn"
+            style="background: #0056b3; color: white"
+            onclick="loadMoreHistory()"
+          >
+            تحميل المزيد
+          </button>
         </div>
       </div>
 
@@ -2519,6 +2549,7 @@
         lastTodayFetch: 0,
         lastApprovalsFetch: 0,
         liveSearchTimeout: null,
+        historyPage: 1,
         pendingMessages: [],
         currentMessageIndex: 0,
         hiddenAt: null,
@@ -3858,22 +3889,6 @@
         fetchHistoryData(true);
       }
 
-      function filterHistoryTable() {
-        const query = normalizeArabic(
-          document
-            .getElementById("historyTableFilter")
-            .value.toLowerCase()
-            .trim(),
-        );
-        const rows = document.querySelectorAll("#historyTable tbody tr");
-        rows.forEach((row) => {
-          const txt = normalizeArabic(
-            row.textContent || row.innerText,
-          ).toLowerCase();
-          row.style.display = txt.indexOf(query) > -1 ? "" : "none";
-        });
-      }
-
       function setHistoryPreset(preset) {
         const d = new Date();
         const endStr =
@@ -3906,13 +3921,34 @@
         fetchHistoryData();
       }
 
-      function fetchHistoryData(isSilentUpdate = false) {
+      function filterHistoryTable() {
+        if (AppState.liveSearchTimeout) {
+          clearTimeout(AppState.liveSearchTimeout);
+        }
+        AppState.liveSearchTimeout = setTimeout(() => {
+          AppState.historyPage = 1;
+          fetchHistoryData(false, false);
+        }, 500);
+      }
+
+      function loadMoreHistory() {
+        AppState.historyPage++;
+        fetchHistoryData(false, true);
+      }
+
+      function fetchHistoryData(isSilentUpdate = false, append = false) {
         const auth = getAuth();
         if (!auth) return;
 
         const start = document.getElementById("historyStartDate").value;
         const end = document.getElementById("historyEndDate").value;
         const tCode = document.getElementById("historyTeacherSelect").value;
+        const typeFilter = document.getElementById("historyTypeFilter")
+          ? document.getElementById("historyTypeFilter").value
+          : "all";
+        const searchQuery = document.getElementById("historyTableFilter")
+          ? document.getElementById("historyTableFilter").value
+          : "";
 
         if (!start || !end) {
           showMsg("يرجى تحديد فترة البداية والنهاية.", true);
@@ -3930,14 +3966,18 @@
         const emptyMsg = document.getElementById("historyEmpty");
         const bulkActions = document.getElementById("bulkActions");
         const selectAll = document.getElementById("selectAllHistory");
+        const loadMoreBtn = document.getElementById("loadMoreHistoryContainer");
 
-        if (!isSilentUpdate) {
+        if (!isSilentUpdate && !append) {
           loader.style.display = "block";
           dashboard.style.display = "none";
           container.style.display = "none";
           emptyMsg.style.display = "none";
           bulkActions.style.display = "none";
+          if (loadMoreBtn) loadMoreBtn.style.display = "none";
           if (selectAll) selectAll.checked = false;
+        } else if (append) {
+          loader.style.display = "block";
         }
 
         apiPost({
@@ -3946,6 +3986,10 @@
           startDate: start,
           endDate: end,
           teacherCode: tCode,
+          typeFilter: typeFilter,
+          searchQuery: searchQuery,
+          page: AppState.historyPage,
+          limit: 50,
         })
           .then((data) => {
             loader.style.display = "none";
@@ -3953,12 +3997,13 @@
 
             if (data.status === "success") {
               renderReportsDashboard(data.totals);
-              renderHistoryTable(data.history);
-              if (data.truncated) {
-                showMsg(
-                  "تنبيه: تم إظهار أحدث 500 سجل فقط لضمان سرعة الاستجابة.",
-                  true,
-                );
+              renderHistoryTable(data.history, append);
+              if (loadMoreBtn) {
+                if (data.page < data.totalPages) {
+                  loadMoreBtn.style.display = "block";
+                } else {
+                  loadMoreBtn.style.display = "none";
+                }
               }
             } else {
               showMsg("حدث خطأ: " + data.message, true);
@@ -3986,17 +4031,19 @@
         dashboard.style.display = "grid";
       }
 
-      function renderHistoryTable(history) {
+      function renderHistoryTable(history, append = false) {
         const tbody = document.querySelector("#historyTable tbody");
         const container = document.getElementById("historyTableContainer");
         const emptyMsg = document.getElementById("historyEmpty");
 
-        tbody.innerHTML = "";
+        if (!append) tbody.innerHTML = "";
 
         if (!history || history.length === 0) {
-          container.style.display = "none";
-          emptyMsg.style.display = "block";
-          emptyMsg.innerText = "لا توجد سجلات في هذه الفترة للمعلم المحدد.";
+          if (!append) {
+            container.style.display = "none";
+            emptyMsg.style.display = "block";
+            emptyMsg.innerText = "لا توجد سجلات في هذه الفترة.";
+          }
           return;
         }
 
