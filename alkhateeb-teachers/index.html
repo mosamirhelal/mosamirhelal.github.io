@@ -3384,6 +3384,9 @@
           )
         ) {
           AppState.selectedTeachers.push(teacher);
+          AppState.selectedTeachers.sort(
+            (a, b) => Number(a.code) - Number(b.code),
+          );
         }
 
         renderSelectedTeachers();
@@ -3391,13 +3394,15 @@
         document.getElementById("adminTeacherSelect").value = "";
         document.getElementById("adminSearchInput").value = "";
 
-        document.getElementById("actionTypeSelect").value = "";
-        document.getElementById("dynamicArea").style.display = "none";
         document.getElementById("actionCard").style.display = "block";
 
-        setTimeout(() => {
-          document.getElementById("actionTypeSelect").focus();
-        }, 50);
+        if (AppState.selectedTeachers.length === 1) {
+          document.getElementById("actionTypeSelect").value = "";
+          document.getElementById("dynamicArea").style.display = "none";
+          setTimeout(() => {
+            document.getElementById("actionTypeSelect").focus();
+          }, 50);
+        }
       }
 
       function renderSelectedTeachers() {
@@ -3414,7 +3419,7 @@
           let chip = document.createElement("div");
           chip.className = "teacher-chip";
           chip.innerHTML = `
-            <span>${escHtml(teacher.name)}</span>
+            <span>${escHtml(teacher.name)} (${escHtml(teacher.code)})</span>
             <span class="remove-btn" onclick="removeSelectedTeacher('${teacher.code}')">&times;</span>
           `;
           container.appendChild(chip);
