@@ -1953,6 +1953,7 @@
               <input
                 type="date"
                 id="empBirthDate"
+                lang="en-GB"
                 class="form-control"
                 placeholder="تاريخ الميلاد"
                 style="flex: 1"
@@ -2085,6 +2086,7 @@
               <input
                 type="date"
                 id="empHiringDate"
+                lang="en-GB"
                 class="form-control"
                 placeholder="تاريخ التعيين"
                 style="flex: 1"
@@ -2103,6 +2105,13 @@
                 id="empMaxCasual"
                 class="form-control"
                 placeholder="رصيد اعتيادي (مثال: 21)"
+                style="flex: 1"
+              />
+              <input
+                type="number"
+                id="empTotalWorkDays"
+                class="form-control"
+                placeholder="أيام العمل الكلية"
                 style="flex: 1"
               />
             </div>
@@ -2182,6 +2191,7 @@
               <input
                 type="date"
                 id="empQualDate"
+                lang="en-GB"
                 class="form-control"
                 placeholder="تاريخ المؤهل"
                 style="flex: 1"
@@ -3303,8 +3313,8 @@
                   <td>${roleBadge}</td>
                   <td>${statusBadge}</td>
                   <td style="white-space:nowrap;">
-                    <button class="btn-secondary" style="padding:5px 12px; font-size:13px; margin-bottom:3px; display:inline-block;" onclick="editEmployee('${emp.code}')">✏️ تعديل</button>
-                    <button class="btn-logout" style="padding:5px 12px; font-size:13px; margin:0; display:inline-block;" onclick="deleteEmployeeAction('${emp.code}')">🗑️ حذف</button>
+                    <button class="btn-secondary" style="padding:5px 12px; font-size:13px; margin-bottom:3px; display:inline-block;" data-code="${escHtml(emp.code)}" onclick="editEmployee(this.getAttribute('data-code'))">✏️ تعديل</button>
+                    <button class="btn-logout" style="padding:5px 12px; font-size:13px; margin:0; display:inline-block;" data-code="${escHtml(emp.code)}" onclick="deleteEmployeeAction(this.getAttribute('data-code'))">🗑️ حذف</button>
                   </td>
                 `;
           tbody.appendChild(tr);
@@ -3465,15 +3475,19 @@
             action: "deleteEmployee",
             token: auth.token,
             code: code,
-          }).then((data) => {
-            if (data && data.status === "success") {
-              showMsg(data.message, false);
-              fetchAllEmployees(auth.token);
-              fetchTeachersList(auth.token, false);
-            } else {
-              showMsg(data ? data.message : "خطأ", true);
-            }
-          });
+          })
+            .then((data) => {
+              if (data && data.status === "success") {
+                showMsg(data.message, false);
+                fetchAllEmployees(auth.token);
+                fetchTeachersList(auth.token, false);
+              } else {
+                showMsg(data ? data.message : "خطأ", true);
+              }
+            })
+            .catch((err) => {
+              showMsg("حدث خطأ في الاتصال بالخادم.", true);
+            });
         });
       }
       function submitEmployeeForm() {
@@ -3484,6 +3498,15 @@
         const nid = document.getElementById("empNid").value;
         if (!code || !name || !nid) {
           showMsg("الكود والاسم والرقم القومي حقول إلزامية!", true);
+          return;
+        }
+        if (nid.length !== 14) {
+          showMsg("الرقم القومي يجب أن يكون 14 رقماً!", true);
+          return;
+        }
+        const emailVal = document.getElementById("empEmail").value;
+        if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+          showMsg("صيغة البريد الإلكتروني غير صحيحة", true);
           return;
         }
         const btn = document.getElementById("saveEmployeeBtn");
@@ -3518,20 +3541,10 @@
           startTime: document.getElementById("empStartTime").value,
           maxCasual: document.getElementById("empMaxCasual").value,
           totalWorkDays: document.getElementById("empTotalWorkDays").value,
-          specialization:
-            empType === "معلم" ? document.getElementById("empSpec").value : "",
-          teachingGrades:
-            empType === "معلم"
-              ? document.getElementById("empGrades").value
-              : "",
-          teachingClasses:
-            empType === "معلم"
-              ? document.getElementById("empClasses").value
-              : "",
-          assignedActivity:
-            empType === "معلم"
-              ? document.getElementById("empActivity").value
-              : "",
+          specialization: document.getElementById("empSpec").value,
+          teachingGrades: document.getElementById("empGrades").value,
+          teachingClasses: document.getElementById("empClasses").value,
+          assignedActivity: document.getElementById("empActivity").value,
           qualificationType: document.getElementById("empQualType").value,
           qualificationName: document.getElementById("empQualName").value,
           qualificationEntity: document.getElementById("empQualEntity").value,
@@ -3546,20 +3559,26 @@
           action: action,
           token: auth.token,
           emp: empData,
-        }).then((data) => {
-          btn.disabled = false;
-          btn.querySelector(".btn-text").innerText = currentEditingEmployeeCode
-            ? "تعديل الموظف"
-            : "إضافة الموظف";
-          if (data && data.status === "success") {
-            showMsg(data.message, false);
-            closeEmployeeModal();
-            fetchAllEmployees(auth.token);
-            fetchTeachersList(auth.token, false);
-          } else {
-            showMsg(data ? data.message : "خطأ", true);
-          }
-        });
+        })
+          .then((data) => {
+            btn.disabled = false;
+            btn.querySelector(".btn-text").innerText =
+              currentEditingEmployeeCode ? "تعديل الموظف" : "إضافة الموظف";
+            if (data && data.status === "success") {
+              showMsg(data.message, false);
+              closeEmployeeModal();
+              fetchAllEmployees(auth.token);
+              fetchTeachersList(auth.token, false);
+            } else {
+              showMsg(data ? data.message : "خطأ", true);
+            }
+          })
+          .catch((err) => {
+            btn.disabled = false;
+            btn.querySelector(".btn-text").innerText =
+              currentEditingEmployeeCode ? "تعديل الموظف" : "إضافة الموظف";
+            showMsg("حدث خطأ في الاتصال بالخادم.", true);
+          });
       }
       const APPS_SCRIPT_URL =
         "https://script.google.com/macros/s/AKfycbxT1tSZeHN5kjIrP5xg0FBwm32CyOk_EyqAxNM3BBS770eMf_FGcjzTsPYQip94Uy4WhQ/exec";
@@ -3639,7 +3658,7 @@
       }
       function escHtml(str) {
         const d = document.createElement("div");
-        d.textContent = String(str || "");
+        d.textContent = str !== null && str !== undefined ? String(str) : "";
         return d.innerHTML;
       }
       function createDateCheckboxes(
@@ -3741,7 +3760,19 @@
             body: JSON.stringify(payload),
             ...(signal ? { signal } : {}),
           });
-          return await response.json();
+          const result = await response.json();
+          if (
+            result &&
+            result.status === "error" &&
+            result.message &&
+            result.message.includes("منتهية")
+          ) {
+            showMsg(result.message, true);
+            setTimeout(() => {
+              logout();
+            }, 1500);
+          }
+          return result;
         } catch (error) {
           if (error.name === "AbortError") return null;
           throw error;
