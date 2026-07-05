@@ -565,6 +565,31 @@
         padding-bottom: 8px;
         display: inline-block;
       }
+      .teacher-chips-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #0056b3;
+      }
+      .teacher-chip {
+        background: #eef4ff;
+        color: #0056b3;
+        padding: 5px 12px;
+        border-radius: 16px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid #cce0ff;
+      }
+      .teacher-chip .remove-btn {
+        cursor: pointer;
+        color: #ff4d4f;
+        font-weight: bold;
+        font-size: 16px;
+      }
       .dynamic-area {
         margin-top: 15px;
         padding: 15px;
@@ -1055,9 +1080,10 @@
         </div>
 
         <div class="action-card" id="actionCard">
-          <h3 id="selectedTeacherName"></h3>
-          <input type="hidden" id="selectedTeacherCode" />
-          <input type="hidden" id="selectedTeacherStart" />
+          <div
+            id="selectedTeachersContainer"
+            class="teacher-chips-container"
+          ></div>
 
           <select
             id="actionTypeSelect"
@@ -2588,12 +2614,13 @@
       const SUCCESS_BADGE_TYPES = ["اعتيادي", "مرضي", "مقبول"];
 
       const AppState = {
+        auth: null,
         teachers: [],
-        searchFocus: -1,
+        selectedTeachers: [],
+        liveSearchTimeout: null,
         confirmCallbackStack: [],
         lastTodayFetch: 0,
         lastApprovalsFetch: 0,
-        liveSearchTimeout: null,
         historyPage: 1,
         pendingMessages: [],
         currentMessageIndex: 0,
@@ -3349,11 +3376,19 @@
           (t) => String(t.code) === String(code),
         );
         if (!teacher) return;
-        document.getElementById("selectedTeacherName").innerText = teacher.name;
-        document.getElementById("selectedTeacherCode").value = teacher.code;
-        document.getElementById("selectedTeacherStart").value =
-          teacher.startTime;
-        document.getElementById("adminTeacherSelect").value = teacher.code;
+
+        if (!AppState.selectedTeachers) AppState.selectedTeachers = [];
+        if (
+          !AppState.selectedTeachers.find(
+            (t) => String(t.code) === String(teacher.code),
+          )
+        ) {
+          AppState.selectedTeachers.push(teacher);
+        }
+
+        renderSelectedTeachers();
+
+        document.getElementById("adminTeacherSelect").value = "";
         document.getElementById("adminSearchInput").value = "";
 
         document.getElementById("actionTypeSelect").value = "";
@@ -3363,6 +3398,35 @@
         setTimeout(() => {
           document.getElementById("actionTypeSelect").focus();
         }, 50);
+      }
+
+      function renderSelectedTeachers() {
+        const container = document.getElementById("selectedTeachersContainer");
+        container.innerHTML = "";
+        if (
+          !AppState.selectedTeachers ||
+          AppState.selectedTeachers.length === 0
+        ) {
+          document.getElementById("actionCard").style.display = "none";
+          return;
+        }
+        AppState.selectedTeachers.forEach((teacher) => {
+          let chip = document.createElement("div");
+          chip.className = "teacher-chip";
+          chip.innerHTML = `
+            <span>${escHtml(teacher.name)}</span>
+            <span class="remove-btn" onclick="removeSelectedTeacher('${teacher.code}')">&times;</span>
+          `;
+          container.appendChild(chip);
+        });
+      }
+
+      function removeSelectedTeacher(code) {
+        if (!AppState.selectedTeachers) return;
+        AppState.selectedTeachers = AppState.selectedTeachers.filter(
+          (t) => String(t.code) !== String(code),
+        );
+        renderSelectedTeachers();
       }
 
       function setToday(inputId) {
@@ -3542,12 +3606,14 @@
 
         const btn = document.getElementById("saveActionBtn");
 
-        const teacherCode = document.getElementById(
-          "selectedTeacherCode",
-        ).value;
-        const teacherName = document.getElementById(
-          "selectedTeacherName",
-        ).innerText;
+        if (
+          !AppState.selectedTeachers ||
+          AppState.selectedTeachers.length === 0
+        ) {
+          showMsg("يرجى اختيار معلم واحد على الأقل", true);
+          return;
+        }
+
         const type = document.getElementById("actionTypeSelect").value;
         if (!type) {
           showMsg("يرجى اختيار نوع الإجراء أولاً", true);
@@ -3556,72 +3622,84 @@
         const notes = document.getElementById("actionNotes").value;
 
         let records = [];
+        let validationError = "";
 
-        if (TIME_BASED_ACTIONS.includes(type)) {
-          const time = document.getElementById("actionTimeInput").value;
-          const timeActionDate = document.getElementById(
-            "timeActionDateInput",
-          ).value;
-          if (!timeActionDate) {
-            showMsg("يرجى اختيار التاريخ", true);
-            return;
-          }
-          let mins = document.getElementById("manualDelayInput").value || 0;
-          records.push({
-            code: teacherCode,
-            name: teacherName,
-            type: type,
-            dateStr: timeActionDate,
-            timeStr: time,
-            minutes: mins,
-            notes: notes,
-          });
-        } else {
-          const mode = document.querySelector(
-            'input[name="dateMode"]:checked',
-          ).value;
-          if (mode === "single") {
-            const singleDate = document.getElementById("singleDateInput").value;
-            if (!singleDate) {
-              showMsg("يرجى اختيار التاريخ", true);
+        AppState.selectedTeachers.forEach((teacher) => {
+          if (TIME_BASED_ACTIONS.includes(type)) {
+            const time = document.getElementById("actionTimeInput").value;
+            const timeActionDate = document.getElementById(
+              "timeActionDateInput",
+            ).value;
+            if (!timeActionDate) {
+              validationError = "يرجى اختيار التاريخ";
               return;
             }
+            let mins = document.getElementById("manualDelayInput").value || 0;
             records.push({
-              code: teacherCode,
-              name: teacherName,
+              code: teacher.code,
+              name: teacher.name,
               type: type,
-              dateStr: singleDate,
-              timeStr: "",
-              minutes: 1,
+              dateStr: timeActionDate,
+              timeStr: time,
+              minutes: mins,
               notes: notes,
             });
           } else {
-            const boxes = document.querySelectorAll(".day-check-item:checked");
-            if (boxes.length === 0) {
-              showMsg("اختر يوماً واحداً على الأقل", true);
-              return;
-            }
-            boxes.forEach((box) => {
+            const mode = document.querySelector(
+              'input[name="dateMode"]:checked',
+            ).value;
+            if (mode === "single") {
+              const singleDate =
+                document.getElementById("singleDateInput").value;
+              if (!singleDate) {
+                validationError = "يرجى اختيار التاريخ";
+                return;
+              }
               records.push({
-                code: teacherCode,
-                name: teacherName,
+                code: teacher.code,
+                name: teacher.name,
                 type: type,
-                dateStr: box.value,
+                dateStr: singleDate,
                 timeStr: "",
                 minutes: 1,
                 notes: notes,
               });
-            });
+            } else {
+              const boxes = document.querySelectorAll(
+                ".day-check-item:checked",
+              );
+              if (boxes.length === 0) {
+                validationError = "اختر يوماً واحداً على الأقل";
+                return;
+              }
+              boxes.forEach((box) => {
+                records.push({
+                  code: teacher.code,
+                  name: teacher.name,
+                  type: type,
+                  dateStr: box.value,
+                  timeStr: "",
+                  minutes: 1,
+                  notes: notes,
+                });
+              });
+            }
           }
+        });
+
+        if (validationError) {
+          showMsg(validationError, true);
+          return;
         }
 
-        let daysCount = records.length;
+        let teachersCount = AppState.selectedTeachers.length;
+        let daysOrMins = records.length / teachersCount;
         let durationText = TIME_BASED_ACTIONS.includes(type)
           ? records[0].minutes + " دقيقة"
-          : daysCount + " يوم";
+          : daysOrMins + " يوم";
 
         customConfirm(
-          `سيتم تسجيل ${type} للمعلم ${teacherName} - ${durationText}، هل تأكد؟`,
+          `سيتم تسجيل ${type} لعدد ${teachersCount} معلم(ين) - (${durationText} لكل معلم)، هل تأكد؟`,
           () => {
             btn.disabled = true;
             btn.classList.remove("pulse-success");
@@ -3640,6 +3718,8 @@
                 if (data.status === "success") {
                   showMsg(data.message, false);
                   document.getElementById("actionCard").style.display = "none";
+                  AppState.selectedTeachers = [];
+                  renderSelectedTeachers();
                   document.getElementById("adminSearchInput").value = "";
                   document.getElementById("adminTeacherSelect").value = "";
                   AppState.lastTodayFetch = 0;
