@@ -597,6 +597,14 @@
         font-weight: bold;
         font-size: 16px;
       }
+      .is-valid {
+        border-color: #28a745 !important;
+        background-color: #f8fff9 !important;
+      }
+      .is-invalid {
+        border-color: #dc3545 !important;
+        background-color: #fff8f8 !important;
+      }
       .dynamic-area {
         margin-top: 15px;
         padding: 15px;
@@ -947,7 +955,77 @@
         padding-bottom: 10px;
         margin-bottom: 20px;
       }
+      .flatpickr-input {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%230056b3"><path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/></svg>') !important;
+        background-repeat: no-repeat !important;
+        background-position: left 10px center !important;
+        background-size: 20px !important;
+        padding-left: 35px !important;
+        cursor: pointer;
+      }
+      .flatpickr-calendar {
+        font-family: "Cairo", sans-serif !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15) !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 10px !important;
+      }
+      .flatpickr-day.selected,
+      .flatpickr-day.startRange,
+      .flatpickr-day.endRange,
+      .flatpickr-day.selected.inRange,
+      .flatpickr-day.startRange.inRange,
+      .flatpickr-day.endRange.inRange,
+      .flatpickr-day.selected:focus,
+      .flatpickr-day.startRange:focus,
+      .flatpickr-day.endRange:focus,
+      .flatpickr-day.selected:hover,
+      .flatpickr-day.startRange:hover,
+      .flatpickr-day.endRange:hover,
+      .flatpickr-day.selected.prevMonthDay,
+      .flatpickr-day.startRange.prevMonthDay,
+      .flatpickr-day.endRange.prevMonthDay,
+      .flatpickr-day.selected.nextMonthDay,
+      .flatpickr-day.startRange.nextMonthDay,
+      .flatpickr-day.endRange.nextMonthDay {
+        background: #0056b3 !important;
+        border-color: #0056b3 !important;
+      }
+      .flatpickr-months .flatpickr-month {
+        color: #0056b3 !important;
+        fill: #0056b3 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+      }
+      .flatpickr-current-month {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        position: static !important;
+        width: auto !important;
+        height: auto !important;
+        padding: 0 !important;
+        gap: 10px !important;
+      }
+      .flatpickr-current-month .numInputWrapper {
+        width: 65px !important;
+      }
+      .flatpickr-current-month span.cur-month {
+        margin: 0 !important;
+      }
+      .flatpickr-current-month .flatpickr-monthDropdown-months {
+        font-weight: 700 !important;
+      }
+      .flatpickr-weekdays .flatpickr-weekday {
+        color: #555 !important;
+        font-weight: 700 !important;
+      }
     </style>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
   </head>
   <body>
     <div
@@ -1142,7 +1220,7 @@
             class="form-control"
             onchange="selectTeacherFromDropdown()"
           >
-            <option value="">-- أو اختر من القائمة --</option>
+            <option value="" disabled selected>-- أو اختر من القائمة --</option>
           </select>
         </div>
 
@@ -1511,14 +1589,65 @@
                 style="width: 140px; margin: 0"
               />
             </div>
+          </div>
 
-            <select
-              id="historyTeacherSelect"
-              class="form-control"
-              style="width: 200px; margin: 0"
+          <div
+            class="date-row"
+            style="
+              margin-top: 15px;
+              display: flex;
+              flex-direction: column;
+              gap: 10px;
+              align-items: center;
+              justify-content: center;
+            "
+          >
+            <div
+              class="dual-search"
+              style="width: 100%; max-width: 600px; margin-bottom: 0"
             >
-              <option value="">جميع المعلمين</option>
-            </select>
+              <div class="search-container">
+                <input
+                  type="text"
+                  id="historySearchInput"
+                  class="form-control"
+                  placeholder="ابحث باسم المعلم أو الكود..."
+                  oninput="debounceLiveSearchHistory()"
+                  onfocus="this.select()"
+                  onclick="this.select()"
+                  autocomplete="off"
+                  style="margin-bottom: 0"
+                />
+                <div
+                  id="historySearchResults"
+                  class="autocomplete-items"
+                  style="display: none"
+                ></div>
+              </div>
+              <select
+                id="historyTeacherSelect"
+                class="form-control"
+                onchange="selectHistoryTeacherFromDropdown()"
+              >
+                <option value="" disabled>-- أو اختر من القائمة --</option>
+                <option
+                  value="الكل"
+                  style="font-weight: bold; color: #0056b3"
+                  selected
+                >
+                  جميع المعلمين
+                </option>
+              </select>
+            </div>
+
+            <div
+              id="historySelectedTeachersContainer"
+              class="teacher-chips-container"
+            >
+              <span id="historyEmptyMsg" style="color: #999; font-size: 13px"
+                >الجميع محدد (اختر معلم لتخصيص البحث)</span
+              >
+            </div>
 
             <button
               onclick="
@@ -1526,7 +1655,7 @@
                 fetchHistoryData();
               "
               class="btn-info"
-              style="margin: 0; padding: 8px 20px"
+              style="padding: 8px 30px; margin-top: 5px"
             >
               <span class="btn-text">بحث وعرض</span>
             </button>
@@ -1906,214 +2035,588 @@
           <div class="dynamic-area" style="margin-top: 0">
             <h4 style="margin-top: 0">البيانات الأساسية</h4>
             <div class="date-row" style="gap: 10px; margin-bottom: 10px">
-              <input
-                type="text"
-                id="empCode"
-                class="form-control"
-                placeholder="كود الموظف *"
-                style="flex: 1"
-              />
-              <input
-                type="text"
-                id="empName"
-                class="form-control"
-                placeholder="اسم الموظف *"
-                style="flex: 2"
-              />
-              <input
-                type="text"
-                id="empNid"
-                class="form-control"
-                placeholder="الرقم القومي (كلمة المرور) *"
-                style="flex: 2"
-              />
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empCode"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >كود الموظف *</label
+                >
+                <input
+                  type="text"
+                  id="empCode"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 2; text-align: right">
+                <label
+                  for="empName"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >اسم الموظف *</label
+                >
+                <input
+                  type="text"
+                  id="empName"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 2; text-align: right">
+                <label
+                  for="empNid"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الرقم القومي (كلمة المرور) *</label
+                >
+                <input
+                  type="text"
+                  id="empNid"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                  maxlength="14"
+                  oninput="
+                    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 14)
+                  "
+                />
+              </div>
             </div>
             <div class="date-row" style="gap: 10px; margin-bottom: 10px">
-              <input
-                type="text"
-                id="empGender"
-                class="form-control"
-                placeholder="الجنس"
-                style="flex: 1"
-              />
-              <input
-                type="text"
-                id="empNationality"
-                class="form-control"
-                placeholder="الجنسية"
-                style="flex: 1"
-              />
-              <input
-                type="text"
-                id="empReligion"
-                class="form-control"
-                placeholder="الديانة"
-                style="flex: 1"
-              />
-              <input
-                type="date"
-                id="empBirthDate"
-                lang="en-GB"
-                class="form-control"
-                placeholder="تاريخ الميلاد"
-                style="flex: 1"
-              />
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empGender"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الجنس *</label
+                >
+                <select
+                  id="empGender"
+                  class="form-control"
+                  style="width: 100%; margin: 0; text-align: right"
+                >
+                  <option value="" disabled selected hidden>-- اختر --</option>
+                  <option value="ذكر">ذكر</option>
+                  <option value="أنثى">أنثى</option>
+                </select>
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empNationality"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الجنسية *</label
+                >
+                <select
+                  id="empNationality"
+                  class="form-control"
+                  style="width: 100%; margin: 0; text-align: right"
+                >
+                  <option value="" disabled selected hidden>
+                    -- اختر الجنسية --
+                  </option>
+                  <option value="مصري">مصري</option>
+                  <option value="أخرى">أخرى</option>
+                </select>
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empReligion"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الديانة *</label
+                >
+                <select
+                  id="empReligion"
+                  class="form-control"
+                  style="width: 100%; margin: 0; text-align: right"
+                >
+                  <option value="" disabled selected hidden>-- اختر --</option>
+                  <option value="مسلم">مسلم</option>
+                  <option value="مسيحي">مسيحي</option>
+                </select>
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empBirthDate"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >تاريخ الميلاد *</label
+                >
+                <input
+                  type="date"
+                  id="empBirthDate"
+                  class="form-control flatpickr-date"
+                  style="width: 100%; margin: 0; text-align: right"
+                  placeholder="اختر التاريخ..."
+                />
+              </div>
             </div>
             <div class="date-row" style="gap: 10px; margin-bottom: 10px">
-              <input
-                type="text"
-                id="empAddress"
-                class="form-control"
-                placeholder="العنوان"
-                style="flex: 2"
-              />
-              <input
-                type="text"
-                id="empPhone"
-                class="form-control"
-                placeholder="رقم الهاتف"
-                style="flex: 1"
-              />
-              <input
-                type="email"
-                id="empEmail"
-                class="form-control"
-                placeholder="البريد الإلكتروني"
-                style="flex: 1"
-              />
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empPhone"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >رقم الهاتف *</label
+                >
+                <input
+                  type="text"
+                  id="empPhone"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                  maxlength="11"
+                  oninput="
+                    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11)
+                  "
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empEmail"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >البريد الإلكتروني *</label
+                >
+                <input
+                  type="email"
+                  id="empEmail"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
             </div>
             <div class="date-row" style="gap: 10px; margin-bottom: 10px">
-              <select id="empRole" class="form-control" style="flex: 1">
-                <option value="Teacher">صلاحية: مستخدم عادي</option>
-                <option value="Admin">صلاحية: مدير (Admin)</option>
-              </select>
-              <select id="empStatus" class="form-control" style="flex: 1">
-                <option value="نشط">الحالة: نشط</option>
-                <option value="موقوف">الحالة: موقوف</option>
-              </select>
-              <select
-                id="empEmployeeType"
-                class="form-control"
-                style="flex: 1"
-                onchange="toggleTeacherFields()"
-              >
-                <option value="">-- اختر نوع الموظف --</option>
-                <option value="معلم">معلم</option>
-                <option value="إداري">إداري</option>
-                <option value="عامل">عامل</option>
-                <option value="أخرى">أخرى</option>
-              </select>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empRole"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الصلاحية *</label
+                >
+                <select
+                  id="empRole"
+                  class="form-control"
+                  style="width: 100%; margin: 0; text-align: right"
+                >
+                  <option value="" disabled selected hidden>
+                    -- الصلاحية --
+                  </option>
+                  <option value="Teacher">مستخدم عادي</option>
+                  <option value="Admin">مدير (Admin)</option>
+                </select>
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empStatus"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الحالة *</label
+                >
+                <select
+                  id="empStatus"
+                  class="form-control"
+                  style="width: 100%; margin: 0; text-align: right"
+                >
+                  <option value="" disabled selected hidden>
+                    -- الحالة --
+                  </option>
+                  <option value="نشط">نشط</option>
+                  <option value="موقوف">موقوف</option>
+                </select>
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empEmployeeType"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >نوع الموظف *</label
+                >
+                <select
+                  id="empEmployeeType"
+                  class="form-control"
+                  style="width: 100%; margin: 0; text-align: right"
+                  onchange="toggleTeacherFields()"
+                >
+                  <option value="" disabled selected hidden>
+                    -- نوع الموظف --
+                  </option>
+                  <option value="معلم">معلم</option>
+                  <option value="إداري">إداري</option>
+                  <option value="عامل">عامل</option>
+                  <option value="أخرى">أخرى</option>
+                </select>
+              </div>
             </div>
           </div>
 
           <div class="dynamic-area" style="margin-top: 15px">
             <h4>البيانات الوظيفية والمكانية</h4>
             <div class="date-row" style="gap: 10px; margin-bottom: 10px">
-              <input
-                type="text"
-                id="empGov"
-                class="form-control"
-                placeholder="المحافظة"
-                style="flex: 1"
-              />
-              <input
-                type="text"
-                id="empDir"
-                class="form-control"
-                placeholder="المديرية التعليمية"
-                style="flex: 1"
-              />
-              <input
-                type="text"
-                id="empAdmin"
-                class="form-control"
-                placeholder="الإدارة التعليمية"
-                style="flex: 1"
-              />
-              <input
-                type="text"
-                id="empSchool"
-                class="form-control"
-                placeholder="المدرسة"
-                style="flex: 1"
-              />
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empGov"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >المحافظة</label
+                >
+                <select
+                  id="empGov"
+                  class="form-control"
+                  style="width: 100%; margin: 0; text-align: right"
+                >
+                  <option value="" disabled selected hidden>
+                    -- المحافظة --
+                  </option>
+                  <option value="القاهرة">القاهرة</option>
+                  <option value="الإسكندرية">الإسكندرية</option>
+                  <option value="الجيزة">الجيزة</option>
+                  <option value="القليوبية">القليوبية</option>
+                  <option value="الدقهلية">الدقهلية</option>
+                  <option value="الشرقية">الشرقية</option>
+                  <option value="المنوفية">المنوفية</option>
+                  <option value="الغربية">الغربية</option>
+                  <option value="البحيرة">البحيرة</option>
+                  <option value="كفر الشيخ">كفر الشيخ</option>
+                  <option value="بورسعيد">بورسعيد</option>
+                  <option value="الإسماعيلية">الإسماعيلية</option>
+                  <option value="السويس">السويس</option>
+                  <option value="دمياط">دمياط</option>
+                  <option value="شمال سيناء">شمال سيناء</option>
+                  <option value="جنوب سيناء">جنوب سيناء</option>
+                  <option value="البحر الأحمر">البحر الأحمر</option>
+                  <option value="بني سويف">بني سويف</option>
+                  <option value="الفيوم">الفيوم</option>
+                  <option value="المنيا">المنيا</option>
+                  <option value="أسيوط">أسيوط</option>
+                  <option value="سوهاج">سوهاج</option>
+                  <option value="قنا">قنا</option>
+                  <option value="الأقصر">الأقصر</option>
+                  <option value="أسوان">أسوان</option>
+                  <option value="مطروح">مطروح</option>
+                  <option value="الوادي الجديد">الوادي الجديد</option>
+                </select>
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empDir"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >المديرية التعليمية</label
+                >
+                <input
+                  type="text"
+                  id="empDir"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empAdmin"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الإدارة التعليمية</label
+                >
+                <input
+                  type="text"
+                  id="empAdmin"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empSchool"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >المدرسة</label
+                >
+                <input
+                  type="text"
+                  id="empSchool"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
             </div>
             <div class="date-row" style="gap: 10px; margin-bottom: 10px">
-              <input
-                type="text"
-                id="empStage"
-                class="form-control"
-                placeholder="المرحلة التعليمية"
-                style="flex: 1"
-              />
-              <input
-                type="text"
-                id="empEduType"
-                class="form-control"
-                placeholder="نوع التعليم"
-                style="flex: 1"
-              />
-              <input
-                type="text"
-                id="empYear"
-                class="form-control"
-                placeholder="العام الدراسي"
-                style="flex: 1"
-              />
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empStage"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >المرحلة التعليمية</label
+                >
+                <input
+                  type="text"
+                  id="empStage"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empEduType"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >نوع التعليم</label
+                >
+                <input
+                  type="text"
+                  id="empEduType"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empYear"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >العام الدراسي</label
+                >
+                <input
+                  type="text"
+                  id="empYear"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
             </div>
             <div class="date-row" style="gap: 10px; margin-bottom: 10px">
-              <input
-                type="text"
-                id="empJobGrade"
-                class="form-control"
-                placeholder="الدرجة الوظيفية"
-                style="flex: 1"
-              />
-              <input
-                type="text"
-                id="empJobLevel"
-                class="form-control"
-                placeholder="المستوى الوظيفي"
-                style="flex: 1"
-              />
-              <input
-                type="text"
-                id="empJobStatus"
-                class="form-control"
-                placeholder="الحالة الوظيفية"
-                style="flex: 1"
-              />
-              <input
-                type="date"
-                id="empHiringDate"
-                lang="en-GB"
-                class="form-control"
-                placeholder="تاريخ التعيين"
-                style="flex: 1"
-              />
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empJobGrade"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الدرجة الوظيفية</label
+                >
+                <input
+                  type="text"
+                  id="empJobGrade"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empJobLevel"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >المستوى الوظيفي</label
+                >
+                <input
+                  type="text"
+                  id="empJobLevel"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empJobStatus"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الحالة الوظيفية</label
+                >
+                <input
+                  type="text"
+                  id="empJobStatus"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empHiringDate"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >تاريخ التعيين</label
+                >
+                <input
+                  type="date"
+                  id="empHiringDate"
+                  class="form-control flatpickr-date"
+                  style="width: 100%; margin: 0; text-align: right"
+                  placeholder="اختر التاريخ..."
+                />
+              </div>
             </div>
             <div class="date-row" style="gap: 10px; margin-bottom: 10px">
-              <input
-                type="time"
-                id="empStartTime"
-                class="form-control"
-                title="وقت الحضور الرسمي"
-                style="flex: 1"
-              />
-              <input
-                type="number"
-                id="empMaxCasual"
-                class="form-control"
-                placeholder="رصيد اعتيادي (مثال: 21)"
-                style="flex: 1"
-              />
-              <input
-                type="number"
-                id="empTotalWorkDays"
-                class="form-control"
-                placeholder="أيام العمل الكلية"
-                style="flex: 1"
-              />
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empStartTime"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >وقت الحضور الرسمي</label
+                >
+                <input
+                  type="time"
+                  id="empStartTime"
+                  class="form-control"
+                  title="وقت الحضور الرسمي"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empMaxCasual"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >رصيد اعتيادي (مثال: 21)</label
+                >
+                <input
+                  type="number"
+                  id="empMaxCasual"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empTotalWorkDays"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >أيام العمل الكلية</label
+                >
+                <input
+                  type="number"
+                  id="empTotalWorkDays"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
             </div>
           </div>
 
@@ -2124,89 +2627,192 @@
           >
             <h4>بيانات المعلم</h4>
             <div class="date-row" style="gap: 10px; margin-bottom: 10px">
-              <input
-                type="text"
-                id="empSpec"
-                class="form-control"
-                placeholder="المادة / التخصص"
-                style="flex: 1"
-              />
-              <input
-                type="text"
-                id="empGrades"
-                class="form-control"
-                placeholder="الصفوف التي يدرسها"
-                style="flex: 1"
-              />
-              <input
-                type="text"
-                id="empClasses"
-                class="form-control"
-                placeholder="الفصول التي يدرسها"
-                style="flex: 1"
-              />
-              <input
-                type="text"
-                id="empActivity"
-                class="form-control"
-                placeholder="النشاط المسند"
-                style="flex: 1"
-              />
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empSpec"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >المادة / التخصص</label
+                >
+                <input
+                  type="text"
+                  id="empSpec"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empGrades"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الصفوف التي يدرسها</label
+                >
+                <input
+                  type="text"
+                  id="empGrades"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empClasses"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الفصول التي يدرسها</label
+                >
+                <input
+                  type="text"
+                  id="empClasses"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empActivity"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >النشاط المسند</label
+                >
+                <input
+                  type="text"
+                  id="empActivity"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
             </div>
           </div>
 
           <div class="dynamic-area" style="margin-top: 15px">
             <h4>المؤهلات</h4>
             <div class="date-row" style="gap: 10px; margin-bottom: 10px">
-              <input
-                type="text"
-                id="empQualType"
-                class="form-control"
-                placeholder="نوع المؤهل"
-                style="flex: 1"
-              />
-              <input
-                type="text"
-                id="empQualName"
-                class="form-control"
-                placeholder="اسم المؤهل"
-                style="flex: 2"
-              />
-              <input
-                type="text"
-                id="empQualEntity"
-                class="form-control"
-                placeholder="جهة الحصول عليه"
-                style="flex: 2"
-              />
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empQualType"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >نوع المؤهل</label
+                >
+                <input
+                  type="text"
+                  id="empQualType"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 2; text-align: right">
+                <label
+                  for="empQualName"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >اسم المؤهل</label
+                >
+                <input
+                  type="text"
+                  id="empQualName"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 2; text-align: right">
+                <label
+                  for="empQualEntity"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >جهة الحصول عليه</label
+                >
+                <input
+                  type="text"
+                  id="empQualEntity"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
             </div>
             <div class="date-row" style="gap: 10px; margin-bottom: 10px">
-              <input
-                type="text"
-                id="empQualGrade"
-                class="form-control"
-                placeholder="التقدير"
-                style="flex: 1"
-              />
-              <input
-                type="date"
-                id="empQualDate"
-                lang="en-GB"
-                class="form-control"
-                placeholder="تاريخ المؤهل"
-                style="flex: 1"
-              />
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empQualGrade"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >التقدير</label
+                >
+                <input
+                  type="text"
+                  id="empQualGrade"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  for="empQualDate"
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >تاريخ المؤهل</label
+                >
+                <input
+                  type="date"
+                  id="empQualDate"
+                  class="form-control flatpickr-date"
+                  style="width: 100%; margin: 0; text-align: right"
+                  placeholder="اختر التاريخ..."
+                />
+              </div>
             </div>
           </div>
 
           <div class="dynamic-area" style="margin-top: 15px">
             <h4>ملاحظات</h4>
-            <textarea
-              id="empNotes"
-              class="form-control"
-              rows="2"
-              placeholder="ملاحظات أخرى..."
-            ></textarea>
+            <textarea id="empNotes" class="form-control" rows="2"></textarea>
           </div>
 
           <div style="display: flex; gap: 10px; margin-top: 20px">
@@ -2248,19 +2854,53 @@
 
         <div class="action-card" style="display: block; text-align: right">
           <h3>📢 إرسال رسالة للمعلمين</h3>
-          <select
-            id="msgTargetSelect"
-            class="form-control"
-            style="max-width: 100%"
+          <div class="dual-search" style="margin-bottom: 10px">
+            <div class="search-container">
+              <input
+                type="text"
+                id="msgSearchInput"
+                class="form-control"
+                placeholder="ابحث باسم المعلم أو الكود..."
+                oninput="debounceLiveSearchMsg()"
+                onfocus="this.select()"
+                onclick="this.select()"
+                autocomplete="off"
+                style="margin-bottom: 0"
+              />
+              <div
+                id="msgSearchResults"
+                class="autocomplete-items"
+                style="display: none"
+              ></div>
+            </div>
+            <select
+              id="msgTargetSelect"
+              class="form-control"
+              onchange="selectMsgTeacherFromDropdown()"
+            >
+              <option value="" disabled>-- أو اختر من القائمة --</option>
+              <option
+                value="الكل"
+                style="font-weight: bold; color: #0056b3"
+                selected
+              >
+                جميع المعلمين
+              </option>
+            </select>
+          </div>
+          <div
+            id="msgSelectedTeachersContainer"
+            class="teacher-chips-container"
           >
-            <option value="الكل">كل المعلمين</option>
-          </select>
+            <span id="msgEmptyMsg" style="color: #999; font-size: 13px"
+              >إرسال للجميع (اختر معلم لتخصيص الإرسال)</span
+            >
+          </div>
           <textarea
             id="msgTextArea"
             class="form-control"
             style="max-width: 100%"
             rows="3"
-            placeholder="اكتب نص الرسالة أو التحذير هنا..."
           ></textarea>
           <button
             class="btn-success"
@@ -2929,7 +3569,6 @@
           id="reqReason"
           class="form-control"
           style="max-width: 100%; margin-bottom: 20px"
-          placeholder="سبب الطلب..."
         />
 
         <div style="display: flex; gap: 10px; justify-content: center">
@@ -3145,7 +3784,6 @@
           id="adminMessageInput"
           class="form-control"
           style="max-width: 100%; margin-bottom: 20px"
-          placeholder="رسالة للمعلم (اختياري)..."
         />
 
         <div
@@ -3338,7 +3976,6 @@
           "empNationality",
           "empReligion",
           "empBirthDate",
-          "empAddress",
           "empPhone",
           "empEmail",
           "empGov",
@@ -3366,10 +4003,23 @@
           "empQualDate",
           "empNotes",
         ];
-        fields.forEach((f) => (document.getElementById(f).value = ""));
-        document.getElementById("empRole").value = "Teacher";
-        document.getElementById("empStatus").value = "نشط";
-        document.getElementById("empEmployeeType").value = "معلم";
+        fields.forEach((f) => {
+          let el = document.getElementById(f);
+          el.value = "";
+          el.classList.remove("is-valid", "is-invalid");
+        });
+        document
+          .getElementById("empRole")
+          .classList.remove("is-valid", "is-invalid");
+        document
+          .getElementById("empStatus")
+          .classList.remove("is-valid", "is-invalid");
+        document
+          .getElementById("empEmployeeType")
+          .classList.remove("is-valid", "is-invalid");
+        document.getElementById("empRole").value = "";
+        document.getElementById("empStatus").value = "";
+        document.getElementById("empEmployeeType").value = "";
         document.getElementById("empCode").readOnly = false;
         toggleTeacherFields();
         window.scrollTo({
@@ -3396,7 +4046,7 @@
           .getElementById("saveEmployeeBtn")
           .querySelector(".btn-text").innerText = "تعديل الموظف";
         document.getElementById("empCode").value = emp.code;
-        document.getElementById("empCode").readOnly = true;
+        document.getElementById("empCode").readOnly = false;
         document.getElementById("empName").value = emp.name;
         document.getElementById("empNid").value = emp.nid;
         document.getElementById("empGender").value = emp.gender || "";
@@ -3408,7 +4058,6 @@
         } else {
           document.getElementById("empBirthDate").value = emp.birthDate || "";
         }
-        document.getElementById("empAddress").value = emp.address || "";
         document.getElementById("empPhone").value = emp.phone || "";
         document.getElementById("empEmail").value = emp.email || "";
         document.getElementById("empGov").value = emp.governorate || "";
@@ -3490,25 +4139,121 @@
             });
         });
       }
+
+      function validateEmpField(el) {
+        if (!el || el.disabled) return true;
+        let val = el.value.trim();
+        let isValid = true;
+
+        const basicFields = [
+          "empCode",
+          "empName",
+          "empNid",
+          "empGender",
+          "empNationality",
+          "empReligion",
+          "empBirthDate",
+          "empPhone",
+          "empEmail",
+          "empRole",
+          "empStatus",
+          "empEmployeeType",
+        ];
+
+        // Not a basic field -> optional
+        if (!basicFields.includes(el.id)) {
+          if (val === "") {
+            el.classList.remove("is-invalid", "is-valid");
+            return true;
+          }
+          isValid = true; // Any value is valid for optional simple text fields
+        } else {
+          // It is a basic field
+          if (el.tagName === "SELECT") {
+            isValid = val !== "";
+          } else if (el.id === "empNid") {
+            isValid = /^\d{14}$/.test(val);
+          } else if (el.id === "empPhone") {
+            isValid = /^01\d{9}$/.test(val);
+          } else if (el.id === "empEmail") {
+            if (val === "")
+              isValid = true; // Email can be optional even if basic
+            else isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+          } else {
+            isValid = val !== "";
+          }
+        }
+
+        if (isValid) {
+          el.classList.remove("is-invalid");
+          el.classList.add("is-valid");
+        } else {
+          el.classList.remove("is-valid");
+          el.classList.add("is-invalid");
+        }
+        return isValid;
+      }
+
+      function validateAllEmpFields() {
+        const panel = document.getElementById("empFormPanel");
+        const inputs = panel.querySelectorAll("input, select");
+        let allValid = true;
+        let firstInvalid = null;
+
+        inputs.forEach((el) => {
+          if (el.id === "empNotes" || el.id.includes("Search")) return;
+          if (
+            el.parentElement.style.display === "none" ||
+            el.closest(".date-row")?.style.display === "none"
+          )
+            return;
+
+          let isValid = validateEmpField(el);
+          if (!isValid) {
+            allValid = false;
+            if (!firstInvalid) firstInvalid = el;
+          }
+        });
+
+        if (!allValid && firstInvalid) {
+          firstInvalid.focus();
+          showMsg(
+            "يرجى إكمال الحقول الإلزامية وتصحيح الأخطاء المحددة باللون الأحمر!",
+            true,
+          );
+        }
+
+        return allValid;
+      }
+
+      function attachEmpValidationListeners() {
+        const panel = document.getElementById("empFormPanel");
+        const inputs = panel.querySelectorAll("input, select");
+        inputs.forEach((el) => {
+          if (el.id === "empNotes" || el.id.includes("Search")) return;
+          el.addEventListener("input", function () {
+            validateEmpField(this);
+          });
+          el.addEventListener("change", function () {
+            validateEmpField(this);
+          });
+        });
+      }
+
+      document.addEventListener(
+        "DOMContentLoaded",
+        attachEmpValidationListeners,
+      );
+
       function submitEmployeeForm() {
         const auth = getAuth();
         if (!auth) return;
+
+        if (!validateAllEmpFields()) return;
+
         const code = document.getElementById("empCode").value;
         const name = document.getElementById("empName").value;
         const nid = document.getElementById("empNid").value;
-        if (!code || !name || !nid) {
-          showMsg("الكود والاسم والرقم القومي حقول إلزامية!", true);
-          return;
-        }
-        if (nid.length !== 14) {
-          showMsg("الرقم القومي يجب أن يكون 14 رقماً!", true);
-          return;
-        }
-        const emailVal = document.getElementById("empEmail").value;
-        if (emailVal && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
-          showMsg("صيغة البريد الإلكتروني غير صحيحة", true);
-          return;
-        }
         const btn = document.getElementById("saveEmployeeBtn");
         btn.disabled = true;
         btn.querySelector(".btn-text").innerText = "جاري الحفظ...";
@@ -3521,7 +4266,7 @@
           nationality: document.getElementById("empNationality").value,
           religion: document.getElementById("empReligion").value,
           birthDate: document.getElementById("empBirthDate").value,
-          address: document.getElementById("empAddress").value,
+          address: "",
           phone: document.getElementById("empPhone").value,
           email: document.getElementById("empEmail").value,
           role: document.getElementById("empRole").value,
@@ -3555,11 +4300,15 @@
         const action = currentEditingEmployeeCode
           ? "editEmployee"
           : "addEmployee";
-        apiPost({
+        const payload = {
           action: action,
           token: auth.token,
           emp: empData,
-        })
+        };
+        if (currentEditingEmployeeCode) {
+          payload.oldCode = currentEditingEmployeeCode;
+        }
+        apiPost(payload)
           .then((data) => {
             btn.disabled = false;
             btn.querySelector(".btn-text").innerText =
@@ -3603,6 +4352,8 @@
       ];
       const SUCCESS_BADGE_TYPES = ["اعتيادي", "مرضي", "مقبول"];
       const AppState = {
+        historySelectedTeachers: [],
+        msgSelectedTeachers: [],
         auth: null,
         teachers: [],
         selectedTeachers: [],
@@ -4186,10 +4937,12 @@
         const select2 = document.getElementById("historyTeacherSelect");
         const select3 = document.getElementById("msgTargetSelect");
         select1.innerHTML =
-          '<option value="">-- أو اختر من القائمة --</option>';
-        select2.innerHTML = '<option value="">جميع المعلمين</option>';
+          '<option value="" disabled selected>-- أو اختر من القائمة --</option>';
+        select2.innerHTML =
+          '<option value="" disabled>-- أو اختر من القائمة --</option><option value="الكل" style="font-weight: bold; color: #0056b3;" selected>جميع المعلمين</option>';
         if (select3)
-          select3.innerHTML = '<option value="الكل">كل المعلمين</option>';
+          select3.innerHTML =
+            '<option value="" disabled>-- أو اختر من القائمة --</option><option value="الكل" style="font-weight: bold; color: #0056b3;" selected>جميع المعلمين</option>';
         const frag1 = document.createDocumentFragment();
         const frag2 = document.createDocumentFragment();
         const frag3 = select3 ? document.createDocumentFragment() : null;
@@ -4212,6 +4965,73 @@
         select1.appendChild(frag1);
         select2.appendChild(frag2);
         if (select3) select3.appendChild(frag3);
+      }
+      function setupTeacherLiveSearch(inputId, resultsId, onSelectCallback) {
+        const input = document.getElementById(inputId);
+        const resultsContainer = document.getElementById(resultsId);
+
+        clearTimeout(AppState.liveSearchTimeout);
+        AppState.liveSearchTimeout = setTimeout(() => {
+          const term = input.value.trim().toLowerCase();
+          resultsContainer.innerHTML = "";
+          AppState.searchFocus = -1;
+
+          if (term.length === 0) {
+            resultsContainer.style.display = "none";
+            return;
+          }
+          const normalizedTerm = normalizeArabic(term);
+          const filtered = AppState.teachers.filter(
+            (t) =>
+              normalizeArabic(t.name.toLowerCase()).includes(normalizedTerm) ||
+              String(t.code).includes(term),
+          );
+          if (filtered.length === 0) {
+            resultsContainer.innerHTML =
+              "<div style='padding:10px; color:#888;'>لا توجد نتائج</div>";
+            resultsContainer.style.display = "block";
+            return;
+          }
+          const fragment = document.createDocumentFragment();
+          filtered.forEach((t) => {
+            let item = document.createElement("div");
+            let eName = escHtml(t.name);
+            let eCode = escHtml(t.code);
+            item.innerHTML = `<strong>${eName}</strong> <span style="color:#888; font-size:13px;">(كود: ${eCode})</span>`;
+            item.onclick = function () {
+              resultsContainer.style.display = "none";
+              input.value = "";
+              onSelectCallback(t.code);
+            };
+            fragment.appendChild(item);
+          });
+          resultsContainer.appendChild(fragment);
+          resultsContainer.style.display = "block";
+        }, 200);
+
+        if (!input.dataset.listenerAdded) {
+          input.addEventListener("keydown", function (e) {
+            if (resultsContainer.style.display === "none") return;
+            let items = resultsContainer.getElementsByTagName("div");
+            if (!items || items.length === 0) return;
+
+            if (e.key === "ArrowDown") {
+              AppState.searchFocus++;
+              addActiveSearchItem(items);
+            } else if (e.key === "ArrowUp") {
+              AppState.searchFocus--;
+              addActiveSearchItem(items);
+            } else if (e.key === "Enter") {
+              e.preventDefault();
+              if (AppState.searchFocus > -1) {
+                items[AppState.searchFocus].click();
+              } else if (items.length === 1) {
+                items[0].click();
+              }
+            }
+          });
+          input.dataset.listenerAdded = "true";
+        }
       }
       function debounceLiveSearch() {
         clearTimeout(AppState.liveSearchTimeout);
@@ -4995,6 +5815,142 @@
         AppState.historyPage++;
         fetchHistoryData(false, true);
       }
+
+      function debounceLiveSearchHistory() {
+        setupTeacherLiveSearch(
+          "historySearchInput",
+          "historySearchResults",
+          selectHistoryTeacherByCode,
+        );
+      }
+      function selectHistoryTeacherFromDropdown() {
+        const code = document.getElementById("historyTeacherSelect").value;
+        if (!code) return;
+        selectHistoryTeacherByCode(code);
+      }
+      function selectHistoryTeacherByCode(code) {
+        if (code === "الكل" || code === "") {
+          AppState.historySelectedTeachers = [];
+          renderHistorySelectedTeachers();
+          document.getElementById("historyTeacherSelect").value = "الكل";
+          return;
+        }
+        const teacher = AppState.teachers.find(
+          (t) => String(t.code) === String(code),
+        );
+        if (!teacher) return;
+        if (
+          !AppState.historySelectedTeachers.find(
+            (t) => String(t.code) === String(teacher.code),
+          )
+        ) {
+          AppState.historySelectedTeachers.push(teacher);
+          AppState.historySelectedTeachers.sort(
+            (a, b) => Number(a.code) - Number(b.code),
+          );
+        }
+        renderHistorySelectedTeachers();
+        document.getElementById("historyTeacherSelect").value = "";
+        document.getElementById("historySearchInput").value = "";
+      }
+      function renderHistorySelectedTeachers() {
+        const container = document.getElementById(
+          "historySelectedTeachersContainer",
+        );
+        container.innerHTML = "";
+        if (AppState.historySelectedTeachers.length === 0) {
+          container.innerHTML =
+            '<span id="historyEmptyMsg" style="color: #999; font-size: 13px; margin: auto;">الجميع محدد (اختر معلم لتخصيص البحث)</span>';
+          return;
+        }
+        AppState.historySelectedTeachers.forEach((t) => {
+          let chip = document.createElement("div");
+          chip.className = "teacher-chip";
+          chip.innerHTML = `
+            <span>${escHtml(t.name)} (${escHtml(t.code)})</span>
+            <span class="remove-btn" onclick="removeHistoryTeacher('${escHtml(t.code)}')">&times;</span>
+          `;
+          container.appendChild(chip);
+        });
+      }
+      function removeHistoryTeacher(code) {
+        AppState.historySelectedTeachers =
+          AppState.historySelectedTeachers.filter(
+            (t) => String(t.code) !== String(code),
+          );
+        renderHistorySelectedTeachers();
+        if (AppState.historySelectedTeachers.length === 0) {
+          document.getElementById("historyTeacherSelect").value = "الكل";
+        }
+      }
+
+      function debounceLiveSearchMsg() {
+        setupTeacherLiveSearch(
+          "msgSearchInput",
+          "msgSearchResults",
+          selectMsgTeacherByCode,
+        );
+      }
+      function selectMsgTeacherFromDropdown() {
+        const code = document.getElementById("msgTargetSelect").value;
+        if (!code) return;
+        selectMsgTeacherByCode(code);
+      }
+      function selectMsgTeacherByCode(code) {
+        if (code === "الكل" || code === "") {
+          AppState.msgSelectedTeachers = [];
+          renderMsgSelectedTeachers();
+          document.getElementById("msgTargetSelect").value = "الكل";
+          return;
+        }
+        const teacher = AppState.teachers.find(
+          (t) => String(t.code) === String(code),
+        );
+        if (!teacher) return;
+        if (
+          !AppState.msgSelectedTeachers.find(
+            (t) => String(t.code) === String(teacher.code),
+          )
+        ) {
+          AppState.msgSelectedTeachers.push(teacher);
+          AppState.msgSelectedTeachers.sort(
+            (a, b) => Number(a.code) - Number(b.code),
+          );
+        }
+        renderMsgSelectedTeachers();
+        document.getElementById("msgTargetSelect").value = "";
+        document.getElementById("msgSearchInput").value = "";
+      }
+      function renderMsgSelectedTeachers() {
+        const container = document.getElementById(
+          "msgSelectedTeachersContainer",
+        );
+        container.innerHTML = "";
+        if (AppState.msgSelectedTeachers.length === 0) {
+          container.innerHTML =
+            '<span id="msgEmptyMsg" style="color: #999; font-size: 13px; margin: auto;">إرسال للجميع (اختر معلم لتخصيص الإرسال)</span>';
+          return;
+        }
+        AppState.msgSelectedTeachers.forEach((t) => {
+          let chip = document.createElement("div");
+          chip.className = "teacher-chip";
+          chip.innerHTML = `
+            <span>${escHtml(t.name)} (${escHtml(t.code)})</span>
+            <span class="remove-btn" onclick="removeMsgTeacher('${escHtml(t.code)}')">&times;</span>
+          `;
+          container.appendChild(chip);
+        });
+      }
+      function removeMsgTeacher(code) {
+        AppState.msgSelectedTeachers = AppState.msgSelectedTeachers.filter(
+          (t) => String(t.code) !== String(code),
+        );
+        renderMsgSelectedTeachers();
+        if (AppState.msgSelectedTeachers.length === 0) {
+          document.getElementById("msgTargetSelect").value = "الكل";
+        }
+      }
+
       function fetchHistoryData(isSilentUpdate = false, append = false) {
         const auth = getAuth();
         if (!auth) return;
@@ -5786,6 +6742,22 @@
         container.style.display = "block";
         emptyMsg.style.display = "none";
       }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ar.js"></script>
+    <script>
+      flatpickr(".flatpickr-date", {
+        locale: "ar",
+        dateFormat: "Y-m-d",
+        disableMobile: "true",
+        allowInput: true,
+      });
+      flatpickr('input[type="date"]', {
+        locale: "ar",
+        dateFormat: "Y-m-d",
+        disableMobile: "true",
+        allowInput: true,
+      });
     </script>
   </body>
 </html>
