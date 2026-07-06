@@ -1021,6 +1021,13 @@
         color: #555 !important;
         font-weight: 700 !important;
       }
+      .flex-center-wrap {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        align-items: center;
+        justify-content: center;
+      }
     </style>
     <link
       rel="stylesheet"
@@ -1028,6 +1035,28 @@
     />
   </head>
   <body>
+    <div
+      id="globalLoader"
+      style="
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.9);
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 15px;
+      "
+    >
+      <div class="loader"></div>
+      <h3 id="globalLoaderText" style="color: #0056b3; margin: 0">
+        جاري تهيئة الحساب...
+      </h3>
+    </div>
     <div
       class="dot"
       style="
@@ -1083,7 +1112,7 @@
       "
     ></div>
 
-    <div class="container" id="loginContainer">
+    <div class="container" id="loginContainer" style="display: none">
       <div class="top-logos">
         <img src="logo_2.webp" alt="وزارة التربية والتعليم" />
         <img src="logo_1.webp" alt="شعار المدرسة" />
@@ -1559,17 +1588,7 @@
               هذا الشهر
             </button>
           </div>
-          <div
-            class="date-row"
-            style="
-              margin-top: 20px;
-              display: flex;
-              flex-wrap: wrap;
-              gap: 15px;
-              align-items: center;
-              justify-content: center;
-            "
-          >
+          <div class="date-row flex-center-wrap" style="margin-top: 20px">
             <div style="display: flex; align-items: center; gap: 5px">
               <label style="font-weight: bold; margin: 0">من:</label>
               <input
@@ -2051,6 +2070,7 @@
                   type="text"
                   id="empCode"
                   class="form-control"
+                  pattern="[a-zA-Z0-9]+"
                   style="width: 100%; margin: 0"
                 />
               </div>
@@ -2221,7 +2241,7 @@
                     display: block;
                     margin-bottom: 5px;
                   "
-                  >البريد الإلكتروني *</label
+                  >البريد الإلكتروني</label
                 >
                 <input
                   type="email"
@@ -3569,6 +3589,7 @@
           id="reqReason"
           class="form-control"
           style="max-width: 100%; margin-bottom: 20px"
+          placeholder="سبب أو عذر الإجازة / المأمورية"
         />
 
         <div style="display: flex; gap: 10px; justify-content: center">
@@ -3846,23 +3867,7 @@
     <script>
       let employeesStore = [];
       let currentEditingEmployeeCode = null;
-      function calculateDelay() {
-        const timeInput = document.getElementById("actionTimeInput").value;
-        const resultArea = document.getElementById("delayResultArea");
-        const delayInput = document.getElementById("manualDelayInput");
-        if (timeInput) {
-          const [h, m] = timeInput.split(":").map(Number);
-          const totalMins = h * 60 + m;
-          const startMins = 8 * 60 + 0;
-          if (totalMins > startMins) {
-            const delay = totalMins - startMins;
-            delayInput.value = delay;
-            resultArea.style.display = "block";
-          } else {
-            resultArea.style.display = "none";
-          }
-        }
-      }
+
       function toggleTeacherFields() {
         const type = document.getElementById("empEmployeeType").value;
         const area = document.getElementById("teacherFieldsArea");
@@ -3951,10 +3956,16 @@
                   <td>${roleBadge}</td>
                   <td>${statusBadge}</td>
                   <td style="white-space:nowrap;">
-                    <button class="btn-secondary" style="padding:5px 12px; font-size:13px; margin-bottom:3px; display:inline-block;" data-code="${escHtml(emp.code)}" onclick="editEmployee(this.getAttribute('data-code'))">✏️ تعديل</button>
-                    <button class="btn-logout" style="padding:5px 12px; font-size:13px; margin:0; display:inline-block;" data-code="${escHtml(emp.code)}" onclick="deleteEmployeeAction(this.getAttribute('data-code'))">🗑️ حذف</button>
+                    <button class="btn-secondary edit-emp-btn" style="padding:5px 12px; font-size:13px; margin-bottom:3px; display:inline-block;">✏️ تعديل</button>
+                    <button class="btn-logout del-emp-btn" style="padding:5px 12px; font-size:13px; margin:0; display:inline-block;">🗑️ حذف</button>
                   </td>
                 `;
+          tr.querySelector(".edit-emp-btn").addEventListener("click", () =>
+            editEmployee(emp.code),
+          );
+          tr.querySelector(".del-emp-btn").addEventListener("click", () =>
+            deleteEmployeeAction(emp.code),
+          );
           tbody.appendChild(tr);
         });
       }
@@ -3962,6 +3973,10 @@
         currentEditingEmployeeCode = null;
         document.getElementById("employeeModalTitle").innerText =
           "إضافة موظف جديد";
+        document.getElementById("empCode").readOnly = false;
+        const resetBtn = document.getElementById("resetPasswordBtn");
+        if (resetBtn) resetBtn.remove();
+        window.resetPasswordRequested = false;
         document
           .getElementById("saveEmployeeBtn")
           .querySelector(".btn-text").innerText = "إضافة الموظف";
@@ -4046,7 +4061,27 @@
           .getElementById("saveEmployeeBtn")
           .querySelector(".btn-text").innerText = "تعديل الموظف";
         document.getElementById("empCode").value = emp.code;
-        document.getElementById("empCode").readOnly = false;
+        document.getElementById("empCode").readOnly = true;
+        if (!document.getElementById("resetPasswordBtn")) {
+          const resetBtn = document.createElement("button");
+          resetBtn.id = "resetPasswordBtn";
+          resetBtn.type = "button";
+          resetBtn.className = "btn-secondary";
+          resetBtn.style.marginTop = "10px";
+          resetBtn.innerHTML =
+            "<span class='btn-text'>إعادة تعيين كلمة المرور</span>";
+          resetBtn.addEventListener("click", () => {
+            customConfirm(
+              "هل أنت متأكد من إعادة تعيين كلمة المرور إلى الرقم القومي؟",
+              () => {
+                window.resetPasswordRequested = true;
+                showMsg("سيتم إعادة التعيين عند حفظ التعديلات.", false);
+              },
+            );
+          });
+          document.getElementById("empNid").parentNode.appendChild(resetBtn);
+        }
+        window.resetPasswordRequested = false;
         document.getElementById("empName").value = emp.name;
         document.getElementById("empNid").value = emp.nid;
         document.getElementById("empGender").value = emp.gender || "";
@@ -4307,6 +4342,7 @@
         };
         if (currentEditingEmployeeCode) {
           payload.oldCode = currentEditingEmployeeCode;
+          payload.resetPassword = window.resetPasswordRequested || false;
         }
         apiPost(payload)
           .then((data) => {
@@ -4384,6 +4420,10 @@
         if (document.hidden) {
           document.body.classList.add("animations-paused");
           AppState.hiddenAt = Date.now();
+          if (AppState.messagePollingInterval) {
+            clearInterval(AppState.messagePollingInterval);
+            AppState.messagePollingInterval = null;
+          }
         } else {
           document.body.classList.remove("animations-paused");
           if (
@@ -4392,6 +4432,18 @@
           ) {
             if (sessionStorage.getItem("alkhateeb_hr_auth")) {
               silentServerLogout();
+            }
+          } else {
+            const authData = sessionStorage.getItem("alkhateeb_hr_auth");
+            if (authData) {
+              const auth = JSON.parse(authData);
+              if (auth.role === "Admin" && !AppState.messagePollingInterval) {
+                checkPendingMessages(auth.token);
+                AppState.messagePollingInterval = setInterval(
+                  () => checkPendingMessages(auth.token),
+                  300000,
+                );
+              }
             }
           }
           AppState.hiddenAt = null;
@@ -4520,7 +4572,7 @@
           ) {
             showMsg(result.message, true);
             setTimeout(() => {
-              logout();
+              executeLogoutLocal();
             }, 1500);
           }
           return result;
@@ -4609,6 +4661,10 @@
         return JSON.parse(authData);
       }
       function executeLogoutLocal() {
+        if (AppState.messagePollingInterval) {
+          clearInterval(AppState.messagePollingInterval);
+          AppState.messagePollingInterval = null;
+        }
         sessionStorage.removeItem("alkhateeb_hr_auth");
         AppState.auth = null;
         sessionStorage.removeItem("alkhateeb_teachers");
@@ -4686,9 +4742,7 @@
             document.getElementById("adminContainer").style.display = "block";
             document.getElementById("adminNameDisplay").innerText =
               "أهلاً بك: " + auth.name;
-            if (skipFetch === true) {
-              checkPendingMessages(auth.token);
-            }
+            checkPendingMessages(auth.token);
             const cachedTeachers = sessionStorage.getItem("alkhateeb_teachers");
             if (cachedTeachers) {
               AppState.teachers = JSON.parse(cachedTeachers);
@@ -4700,9 +4754,9 @@
             if (!skipFetch) fetchTeachersList(auth.token, false);
           } else {
             if (!skipFetch) {
-              document.getElementById("loginContainer").style.display = "block";
-              document.getElementById("loginBtn").style.display = "none";
-              document.getElementById("loginLoader").style.display = "block";
+              document.getElementById("globalLoaderText").innerText =
+                "جاري تهيئة الحساب...";
+              document.getElementById("globalLoader").style.display = "flex";
               fetchTeacherStats(auth.token, true);
             } else {
               document.getElementById("loginContainer").style.display = "none";
@@ -4900,7 +4954,9 @@
               );
               populateDropdowns();
               if (fromLogin) {
-                document.getElementById("loginLoader").style.display = "none";
+                document.getElementById("globalLoader").style.display = "none";
+                document.getElementById("loginContainer").style.display =
+                  "none";
                 const lBtn = document.getElementById("loginBtn");
                 lBtn.style.display = "block";
                 lBtn.disabled = false;
@@ -5167,10 +5223,16 @@
         AppState.selectedTeachers.forEach((teacher) => {
           let chip = document.createElement("div");
           chip.className = "teacher-chip";
-          chip.innerHTML = `
-                  <span>${escHtml(teacher.name)} (${escHtml(teacher.code)})</span>
-                  <span class="remove-btn" onclick="removeSelectedTeacher('${teacher.code}')">&times;</span>
-                `;
+          let textSpan = document.createElement("span");
+          textSpan.textContent = teacher.name + " (" + teacher.code + ")";
+          let removeBtn = document.createElement("span");
+          removeBtn.className = "remove-btn";
+          removeBtn.innerHTML = "&times;";
+          removeBtn.addEventListener("click", () =>
+            removeSelectedTeacher(teacher.code),
+          );
+          chip.appendChild(textSpan);
+          chip.appendChild(removeBtn);
           container.appendChild(chip);
         });
       }
@@ -5475,8 +5537,6 @@
                   document.getElementById("adminSearchInput").value = "";
                   document.getElementById("adminTeacherSelect").value = "";
                   AppState.lastTodayFetch = 0;
-                  AppState.lastHistoryFetch = 0;
-                  AppState.lastStatsFetch = {};
                 } else {
                   showMsg(data.message, true);
                 }
@@ -5489,22 +5549,6 @@
               });
           },
         );
-      }
-
-      function printHistoryReport() {
-        const start = document.getElementById("historyStartDate").value || "-";
-        const end = document.getElementById("historyEndDate").value || "-";
-        const now = new Date();
-        const pad = (n) => String(n).padStart(2, "0");
-        const dateStr = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
-        const timeStr = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
-
-        document.getElementById("printReportHeader").innerHTML = `
-                <h2>مدرسة الشهيد محمود علي الخطيب - تقرير السجل الشامل</h2>
-                <p>الفترة من ${start} إلى ${end}</p>
-                <p>تاريخ الطباعة: ${dateStr} الساعة ${timeStr}</p>
-              `;
-        window.print();
       }
 
       function printHistoryReport() {
@@ -5866,10 +5910,16 @@
         AppState.historySelectedTeachers.forEach((t) => {
           let chip = document.createElement("div");
           chip.className = "teacher-chip";
-          chip.innerHTML = `
-            <span>${escHtml(t.name)} (${escHtml(t.code)})</span>
-            <span class="remove-btn" onclick="removeHistoryTeacher('${escHtml(t.code)}')">&times;</span>
-          `;
+          let textSpan = document.createElement("span");
+          textSpan.textContent = t.name + " (" + t.code + ")";
+          let removeBtn = document.createElement("span");
+          removeBtn.className = "remove-btn";
+          removeBtn.innerHTML = "&times;";
+          removeBtn.addEventListener("click", () =>
+            removeHistoryTeacher(t.code),
+          );
+          chip.appendChild(textSpan);
+          chip.appendChild(removeBtn);
           container.appendChild(chip);
         });
       }
@@ -5934,10 +5984,14 @@
         AppState.msgSelectedTeachers.forEach((t) => {
           let chip = document.createElement("div");
           chip.className = "teacher-chip";
-          chip.innerHTML = `
-            <span>${escHtml(t.name)} (${escHtml(t.code)})</span>
-            <span class="remove-btn" onclick="removeMsgTeacher('${escHtml(t.code)}')">&times;</span>
-          `;
+          let textSpan = document.createElement("span");
+          textSpan.textContent = t.name + " (" + t.code + ")";
+          let removeBtn = document.createElement("span");
+          removeBtn.className = "remove-btn";
+          removeBtn.innerHTML = "&times;";
+          removeBtn.addEventListener("click", () => removeMsgTeacher(t.code));
+          chip.appendChild(textSpan);
+          chip.appendChild(removeBtn);
           container.appendChild(chip);
         });
       }
@@ -5979,6 +6033,9 @@
         const selectAll = document.getElementById("selectAllHistory");
         const loadMoreBtn = document.getElementById("loadMoreHistoryContainer");
         const historyFiltersRow = document.getElementById("historyFiltersRow");
+        if (!append) {
+          AppState.historyPage = 1;
+        }
         if (!isSilentUpdate && !append) {
           loader.style.display = "block";
           dashboard.style.display = "none";
@@ -6042,6 +6099,9 @@
         const container = document.getElementById("historyTableContainer");
         const emptyMsg = document.getElementById("historyEmpty");
         const historyFiltersRow = document.getElementById("historyFiltersRow");
+        if (!append) {
+          AppState.historyPage = 1;
+        }
         if (!append) tbody.innerHTML = "";
         if (!history || history.length === 0) {
           if (!append) {
@@ -6231,7 +6291,9 @@
             loader.style.display = "none";
             if (data.status === "success") {
               if (fromLogin) {
-                document.getElementById("loginLoader").style.display = "none";
+                document.getElementById("globalLoader").style.display = "none";
+                document.getElementById("loginContainer").style.display =
+                  "none";
                 const lBtn = document.getElementById("loginBtn");
                 lBtn.style.display = "block";
                 lBtn.disabled = false;
@@ -6284,7 +6346,8 @@
           .catch((err) => {
             loader.style.display = "none";
             if (fromLogin) {
-              document.getElementById("loginLoader").style.display = "none";
+              document.getElementById("globalLoader").style.display = "none";
+              document.getElementById("loginContainer").style.display = "block";
               const lBtn = document.getElementById("loginBtn");
               lBtn.style.display = "block";
               lBtn.disabled = false;
@@ -6292,6 +6355,8 @@
               lBtn.querySelector(".btn-text").innerText = "دخول المنصة";
               document.getElementById("inputsWrapper").style.display = "block";
               showMsg("حدث خطأ في جلب البيانات.", true);
+            } else {
+              showMsg("خطأ في الشبكة أو الاتصال", "error");
             }
           });
       }
@@ -6674,6 +6739,7 @@
           })
           .catch((err) => {
             if (loader) loader.style.display = "none";
+            showMsg("خطأ في الشبكة أو الاتصال", "error");
           });
       }
       function submitNewRequest() {
@@ -6746,16 +6812,10 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://npmcdn.com/flatpickr/dist/l10n/ar.js"></script>
     <script>
-      flatpickr(".flatpickr-date", {
+      flatpickr('.flatpickr-date, input[type="date"]', {
         locale: "ar",
         dateFormat: "Y-m-d",
-        disableMobile: "true",
-        allowInput: true,
-      });
-      flatpickr('input[type="date"]', {
-        locale: "ar",
-        dateFormat: "Y-m-d",
-        disableMobile: "true",
+        disableMobile: true,
         allowInput: true,
       });
     </script>
