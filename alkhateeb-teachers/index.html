@@ -1167,7 +1167,7 @@
           cursor: pointer;
           background: linear-gradient(135deg, #16a085 0%, #1abc9c 100%);
         "
-        onclick="openPublicRegistrationModal()"
+        onclick="showRegistrationPage()"
       >
         📝 تسجيل موظف جديد
       </button>
@@ -1235,15 +1235,6 @@
           "
         >
           <span class="btn-text">إدارة الموظفين</span>
-        </button>
-        <button
-          class="tab-btn"
-          onclick="
-            addRipple(event, this);
-            switchTab('tab-registration-requests', this);
-          "
-        >
-          <span class="btn-text">طلبات التسجيل</span>
         </button>
       </div>
 
@@ -1936,6 +1927,33 @@
                 عرض وتعديل وحذف بيانات الموظفين
               </p>
             </div>
+            <div
+              class="dash-card"
+              onclick="showRegistrationRequestsList()"
+              style="
+                cursor: pointer;
+                padding: 30px 20px;
+                border: 2px solid #ffeeba;
+                background: linear-gradient(135deg, #fffdf4 0%, #fffbf0 100%);
+              "
+            >
+              <div style="font-size: 48px; margin-bottom: 15px; line-height: 1">
+                📨
+              </div>
+              <h4
+                style="
+                  color: #856404;
+                  font-size: 18px;
+                  font-weight: 800;
+                  margin: 0 0 8px 0;
+                "
+              >
+                طلبات التسجيل الجديدة
+              </h4>
+              <p style="color: #6c757d; font-size: 13px; margin: 0">
+                مراجعة وقبول الموظفين الجدد
+              </p>
+            </div>
           </div>
         </div>
 
@@ -2027,6 +2045,51 @@
               </thead>
               <tbody></tbody>
             </table>
+          </div>
+        </div>
+
+        <div
+          id="regRequestsListPanel"
+          style="display: none; animation: fadeInPage 0.4s ease; width: 100%"
+        >
+          <div class="header-actions">
+            <button
+              class="btn-secondary"
+              onclick="hideRegistrationRequestsList()"
+            >
+              ← رجوع للوحة التحكم
+            </button>
+            <h2 style="margin: 0; font-size: 20px">📨 طلبات التسجيل الجديدة</h2>
+            <div style="width: 120px"></div>
+          </div>
+          <div
+            class="table-responsive"
+            id="regRequestsTableContainer"
+            style="display: block"
+          >
+            <table id="registrationRequestsTable">
+              <thead>
+                <tr>
+                  <th>النوع</th>
+                  <th>الاسم</th>
+                  <th>الوظيفة المتقدم لها</th>
+                  <th>تاريخ الطلب</th>
+                  <th>إجراءات</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+            <div
+              id="regRequestsEmptyMsg"
+              style="
+                text-align: center;
+                color: #666;
+                padding: 20px;
+                display: none;
+              "
+            >
+              لا توجد طلبات تسجيل جديدة.
+            </div>
           </div>
         </div>
 
@@ -3892,265 +3955,481 @@
 
     <!-- Public Registration Modal -->
     <!-- Public Registration Modal -->
-    <div id="publicRegistrationModal" class="modal">
-      <div class="modal-content" style="max-width: 900px; padding: 0">
-        <!-- Header -->
-        <div
-          class="panel-header"
+
+    <div id="registrationContainer" class="container" style="display: none">
+      <div
+        style="
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          border-bottom: 2px solid #eee;
+          padding-bottom: 12px;
+          margin-bottom: 20px;
+        "
+      >
+        <h2
           style="
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
-            color: white;
-            padding: 20px;
-            border-radius: 12px 12px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            margin: 0;
+            color: #0056b3;
+            font-size: 20px;
+            font-weight: 800;
+            border-bottom: none;
+            padding-bottom: 0;
           "
         >
-          <h2 style="margin: 0; font-size: 1.5rem">
-            <i class="fas fa-user-plus"></i> تسجيل موظف جديد
-          </h2>
-          <button
-            class="close-btn"
-            onclick="closePublicRegistrationModal()"
-            style="
-              background: none;
-              border: none;
-              color: white;
-              font-size: 1.5rem;
-              cursor: pointer;
-            "
-          >
-            &times;
-          </button>
-        </div>
+          تسجيل موظف جديد
+        </h2>
+        <button
+          class="btn-secondary"
+          onclick="hideRegistrationPage()"
+          style="width: auto; margin: 0; font-size: 13px"
+        >
+          ← رجوع لتسجيل الدخول
+        </button>
+      </div>
 
-        <div class="panel-body" style="padding: 20px">
-          <!-- القسم الأول: البيانات الأساسية -->
-          <div class="dynamic-area mb-4">
-            <h3 class="area-title">
-              <i class="fas fa-id-card"></i> البيانات الأساسية
-            </h3>
-            <div class="date-row">
-              <div class="form-group">
-                <label>الاسم الرباعي <span class="required">*</span></label>
-                <input type="text" id="pubRegName" class="form-control" />
-              </div>
-              <div class="form-group">
-                <label
-                  >الرقم القومي (14 رقم) <span class="required">*</span></label
-                >
-                <input
-                  type="text"
-                  id="pubRegNid"
-                  class="form-control"
-                  dir="ltr"
-                  maxlength="14"
-                />
-              </div>
-            </div>
-            <div class="date-row">
-              <div class="form-group">
-                <label>النوع</label>
-                <select id="pubRegGender" class="form-control">
-                  <option value="ذكر">ذكر</option>
-                  <option value="أنثى">أنثى</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>الجنسية</label>
-                <input
-                  type="text"
-                  id="pubRegNationality"
-                  class="form-control"
-                  value="مصري"
-                />
-              </div>
-              <div class="form-group">
-                <label>الديانة</label>
-                <select id="pubRegReligion" class="form-control">
-                  <option value="مسلم">مسلم</option>
-                  <option value="مسيحي">مسيحي</option>
-                  <option value="أخرى">أخرى</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>تاريخ الميلاد</label>
-                <input
-                  type="date"
-                  id="pubRegBirthDate"
-                  class="form-control flatpickr-date"
-                />
-              </div>
-            </div>
-          </div>
-
-          <!-- القسم الثاني: بيانات التواصل -->
-          <div class="dynamic-area mb-4">
-            <h3 class="area-title">
-              <i class="fas fa-phone-alt"></i> بيانات التواصل
-            </h3>
-            <div class="date-row">
-              <div class="form-group">
-                <label>رقم التليفون <span class="required">*</span></label>
-                <input
-                  type="text"
-                  id="pubRegPhone"
-                  class="form-control"
-                  dir="ltr"
-                />
-              </div>
-              <div class="form-group">
-                <label>البريد الإلكتروني</label>
-                <input
-                  type="email"
-                  id="pubRegEmail"
-                  class="form-control"
-                  dir="ltr"
-                  placeholder="example@domain.com"
-                />
-              </div>
-            </div>
-          </div>
-
-          <!-- القسم الثالث: البيانات الوظيفية والأكاديمية -->
-          <div class="dynamic-area mb-4">
-            <h3 class="area-title">
-              <i class="fas fa-briefcase"></i> البيانات الوظيفية
-            </h3>
-            <div class="date-row">
-              <div class="form-group">
-                <label>نوع الموظف</label>
-                <select
-                  id="pubRegEmployeeType"
-                  class="form-control"
-                  onchange="togglePublicTeacherFields()"
-                >
-                  <option value="معلم">معلم</option>
-                  <option value="إداري">إداري</option>
-                  <option value="عامل">عامل</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>المادة / التخصص</label>
-                <input
-                  type="text"
-                  id="pubRegSpecialization"
-                  class="form-control"
-                />
-              </div>
-            </div>
-
-            <div class="date-row">
-              <div class="form-group">
-                <label>الصفوف التي يدرسها</label>
-                <input
-                  type="text"
-                  id="pubRegTeachingGrades"
-                  class="form-control"
-                  placeholder="مثال: الأول، الثاني"
-                />
-              </div>
-              <div class="form-group">
-                <label>الفصول التي يدرسها</label>
-                <input
-                  type="text"
-                  id="pubRegTeachingClasses"
-                  class="form-control"
-                  placeholder="مثال: 1/1, 1/2"
-                />
-              </div>
-              <div class="form-group" style="display: none">
-                <label>النشاط المسند (لغير المعلمين)</label>
-                <input
-                  type="text"
-                  id="pubRegAssignedActivity"
-                  class="form-control"
-                />
-              </div>
-            </div>
-          </div>
-
-          <!-- القسم الرابع: المؤهل -->
-          <div class="dynamic-area mb-4">
-            <h3 class="area-title">
-              <i class="fas fa-graduation-cap"></i> بيانات المؤهل
-            </h3>
-            <div class="date-row">
-              <div class="form-group">
-                <label>نوع المؤهل</label>
-                <select id="pubRegQualificationType" class="form-control">
-                  <option value="عالي">عالي</option>
-                  <option value="فوق متوسط">فوق متوسط</option>
-                  <option value="متوسط">متوسط</option>
-                  <option value="بدون">بدون</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label>اسم المؤهل</label>
-                <input
-                  type="text"
-                  id="pubRegQualificationName"
-                  class="form-control"
-                />
-              </div>
-              <div class="form-group">
-                <label>جهة الحصول عليه</label>
-                <input
-                  type="text"
-                  id="pubRegQualificationEntity"
-                  class="form-control"
-                />
-              </div>
-            </div>
-            <div class="date-row">
-              <div class="form-group">
-                <label>التقدير</label>
-                <input
-                  type="text"
-                  id="pubRegQualificationGrade"
-                  class="form-control"
-                />
-              </div>
-              <div class="form-group">
-                <label>تاريخ المؤهل</label>
-                <input
-                  type="date"
-                  id="pubRegQualificationDate"
-                  class="form-control flatpickr-date"
-                />
-              </div>
-            </div>
-          </div>
-
-          <!-- القسم الخامس: الملاحظات -->
-          <div class="dynamic-area mb-4">
-            <h3 class="area-title">
-              <i class="fas fa-comment-dots"></i> الملاحظات
-            </h3>
-            <div class="form-group w-100">
-              <label>ملاحظات إضافية</label>
-              <textarea
-                id="pubRegNotes"
-                class="form-control"
-                rows="3"
-                placeholder="اكتب أي تفاصيل إضافية أو ملاحظات هنا..."
-              ></textarea>
-            </div>
-          </div>
-
-          <!-- Actions -->
-          <div class="form-actions" style="margin-top: 20px; text-align: left">
-            <button
-              id="pubRegSubmitBtn"
-              class="btn-primary"
-              onclick="submitPublicRegistration()"
-              style="padding: 10px 30px; font-size: 1.1rem"
+      <div class="dynamic-area" style="margin-top: 0">
+        <h4 style="margin-top: 0">البيانات الأساسية</h4>
+        <div class="date-row" style="gap: 10px; margin-bottom: 10px">
+          <div style="flex: 2; text-align: right">
+            <label
+              for="pubRegName"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >الاسم الرباعي *</label
             >
-              <i class="fas fa-paper-plane"></i> إرسال الطلب
-            </button>
+            <input
+              type="text"
+              id="pubRegName"
+              class="form-control"
+              style="width: 100%; margin: 0"
+            />
+          </div>
+          <div style="flex: 2; text-align: right">
+            <label
+              for="pubRegNid"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >الرقم القومي (14 رقم) *</label
+            >
+            <input
+              type="text"
+              id="pubRegNid"
+              class="form-control"
+              style="width: 100%; margin: 0"
+              maxlength="14"
+              oninput="
+                this.value = this.value.replace(/[^0-9]/g, '').slice(0, 14)
+              "
+            />
           </div>
         </div>
+        <div class="date-row" style="gap: 10px; margin-bottom: 10px">
+          <div style="flex: 1; text-align: right">
+            <label
+              for="pubRegGender"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >الجنس *</label
+            >
+            <select
+              id="pubRegGender"
+              class="form-control"
+              style="width: 100%; margin: 0; text-align: right"
+            >
+              <option value="" disabled selected hidden>-- اختر --</option>
+              <option value="ذكر">ذكر</option>
+              <option value="أنثى">أنثى</option>
+            </select>
+          </div>
+          <div style="flex: 1; text-align: right">
+            <label
+              for="pubRegNationality"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >الجنسية *</label
+            >
+            <select
+              id="pubRegNationality"
+              class="form-control"
+              style="width: 100%; margin: 0; text-align: right"
+            >
+              <option value="" disabled selected hidden>
+                -- اختر الجنسية --
+              </option>
+              <option value="مصري">مصري</option>
+              <option value="أخرى">أخرى</option>
+            </select>
+          </div>
+          <div style="flex: 1; text-align: right">
+            <label
+              for="pubRegReligion"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >الديانة *</label
+            >
+            <select
+              id="pubRegReligion"
+              class="form-control"
+              style="width: 100%; margin: 0; text-align: right"
+            >
+              <option value="" disabled selected hidden>-- اختر --</option>
+              <option value="مسلم">مسلم</option>
+              <option value="مسيحي">مسيحي</option>
+            </select>
+          </div>
+          <div style="flex: 1; text-align: right">
+            <label
+              for="pubRegBirthDate"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >تاريخ الميلاد *</label
+            >
+            <input
+              type="date"
+              id="pubRegBirthDate"
+              class="form-control flatpickr-date"
+              style="width: 100%; margin: 0; text-align: right"
+              placeholder="اختر التاريخ..."
+            />
+          </div>
+        </div>
+        <div class="date-row" style="gap: 10px; margin-bottom: 10px">
+          <div style="flex: 1; text-align: right">
+            <label
+              for="pubRegPhone"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >رقم الهاتف *</label
+            >
+            <input
+              type="text"
+              id="pubRegPhone"
+              class="form-control"
+              style="width: 100%; margin: 0"
+              maxlength="11"
+              oninput="
+                this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11)
+              "
+            />
+          </div>
+          <div style="flex: 1; text-align: right">
+            <label
+              for="pubRegEmail"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >البريد الإلكتروني</label
+            >
+            <input
+              type="email"
+              id="pubRegEmail"
+              class="form-control"
+              style="width: 100%; margin: 0"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="dynamic-area" style="margin-top: 15px">
+        <h4>البيانات الوظيفية والمكانية</h4>
+        <div class="date-row" style="gap: 10px; margin-bottom: 10px">
+          <div style="flex: 1; text-align: right">
+            <label
+              for="pubRegEmployeeType"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >نوع الموظف *</label
+            >
+            <select
+              id="pubRegEmployeeType"
+              class="form-control"
+              style="width: 100%; margin: 0; text-align: right"
+              onchange="togglePublicTeacherFields()"
+            >
+              <option value="" disabled selected hidden>
+                -- نوع الموظف --
+              </option>
+              <option value="معلم">معلم</option>
+              <option value="إداري">إداري</option>
+              <option value="عامل">عامل</option>
+              <option value="أخرى">أخرى</option>
+            </select>
+          </div>
+          <div style="flex: 1; text-align: right">
+            <label
+              for="pubRegSpecialization"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >المادة / التخصص</label
+            >
+            <input
+              type="text"
+              id="pubRegSpecialization"
+              class="form-control"
+              style="width: 100%; margin: 0"
+            />
+          </div>
+        </div>
+        <div class="date-row" style="gap: 10px; margin-bottom: 10px">
+          <div
+            style="flex: 1; text-align: right"
+            id="pubRegTeachingGradesContainer"
+          >
+            <label
+              for="pubRegTeachingGrades"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >الصفوف التي يدرسها</label
+            >
+            <input
+              type="text"
+              id="pubRegTeachingGrades"
+              class="form-control"
+              style="width: 100%; margin: 0"
+              placeholder="مثال: الأول، الثاني"
+            />
+          </div>
+          <div
+            style="flex: 1; text-align: right"
+            id="pubRegTeachingClassesContainer"
+          >
+            <label
+              for="pubRegTeachingClasses"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >الفصول التي يدرسها</label
+            >
+            <input
+              type="text"
+              id="pubRegTeachingClasses"
+              class="form-control"
+              style="width: 100%; margin: 0"
+              placeholder="مثال: 1/1, 1/2"
+            />
+          </div>
+          <div
+            style="flex: 1; text-align: right; display: none"
+            id="pubRegAssignedActivityContainer"
+          >
+            <label
+              for="pubRegAssignedActivity"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >النشاط المسند</label
+            >
+            <input
+              type="text"
+              id="pubRegAssignedActivity"
+              class="form-control"
+              style="width: 100%; margin: 0"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="dynamic-area" style="margin-top: 15px">
+        <h4>بيانات المؤهل</h4>
+        <div class="date-row" style="gap: 10px; margin-bottom: 10px">
+          <div style="flex: 1; text-align: right">
+            <label
+              for="pubRegQualificationType"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >نوع المؤهل</label
+            >
+            <input
+              type="text"
+              id="pubRegQualificationType"
+              class="form-control"
+              style="width: 100%; margin: 0"
+              placeholder="مثال: عالي، فوق متوسط..."
+            />
+          </div>
+          <div style="flex: 1; text-align: right">
+            <label
+              for="pubRegQualificationName"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >اسم المؤهل</label
+            >
+            <input
+              type="text"
+              id="pubRegQualificationName"
+              class="form-control"
+              style="width: 100%; margin: 0"
+            />
+          </div>
+          <div style="flex: 1; text-align: right">
+            <label
+              for="pubRegQualificationEntity"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >جهة الحصول عليه</label
+            >
+            <input
+              type="text"
+              id="pubRegQualificationEntity"
+              class="form-control"
+              style="width: 100%; margin: 0"
+            />
+          </div>
+        </div>
+        <div class="date-row" style="gap: 10px; margin-bottom: 10px">
+          <div style="flex: 1; text-align: right">
+            <label
+              for="pubRegQualificationGrade"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >التقدير</label
+            >
+            <input
+              type="text"
+              id="pubRegQualificationGrade"
+              class="form-control"
+              style="width: 100%; margin: 0"
+            />
+          </div>
+          <div style="flex: 1; text-align: right">
+            <label
+              for="pubRegQualificationDate"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >تاريخ المؤهل</label
+            >
+            <input
+              type="date"
+              id="pubRegQualificationDate"
+              class="form-control flatpickr-date"
+              style="width: 100%; margin: 0; text-align: right"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div class="dynamic-area" style="margin-top: 15px">
+        <h4>الملاحظات</h4>
+        <div style="text-align: right">
+          <label
+            for="pubRegNotes"
+            style="
+              font-size: 13px;
+              font-weight: bold;
+              color: #0056b3;
+              display: block;
+              margin-bottom: 5px;
+            "
+            >ملاحظات إضافية</label
+          >
+          <textarea
+            id="pubRegNotes"
+            class="form-control"
+            style="width: 100%; margin: 0; resize: vertical"
+            rows="3"
+            placeholder="اكتب أي تفاصيل إضافية أو ملاحظات هنا..."
+          ></textarea>
+        </div>
+      </div>
+
+      <div style="margin-top: 25px">
+        <button
+          id="pubRegSubmitBtn"
+          class="pulse-button"
+          onclick="submitPublicRegistration()"
+          style="padding: 12px; font-size: 16px"
+        >
+          <span class="btn-text">إرسال الطلب</span>
+          <span class="ripple-span"></span>
+        </button>
       </div>
     </div>
 
@@ -5282,11 +5561,6 @@
         btnElement.classList.add("active");
         if (tabId === "tab-today") {
           fetchTodayStatus(false);
-        }
-        if (tabId === "tab-registration-requests") {
-          if (typeof fetchRegistrationRequests === "function") {
-            fetchRegistrationRequests();
-          }
         } else if (tabId === "tab-employees") {
           const form = document.getElementById("empFormPanel");
           if (form) form.style.display = "none";
@@ -7125,28 +7399,40 @@
         if (loader) loader.style.display = "none";
       }
 
-      function openPublicRegistrationModal() {
-        document.getElementById("publicRegistrationModal").style.display =
-          "flex";
+      function showRegistrationPage() {
+        document.getElementById("loginContainer").style.display = "none";
+        document.getElementById("inputsWrapper").style.display = "none";
+        document.getElementById("registrationContainer").style.display =
+          "block";
       }
-      function closePublicRegistrationModal() {
-        document.getElementById("publicRegistrationModal").style.display =
-          "none";
+      function hideRegistrationPage() {
+        document.getElementById("registrationContainer").style.display = "none";
+        document.getElementById("loginContainer").style.display = "block";
+        document.getElementById("inputsWrapper").style.display = "block";
+      }
+      function showRegistrationRequestsList() {
+        document.getElementById("empWelcomeScreen").style.display = "none";
+        document.getElementById("regRequestsListPanel").style.display = "block";
+        fetchRegistrationRequests();
+      }
+      function hideRegistrationRequestsList() {
+        document.getElementById("regRequestsListPanel").style.display = "none";
+        document.getElementById("empWelcomeScreen").style.display = "block";
       }
 
       // Re-use standard toggleTeacherFields logic if needed, but for public form
+
       function togglePublicTeacherFields() {
         const empType = document.getElementById("pubRegEmployeeType").value;
         const isTeacher = empType === "معلم";
+        document.getElementById("pubRegTeachingGradesContainer").style.display =
+          isTeacher ? "block" : "none";
         document.getElementById(
-          "pubRegTeachingGrades",
-        ).parentElement.style.display = isTeacher ? "block" : "none";
+          "pubRegTeachingClassesContainer",
+        ).style.display = isTeacher ? "block" : "none";
         document.getElementById(
-          "pubRegTeachingClasses",
-        ).parentElement.style.display = isTeacher ? "block" : "none";
-        document.getElementById(
-          "pubRegAssignedActivity",
-        ).parentElement.style.display = isTeacher ? "none" : "block";
+          "pubRegAssignedActivityContainer",
+        ).style.display = isTeacher ? "none" : "block";
       }
 
       function submitPublicRegistration() {
@@ -7187,8 +7473,7 @@
 
         const submitBtn = document.getElementById("pubRegSubmitBtn");
         const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML =
-          '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+        submitBtn.innerHTML = "جاري الإرسال...";
         submitBtn.disabled = true;
 
         showGlobalLoader();
@@ -7200,11 +7485,26 @@
 
             if (res.status === "success") {
               showMsg(res.message);
-              closePublicRegistrationModal();
-              // Clear important fields
+              hideRegistrationPage();
               document.getElementById("pubRegName").value = "";
               document.getElementById("pubRegNid").value = "";
+              document.getElementById("pubRegGender").value = "";
+              document.getElementById("pubRegNationality").value = "";
+              document.getElementById("pubRegReligion").value = "";
+              document.getElementById("pubRegBirthDate").value = "";
               document.getElementById("pubRegPhone").value = "";
+              document.getElementById("pubRegEmail").value = "";
+              document.getElementById("pubRegEmployeeType").value = "";
+              document.getElementById("pubRegSpecialization").value = "";
+              document.getElementById("pubRegTeachingGrades").value = "";
+              document.getElementById("pubRegTeachingClasses").value = "";
+              document.getElementById("pubRegAssignedActivity").value = "";
+              document.getElementById("pubRegQualificationType").value = "";
+              document.getElementById("pubRegQualificationName").value = "";
+              document.getElementById("pubRegQualificationEntity").value = "";
+              document.getElementById("pubRegQualificationGrade").value = "";
+              document.getElementById("pubRegQualificationDate").value = "";
+              document.getElementById("pubRegNotes").value = "";
             } else {
               showMsg(res.message, true);
             }
@@ -7220,7 +7520,11 @@
       let currentAdminRequests = [];
       function fetchRegistrationRequests() {
         const auth = getAuth();
-        if (!auth || auth.role !== "Admin") return;
+        if (!auth || auth.role !== "Admin") {
+          hideGlobalLoader();
+          showMsg("صلاحيات غير كافية", true);
+          return;
+        }
         showGlobalLoader();
         apiPost({ action: "getRegistrationRequests", token: auth.token })
           .then((res) => {
@@ -7242,27 +7546,33 @@
         const tbody = document.querySelector(
           "#registrationRequestsTable tbody",
         );
+        const container = document.getElementById("regRequestsTableContainer");
+        const emptyMsg = document.getElementById("regRequestsEmptyMsg");
         if (!tbody) return;
         tbody.innerHTML = "";
+
+        if (!currentAdminRequests || currentAdminRequests.length === 0) {
+          container.style.display = "none";
+          emptyMsg.style.display = "block";
+          return;
+        }
+
         currentAdminRequests.forEach((req) => {
           let tr = document.createElement("tr");
-          let statusBadge =
-            req.status === "قيد المراجعة"
-              ? "warning"
-              : req.status === "مقبول"
-                ? "success"
-                : "danger";
           tr.innerHTML = `
-            <td>${escHtml(req.submissionDate)}</td>
-            <td>${escHtml(req.name)}</td>
-            <td>${escHtml(req.nid)}</td>
-            <td><span class="badge badge-${statusBadge}">${escHtml(req.status)}</span></td>
-            <td>
-              <button class="btn-secondary" style="padding:4px 8px; font-size:12px;" onclick="openAdminReviewModal('${req.reqId}')">مراجعة</button>
-            </td>
-          `;
+                  <td><strong>${escHtml(req.employeeType || "-")}</strong></td>
+                  <td>${escHtml(req.name || "-")}</td>
+                  <td style="color:#555;">${escHtml(req.specialization || "-")}</td>
+                  <td style="color:#555;">${escHtml(req.timestamp ? req.timestamp.substring(0, 10) : "-")}</td>
+                  <td>
+                    <button class="btn-preset" style="background:#28a745" onclick="approveRegistrationRequest('${req.id}')">✔️ قبول</button>
+                    <button class="btn-preset" style="background:#dc3545" onclick="rejectRegistrationRequest('${req.id}')">❌ رفض</button>
+                  </td>
+                `;
           tbody.appendChild(tr);
         });
+        container.style.display = "block";
+        emptyMsg.style.display = "none";
       }
 
       function openAdminReviewModal(reqId) {
@@ -7365,9 +7675,9 @@
       // -- PHASE 2B: POLISH --
       window.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
-          const pubModal = document.getElementById("publicRegistrationModal");
-          if (pubModal && pubModal.style.display === "flex") {
-            closePublicRegistrationModal();
+          const regContainer = document.getElementById("registrationContainer");
+          if (regContainer && regContainer.style.display === "block") {
+            hideRegistrationPage();
           }
           const adminRevModal = document.getElementById("adminReviewModal");
           if (adminRevModal && adminRevModal.style.display === "flex") {
@@ -7378,91 +7688,23 @@
 
       // Trap focus for new modals
       document.addEventListener("DOMContentLoaded", () => {
-        const pubModal = document.getElementById("publicRegistrationModal");
-        if (pubModal && typeof trapFocus === "function") trapFocus(pubModal);
+        const regContainer = document.getElementById("registrationContainer");
+        if (regContainer && typeof trapFocus === "function")
+          trapFocus(regContainer);
 
         const adminRevModal = document.getElementById("adminReviewModal");
         if (adminRevModal && typeof trapFocus === "function")
           trapFocus(adminRevModal);
       });
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr">
-      // -- PHASE 2B: POLISH --
-      window.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          const pubModal = document.getElementById("publicRegistrationModal");
-          if (pubModal && pubModal.style.display === "flex") {
-            closePublicRegistrationModal();
-          }
-          const adminRevModal = document.getElementById("adminReviewModal");
-          if (adminRevModal && adminRevModal.style.display === "flex") {
-            closeAdminReviewModal();
-          }
-        }
-      });
-
-      // Trap focus for new modals
-      document.addEventListener("DOMContentLoaded", () => {
-        const pubModal = document.getElementById("publicRegistrationModal");
-        if (pubModal && typeof trapFocus === 'function') trapFocus(pubModal);
-
-        const adminRevModal = document.getElementById("adminReviewModal");
-        if (adminRevModal && typeof trapFocus === 'function') trapFocus(adminRevModal);
-      });
-    </script>
-    <script src="https://npmcdn.com/flatpickr/dist/l10n/ar.js">
-      // -- PHASE 2B: POLISH --
-      window.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          const pubModal = document.getElementById("publicRegistrationModal");
-          if (pubModal && pubModal.style.display === "flex") {
-            closePublicRegistrationModal();
-          }
-          const adminRevModal = document.getElementById("adminReviewModal");
-          if (adminRevModal && adminRevModal.style.display === "flex") {
-            closeAdminReviewModal();
-          }
-        }
-      });
-
-      // Trap focus for new modals
-      document.addEventListener("DOMContentLoaded", () => {
-        const pubModal = document.getElementById("publicRegistrationModal");
-        if (pubModal && typeof trapFocus === 'function') trapFocus(pubModal);
-
-        const adminRevModal = document.getElementById("adminReviewModal");
-        if (adminRevModal && typeof trapFocus === 'function') trapFocus(adminRevModal);
-      });
-    </script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/ar.js"></script>
     <script>
       flatpickr('.flatpickr-date, input[type="date"]', {
         locale: "ar",
         dateFormat: "Y-m-d",
         disableMobile: true,
         allowInput: true,
-      });
-      // -- PHASE 2B: POLISH --
-      window.addEventListener("keydown", (e) => {
-        if (e.key === "Escape") {
-          const pubModal = document.getElementById("publicRegistrationModal");
-          if (pubModal && pubModal.style.display === "flex") {
-            closePublicRegistrationModal();
-          }
-          const adminRevModal = document.getElementById("adminReviewModal");
-          if (adminRevModal && adminRevModal.style.display === "flex") {
-            closeAdminReviewModal();
-          }
-        }
-      });
-
-      // Trap focus for new modals
-      document.addEventListener("DOMContentLoaded", () => {
-        const pubModal = document.getElementById("publicRegistrationModal");
-        if (pubModal && typeof trapFocus === "function") trapFocus(pubModal);
-
-        const adminRevModal = document.getElementById("adminReviewModal");
-        if (adminRevModal && typeof trapFocus === "function")
-          trapFocus(adminRevModal);
       });
     </script>
   </body>
