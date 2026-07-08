@@ -2072,6 +2072,7 @@
                   class="form-control"
                   pattern="[a-zA-Z0-9]+"
                   style="width: 100%; margin: 0"
+                  oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')"
                 />
               </div>
               <div style="flex: 2; text-align: right">
@@ -2298,6 +2299,7 @@
                   </option>
                   <option value="نشط">نشط</option>
                   <option value="موقوف">موقوف</option>
+                  <option value="مؤرشف">مؤرشف</option>
                 </select>
               </div>
               <div style="flex: 1; text-align: right">
@@ -5090,84 +5092,21 @@
         }
       }
       function debounceLiveSearch() {
-        clearTimeout(AppState.liveSearchTimeout);
-        AppState.liveSearchTimeout = setTimeout(handleLiveSearch, 200);
-      }
-      function handleLiveSearch() {
-        const term = document
-          .getElementById("adminSearchInput")
-          .value.trim()
-          .toLowerCase();
-        const resultsContainer = document.getElementById("searchResults");
-        resultsContainer.innerHTML = "";
-        AppState.searchFocus = -1;
-        if (term.length === 0) {
-          resultsContainer.style.display = "none";
-          document.getElementById("actionCard").style.display = "none";
-          return;
-        }
-        const normalizedTerm = normalizeArabic(term);
-        const filtered = AppState.teachers.filter(
-          (t) =>
-            normalizeArabic(t.name.toLowerCase()).includes(normalizedTerm) ||
-            String(t.code).includes(term),
+        setupTeacherLiveSearch(
+          "adminSearchInput",
+          "searchResults",
+          function (code) {
+            document.getElementById("actionCard").style.display = "block";
+            selectTeacherByCode(code);
+          },
         );
-        if (filtered.length === 0) {
-          resultsContainer.innerHTML =
-            "<div style='padding:10px; color:#888;'>لا توجد نتائج</div>";
-          resultsContainer.style.display = "block";
-          return;
-        }
-        const fragment = document.createDocumentFragment();
-        filtered.forEach((t) => {
-          let item = document.createElement("div");
-          let eName = escHtml(t.name);
-          let eCode = escHtml(t.code);
-          item.innerHTML = `<strong>${eName}</strong> <span style="color:#888; font-size:13px;">(كود: ${eCode})</span>`;
-          item.onclick = function () {
-            resultsContainer.style.display = "none";
-            selectTeacherByCode(t.code);
-          };
-          fragment.appendChild(item);
-        });
-        resultsContainer.appendChild(fragment);
-        resultsContainer.style.display = "block";
-      }
-      document
-        .getElementById("adminSearchInput")
-        .addEventListener("keydown", function (e) {
-          const resultsContainer = document.getElementById("searchResults");
-          if (resultsContainer.style.display === "none") return;
-          let items = resultsContainer.getElementsByTagName("div");
-          if (!items || items.length === 0) return;
-          if (e.key === "ArrowDown") {
-            AppState.searchFocus++;
-            addActiveSearchItem(items);
-          } else if (e.key === "ArrowUp") {
-            AppState.searchFocus--;
-            addActiveSearchItem(items);
-          } else if (e.key === "Enter") {
-            e.preventDefault();
-            if (AppState.searchFocus > -1) {
-              items[AppState.searchFocus].click();
-            } else if (items.length === 1) {
-              items[0].click();
-            }
-          }
-        });
-      function addActiveSearchItem(items) {
-        if (!items) return false;
-        removeActiveSearchItem(items);
-        if (AppState.searchFocus >= items.length) AppState.searchFocus = 0;
-        if (AppState.searchFocus < 0) AppState.searchFocus = items.length - 1;
-        items[AppState.searchFocus].classList.add("autocomplete-active");
-        items[AppState.searchFocus].scrollIntoView({ block: "nearest" });
-      }
-      function removeActiveSearchItem(items) {
-        for (let i = 0; i < items.length; i++) {
-          items[i].classList.remove("autocomplete-active");
+        if (
+          document.getElementById("adminSearchInput").value.trim().length === 0
+        ) {
+          document.getElementById("actionCard").style.display = "none";
         }
       }
+
       document.addEventListener("click", function (e) {
         const resultsContainer = document.getElementById("searchResults");
         if (resultsContainer && e.target.id !== "adminSearchInput") {
@@ -6010,7 +5949,7 @@
         if (!auth) return;
         const start = document.getElementById("historyStartDate").value;
         const end = document.getElementById("historyEndDate").value;
-        const tCode = document.getElementById("historyTeacherSelect").value;
+        const tCodes = AppState.historySelectedTeachers.map((t) => t.code);
         const typeFilter = document.getElementById("historyTypeFilter")
           ? document.getElementById("historyTypeFilter").value
           : "all";
@@ -6053,7 +5992,7 @@
           token: auth.token,
           startDate: start,
           endDate: end,
-          teacherCode: tCode,
+          teacherCodes: tCodes,
           page: AppState.historyPage,
           limit: 1000,
         })
@@ -6356,7 +6295,7 @@
               document.getElementById("inputsWrapper").style.display = "block";
               showMsg("حدث خطأ في جلب البيانات.", true);
             } else {
-              showMsg("خطأ في الشبكة أو الاتصال", "error");
+              showMsg("خطأ في الشبكة أو الاتصال", true);
             }
           });
       }
@@ -6649,7 +6588,7 @@
       function sendSystemMessage() {
         const auth = getAuth();
         if (!auth) return;
-        const targetCode = document.getElementById("msgTargetSelect").value;
+        const targetCodes = AppState.msgSelectedTeachers.map((t) => t.code);
         const messageText = document.getElementById("msgTextArea").value.trim();
         if (!messageText) {
           showMsg("يرجى كتابة نص الرسالة", true);
@@ -6659,7 +6598,7 @@
           apiPost({
             action: "sendSystemMessage",
             token: auth.token,
-            targetCode: targetCode,
+            targetCodes: targetCodes,
             messageText: messageText,
           })
             .then((data) => {
@@ -6739,7 +6678,7 @@
           })
           .catch((err) => {
             if (loader) loader.style.display = "none";
-            showMsg("خطأ في الشبكة أو الاتصال", "error");
+            showMsg("خطأ في الشبكة أو الاتصال", true);
           });
       }
       function submitNewRequest() {
