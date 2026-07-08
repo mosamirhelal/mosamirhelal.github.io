@@ -2063,6 +2063,11 @@
             <div style="width: 120px"></div>
           </div>
           <div
+            id="regRequestsLoader"
+            class="loader"
+            style="display: none; margin-top: 50px"
+          ></div>
+          <div
             class="table-responsive"
             id="regRequestsTableContainer"
             style="display: block"
@@ -4443,61 +4448,87 @@
           >
         </div>
         <div id="revDetailsContainer"></div>
-        <input type="hidden" id="revReqId" />
-        <div class="form-group">
-          <label>الاسم</label>
-          <input type="text" id="revName" class="form-control" readonly />
-        </div>
-        <div class="form-group">
-          <label>الرقم القومي</label>
-          <input
-            type="text"
-            id="revNid"
-            class="form-control"
-            readonly
-            dir="ltr"
-          />
-        </div>
-        <div class="form-group">
-          <label>تخصيص كود الموظف</label>
-          <input
-            type="text"
-            id="revAssignCode"
-            class="form-control"
-            dir="ltr"
-          />
-        </div>
-        <div class="form-group">
-          <label>تخصيص الصلاحية</label>
-          <select id="revAssignRole" class="form-control">
-            <option value="Teacher">مستخدم</option>
-            <option value="Admin">مدير</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>رسالة الإدارة (في حالة الرفض أو القبول)</label>
-          <input
-            type="text"
-            id="revAdminMessage"
-            class="form-control"
-            placeholder="اختياري..."
-          />
-        </div>
-        <div style="display: flex; gap: 10px; margin-top: 15px">
-          <button
-            class="pulse-button"
-            style="flex: 1; background: #28a745"
-            onclick="approveRegistration()"
-          >
-            قبول وإنشاء حساب
-          </button>
-          <button
-            class="btn-logout"
-            style="flex: 1"
-            onclick="rejectRegistration()"
-          >
-            رفض الطلب
-          </button>
+
+        <div class="dynamic-area" style="margin-top: 15px">
+          <h4 style="margin-top: 0">قرار المراجعة</h4>
+          <input type="hidden" id="revReqId" />
+          <input type="hidden" id="revName" />
+          <input type="hidden" id="revNid" />
+
+          <div class="date-row" style="gap: 10px; margin-bottom: 10px">
+            <div style="flex: 1; text-align: right">
+              <label
+                style="
+                  font-size: 13px;
+                  font-weight: bold;
+                  color: #0056b3;
+                  display: block;
+                  margin-bottom: 5px;
+                "
+                >تخصيص كود الموظف</label
+              >
+              <input
+                type="text"
+                id="revAssignCode"
+                class="form-control"
+                dir="ltr"
+              />
+            </div>
+            <div style="flex: 1; text-align: right">
+              <label
+                style="
+                  font-size: 13px;
+                  font-weight: bold;
+                  color: #0056b3;
+                  display: block;
+                  margin-bottom: 5px;
+                "
+                >تخصيص الصلاحية</label
+              >
+              <select id="revAssignRole" class="form-control">
+                <option value="Teacher">مستخدم</option>
+                <option value="Admin">مدير</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="text-align: right; margin-bottom: 10px">
+            <label
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >رسالة الإدارة (في حالة الرفض أو القبول)</label
+            >
+            <input
+              type="text"
+              id="revAdminMessage"
+              class="form-control"
+              placeholder="اختياري..."
+            />
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-top: 15px">
+            <button
+              id="btnApproveReq"
+              class="pulse-button"
+              style="flex: 1; background: #28a745"
+              onclick="approveRegistration()"
+            >
+              ✅ قبول وإنشاء حساب
+            </button>
+            <button
+              id="btnRejectReq"
+              class="btn-logout"
+              style="flex: 1"
+              onclick="rejectRegistration()"
+            >
+              ❌ رفض الطلب
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -7476,10 +7507,8 @@
         submitBtn.innerHTML = "جاري الإرسال...";
         submitBtn.disabled = true;
 
-        showGlobalLoader();
         apiPost({ action: "submitRegistrationRequest", emp: payload })
           .then((res) => {
-            hideGlobalLoader();
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
 
@@ -7510,7 +7539,6 @@
             }
           })
           .catch((err) => {
-            hideGlobalLoader();
             submitBtn.innerHTML = originalText;
             submitBtn.disabled = false;
             showMsg("حدث خطأ في الاتصال", true);
@@ -7525,10 +7553,13 @@
           showMsg("صلاحيات غير كافية", true);
           return;
         }
-        showGlobalLoader();
+        document.getElementById("regRequestsLoader").style.display = "block";
+        document.getElementById("regRequestsTableContainer").style.display =
+          "none";
+        document.getElementById("regRequestsEmptyMsg").style.display = "none";
         apiPost({ action: "getRegistrationRequests", token: auth.token })
           .then((res) => {
-            hideGlobalLoader();
+            document.getElementById("regRequestsLoader").style.display = "none";
             if (res.status === "success") {
               currentAdminRequests = res.requests;
               renderRegistrationRequests();
@@ -7537,7 +7568,7 @@
             }
           })
           .catch(() => {
-            hideGlobalLoader();
+            document.getElementById("regRequestsLoader").style.display = "none";
             showMsg("حدث خطأ في الاتصال", true);
           });
       }
@@ -7559,15 +7590,20 @@
 
         currentAdminRequests.forEach((req) => {
           let tr = document.createElement("tr");
+          let badgeClass = getBadgeClass(req.status);
+          let actionHtml = `<span class="badge ${badgeClass}">${escHtml(req.status)}</span>`;
+          if (req.status === "قيد المراجعة") {
+            actionHtml += ` <button class="btn-info" onclick="openAdminReviewModal('${req.reqId}')" style="margin-right: 10px; padding: 4px 10px; font-size: 12px;">مراجعة</button>`;
+          }
+          let safeDate = escHtml(
+            req.submissionDate ? req.submissionDate.substring(0, 10) : "-",
+          );
           tr.innerHTML = `
                   <td><strong>${escHtml(req.employeeType || "-")}</strong></td>
                   <td>${escHtml(req.name || "-")}</td>
                   <td style="color:#555;">${escHtml(req.specialization || "-")}</td>
-                  <td style="color:#555;">${escHtml(req.timestamp ? req.timestamp.substring(0, 10) : "-")}</td>
-                  <td>
-                    <button class="btn-preset" style="background:#28a745" onclick="approveRegistrationRequest('${req.id}')">✔️ قبول</button>
-                    <button class="btn-preset" style="background:#dc3545" onclick="rejectRegistrationRequest('${req.id}')">❌ رفض</button>
-                  </td>
+                  <td style="color:#555;">${safeDate}</td>
+                  <td>${actionHtml}</td>
                 `;
           tbody.appendChild(tr);
         });
@@ -7585,14 +7621,66 @@
         document.getElementById("revAdminMessage").value = "";
 
         // Populate Read-Only Details
+        const isTeacher = req.employeeType === "معلم";
         const detailsHtml = `
-            <div style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem; padding: 10px; background: #f8f9fa; border-radius: 8px; border: 1px solid #dee2e6;">
-              <strong>النوع:</strong> ${escHtml(req.gender)} | <strong>الديانة:</strong> ${escHtml(req.religion)}<br>
-              <strong>التليفون:</strong> ${escHtml(req.phone)} | <strong>البريد:</strong> ${escHtml(req.email)}<br>
-              <strong>نوع الموظف:</strong> ${escHtml(req.employeeType)} | <strong>التخصص:</strong> ${escHtml(req.specialization)}<br>
-              <strong>المؤهل:</strong> ${escHtml(req.qualificationName)} (${escHtml(req.qualificationType)}) - ${escHtml(req.qualificationGrade)}<br>
-              <strong>ملاحظات:</strong> ${escHtml(req.notes)}
+            <div class="dynamic-area" style="margin-top: 0; text-align: right;">
+                <h4 style="margin-top: 0;">البيانات الأساسية</h4>
+                <div class="date-row" style="gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الاسم</strong><br>${escHtml(req.name || "-")}</div>
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الرقم القومي</strong><br>${escHtml(req.nid || "-")}</div>
+                </div>
+                <div class="date-row" style="gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">النوع</strong><br>${escHtml(req.gender || "-")}</div>
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الجنسية</strong><br>${escHtml(req.nationality || "-")}</div>
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الديانة</strong><br>${escHtml(req.religion || "-")}</div>
+                </div>
+                <div class="date-row" style="gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">تاريخ الميلاد</strong><br>${escHtml(req.birthDate || "-")}</div>
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الهاتف</strong><br>${escHtml(req.phone || "-")}</div>
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">البريد</strong><br>${escHtml(req.email || "-")}</div>
+                </div>
             </div>
+
+            <div class="dynamic-area" style="text-align: right;">
+                <h4 style="margin-top: 0;">البيانات الوظيفية</h4>
+                <div class="date-row" style="gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">نوع الموظف</strong><br>${escHtml(req.employeeType || "-")}</div>
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">التخصص</strong><br>${escHtml(req.specialization || "-")}</div>
+                </div>
+                ${
+                  isTeacher
+                    ? `
+                <div class="date-row" style="gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الصفوف</strong><br>${escHtml(req.teachingGrades || "-")}</div>
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الفصول</strong><br>${escHtml(req.teachingClasses || "-")}</div>
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">النشاط</strong><br>${escHtml(req.assignedActivity || "-")}</div>
+                </div>`
+                    : ""
+                }
+            </div>
+
+            <div class="dynamic-area" style="text-align: right;">
+                <h4 style="margin-top: 0;">المؤهلات</h4>
+                <div class="date-row" style="gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">النوع</strong><br>${escHtml(req.qualificationType || "-")}</div>
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الاسم</strong><br>${escHtml(req.qualificationName || "-")}</div>
+                </div>
+                <div class="date-row" style="gap: 10px; margin-bottom: 10px;">
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الجهة</strong><br>${escHtml(req.qualificationEntity || "-")}</div>
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">التقدير</strong><br>${escHtml(req.qualificationGrade || "-")}</div>
+                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">التاريخ</strong><br>${escHtml(req.qualificationDate || "-")}</div>
+                </div>
+            </div>
+
+            ${
+              req.notes
+                ? `
+            <div class="dynamic-area" style="text-align: right;">
+                <h4 style="margin-top: 0;">ملاحظات</h4>
+                <div style="font-size: 13px; color: #555;">${escHtml(req.notes)}</div>
+            </div>`
+                : ""
+            }
           `;
         document.getElementById("revDetailsContainer").innerHTML = detailsHtml;
 
@@ -7615,7 +7703,13 @@
           return;
         }
         const req = currentAdminRequests.find((r) => r.reqId === reqId);
-        showGlobalLoader();
+        const btnApprove = document.getElementById("btnApproveReq");
+        const btnReject = document.getElementById("btnRejectReq");
+        const origApproveHtml = btnApprove.innerHTML;
+        btnApprove.innerHTML = "جاري التنفيذ...";
+        btnApprove.disabled = true;
+        btnReject.disabled = true;
+
         apiPost({
           action: "approveRegistrationRequest",
           token: auth.token,
@@ -7629,7 +7723,9 @@
           },
         })
           .then((res) => {
-            hideGlobalLoader();
+            btnApprove.innerHTML = origApproveHtml;
+            btnApprove.disabled = false;
+            btnReject.disabled = false;
             if (res.status === "success") {
               showMsg(res.message);
               closeAdminReviewModal();
@@ -7639,7 +7735,9 @@
             }
           })
           .catch(() => {
-            hideGlobalLoader();
+            btnApprove.innerHTML = origApproveHtml;
+            btnApprove.disabled = false;
+            btnReject.disabled = false;
             showMsg("حدث خطأ في الاتصال", true);
           });
       }
@@ -7650,7 +7748,13 @@
 
         const reqId = document.getElementById("revReqId").value;
         const adminMsg = document.getElementById("revAdminMessage").value;
-        showGlobalLoader();
+        const btnApprove = document.getElementById("btnApproveReq");
+        const btnReject = document.getElementById("btnRejectReq");
+        const origRejectHtml = btnReject.innerHTML;
+        btnReject.innerHTML = "جاري التنفيذ...";
+        btnReject.disabled = true;
+        btnApprove.disabled = true;
+
         apiPost({
           action: "rejectRegistrationRequest",
           token: auth.token,
@@ -7658,7 +7762,9 @@
           adminMessage: adminMsg,
         })
           .then((res) => {
-            hideGlobalLoader();
+            btnReject.innerHTML = origRejectHtml;
+            btnReject.disabled = false;
+            btnApprove.disabled = false;
             if (res.status === "success") {
               showMsg(res.message);
               closeAdminReviewModal();
@@ -7668,7 +7774,9 @@
             }
           })
           .catch(() => {
-            hideGlobalLoader();
+            btnReject.innerHTML = origRejectHtml;
+            btnReject.disabled = false;
+            btnApprove.disabled = false;
             showMsg("حدث خطأ في الاتصال", true);
           });
       }
