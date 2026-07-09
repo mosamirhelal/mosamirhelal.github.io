@@ -3958,9 +3958,6 @@
       </div>
     </div>
 
-    <!-- Public Registration Modal -->
-    <!-- Public Registration Modal -->
-
     <div id="registrationContainer" class="container" style="display: none">
       <div
         style="
@@ -4038,6 +4035,42 @@
               "
             />
           </div>
+          <div style="flex: 1; text-align: right">
+            <label
+              for="pubRegCode"
+              style="
+                font-size: 13px;
+                font-weight: bold;
+                color: #0056b3;
+                display: block;
+                margin-bottom: 5px;
+              "
+              >كود الموظف *</label
+            >
+            <input
+              type="text"
+              id="pubRegCode"
+              class="form-control"
+              style="width: 100%; margin: 0"
+              dir="ltr"
+              oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')"
+            />
+          </div>
+        </div>
+        <div
+          style="
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            background: #fff8e1;
+            border-radius: 6px;
+            border: 1px solid #ffe082;
+            font-size: 12px;
+            color: #795548;
+            text-align: right;
+          "
+        >
+          ⚠️ سيكون هذا الكود اسم المستخدم لتسجيل الدخول بعد قبول طلبك، وسيكون
+          رقمك القومي هو كلمة المرور.
         </div>
         <div class="date-row" style="gap: 10px; margin-bottom: 10px">
           <div style="flex: 1; text-align: right">
@@ -4438,25 +4471,310 @@
       </div>
     </div>
 
-    <!-- Admin Review Modal -->
     <div id="adminReviewModal" class="modal">
-      <div class="modal-content" style="max-width: 600px">
-        <div class="modal-header">
-          <h3>مراجعة طلب تسجيل</h3>
-          <span class="close-btn" onclick="closeAdminReviewModal()"
-            >&times;</span
+      <div
+        class="modal-content"
+        style="max-width: 750px; border-radius: 12px; overflow: hidden"
+      >
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #eee;
+            padding: 15px 20px;
+            background: white;
+          "
+        >
+          <h3
+            style="margin: 0; color: #0056b3; font-size: 18px; font-weight: 800"
           >
+            مراجعة طلب تسجيل
+          </h3>
+          <button
+            class="btn-secondary"
+            onclick="closeAdminReviewModal()"
+            style="width: auto; margin: 0; font-size: 13px"
+          >
+            × إغلاق
+          </button>
         </div>
-        <div id="revDetailsContainer"></div>
-
-        <div class="dynamic-area" style="margin-top: 15px">
-          <h4 style="margin-top: 0">قرار المراجعة</h4>
+        <div
+          style="
+            padding: 20px;
+            max-height: 80vh;
+            overflow-y: auto;
+            text-align: right;
+          "
+        >
           <input type="hidden" id="revReqId" />
-          <input type="hidden" id="revName" />
-          <input type="hidden" id="revNid" />
 
-          <div class="date-row" style="gap: 10px; margin-bottom: 10px">
-            <div style="flex: 1; text-align: right">
+          <div class="dynamic-area" style="margin-top: 0">
+            <h4 style="margin-top: 0">البيانات الأساسية</h4>
+            <div class="date-row" style="gap: 10px; margin-bottom: 10px">
+              <div style="flex: 2; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الاسم</label
+                >
+                <input
+                  type="text"
+                  id="revEditName"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 2; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الرقم القومي</label
+                >
+                <input
+                  type="text"
+                  id="revEditNid"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                  dir="ltr"
+                  maxlength="14"
+                  oninput="
+                    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 14)
+                  "
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >كود الموظف *</label
+                >
+                <input
+                  type="text"
+                  id="revAssignCode"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                  dir="ltr"
+                  oninput="this.value = this.value.replace(/[^a-zA-Z0-9]/g, '')"
+                />
+              </div>
+            </div>
+            <div class="date-row" style="gap: 10px; margin-bottom: 10px">
+              <div style="flex: 1; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الجنس</label
+                >
+                <select
+                  id="revEditGender"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                >
+                  <option value="" disabled selected hidden>-- اختر --</option>
+                  <option value="ذكر">ذكر</option>
+                  <option value="أنثى">أنثى</option>
+                </select>
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الجنسية</label
+                >
+                <select
+                  id="revEditNationality"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                >
+                  <option value="" disabled selected hidden>-- اختر --</option>
+                  <option value="مصري">مصري</option>
+                  <option value="أخرى">أخرى</option>
+                </select>
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الديانة</label
+                >
+                <select
+                  id="revEditReligion"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                >
+                  <option value="" disabled selected hidden>-- اختر --</option>
+                  <option value="مسلم">مسلم</option>
+                  <option value="مسيحي">مسيحي</option>
+                </select>
+              </div>
+            </div>
+            <div class="date-row" style="gap: 10px; margin-bottom: 10px">
+              <div style="flex: 1; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >تاريخ الميلاد</label
+                >
+                <input
+                  type="text"
+                  id="revEditBirthDate"
+                  class="form-control flatpickr-date"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الهاتف</label
+                >
+                <input
+                  type="text"
+                  id="revEditPhone"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                  dir="ltr"
+                  maxlength="11"
+                  oninput="
+                    this.value = this.value.replace(/[^0-9]/g, '').slice(0, 11)
+                  "
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >البريد الإلكتروني</label
+                >
+                <input
+                  type="email"
+                  id="revEditEmail"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                  dir="ltr"
+                />
+              </div>
+            </div>
+            <div class="date-row" style="gap: 10px; margin-bottom: 10px">
+              <div style="flex: 1; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >الصلاحية</label
+                >
+                <select
+                  id="revAssignRole"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                >
+                  <option value="Teacher">مستخدم</option>
+                  <option value="Admin">مدير</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="dynamic-area">
+            <h4 style="margin-top: 0">البيانات الوظيفية</h4>
+            <div class="date-row" style="gap: 10px; margin-bottom: 10px">
+              <div style="flex: 1; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >نوع الموظف</label
+                >
+                <select
+                  id="revEditEmployeeType"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                  onchange="toggleRevEmployeeTypeFields()"
+                >
+                  <option value="" disabled selected hidden>-- اختر --</option>
+                  <option value="معلم">معلم</option>
+                  <option value="إداري">إداري</option>
+                  <option value="عامل">عامل</option>
+                  <option value="أخرى">أخرى</option>
+                </select>
+              </div>
+              <div style="flex: 2; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >المادة / التخصص</label
+                >
+                <input
+                  type="text"
+                  id="revEditSpecialization"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+            </div>
+            <div
+              id="revEditTeachingGradesContainer"
+              style="display: none; margin-bottom: 10px"
+            >
               <label
                 style="
                   font-size: 13px;
@@ -4465,16 +4783,19 @@
                   display: block;
                   margin-bottom: 5px;
                 "
-                >تخصيص كود الموظف</label
+                >الصفوف التي يدرسها</label
               >
               <input
                 type="text"
-                id="revAssignCode"
+                id="revEditTeachingGrades"
                 class="form-control"
-                dir="ltr"
+                style="width: 100%; margin: 0"
               />
             </div>
-            <div style="flex: 1; text-align: right">
+            <div
+              id="revEditTeachingClassesContainer"
+              style="display: none; margin-bottom: 10px"
+            >
               <label
                 style="
                   font-size: 13px;
@@ -4483,51 +4804,192 @@
                   display: block;
                   margin-bottom: 5px;
                 "
-                >تخصيص الصلاحية</label
+                >الفصول التي يدرسها</label
               >
-              <select id="revAssignRole" class="form-control">
-                <option value="Teacher">مستخدم</option>
-                <option value="Admin">مدير</option>
-              </select>
+              <input
+                type="text"
+                id="revEditTeachingClasses"
+                class="form-control"
+                style="width: 100%; margin: 0"
+              />
+            </div>
+            <div
+              id="revEditAssignedActivityContainer"
+              style="display: none; margin-bottom: 10px"
+            >
+              <label
+                style="
+                  font-size: 13px;
+                  font-weight: bold;
+                  color: #0056b3;
+                  display: block;
+                  margin-bottom: 5px;
+                "
+                >النشاط المسند</label
+              >
+              <input
+                type="text"
+                id="revEditAssignedActivity"
+                class="form-control"
+                style="width: 100%; margin: 0"
+              />
             </div>
           </div>
 
-          <div style="text-align: right; margin-bottom: 10px">
-            <label
-              style="
-                font-size: 13px;
-                font-weight: bold;
-                color: #0056b3;
-                display: block;
-                margin-bottom: 5px;
-              "
-              >رسالة الإدارة (في حالة الرفض أو القبول)</label
-            >
-            <input
-              type="text"
-              id="revAdminMessage"
-              class="form-control"
-              placeholder="اختياري..."
-            />
+          <div class="dynamic-area">
+            <h4 style="margin-top: 0">المؤهلات</h4>
+            <div class="date-row" style="gap: 10px; margin-bottom: 10px">
+              <div style="flex: 1; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >نوع المؤهل</label
+                >
+                <input
+                  type="text"
+                  id="revEditQualType"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >اسم المؤهل</label
+                >
+                <input
+                  type="text"
+                  id="revEditQualName"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+            </div>
+            <div class="date-row" style="gap: 10px; margin-bottom: 10px">
+              <div style="flex: 1; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >جهة الحصول</label
+                >
+                <input
+                  type="text"
+                  id="revEditQualEntity"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >التقدير</label
+                >
+                <input
+                  type="text"
+                  id="revEditQualGrade"
+                  class="form-control"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+              <div style="flex: 1; text-align: right">
+                <label
+                  style="
+                    font-size: 13px;
+                    font-weight: bold;
+                    color: #0056b3;
+                    display: block;
+                    margin-bottom: 5px;
+                  "
+                  >تاريخ المؤهل</label
+                >
+                <input
+                  type="text"
+                  id="revEditQualDate"
+                  class="form-control flatpickr-date"
+                  style="width: 100%; margin: 0"
+                />
+              </div>
+            </div>
           </div>
 
-          <div style="display: flex; gap: 10px; margin-top: 15px">
-            <button
-              id="btnApproveReq"
-              class="pulse-button"
-              style="flex: 1; background: #28a745"
-              onclick="approveRegistration()"
-            >
-              ✅ قبول وإنشاء حساب
-            </button>
-            <button
-              id="btnRejectReq"
-              class="btn-logout"
-              style="flex: 1"
-              onclick="rejectRegistration()"
-            >
-              ❌ رفض الطلب
-            </button>
+          <div class="dynamic-area">
+            <h4 style="margin-top: 0">ملاحظات</h4>
+            <textarea
+              id="revEditNotes"
+              class="form-control"
+              style="width: 100%; margin: 0; min-height: 70px; resize: vertical"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="dynamic-area">
+            <h4 style="margin-top: 0">قرار المراجعة</h4>
+            <div style="margin-bottom: 10px">
+              <label
+                style="
+                  font-size: 13px;
+                  font-weight: bold;
+                  color: #0056b3;
+                  display: block;
+                  margin-bottom: 5px;
+                "
+                >رسالة الإدارة (في حالة الرفض أو القبول)</label
+              >
+              <input
+                type="text"
+                id="revAdminMessage"
+                class="form-control"
+                style="width: 100%; margin: 0"
+                placeholder="اختياري..."
+              />
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 15px">
+              <button
+                id="btnApproveReq"
+                class="pulse-button"
+                style="flex: 1; background: #28a745"
+                onclick="approveRegistration()"
+              >
+                ✅ قبول وإنشاء حساب
+              </button>
+              <button
+                id="btnRejectReq"
+                class="btn-logout"
+                style="flex: 1"
+                onclick="rejectRegistration()"
+              >
+                ❌ رفض الطلب
+              </button>
+              <button
+                class="btn-secondary"
+                style="flex: 1; margin: 0"
+                onclick="closeAdminReviewModal()"
+              >
+                إغلاق
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -4868,15 +5330,13 @@
           "empEmployeeType",
         ];
 
-        // Not a basic field -> optional
         if (!basicFields.includes(el.id)) {
           if (val === "") {
             el.classList.remove("is-invalid", "is-valid");
             return true;
           }
-          isValid = true; // Any value is valid for optional simple text fields
+          isValid = true;
         } else {
-          // It is a basic field
           if (el.tagName === "SELECT") {
             isValid = val !== "";
           } else if (el.id === "empNid") {
@@ -4884,8 +5344,7 @@
           } else if (el.id === "empPhone") {
             isValid = /^01\d{9}$/.test(val);
           } else if (el.id === "empEmail") {
-            if (val === "")
-              isValid = true; // Email can be optional even if basic
+            if (val === "") isValid = true;
             else isValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
           } else {
             isValid = val !== "";
@@ -5255,29 +5714,42 @@
         }
       }
       function showMsg(text, isError, timeout = 7000) {
-        const containers = [
-          document.getElementById("loginContainer"),
-          document.getElementById("adminContainer"),
-          document.getElementById("teacherContainer"),
-        ];
-        let activeContainer = containers.find(
-          (c) => c && c.style.display !== "none",
-        );
-        if (!activeContainer) activeContainer = containers[0];
-        const existingMsgs =
-          activeContainer.querySelectorAll(".status-message");
-        existingMsgs.forEach((m) => m.remove());
+        const reviewModal = document.getElementById("adminReviewModal");
+        const reviewModalOpen =
+          reviewModal && reviewModal.style.display === "flex";
+
         const msgDiv = document.createElement("div");
         msgDiv.innerText = text;
         msgDiv.className = isError
           ? "status-message error-msg"
           : "status-message success-msg";
         msgDiv.style.display = "block";
-        activeContainer.appendChild(msgDiv);
+
+        if (reviewModalOpen) {
+          const modalContent = reviewModal.querySelector(".modal-content");
+          modalContent
+            .querySelectorAll(".status-message")
+            .forEach((m) => m.remove());
+          modalContent.insertBefore(msgDiv, modalContent.firstChild);
+        } else {
+          const containers = [
+            document.getElementById("loginContainer"),
+            document.getElementById("registrationContainer"),
+            document.getElementById("adminContainer"),
+            document.getElementById("teacherContainer"),
+          ];
+          let activeContainer = containers.find(
+            (c) => c && c.style.display !== "none",
+          );
+          if (!activeContainer) activeContainer = containers[0];
+          activeContainer
+            .querySelectorAll(".status-message")
+            .forEach((m) => m.remove());
+          activeContainer.appendChild(msgDiv);
+        }
+
         setTimeout(() => {
-          if (msgDiv.parentNode) {
-            msgDiv.parentNode.removeChild(msgDiv);
-          }
+          if (msgDiv.parentNode) msgDiv.parentNode.removeChild(msgDiv);
         }, timeout);
       }
       function executeLogout() {
@@ -7419,8 +7891,6 @@
         emptyMsg.style.display = "none";
       }
 
-      // --- PHASE 2B: REGISTRATION LOGIC ---
-
       function showGlobalLoader() {
         const loader = document.getElementById("globalLoader");
         if (loader) loader.style.display = "flex";
@@ -7451,8 +7921,6 @@
         document.getElementById("empWelcomeScreen").style.display = "block";
       }
 
-      // Re-use standard toggleTeacherFields logic if needed, but for public form
-
       function togglePublicTeacherFields() {
         const empType = document.getElementById("pubRegEmployeeType").value;
         const isTeacher = empType === "معلم";
@@ -7468,6 +7936,7 @@
 
       function submitPublicRegistration() {
         const payload = {
+          code: document.getElementById("pubRegCode").value,
           name: document.getElementById("pubRegName").value,
           nid: document.getElementById("pubRegNid").value,
           gender: document.getElementById("pubRegGender").value,
@@ -7497,8 +7966,11 @@
             .value,
           notes: document.getElementById("pubRegNotes").value,
         };
-        if (!payload.name || !payload.nid) {
-          showMsg("الرجاء إدخال الاسم والرقم القومي على الأقل.", true);
+        if (!payload.name || !payload.nid || !payload.code) {
+          showMsg(
+            "الرجاء إدخال الاسم والرقم القومي وكود الموظف على الأقل.",
+            true,
+          );
           return;
         }
 
@@ -7515,6 +7987,7 @@
             if (res.status === "success") {
               showMsg(res.message);
               hideRegistrationPage();
+              document.getElementById("pubRegCode").value = "";
               document.getElementById("pubRegName").value = "";
               document.getElementById("pubRegNid").value = "";
               document.getElementById("pubRegGender").value = "";
@@ -7611,79 +8084,58 @@
         emptyMsg.style.display = "none";
       }
 
+      function toggleRevEmployeeTypeFields() {
+        const isTeacher =
+          document.getElementById("revEditEmployeeType").value === "معلم";
+        document.getElementById(
+          "revEditTeachingGradesContainer",
+        ).style.display = isTeacher ? "block" : "none";
+        document.getElementById(
+          "revEditTeachingClassesContainer",
+        ).style.display = isTeacher ? "block" : "none";
+        document.getElementById(
+          "revEditAssignedActivityContainer",
+        ).style.display = isTeacher ? "none" : "block";
+      }
+
       function openAdminReviewModal(reqId) {
         const req = currentAdminRequests.find((r) => r.reqId === reqId);
         if (!req) return;
         document.getElementById("revReqId").value = req.reqId;
-        document.getElementById("revName").value = req.name;
-        document.getElementById("revNid").value = req.nid;
-        document.getElementById("revAssignCode").value = "";
+        document.getElementById("revEditName").value = req.name || "";
+        document.getElementById("revEditNid").value = req.nid || "";
+        document.getElementById("revAssignCode").value = req.code || "";
+        document.getElementById("revEditGender").value = req.gender || "";
+        document.getElementById("revEditNationality").value =
+          req.nationality || "";
+        document.getElementById("revEditReligion").value = req.religion || "";
+        document.getElementById("revEditBirthDate").value = req.birthDate || "";
+        document.getElementById("revEditPhone").value = req.phone || "";
+        document.getElementById("revEditEmail").value = req.email || "";
+        document.getElementById("revAssignRole").value = req.role || "Teacher";
+        document.getElementById("revEditEmployeeType").value =
+          req.employeeType || "";
+        document.getElementById("revEditSpecialization").value =
+          req.specialization || "";
+        document.getElementById("revEditTeachingGrades").value =
+          req.teachingGrades || "";
+        document.getElementById("revEditTeachingClasses").value =
+          req.teachingClasses || "";
+        document.getElementById("revEditAssignedActivity").value =
+          req.assignedActivity || "";
+        document.getElementById("revEditQualType").value =
+          req.qualificationType || "";
+        document.getElementById("revEditQualName").value =
+          req.qualificationName || "";
+        document.getElementById("revEditQualEntity").value =
+          req.qualificationEntity || "";
+        document.getElementById("revEditQualGrade").value =
+          req.qualificationGrade || "";
+        document.getElementById("revEditQualDate").value =
+          req.qualificationDate || "";
+        document.getElementById("revEditNotes").value = req.notes || "";
         document.getElementById("revAdminMessage").value = "";
-
-        // Populate Read-Only Details
-        const isTeacher = req.employeeType === "معلم";
-        const detailsHtml = `
-            <div class="dynamic-area" style="margin-top: 0; text-align: right;">
-                <h4 style="margin-top: 0;">البيانات الأساسية</h4>
-                <div class="date-row" style="gap: 10px; margin-bottom: 10px;">
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الاسم</strong><br>${escHtml(req.name || "-")}</div>
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الرقم القومي</strong><br>${escHtml(req.nid || "-")}</div>
-                </div>
-                <div class="date-row" style="gap: 10px; margin-bottom: 10px;">
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">النوع</strong><br>${escHtml(req.gender || "-")}</div>
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الجنسية</strong><br>${escHtml(req.nationality || "-")}</div>
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الديانة</strong><br>${escHtml(req.religion || "-")}</div>
-                </div>
-                <div class="date-row" style="gap: 10px; margin-bottom: 10px;">
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">تاريخ الميلاد</strong><br>${escHtml(req.birthDate || "-")}</div>
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الهاتف</strong><br>${escHtml(req.phone || "-")}</div>
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">البريد</strong><br>${escHtml(req.email || "-")}</div>
-                </div>
-            </div>
-
-            <div class="dynamic-area" style="text-align: right;">
-                <h4 style="margin-top: 0;">البيانات الوظيفية</h4>
-                <div class="date-row" style="gap: 10px; margin-bottom: 10px;">
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">نوع الموظف</strong><br>${escHtml(req.employeeType || "-")}</div>
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">التخصص</strong><br>${escHtml(req.specialization || "-")}</div>
-                </div>
-                ${
-                  isTeacher
-                    ? `
-                <div class="date-row" style="gap: 10px; margin-bottom: 10px;">
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الصفوف</strong><br>${escHtml(req.teachingGrades || "-")}</div>
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الفصول</strong><br>${escHtml(req.teachingClasses || "-")}</div>
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">النشاط</strong><br>${escHtml(req.assignedActivity || "-")}</div>
-                </div>`
-                    : ""
-                }
-            </div>
-
-            <div class="dynamic-area" style="text-align: right;">
-                <h4 style="margin-top: 0;">المؤهلات</h4>
-                <div class="date-row" style="gap: 10px; margin-bottom: 10px;">
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">النوع</strong><br>${escHtml(req.qualificationType || "-")}</div>
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الاسم</strong><br>${escHtml(req.qualificationName || "-")}</div>
-                </div>
-                <div class="date-row" style="gap: 10px; margin-bottom: 10px;">
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">الجهة</strong><br>${escHtml(req.qualificationEntity || "-")}</div>
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">التقدير</strong><br>${escHtml(req.qualificationGrade || "-")}</div>
-                    <div style="flex: 1;"><strong style="color: #0056b3; font-size: 12px;">التاريخ</strong><br>${escHtml(req.qualificationDate || "-")}</div>
-                </div>
-            </div>
-
-            ${
-              req.notes
-                ? `
-            <div class="dynamic-area" style="text-align: right;">
-                <h4 style="margin-top: 0;">ملاحظات</h4>
-                <div style="font-size: 13px; color: #555;">${escHtml(req.notes)}</div>
-            </div>`
-                : ""
-            }
-          `;
-        document.getElementById("revDetailsContainer").innerHTML = detailsHtml;
-
+        toggleRevEmployeeTypeFields();
         document.getElementById("adminReviewModal").style.display = "flex";
       }
       function closeAdminReviewModal() {
@@ -7696,13 +8148,40 @@
 
         const reqId = document.getElementById("revReqId").value;
         const code = document.getElementById("revAssignCode").value;
-        const role = document.getElementById("revAssignRole").value;
         const adminMsg = document.getElementById("revAdminMessage").value;
         if (!code) {
           showMsg("يجب تخصيص كود للموظف", true);
           return;
         }
-        const req = currentAdminRequests.find((r) => r.reqId === reqId);
+        const emp = {
+          code: code,
+          role: document.getElementById("revAssignRole").value,
+          status: "نشط",
+          name: document.getElementById("revEditName").value,
+          nid: document.getElementById("revEditNid").value,
+          gender: document.getElementById("revEditGender").value,
+          nationality: document.getElementById("revEditNationality").value,
+          religion: document.getElementById("revEditReligion").value,
+          birthDate: document.getElementById("revEditBirthDate").value,
+          phone: document.getElementById("revEditPhone").value,
+          email: document.getElementById("revEditEmail").value,
+          employeeType: document.getElementById("revEditEmployeeType").value,
+          specialization: document.getElementById("revEditSpecialization")
+            .value,
+          teachingGrades: document.getElementById("revEditTeachingGrades")
+            .value,
+          teachingClasses: document.getElementById("revEditTeachingClasses")
+            .value,
+          assignedActivity: document.getElementById("revEditAssignedActivity")
+            .value,
+          qualificationType: document.getElementById("revEditQualType").value,
+          qualificationName: document.getElementById("revEditQualName").value,
+          qualificationEntity:
+            document.getElementById("revEditQualEntity").value,
+          qualificationGrade: document.getElementById("revEditQualGrade").value,
+          qualificationDate: document.getElementById("revEditQualDate").value,
+          notes: document.getElementById("revEditNotes").value,
+        };
         const btnApprove = document.getElementById("btnApproveReq");
         const btnReject = document.getElementById("btnRejectReq");
         const origApproveHtml = btnApprove.innerHTML;
@@ -7715,12 +8194,7 @@
           token: auth.token,
           reqId: reqId,
           adminMessage: adminMsg,
-          emp: {
-            ...req,
-            code: code,
-            role: role,
-            status: "نشط",
-          },
+          emp: emp,
         })
           .then((res) => {
             btnApprove.innerHTML = origApproveHtml;
@@ -7780,7 +8254,6 @@
             showMsg("حدث خطأ في الاتصال", true);
           });
       }
-      // -- PHASE 2B: POLISH --
       window.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
           const regContainer = document.getElementById("registrationContainer");
@@ -7794,7 +8267,6 @@
         }
       });
 
-      // Trap focus for new modals
       document.addEventListener("DOMContentLoaded", () => {
         const regContainer = document.getElementById("registrationContainer");
         if (regContainer && typeof trapFocus === "function")
