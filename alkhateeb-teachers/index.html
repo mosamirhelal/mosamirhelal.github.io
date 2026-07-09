@@ -7985,8 +7985,8 @@
             submitBtn.disabled = false;
 
             if (res.status === "success") {
-              showMsg(res.message);
               hideRegistrationPage();
+              showMsg(res.message);
               document.getElementById("pubRegCode").value = "";
               document.getElementById("pubRegName").value = "";
               document.getElementById("pubRegNid").value = "";
@@ -8022,7 +8022,6 @@
       function fetchRegistrationRequests() {
         const auth = getAuth();
         if (!auth || auth.role !== "Admin") {
-          hideGlobalLoader();
           showMsg("صلاحيات غير كافية", true);
           return;
         }
@@ -8201,9 +8200,9 @@
             btnApprove.disabled = false;
             btnReject.disabled = false;
             if (res.status === "success") {
-              showMsg(res.message);
               closeAdminReviewModal();
               fetchRegistrationRequests();
+              showMsg(res.message);
             } else {
               showMsg(res.message, true);
             }
@@ -8240,9 +8239,9 @@
             btnReject.disabled = false;
             btnApprove.disabled = false;
             if (res.status === "success") {
-              showMsg(res.message);
               closeAdminReviewModal();
               fetchRegistrationRequests();
+              showMsg(res.message);
             } else {
               showMsg(res.message, true);
             }
