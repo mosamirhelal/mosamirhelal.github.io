@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
@@ -59,6 +59,16 @@
           transform: translateY(0);
         }
       }
+      @keyframes rowIn {
+        from {
+          opacity: 0;
+          transform: translateX(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
       @keyframes popIn {
         0% {
           opacity: 0;
@@ -80,6 +90,55 @@
         50% {
           transform: translateY(-18px);
         }
+      }
+      @keyframes pulseBlue {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(0, 86, 179, 0.7);
+        }
+        70% {
+          transform: scale(1.02);
+          box-shadow: 0 0 0 15px rgba(0, 86, 179, 0);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(0, 86, 179, 0);
+        }
+      }
+      @keyframes pulseGreen {
+        0% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7);
+        }
+        70% {
+          transform: scale(1.02);
+          box-shadow: 0 0 0 15px rgba(40, 167, 69, 0);
+        }
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(40, 167, 69, 0);
+        }
+      }
+      @keyframes ripple {
+        from {
+          transform: scale(0);
+          opacity: 1;
+        }
+        to {
+          transform: scale(3.5);
+          opacity: 0;
+        }
+      }
+      @keyframes spin {
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+      .pulse-button {
+        animation: pulseBlue 1.5s infinite;
+      }
+      .pulse-success {
+        animation: pulseGreen 1.5s infinite;
       }
       .dot {
         position: fixed;
@@ -132,6 +191,290 @@
         font-size: 26px;
         font-weight: 800;
       }
+      .form-control {
+        font-size: 16px;
+        padding: 12px 15px;
+        border-radius: 11px;
+        display: block;
+        font-family: inherit;
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto 15px auto;
+        border: 2px solid #e1e1e1;
+        text-align: center;
+        transition: all 0.3s ease;
+      }
+      .form-control:focus {
+        border-color: #0056b3;
+        box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+        outline: none;
+      }
+      .form-control:disabled,
+      select:disabled {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+        color: #999;
+      }
+      button {
+        background-color: #0056b3;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        width: 100%;
+        max-width: 350px;
+        margin: 0 auto;
+        display: block;
+        transition:
+          transform 0.18s,
+          box-shadow 0.18s,
+          background 0.18s;
+        position: relative;
+        overflow: hidden;
+        font-family: inherit;
+      }
+      button:hover:not(:disabled) {
+        background-color: #004494;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      button:active:not(:disabled) {
+        transform: translateY(1px);
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      button:disabled {
+        background-color: #6c757d !important;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+        animation: none;
+      }
+      .btn-text {
+        position: relative;
+        z-index: 2;
+      }
+      .ripple-span {
+        position: absolute;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.4);
+        transform: scale(0);
+        animation: ripple 0.6s ease-out forwards;
+        pointer-events: none;
+        z-index: 1;
+      }
+      .btn-success {
+        background-color: #28a745;
+        margin-top: 20px;
+        border-radius: 11px;
+      }
+      .btn-success:hover:not(:disabled) {
+        background-color: #218838;
+      }
+      .bulk-wrapper {
+        display: none;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin: 20px auto;
+        flex-wrap: wrap;
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        border: 1px dashed #0056b3;
+        width: 100%;
+        animation: popIn 0.5s ease-out;
+      }
+      .btn-danger {
+        background-color: #dc3545;
+        max-width: 140px;
+        margin: 0;
+        padding: 12px 15px;
+        border-radius: 11px;
+      }
+      .btn-danger:hover:not(:disabled) {
+        background-color: #c82333;
+      }
+      .btn-absent-all {
+        background-color: #fd7e14;
+        max-width: 140px;
+        margin: 0;
+        padding: 12px 15px;
+        border-radius: 11px;
+      }
+      .btn-absent-all:hover:not(:disabled) {
+        background-color: #e8590c;
+      }
+      .btn-reset-all {
+        background-color: #6c757d;
+        max-width: 140px;
+        margin: 0;
+        padding: 12px 15px;
+        border-radius: 11px;
+      }
+      .btn-reset-all:hover:not(:disabled) {
+        background-color: #5a6268;
+      }
+      .btn-clear-all {
+        background-color: #17a2b8;
+        max-width: 140px;
+        margin: 0;
+        padding: 12px 15px;
+        border-radius: 11px;
+      }
+      .btn-clear-all:hover:not(:disabled) {
+        background-color: #138496;
+      }
+      #tableControls {
+        display: none;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        margin-top: 20px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 10px 15px;
+        border: 1px solid #eee;
+        gap: 10px;
+      }
+      #searchContainer {
+        display: none;
+        width: 100%;
+        margin-top: 20px;
+        animation: popIn 0.5s ease-out;
+      }
+      table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+        margin-top: 10px;
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 1px solid #eee;
+        display: none;
+      }
+      th,
+      td {
+        border-bottom: 1px solid #eee;
+        border-left: 1px solid #eee;
+        padding: 15px;
+        text-align: center;
+      }
+      th:last-child,
+      td:last-child {
+        border-left: none;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      th {
+        background-color: #0056b3;
+        color: white;
+        font-weight: 700;
+      }
+      tbody tr {
+        transition: background 0.15s;
+      }
+      tbody tr:nth-child(even) {
+        background-color: #fbfbfb;
+      }
+      tbody tr:hover {
+        background: #eef4ff;
+      }
+      .row-anim {
+        animation: rowIn 0.35s ease forwards;
+        opacity: 0;
+      }
+      .score-input {
+        width: 100%;
+        max-width: 100px;
+        padding: 10px;
+        border-radius: 8px;
+        border: 2px solid #e1e1e1;
+        text-align: center;
+        font-family: inherit;
+        font-weight: bold;
+        direction: ltr;
+        margin: 0;
+        transition: 0.3s;
+      }
+      .score-input:focus {
+        border-color: #0056b3;
+        box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+        outline: none;
+        background-color: #eef4ff;
+      }
+      .score-input:disabled {
+        background-color: #f5f5f5;
+        cursor: not-allowed;
+        border-color: #ddd;
+        color: #666;
+      }
+      .error-border {
+        border-color: #b23a48 !important;
+        box-shadow: 0 0 0 3px rgba(178, 58, 72, 0.2) !important;
+        background-color: #fff0f0 !important;
+      }
+      .modified-input {
+        background-color: #e6f6ec !important;
+        border-color: #28a745 !important;
+        box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2) !important;
+      }
+      .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+      .absent-label {
+        font-weight: bold;
+        color: #b23a48;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 14px;
+        user-select: none;
+      }
+      .absent-checkbox {
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+        margin: 0;
+        accent-color: #b23a48;
+      }
+      .loader {
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #0056b3;
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 1s linear infinite;
+        margin: 20px auto;
+        display: none;
+      }
+      .status-message {
+        padding: 12px;
+        border-radius: 8px;
+        margin-top: 20px;
+        font-size: 16px;
+        font-weight: bold;
+        width: 100%;
+        animation: popIn 0.5s 0.1s ease-out both;
+        display: none;
+      }
+      .success-msg {
+        background-color: #008000;
+        color: #f2e8cf;
+        border: 1px solid #c3e6cb;
+      }
+      .error-msg {
+        background-color: #b23a48;
+        color: #fed0bb;
+        border: 1px solid #f5c6cb;
+      }
       .designer-credit {
         margin-top: 15px;
         font-size: 13px;
@@ -139,54 +482,149 @@
         text-align: center;
         font-weight: bold;
       }
-
-      .eid-message {
-        padding: 20px;
-        border-radius: 15px;
-        background: #fbfbfb;
-        border: 1px solid #eee;
-        margin-top: 15px;
-        margin-bottom: 15px;
-        animation: popIn 0.5s ease-out;
-      }
-      .eid-title {
-        color: #8f250c;
-        font-size: 24px;
-        font-weight: 800;
-        margin-top: 0;
-        margin-bottom: 15px;
-      }
-      .eid-text {
-        color: #4a4e69;
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 1.6;
-        margin-bottom: 20px;
-      }
-      .eid-announcement {
-        background-color: #eef4ff;
-        color: #0056b3;
-        padding: 20px;
+      .pagination-controls {
+        display: none;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        background: #f8f9fa;
+        padding: 10px 20px;
         border-radius: 10px;
-        font-size: 18px;
-        font-weight: 700;
-        line-height: 1.6;
-        border: 2px solid #d1e3ff;
+        border: 1px solid #eee;
+      }
+      .page-btn {
+        background-color: #4a4e69;
+        color: white;
+        padding: 8px 15px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: bold;
+        max-width: 100px;
+        margin: 0;
+      }
+      .page-btn:hover:not(:disabled) {
+        background-color: #333652;
+      }
+      .page-btn:disabled {
+        background-color: #ccc !important;
+        transform: none;
+        box-shadow: none;
+        animation: none;
+      }
+      .page-info {
+        font-weight: bold;
+        color: #0056b3;
+      }
+      .modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+        animation: fadeInPage 0.3s;
+      }
+      .modal-content {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        animation: popIn 0.3s ease-out;
+        max-width: 90%;
+        width: 400px;
+      }
+      .modal-title {
+        color: #0056b3;
+        font-size: 20px;
+        font-weight: bold;
         margin-bottom: 25px;
+        line-height: 1.5;
       }
-      .school-admin {
-        font-size: 18px;
-        font-weight: 800;
-        color: #28a745;
-        margin-bottom: 0;
+      .modal-buttons {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
       }
-
+      .btn-modal-confirm,
+      .btn-modal-cancel {
+        margin: 0;
+        padding: 10px 20px;
+        max-width: 120px;
+        border-radius: 11px;
+      }
+      .btn-modal-confirm {
+        background-color: #28a745;
+      }
+      .btn-modal-confirm:hover:not(:disabled) {
+        background-color: #218838;
+      }
+      .btn-modal-cancel {
+        background-color: #dc3545;
+      }
+      .btn-modal-cancel:hover:not(:disabled) {
+        background-color: #c82333;
+      }
+      .header-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        border-bottom: 2px solid #eee;
+        padding-bottom: 10px;
+      }
+      .teacher-name {
+        font-weight: bold;
+        color: #0056b3;
+        font-size: 15px;
+      }
+      .btn-logout {
+        background-color: #dc3545;
+        padding: 6px 12px;
+        font-size: 13px;
+        width: auto;
+        margin: 0;
+        border-radius: 8px;
+      }
+      .btn-logout:hover {
+        background-color: #c82333;
+      }
       @media (min-width: 768px) {
         .top-logos img {
           max-height: 160px;
         }
         .header-image img {
           max-width: 580px;
+        }
+        .bulk-wrapper {
+          gap: 8px;
+          padding: 15px 10px;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          justify-content: center;
+        }
+        .bulk-wrapper::-webkit-scrollbar {
+          height: 8px;
+        }
+        .bulk-wrapper::-webkit-scrollbar-thumb {
+          background-color: #0056b3;
+          border-radius: 10px;
+        }
+        .bulk-wrapper > * {
+          flex-shrink: 0;
+        }
+        .bulk-wrapper button {
+          max-width: 110px;
+          font-size: 14px;
+          padding: 10px 5px;
+        }
+        .bulk-wrapper span {
+          font-size: 14px !important;
         }
       }
       @media (max-width: 480px) {
@@ -203,13 +641,56 @@
         h2 {
           font-size: 22px;
         }
-        .eid-title {
-          font-size: 20px;
+        th,
+        td {
+          padding: 10px;
+          font-size: 14px;
         }
-        .eid-text,
-        .eid-announcement,
-        .school-admin {
-          font-size: 16px;
+        .form-control {
+          max-width: 100%;
+        }
+        .bulk-wrapper {
+          flex-direction: column !important;
+          gap: 10px !important;
+          padding: 15px !important;
+        }
+        .bulk-wrapper button {
+          width: 180px !important;
+          margin: 0 auto !important;
+          max-width: 100% !important;
+          display: block !important;
+          padding: 12px !important;
+          font-size: 15px !important;
+        }
+        .bulk-wrapper #bulkScoreInput {
+          width: 180px !important;
+          margin: 0 auto !important;
+        }
+        .bulk-wrapper span {
+          display: block !important;
+          width: 100% !important;
+          text-align: center !important;
+          margin-bottom: 5px !important;
+        }
+        #tableControls {
+          flex-direction: column;
+          justify-content: center;
+          text-align: center;
+        }
+        .pagination-controls {
+          flex-direction: column;
+          gap: 10px;
+        }
+        .modal-content {
+          padding: 20px;
+        }
+        .modal-buttons {
+          flex-direction: column;
+          gap: 10px;
+        }
+        .btn-modal-confirm,
+        .btn-modal-cancel {
+          max-width: 100%;
         }
       }
     </style>
@@ -270,7 +751,7 @@
       "
     ></div>
 
-    <div class="container">
+    <div class="container" id="loginContainer">
       <div class="top-logos">
         <img src="logo_2.webp" alt="وزارة التربية والتعليم" />
         <img src="logo_1.webp" alt="شعار المدرسة" />
@@ -278,30 +759,1384 @@
       <div class="header-image">
         <img src="logo_3.webp" alt="مدرسة الشهيد محمود علي الخطيب" />
       </div>
-      <h2>بوابة المعلمين لإدخال الدرجات</h2>
-
-      <div class="eid-message">
-        <h3 class="eid-title">🐑 كل عام وأنتم بخير 🌙</h3>
-        <p class="eid-text">
-          تتقدم إدارة مدرسة الشهيد محمود علي الخطيب الرسمية للغات بأسمى آيات
-          التهاني والتبريكات للسادة المعلمين وجميع العاملين بالمدرسة بمناسبة
-          حلول عيد الأضحى المبارك، أعاده الله علينا وعليكم بالخير واليمن
-          والبركات.
-        </p>
-
-        <div class="eid-announcement">
-          نود إعلامكم بأنه تم إيقاف العمل بالمنصة مؤقتاً خلال فترة الإجازة<br />
-          <strong>على أن يتم استئناف إدخال الدرجات وإعلان النتائج</strong><br />
-          بمشيئة الله تعالى عقب انتهاء إجازة عيد الأضحى المبارك.
-        </div>
-
-        <p class="school-admin">
-          مع تحيات<br />
-          إدارة المدرسة
-        </p>
-      </div>
-
+      <h2>تسجيل الدخول للمعلمين</h2>
+      <input
+        type="text"
+        id="usernameInput"
+        class="form-control"
+        placeholder="اسم المستخدم"
+        dir="rtl"
+        onkeydown="
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            document.getElementById('passwordInput').focus();
+          }
+        "
+      />
+      <input
+        type="password"
+        id="passwordInput"
+        class="form-control"
+        placeholder="كلمة المرور"
+        dir="ltr"
+        onkeydown="
+          if (event.key === 'Enter') {
+            event.preventDefault();
+            doLogin();
+          }
+        "
+      />
+      <button
+        id="loginBtn"
+        class="form-control pulse-button"
+        onclick="
+          addRipple(event, this);
+          doLogin();
+        "
+      >
+        <span class="btn-text">دخول المنصة</span>
+      </button>
+      <div class="loader" id="loginLoader"></div>
+      <div id="loginMessage" class="status-message"></div>
       <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
     </div>
+
+    <div class="container" id="mainContainer" style="display: none">
+      <div class="header-actions">
+        <span class="teacher-name" id="teacherNameDisplay"></span>
+        <button class="btn-logout" onclick="showLogoutConfirm()">
+          تسجيل خروج
+        </button>
+      </div>
+      <div class="top-logos">
+        <img src="logo_2.webp" alt="وزارة التربية والتعليم" />
+        <img src="logo_1.webp" alt="شعار المدرسة" />
+      </div>
+      <div class="header-image">
+        <img src="logo_3.webp" alt="مدرسة الشهيد محمود علي الخطيب" />
+      </div>
+      <h2>بوابة إدخال الدرجات</h2>
+
+      <select id="gradeSelect" class="form-control" onchange="showSections()">
+        <option value="">-- اختر الصف الدراسي --</option>
+        <option value="ثالث ابتدائي">الصف الثالث الابتدائي</option>
+        <option value="رابع ابتدائي">الصف الرابع الابتدائي</option>
+        <option value="خامس ابتدائي">الصف الخامس الابتدائي</option>
+        <option value="سادس ابتدائي">الصف السادس الابتدائي</option>
+        <option value="أول اعدادي">الصف الأول الإعدادي</option>
+        <option value="ثاني اعدادي">الصف الثاني الإعدادي</option>
+      </select>
+
+      <select
+        id="sectionSelect"
+        class="form-control"
+        style="display: none"
+        onchange="showSubjects()"
+      >
+        <option value="">-- اختر رقم الفصل --</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+      </select>
+
+      <select
+        id="subjectSelect"
+        class="form-control"
+        style="display: none"
+        onchange="showEvaluations()"
+      >
+        <option value="">-- اختر المادة --</option>
+      </select>
+
+      <select
+        id="evaluationSelect"
+        class="form-control"
+        style="display: none"
+        onchange="showSearchBtn()"
+      >
+        <option value="">-- اختر التقييم --</option>
+        <option value="تقييم_مارس">تقييمات شهر مارس</option>
+        <option value="امتحان_مارس">امتحانات شهر مارس</option>
+        <option value="تقييم_أبريل">تقييمات شهر أبريل</option>
+        <option value="امتحان_أبريل">امتحانات شهر أبريل</option>
+      </select>
+
+      <button
+        id="searchBtn"
+        class="form-control pulse-button"
+        style="display: none"
+        onclick="
+          addRipple(event, this);
+          fetchStudents();
+        "
+      >
+        <span class="btn-text">🔎 عرض كشف الطلاب</span>
+      </button>
+
+      <div id="inlineMessage" class="status-message"></div>
+      <div class="loader" id="mainLoader"></div>
+
+      <div id="bulkScoreDiv" class="bulk-wrapper">
+        <span style="font-weight: bold; color: #0056b3; font-size: 15px"
+          >تعميم درجة:</span
+        >
+        <input
+          type="text"
+          id="bulkScoreInput"
+          inputmode="numeric"
+          class="score-input"
+          placeholder="الدرجة"
+          style="max-width: 80px; margin: 0"
+        />
+        <button
+          class="btn-danger"
+          onclick="
+            addRipple(event, this);
+            showBulkConfirm();
+          "
+        >
+          <span class="btn-text">⚡ تطبيق</span>
+        </button>
+        <!--
+        <button
+          class="btn-clear-all"
+          onclick="addRipple(event, this); showClearConfirm()"
+        >
+          <span class="btn-text">🗑️ تفريغ الكل</span>
+        </button>
+        <button
+          class="btn-absent-all"
+          onclick="addRipple(event, this); showAbsentConfirm()"
+        >
+          <span class="btn-text">🚫 غياب للكل</span>
+        </button>
+        <button
+          class="btn-reset-all"
+          onclick="addRipple(event, this); showPresentConfirm()"
+        >
+          <span class="btn-text">🔄 حضور للكل</span>
+        </button>
+        -->
+      </div>
+
+      <div id="searchContainer">
+        <input
+          type="text"
+          id="liveSearchInput"
+          class="form-control"
+          placeholder="🔎 بحث باسم الطالب أو الرقم القومي..."
+          style="max-width: 100%; margin: 0"
+          oninput="filterTable()"
+        />
+      </div>
+
+      <div id="tableControls">
+        <div style="display: flex; align-items: center; gap: 10px">
+          <span style="font-weight: bold; color: #0056b3; font-size: 15px"
+            >عرض بالصفحة:</span
+          >
+          <select
+            id="rowsPerPageSelect"
+            class="form-control"
+            style="max-width: 80px; margin: 0; padding: 8px; text-align: center"
+            onchange="updateRowsPerPage()"
+          >
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30">30</option>
+            <option value="40">40</option>
+            <option value="50" selected>50</option>
+            <option value="10000">الكل</option>
+          </select>
+        </div>
+        <div
+          id="studentCountInfo"
+          style="font-weight: bold; color: #4a4e69; font-size: 14px"
+        ></div>
+      </div>
+
+      <table id="studentsTable">
+        <thead>
+          <tr>
+            <th style="width: 50px">م</th>
+            <th>اسم الطالب</th>
+            <th>الدرجة</th>
+          </tr>
+        </thead>
+        <tbody id="studentsBody"></tbody>
+      </table>
+
+      <div id="paginationDiv" class="pagination-controls">
+        <button
+          id="prevBtn"
+          class="page-btn"
+          onclick="
+            addRipple(event, this);
+            changePage(-1);
+          "
+        >
+          <span class="btn-text">السابق</span>
+        </button>
+        <span class="page-info"
+          >صفحة <span id="currentPageNum">1</span> من
+          <span id="totalPagesNum">1</span></span
+        >
+        <button
+          id="nextBtn"
+          class="page-btn"
+          onclick="
+            addRipple(event, this);
+            changePage(1);
+          "
+        >
+          <span class="btn-text">التالي</span>
+        </button>
+      </div>
+
+      <button
+        id="saveBtn"
+        class="form-control btn-success pulse-success"
+        style="display: none"
+        onclick="
+          addRipple(event, this);
+          saveData();
+        "
+      >
+        <span class="btn-text">💾 حفظ الدرجات</span>
+      </button>
+
+      <div id="saveMessage" class="status-message"></div>
+      <div class="designer-credit">تصميم وتنفيذ : سمير هلال</div>
+    </div>
+
+    <div id="customModal" class="modal-overlay">
+      <div class="modal-content">
+        <div class="modal-title" id="modalTitleText"></div>
+        <div class="modal-buttons">
+          <button
+            class="btn-modal-confirm"
+            onclick="
+              addRipple(event, this);
+              executeModalAction();
+            "
+          >
+            نعم
+          </button>
+          <button
+            class="btn-modal-cancel"
+            onclick="
+              addRipple(event, this);
+              closeBulkModal();
+            "
+          >
+            لا
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const APPS_SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbx8JBu5aQKAf3cKN9kEss8RiFHoW9DiqbgSlLO3JiIRxtXEzsJh3MU1sgIU2cVPP-rNkw/exec";
+
+      let allStudents = [];
+      let filteredStudents = [];
+      let currentPage = 1;
+      let rowsPerPage = 50;
+      let currentModalAction = "";
+      let highlightErrors = false;
+
+      const subjectsConfig = {
+        "ثالث ابتدائي": [
+          { name: "اللغة العربية", val: "عربي" },
+          { name: "الرياضيات", val: "رياضيات" },
+          { name: "التربية الدينية", val: "دين" },
+          { name: "اللغة الإنجليزية", val: "انجليزي" },
+          { name: "مستوى رفيع", val: "رفيع" },
+        ],
+        "رابع ابتدائي": [
+          { name: "اللغة العربية", val: "عربي" },
+          { name: "اللغة الإنجليزية", val: "انجليزي" },
+          { name: "التربية الدينية", val: "دين" },
+          { name: "الرياضيات", val: "رياضيات" },
+          { name: "العلوم", val: "علوم" },
+          { name: "الدراسات الاجتماعية", val: "دراسات" },
+          { name: "مستوى رفيع", val: "رفيع" },
+        ],
+        "خامس ابتدائي": [
+          { name: "اللغة العربية", val: "عربي" },
+          { name: "اللغة الإنجليزية", val: "انجليزي" },
+          { name: "التربية الدينية", val: "دين" },
+          { name: "الرياضيات", val: "رياضيات" },
+          { name: "العلوم", val: "علوم" },
+          { name: "الدراسات الاجتماعية", val: "دراسات" },
+          { name: "مستوى رفيع", val: "رفيع" },
+        ],
+        "سادس ابتدائي": [
+          { name: "اللغة العربية", val: "عربي" },
+          { name: "اللغة الإنجليزية", val: "انجليزي" },
+          { name: "التربية الدينية", val: "دين" },
+          { name: "الرياضيات", val: "رياضيات" },
+          { name: "العلوم", val: "علوم" },
+          { name: "الدراسات الاجتماعية", val: "دراسات" },
+          { name: "مستوى رفيع", val: "رفيع" },
+        ],
+        "أول اعدادي": [
+          { name: "اللغة العربية", val: "عربي" },
+          { name: "مستوى رفيع (لغة ثانية)", val: "رفيع 2" },
+          { name: "اللغة الإنجليزية", val: "انجليزي" },
+          { name: "الحاسب الآلي", val: "حاسب" },
+          { name: "الدراسات الاجتماعية", val: "دراسات" },
+          { name: "التربية الفنية", val: "رسم" },
+          { name: "الرياضيات", val: "رياضيات" },
+          { name: "التربية الدينية", val: "دين" },
+          { name: "العلوم", val: "علوم" },
+          { name: "مستوى رفيع (لغة أولى)", val: "رفيع 1" },
+        ],
+        "ثاني اعدادي": [
+          { name: "اللغة العربية", val: "عربي" },
+          { name: "مستوى رفيع (لغة ثانية)", val: "رفيع 2" },
+          { name: "اللغة الإنجليزية", val: "انجليزي" },
+          { name: "الحاسب الآلي", val: "حاسب" },
+          { name: "الدراسات الاجتماعية", val: "دراسات" },
+          { name: "التربية الفنية", val: "رسم" },
+          { name: "الرياضيات", val: "رياضيات" },
+          { name: "التربية الدينية", val: "دين" },
+          { name: "العلوم", val: "علوم" },
+          { name: "مستوى رفيع (لغة أولى)", val: "رفيع 1" },
+        ],
+      };
+
+      window.addEventListener("beforeunload", function (e) {
+        const hasChanges = allStudents.some((s) => s.score !== s.originalScore);
+        if (hasChanges) {
+          e.preventDefault();
+          e.returnValue = "";
+        }
+      });
+
+      window.onload = function () {
+        checkAuth();
+      };
+
+      function checkAuth() {
+        const authData = localStorage.getItem("alkhateeb_auth");
+        if (authData) {
+          const auth = JSON.parse(authData);
+          document.getElementById("loginContainer").style.display = "none";
+          document.getElementById("mainContainer").style.display = "block";
+          document.getElementById("teacherNameDisplay").innerText =
+            "أهلاً بك: " + auth.name;
+          restoreStateLocally();
+        } else {
+          document.getElementById("loginContainer").style.display = "block";
+          document.getElementById("mainContainer").style.display = "none";
+        }
+      }
+
+      function handleSessionExpired() {
+        localStorage.removeItem("alkhateeb_auth");
+        document.getElementById("mainContainer").style.display = "none";
+        document.getElementById("loginContainer").style.display = "block";
+        const msgDiv = document.getElementById("loginMessage");
+        msgDiv.innerText =
+          "⏳ انتهت صلاحية الجلسة، يرجى تسجيل الدخول مجدداً لاستكمال عملك.";
+        msgDiv.className = "status-message error-msg";
+        msgDiv.style.display = "block";
+      }
+
+      function doLogin() {
+        const userInput = document.getElementById("usernameInput");
+        const passInput = document.getElementById("passwordInput");
+        const user = userInput.value.trim();
+        const pass = passInput.value.trim();
+        const msgDiv = document.getElementById("loginMessage");
+        const btn = document.getElementById("loginBtn");
+        const loader = document.getElementById("loginLoader");
+
+        if (!user || !pass) {
+          msgDiv.innerText = "يرجى إدخال اسم المستخدم وكلمة المرور.";
+          msgDiv.className = "status-message error-msg";
+          msgDiv.style.display = "block";
+          return;
+        }
+        msgDiv.style.display = "none";
+        btn.disabled = true;
+        userInput.disabled = true;
+        passInput.disabled = true;
+        btn.classList.remove("pulse-button");
+        btn.querySelector(".btn-text").innerText = "جاري التحقق...";
+        loader.style.display = "block";
+
+        const payload = { action: "login", username: user, password: pass };
+        fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            loader.style.display = "none";
+            btn.disabled = false;
+            btn.classList.add("pulse-button");
+            btn.querySelector(".btn-text").innerText = "دخول المنصة";
+            if (data.status === "success") {
+              localStorage.setItem(
+                "alkhateeb_auth",
+                JSON.stringify({ token: data.token, name: data.teacherName }),
+              );
+              userInput.disabled = false;
+              passInput.disabled = false;
+              userInput.value = "";
+              passInput.value = "";
+              checkAuth();
+            } else {
+              userInput.disabled = false;
+              passInput.disabled = false;
+              msgDiv.innerText = data.message;
+              msgDiv.className = "status-message error-msg";
+              msgDiv.style.display = "block";
+            }
+          })
+          .catch((error) => {
+            loader.style.display = "none";
+            btn.disabled = false;
+            userInput.disabled = false;
+            passInput.disabled = false;
+            btn.classList.add("pulse-button");
+            btn.querySelector(".btn-text").innerText = "دخول المنصة";
+            msgDiv.innerText = "حدث خطأ في الاتصال، يرجى المحاولة مرة أخرى.";
+            msgDiv.className = "status-message error-msg";
+            msgDiv.style.display = "block";
+          });
+      }
+
+      function executeLogout() {
+        const authData = localStorage.getItem("alkhateeb_auth");
+        if (authData) {
+          const auth = JSON.parse(authData);
+          fetch(APPS_SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action: "logout", token: auth.token }),
+          }).catch((e) => console.log(e));
+        }
+        allStudents = [];
+        localStorage.removeItem("alkhateeb_auth");
+        localStorage.removeItem("alkhateeb_grades_draft");
+        location.reload();
+      }
+
+      function escapeHTML(str) {
+        if (str === null || str === undefined) return "";
+        return String(str).replace(/[&<>'"]/g, function (tag) {
+          const chars = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "'": "&#39;",
+            '"': "&quot;",
+          };
+          return chars[tag] || tag;
+        });
+      }
+
+      function updateRowsPerPage() {
+        rowsPerPage = parseInt(
+          document.getElementById("rowsPerPageSelect").value,
+        );
+        currentPage = 1;
+        saveStateLocally();
+        renderTable();
+      }
+
+      function saveStateLocally() {
+        if (allStudents.length === 0) return;
+        const state = {
+          grade: document.getElementById("gradeSelect").value,
+          section: document.getElementById("sectionSelect").value,
+          subject: document.getElementById("subjectSelect").value,
+          evaluation: document.getElementById("evaluationSelect").value,
+          students: allStudents,
+          currentPage: currentPage,
+          rowsPerPage: rowsPerPage,
+          timestamp: Date.now(),
+        };
+        localStorage.setItem("alkhateeb_grades_draft", JSON.stringify(state));
+      }
+
+      function restoreStateLocally() {
+        const draft = localStorage.getItem("alkhateeb_grades_draft");
+        if (draft) {
+          try {
+            const state = JSON.parse(draft);
+            const now = Date.now();
+            const expirationTime = 8 * 60 * 60 * 1000;
+            if (!state.timestamp || now - state.timestamp > expirationTime) {
+              localStorage.removeItem("alkhateeb_grades_draft");
+              return;
+            }
+            if (state.students && state.students.length > 0) {
+              allStudents = state.students;
+              filteredStudents = [...allStudents];
+              currentPage = state.currentPage || 1;
+              if (state.rowsPerPage) {
+                rowsPerPage = state.rowsPerPage;
+                document.getElementById("rowsPerPageSelect").value =
+                  rowsPerPage;
+              } else {
+                document.getElementById("rowsPerPageSelect").value = 50;
+              }
+
+              const gradeSelect = document.getElementById("gradeSelect");
+              const sectionSelect = document.getElementById("sectionSelect");
+              const subjectSelect = document.getElementById("subjectSelect");
+              const evaluationSelect =
+                document.getElementById("evaluationSelect");
+
+              gradeSelect.value = state.grade;
+              sectionSelect.style.display = "block";
+              sectionSelect.value = state.section;
+
+              populateSubjects(state.grade);
+              subjectSelect.style.display = "block";
+              subjectSelect.value = state.subject;
+
+              evaluationSelect.style.display = "block";
+              evaluationSelect.value = state.evaluation;
+
+              document.getElementById("searchBtn").style.display = "block";
+              document.getElementById("bulkScoreDiv").style.display = "flex";
+              document.getElementById("searchContainer").style.display =
+                "block";
+              document.getElementById("tableControls").style.display = "flex";
+
+              const saveBtn = document.getElementById("saveBtn");
+              saveBtn.disabled = false;
+              saveBtn.style.display = "block";
+              saveBtn.onclick = function (event) {
+                addRipple(event, this);
+                saveData();
+              };
+              saveBtn.className = "form-control btn-success pulse-success";
+
+              renderTable();
+              document.getElementById("studentsTable").style.display = "table";
+            }
+          } catch (e) {
+            localStorage.removeItem("alkhateeb_grades_draft");
+          }
+        }
+      }
+
+      function addRipple(e, btn) {
+        if (btn.disabled) return;
+        const rect = btn.getBoundingClientRect();
+        let x, y;
+        if (e.clientX !== undefined && e.clientX !== 0) {
+          x = e.clientX - rect.left;
+          y = e.clientY - rect.top;
+        } else if (e.touches && e.touches.length > 0) {
+          x = e.touches[0].clientX - rect.left;
+          y = e.touches[0].clientY - rect.top;
+        } else {
+          x = rect.width / 2;
+          y = rect.height / 2;
+        }
+        const size = Math.max(rect.width, rect.height);
+        const span = document.createElement("span");
+        span.className = "ripple-span";
+        span.style.width = span.style.height = size + "px";
+        span.style.left = x - size / 2 + "px";
+        span.style.top = y - size / 2 + "px";
+        btn.appendChild(span);
+        setTimeout(() => span.remove(), 600);
+      }
+
+      function convertToEnglishNumbers(str) {
+        const arabicNumbers = [
+          "٠",
+          "١",
+          "٢",
+          "٣",
+          "٤",
+          "٥",
+          "٦",
+          "٧",
+          "٨",
+          "٩",
+        ];
+        let englishStr = String(str).replace(/[٠-٩]/g, function (w) {
+          return arabicNumbers.indexOf(w);
+        });
+        return englishStr.replace(/[^0-9.]/g, "");
+      }
+
+      function filterTable() {
+        const term = document
+          .getElementById("liveSearchInput")
+          .value.toLowerCase();
+        filteredStudents = allStudents.filter(
+          (s) =>
+            String(s.name).toLowerCase().includes(term) ||
+            String(s.id).includes(term),
+        );
+        currentPage = 1;
+        renderTable();
+      }
+
+      function handleScoreInput(studentId, inputEl) {
+        inputEl.classList.remove("error-border");
+        let cleanedStr = convertToEnglishNumbers(inputEl.value);
+        if (cleanedStr !== "") {
+          let num = parseFloat(cleanedStr);
+          if (num > 100) cleanedStr = "";
+        }
+        inputEl.value = cleanedStr;
+        updateStudentScore(studentId, cleanedStr);
+        checkModifiedState(studentId, inputEl);
+      }
+
+      function toggleAbsence(studentId, isChecked) {
+        const inputEl = document.getElementById("score_" + studentId);
+        inputEl.classList.remove("error-border");
+        if (isChecked) {
+          inputEl.value = "غائب";
+          inputEl.disabled = true;
+          updateStudentScore(studentId, "غائب");
+        } else {
+          inputEl.value = "";
+          inputEl.disabled = false;
+          updateStudentScore(studentId, "");
+          inputEl.focus();
+        }
+        checkModifiedState(studentId, inputEl);
+      }
+
+      function checkModifiedState(studentId, inputEl) {
+        const student = allStudents.find(
+          (s) => String(s.id) === String(studentId),
+        );
+        if (student) {
+          if (
+            student.score !== student.originalScore &&
+            !student.suppressGreen
+          ) {
+            inputEl.classList.add("modified-input");
+          } else {
+            inputEl.classList.remove("modified-input");
+          }
+        }
+        updateSaveButton();
+      }
+
+      function updateSaveButton() {
+        const saveBtn = document.getElementById("saveBtn");
+        const saveBtnText = document.querySelector("#saveBtn .btn-text");
+        if (!saveBtnText) return;
+        const modifiedCount = allStudents.filter(
+          (s) => s.score !== s.originalScore,
+        ).length;
+        if (modifiedCount === 0) {
+          saveBtnText.innerText = "💾 حفظ الدرجات";
+          saveBtn.classList.remove("pulse-success");
+        } else {
+          saveBtn.classList.add("pulse-success");
+          if (modifiedCount === 1)
+            saveBtnText.innerText = "💾 حفظ درجة طالب واحد";
+          else if (modifiedCount === 2)
+            saveBtnText.innerText = "💾 حفظ درجات طالبين";
+          else if (modifiedCount >= 3 && modifiedCount <= 10)
+            saveBtnText.innerText = "💾 حفظ درجات " + modifiedCount + " طلاب";
+          else
+            saveBtnText.innerText = "💾 حفظ درجات " + modifiedCount + " طالب";
+        }
+      }
+
+      function hideTableAndMessages() {
+        document.getElementById("inlineMessage").style.display = "none";
+        document.getElementById("saveMessage").style.display = "none";
+        document.getElementById("studentsTable").style.display = "none";
+        document.getElementById("tableControls").style.display = "none";
+        document.getElementById("searchContainer").style.display = "none";
+        document.getElementById("paginationDiv").style.display = "none";
+        document.getElementById("saveBtn").style.display = "none";
+        document.getElementById("bulkScoreDiv").style.display = "none";
+      }
+
+      function populateSubjects(grade) {
+        const subjectSelect = document.getElementById("subjectSelect");
+        subjectSelect.innerHTML = '<option value="">-- اختر المادة --</option>';
+        if (subjectsConfig[grade]) {
+          subjectsConfig[grade].forEach((subj) => {
+            let option = document.createElement("option");
+            option.value = subj.val;
+            option.text = subj.name;
+            subjectSelect.appendChild(option);
+          });
+        }
+      }
+
+      function showSections() {
+        hideTableAndMessages();
+        const grade = document.getElementById("gradeSelect").value;
+        const sectionSelect = document.getElementById("sectionSelect");
+        const subjectSelect = document.getElementById("subjectSelect");
+        const evaluationSelect = document.getElementById("evaluationSelect");
+        const searchBtn = document.getElementById("searchBtn");
+
+        sectionSelect.value = "";
+        subjectSelect.value = "";
+        evaluationSelect.value = "";
+        subjectSelect.style.display = "none";
+        evaluationSelect.style.display = "none";
+        searchBtn.style.display = "none";
+
+        if (grade !== "") {
+          populateSubjects(grade);
+          sectionSelect.style.display = "block";
+          sectionSelect.style.animation = "slideInUp 0.3s ease-out";
+        } else {
+          sectionSelect.style.display = "none";
+        }
+      }
+
+      function showSubjects() {
+        hideTableAndMessages();
+        const section = document.getElementById("sectionSelect").value;
+        const subjectSelect = document.getElementById("subjectSelect");
+        const evaluationSelect = document.getElementById("evaluationSelect");
+        const searchBtn = document.getElementById("searchBtn");
+
+        subjectSelect.value = "";
+        evaluationSelect.value = "";
+        evaluationSelect.style.display = "none";
+        searchBtn.style.display = "none";
+
+        if (section !== "") {
+          subjectSelect.style.display = "block";
+          subjectSelect.style.animation = "slideInUp 0.3s ease-out";
+        } else {
+          subjectSelect.style.display = "none";
+        }
+      }
+
+      function showEvaluations() {
+        hideTableAndMessages();
+        const subject = document.getElementById("subjectSelect").value;
+        const evaluationSelect = document.getElementById("evaluationSelect");
+        const searchBtn = document.getElementById("searchBtn");
+
+        evaluationSelect.value = "";
+        searchBtn.style.display = "none";
+
+        if (subject !== "") {
+          evaluationSelect.style.display = "block";
+          evaluationSelect.style.animation = "slideInUp 0.3s ease-out";
+        } else {
+          evaluationSelect.style.display = "none";
+        }
+      }
+
+      function showSearchBtn() {
+        hideTableAndMessages();
+        const evaluation = document.getElementById("evaluationSelect").value;
+        const searchBtn = document.getElementById("searchBtn");
+        if (evaluation !== "") {
+          searchBtn.style.display = "block";
+          searchBtn.style.animation = "slideInUp 0.3s ease-out";
+          setTimeout(function () {
+            searchBtn.style.animation = "";
+          }, 300);
+        } else {
+          searchBtn.style.display = "none";
+        }
+      }
+
+      function showMessage(text, isError = false) {
+        const msgDiv = document.getElementById("inlineMessage");
+        msgDiv.innerText = text;
+        msgDiv.className = isError
+          ? "status-message error-msg"
+          : "status-message success-msg";
+        msgDiv.style.display = "block";
+      }
+
+      function showSaveMessage(content, isError = false) {
+        const msgDiv = document.getElementById("saveMessage");
+        msgDiv.innerHTML = content;
+        msgDiv.className = isError
+          ? "status-message error-msg"
+          : "status-message success-msg";
+        msgDiv.style.display = "block";
+      }
+
+      function showBulkConfirm() {
+        const inputEl = document.getElementById("bulkScoreInput");
+        let cleanedStr = convertToEnglishNumbers(inputEl.value);
+        if (cleanedStr !== "") {
+          let num = parseFloat(cleanedStr);
+          if (num > 100) {
+            inputEl.value = "";
+            showMessage("الدرجة لا يمكن أن تتجاوز 100", true);
+            return;
+          }
+          currentModalAction = "bulkScore";
+          document.getElementById("modalTitleText").innerText =
+            "هل تريد بالتأكيد تعميم هذه الدرجة على جميع الطلاب الحاضرين؟";
+          document.getElementById("customModal").style.display = "flex";
+        } else {
+          showMessage("⚠️ يرجى إدخال درجة صالحة أولاً.", true);
+        }
+      }
+
+      function showAbsentConfirm() {
+        currentModalAction = "bulkAbsent";
+        document.getElementById("modalTitleText").innerText =
+          "هل تريد بالتأكيد تسجيل غياب لجميع الطلاب؟";
+        document.getElementById("customModal").style.display = "flex";
+      }
+
+      function showPresentConfirm() {
+        currentModalAction = "allPresent";
+        document.getElementById("modalTitleText").innerText =
+          "هل تريد بالتأكيد إلغاء الغياب لجميع الطلاب ليصبحوا حاضرين؟";
+        document.getElementById("customModal").style.display = "flex";
+      }
+
+      function showClearConfirm() {
+        currentModalAction = "clearAll";
+        document.getElementById("modalTitleText").innerText =
+          "هل تريد بالتأكيد مسح جميع الدرجات وتفريغ الحقول بالكامل؟";
+        document.getElementById("customModal").style.display = "flex";
+      }
+
+      function showLogoutConfirm() {
+        const hasChanges = allStudents.some((s) => s.score !== s.originalScore);
+        if (hasChanges) {
+          currentModalAction = "logout";
+          document.getElementById("modalTitleText").innerText =
+            "⚠️ لديك درجات لم يتم حفظها! هل أنت متأكد أنك تريد تسجيل الخروج وإلغاء تعديلاتك؟";
+          document.getElementById("customModal").style.display = "flex";
+        } else {
+          executeLogout();
+        }
+      }
+
+      function executeModalAction() {
+        if (currentModalAction === "bulkScore") confirmBulkScore();
+        else if (currentModalAction === "bulkAbsent") confirmBulkAbsent();
+        else if (currentModalAction === "allPresent") confirmAllPresent();
+        else if (currentModalAction === "clearAll") confirmClearAll();
+        else if (currentModalAction === "logout") executeLogout();
+      }
+
+      function confirmBulkAbsent() {
+        for (let i = 0; i < allStudents.length; i++) {
+          allStudents[i].score = "غائب";
+          allStudents[i].suppressGreen = true;
+        }
+        filteredStudents = [...allStudents];
+        closeBulkModal();
+        renderTable();
+        saveStateLocally();
+        showMessage("✅ تم تسجيل غياب جميع الطلاب بنجاح.", false);
+      }
+
+      function confirmAllPresent() {
+        for (let i = 0; i < allStudents.length; i++) {
+          if (allStudents[i].score === "غ" || allStudents[i].score === "غائب") {
+            allStudents[i].score = "";
+            allStudents[i].suppressGreen = true;
+          }
+        }
+        filteredStudents = [...allStudents];
+        closeBulkModal();
+        renderTable();
+        saveStateLocally();
+        showMessage(
+          "✅ تم إلغاء الغياب وتحويل الطلاب إلى حاضرين بنجاح.",
+          false,
+        );
+      }
+
+      function confirmClearAll() {
+        for (let i = 0; i < allStudents.length; i++) {
+          if (allStudents[i].score !== "غ" && allStudents[i].score !== "غائب") {
+            allStudents[i].score = "";
+            allStudents[i].suppressGreen = true;
+          }
+        }
+        filteredStudents = [...allStudents];
+        highlightErrors = false;
+        closeBulkModal();
+        renderTable();
+        saveStateLocally();
+        showMessage("✅ تم تفريغ الحقول بنجاح.", false);
+      }
+
+      function confirmBulkScore() {
+        const inputEl = document.getElementById("bulkScoreInput");
+        let cleanedStr = convertToEnglishNumbers(inputEl.value);
+        for (let i = 0; i < allStudents.length; i++) {
+          if (allStudents[i].score !== "غ" && allStudents[i].score !== "غائب") {
+            allStudents[i].score = cleanedStr;
+            allStudents[i].suppressGreen = false;
+          }
+        }
+        filteredStudents = [...allStudents];
+        inputEl.value = "";
+        closeBulkModal();
+        renderTable();
+        saveStateLocally();
+        showMessage(
+          "✅ تم تعميم الدرجة بنجاح على جميع الطلاب الحاضرين.",
+          false,
+        );
+      }
+
+      function closeBulkModal() {
+        document.getElementById("customModal").style.display = "none";
+        currentModalAction = "";
+      }
+
+      function fetchStudents() {
+        const authData = localStorage.getItem("alkhateeb_auth");
+        if (!authData) {
+          checkAuth();
+          return;
+        }
+        const auth = JSON.parse(authData);
+
+        const gradeSelect = document.getElementById("gradeSelect");
+        const sectionSelect = document.getElementById("sectionSelect");
+        const subjectSelect = document.getElementById("subjectSelect");
+        const evaluationSelect = document.getElementById("evaluationSelect");
+        const searchBtn = document.getElementById("searchBtn");
+        const loader = document.getElementById("mainLoader");
+        const searchBtnText = searchBtn.querySelector(".btn-text");
+
+        const grade = gradeSelect.value;
+        const section = sectionSelect.value;
+        const subject = subjectSelect.value;
+
+        const evalValue = evaluationSelect.value;
+        const [examType, month] = evalValue.split("_");
+
+        hideTableAndMessages();
+        loader.style.display = "block";
+        searchBtn.disabled = true;
+        searchBtn.classList.remove("pulse-button");
+        searchBtnText.innerText = "⏳ جاري البحث...";
+
+        gradeSelect.disabled = true;
+        sectionSelect.disabled = true;
+        subjectSelect.disabled = true;
+        evaluationSelect.disabled = true;
+
+        const payload = {
+          action: "getStudents",
+          token: auth.token,
+          grade: grade,
+          section: section,
+          subject: subject,
+          month: month,
+          examType: examType,
+        };
+
+        fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            loader.style.display = "none";
+            searchBtn.disabled = false;
+            searchBtn.classList.add("pulse-button");
+            searchBtnText.innerText = "🔎 عرض كشف الطلاب";
+
+            gradeSelect.disabled = false;
+            sectionSelect.disabled = false;
+            subjectSelect.disabled = false;
+            evaluationSelect.disabled = false;
+
+            if (data.status === "error") {
+              if (data.message.includes("موقوف")) {
+                executeLogout();
+                return;
+              }
+              if (
+                data.message.includes("منتهية") ||
+                data.message.includes("غير صالحة")
+              ) {
+                handleSessionExpired();
+                return;
+              }
+              showMessage(data.message, true);
+              return;
+            }
+            if (data.students.length === 0) {
+              showMessage("لا يوجد طلاب مسجلين طبقًا للخيارات السابقة.", true);
+              return;
+            }
+
+            allStudents = data.students.map((s) => ({
+              ...s,
+              originalScore: String(s.score).trim(),
+              score: String(s.score).trim(),
+              suppressGreen: false,
+            }));
+            document.getElementById("liveSearchInput").value = "";
+            filteredStudents = [...allStudents];
+            currentPage = 1;
+            highlightErrors = false;
+
+            const saveBtn = document.getElementById("saveBtn");
+            saveBtn.disabled = false;
+            saveBtn.onclick = function (event) {
+              addRipple(event, this);
+              saveData();
+            };
+            saveBtn.className = "form-control btn-success pulse-success";
+
+            document.getElementById("bulkScoreInput").value = "";
+            document.getElementById("bulkScoreDiv").style.display = "flex";
+            document.getElementById("searchContainer").style.display = "block";
+            document.getElementById("tableControls").style.display = "flex";
+
+            renderTable();
+            saveStateLocally();
+            document.getElementById("studentsTable").style.display = "table";
+            saveBtn.style.display = "block";
+
+            setTimeout(() => {
+              const firstInput = document.querySelector(
+                ".student-score:not(:disabled)",
+              );
+              if (firstInput) {
+                firstInput.focus();
+                firstInput.select();
+              }
+            }, 100);
+          })
+          .catch((error) => {
+            loader.style.display = "none";
+            searchBtn.disabled = false;
+            searchBtn.classList.add("pulse-button");
+            searchBtnText.innerText = "🔎 عرض كشف الطلاب";
+            gradeSelect.disabled = false;
+            sectionSelect.disabled = false;
+            subjectSelect.disabled = false;
+            evaluationSelect.disabled = false;
+            showMessage("حدث خطأ في الاتصال بقاعدة البيانات.", true);
+          });
+      }
+
+      function renderTable() {
+        const tbody = document.getElementById("studentsBody");
+        tbody.innerHTML = "";
+        const totalPages = Math.ceil(filteredStudents.length / rowsPerPage);
+        document.getElementById("currentPageNum").innerText = currentPage;
+        document.getElementById("totalPagesNum").innerText =
+          totalPages > 0 ? totalPages : 1;
+        const pagination = document.getElementById("paginationDiv");
+
+        if (totalPages > 1) {
+          pagination.style.display = "flex";
+          document.getElementById("prevBtn").disabled = currentPage === 1;
+          document.getElementById("nextBtn").disabled =
+            currentPage === totalPages;
+        } else {
+          pagination.style.display = "none";
+        }
+
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = Math.min(start + rowsPerPage, filteredStudents.length);
+        const pageStudents = filteredStudents.slice(start, end);
+
+        document.getElementById("studentCountInfo").innerText =
+          `إجمالي الطلاب: ${allStudents.length} | الظاهر بالصفحة: ${pageStudents.length}`;
+
+        pageStudents.forEach((student, index) => {
+          const isAbsent = student.score === "غ" || student.score === "غائب";
+
+          let displayScore = student.score;
+          if (isAbsent) displayScore = "غائب";
+
+          const isEmpty =
+            student.score === "" ||
+            student.score === null ||
+            student.score === undefined;
+          const isErrorClass =
+            highlightErrors && !isAbsent && isEmpty ? "error-border" : "";
+          const isModifiedClass =
+            student.score !== student.originalScore && !student.suppressGreen
+              ? "modified-input"
+              : "";
+          const isDisabled = isAbsent ? "disabled" : "";
+
+          const row = document.createElement("tr");
+          row.id = "row_" + student.id;
+          row.className = "row-anim";
+          row.style.animationDelay = `${Math.min(index * 0.02, 0.4)}s`;
+
+          row.innerHTML = `
+            <td style='font-weight:bold; color:#6c757d; width: 50px;'>${
+              start + index + 1
+            }</td>
+            <td style='font-weight:600; color:#0056b3; vertical-align: middle;'>${escapeHTML(
+              student.name,
+            )}</td>
+            <td>
+              <div class="checkbox-wrapper">
+                <input type='text' inputmode='numeric' class='score-input student-score ${isErrorClass} ${isModifiedClass}' placeholder='الدرجة' value='${escapeHTML(
+                  displayScore,
+                )}' 
+                       id='score_${escapeHTML(
+                         student.id,
+                       )}' ${isDisabled} onfocus='this.select()' oninput='handleScoreInput("${escapeHTML(
+                         student.id,
+                       )}", this)' onkeydown='handleEnter(event, this)'>
+                <label class="absent-label"><input type='checkbox' class='absent-checkbox' ${
+                  isAbsent ? "checked" : ""
+                } onchange='toggleAbsence("${escapeHTML(
+                  student.id,
+                )}", this.checked)'> غائب</label>
+              </div>
+            </td>
+          `;
+          tbody.appendChild(row);
+        });
+        updateSaveButton();
+      }
+
+      function changePage(direction) {
+        currentPage += direction;
+        saveStateLocally();
+        renderTable();
+      }
+
+      function updateStudentScore(studentId, value) {
+        const student = allStudents.find(
+          (s) => String(s.id) === String(studentId),
+        );
+        if (student) {
+          student.score = value;
+          student.suppressGreen = false;
+          saveStateLocally();
+        }
+      }
+
+      function handleEnter(event, currentInput) {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          const inputs = Array.from(
+            document.getElementsByClassName("student-score"),
+          );
+          const currentIndex = inputs.indexOf(currentInput);
+          const totalPages = Math.ceil(filteredStudents.length / rowsPerPage);
+          let nextIndex = currentIndex + 1;
+          while (nextIndex < inputs.length && inputs[nextIndex].disabled) {
+            nextIndex++;
+          }
+          if (nextIndex < inputs.length) {
+            inputs[nextIndex].focus();
+            inputs[nextIndex].select();
+          } else {
+            if (currentPage < totalPages) {
+              changePage(1);
+              setTimeout(() => {
+                const newInputs = Array.from(
+                  document.getElementsByClassName("student-score"),
+                );
+                let firstEnabledIndex = 0;
+                while (
+                  firstEnabledIndex < newInputs.length &&
+                  newInputs[firstEnabledIndex].disabled
+                ) {
+                  firstEnabledIndex++;
+                }
+                if (firstEnabledIndex < newInputs.length) {
+                  newInputs[firstEnabledIndex].focus();
+                  newInputs[firstEnabledIndex].select();
+                }
+              }, 50);
+            } else {
+              saveData();
+            }
+          }
+        }
+      }
+
+      function saveData() {
+        const authData = localStorage.getItem("alkhateeb_auth");
+        if (!authData) {
+          checkAuth();
+          return;
+        }
+        const auth = JSON.parse(authData);
+        const saveBtn = document.getElementById("saveBtn");
+        const saveBtnText = saveBtn.querySelector(".btn-text");
+        if (saveBtn.disabled) return;
+
+        let emptyStudentId = null;
+        for (let i = 0; i < allStudents.length; i++) {
+          if (
+            allStudents[i].score === "" ||
+            allStudents[i].score === null ||
+            allStudents[i].score === undefined
+          ) {
+            emptyStudentId = allStudents[i].id;
+            break;
+          }
+        }
+
+        if (emptyStudentId !== null) {
+          document.getElementById("liveSearchInput").value = "";
+          filterTable();
+          const indexInFiltered = filteredStudents.findIndex(
+            (s) => String(s.id) === String(emptyStudentId),
+          );
+          highlightErrors = true;
+          if (indexInFiltered !== -1) {
+            const targetPage = Math.floor(indexInFiltered / rowsPerPage) + 1;
+            if (currentPage !== targetPage) {
+              currentPage = targetPage;
+            }
+          }
+          renderTable();
+          showSaveMessage("⚠️ يرجى إدخال جميع الدرجات، توجد حقول فارغة!", true);
+          setTimeout(() => {
+            const emptyInput = document.getElementById(
+              "score_" + emptyStudentId,
+            );
+            if (emptyInput && !emptyInput.disabled) {
+              emptyInput.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
+              emptyInput.focus({ preventScroll: true });
+            }
+          }, 100);
+          return;
+        }
+
+        const modifiedStudents = allStudents.filter(
+          (s) => s.score !== s.originalScore,
+        );
+
+        if (modifiedStudents.length === 0) {
+          showSaveMessage("لا توجد تغييرات لحفظها.", false);
+          saveBtn.disabled = false;
+          saveBtn.classList.add("pulse-success");
+          saveBtnText.innerText = "💾 حفظ الدرجات";
+          return;
+        }
+
+        highlightErrors = false;
+        document.getElementById("inlineMessage").style.display = "none";
+        document.getElementById("saveMessage").style.display = "none";
+        saveBtn.disabled = true;
+        saveBtn.classList.remove("pulse-success");
+        saveBtnText.innerText = "⏳ جاري الحفظ...";
+
+        const evalValue = document.getElementById("evaluationSelect").value;
+        const [examType, month] = evalValue.split("_");
+
+        const payload = {
+          action: "saveGrades",
+          token: auth.token,
+          grade: document.getElementById("gradeSelect").value,
+          section: document.getElementById("sectionSelect").value,
+          subject: document.getElementById("subjectSelect").value,
+          month: month,
+          examType: examType,
+          gradesData: modifiedStudents,
+        };
+
+        fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "success") {
+              allStudents.forEach((s) => {
+                s.originalScore = s.score;
+                s.suppressGreen = false;
+              });
+              localStorage.removeItem("alkhateeb_grades_draft");
+
+              const gradeSel = document.getElementById("gradeSelect");
+              const subjSel = document.getElementById("subjectSelect");
+              const evalSel = document.getElementById("evaluationSelect");
+
+              const gradeText = gradeSel.options[gradeSel.selectedIndex].text;
+              const sectionText =
+                document.getElementById("sectionSelect").value;
+              const subjectText = subjSel.options[subjSel.selectedIndex].text;
+              const evalText = evalSel.options[evalSel.selectedIndex].text;
+              const savedCount = modifiedStudents.length;
+
+              const summaryHTML = `
+                ✅ تم حفظ درجات <strong>${savedCount}</strong> طالب بنجاح!<br>
+                <span style="font-size: 14px; font-weight: normal; margin-top: 8px; display: inline-block; color: #d4edda;">
+                  📑 ${gradeText} - فصل ${sectionText} | 📚 ${subjectText} | 📅 ${evalText}
+                </span>
+              `;
+
+              document.getElementById("studentsTable").style.display = "none";
+              document.getElementById("tableControls").style.display = "none";
+              document.getElementById("searchContainer").style.display = "none";
+              document.getElementById("paginationDiv").style.display = "none";
+              document.getElementById("saveBtn").style.display = "none";
+              document.getElementById("bulkScoreDiv").style.display = "none";
+
+              document.getElementById("sectionSelect").style.display = "none";
+              document.getElementById("subjectSelect").style.display = "none";
+              document.getElementById("evaluationSelect").style.display =
+                "none";
+              document.getElementById("searchBtn").style.display = "none";
+
+              document.getElementById("gradeSelect").value = "";
+              document.getElementById("sectionSelect").value = "";
+              document.getElementById("subjectSelect").value = "";
+              document.getElementById("evaluationSelect").value = "";
+
+              showSaveMessage(summaryHTML);
+            } else {
+              saveBtn.disabled = false;
+              saveBtn.classList.add("pulse-success");
+              updateSaveButton();
+              if (data.message.includes("موقوف")) {
+                executeLogout();
+                return;
+              }
+              if (
+                data.message.includes("منتهية") ||
+                data.message.includes("غير صالحة")
+              ) {
+                handleSessionExpired();
+                return;
+              }
+              showSaveMessage("❌ حدث خطأ: " + escapeHTML(data.message), true);
+            }
+          })
+          .catch((error) => {
+            saveBtn.disabled = false;
+            saveBtn.classList.add("pulse-success");
+            updateSaveButton();
+            showSaveMessage(
+              "حدث مشكلة في الإرسال، تأكد من الاتصال بالإنترنت.",
+              true,
+            );
+          });
+      }
+    </script>
   </body>
 </html>
