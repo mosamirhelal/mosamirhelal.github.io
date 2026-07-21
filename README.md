@@ -43,17 +43,17 @@ I enjoy building things that actually get used from student portals and school m
 
 ## 🗂️ Projects Overview
 
-| #   | Project                   | Description                                                                      | Core Tech          | Live Demo                                                                            |
-| --- | ------------------------- | -------------------------------------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------ |
-| 1   | **Personal Website**      | Elegant placeholder with social drawer, dark/light mode & Arabic auto-detection  | HTML · CSS · JS    | [mosamirhelal.com](https://mosamirhelal.com)                                         |
-| 2   | **MoTasks**               | Real-time study task tracker with Firebase sync                                  | JS · Firebase      | [mosamirhelal.com/motasks](https://mosamirhelal.com/motasks)                         |
-| 3   | **AudioMonitor**          | In-browser mic & system audio visualizer no server needed                        | Web Audio API · JS | [mosamirhelal.com/audiomonitor](https://mosamirhelal.com/audiomonitor)               |
-| 4   | **Al-Khateeb Landing**    | Unified gateway to the school's five portals                                     | HTML · CSS · JS    | [mosamirhelal.com/alkhateeb](https://mosamirhelal.com/alkhateeb)                     |
-| 5   | **Al-Khateeb Students**   | Student exam committee data & seat number lookup with share-as-image             | JS · Apps Script   | [mosamirhelal.com/alkhateeb-students](https://mosamirhelal.com/alkhateeb-students)   |
-| 6   | **Al-Khateeb Results**    | Student results portal with confetti & share-as-image                            | JS · Apps Script   | [mosamirhelal.com/alkhateeb-results](https://mosamirhelal.com/alkhateeb-results)     |
-| 7   | **Al-Khateeb Degrees**    | Teacher grade-entry portal with auth & conflict protection                       | JS · Apps Script   | [mosamirhelal.com/alkhateeb-degrees](https://mosamirhelal.com/alkhateeb-degrees)     |
-| 8   | **Al-Khateeb HR**         | Full staff HR system: attendance, leaves, registration & employee management     | JS · Apps Script   | [mosamirhelal.com/alkhateeb-hr](https://mosamirhelal.com/alkhateeb-hr)               |
-| 9   | **Al-Khateeb Stars**      | Animated top-10 students leaderboard with rank cards & shimmer effects           | JS · Apps Script   | [mosamirhelal.com/alkhateeb-stars](https://mosamirhelal.com/alkhateeb-stars)         |
+| #   | Project                 | Description                                                                     | Core Tech          | Live Demo                                                                          |
+| --- | ----------------------- | ------------------------------------------------------------------------------- | ------------------ | ---------------------------------------------------------------------------------- |
+| 1   | **Personal Website**    | Elegant placeholder with social drawer, dark/light mode & Arabic auto-detection | HTML · CSS · JS    | [mosamirhelal.com](https://mosamirhelal.com)                                       |
+| 2   | **MoTasks**             | Real-time study task tracker with Firebase sync                                 | JS · Firebase      | [mosamirhelal.com/motasks](https://mosamirhelal.com/motasks)                       |
+| 3   | **AudioMonitor**        | In-browser mic & system audio visualizer no server needed                       | Web Audio API · JS | [mosamirhelal.com/audiomonitor](https://mosamirhelal.com/audiomonitor)             |
+| 4   | **Al-Khateeb Landing**  | Unified gateway to the school's five portals                                    | HTML · CSS · JS    | [mosamirhelal.com/alkhateeb](https://mosamirhelal.com/alkhateeb)                   |
+| 5   | **Al-Khateeb Students** | Student exam committee data & seat number lookup with share-as-image            | JS · Apps Script   | [mosamirhelal.com/alkhateeb-students](https://mosamirhelal.com/alkhateeb-students) |
+| 6   | **Al-Khateeb Results**  | Student results portal with confetti & share-as-image                           | JS · Apps Script   | [mosamirhelal.com/alkhateeb-results](https://mosamirhelal.com/alkhateeb-results)   |
+| 7   | **Al-Khateeb Degrees**  | Teacher grade-entry portal with auth & conflict protection                      | JS · Apps Script   | [mosamirhelal.com/alkhateeb-degrees](https://mosamirhelal.com/alkhateeb-degrees)   |
+| 8   | **Al-Khateeb HR**       | Full staff HR system: attendance, leaves, registration & employee management    | JS · Apps Script   | [mosamirhelal.com/alkhateeb-hr](https://mosamirhelal.com/alkhateeb-hr)             |
+| 9   | **Al-Khateeb Stars**    | Animated top-10 students leaderboard with rank cards & shimmer effects          | JS · Apps Script   | [mosamirhelal.com/alkhateeb-stars](https://mosamirhelal.com/alkhateeb-stars)       |
 
 ---
 
@@ -645,7 +645,7 @@ The backend can globally suppress data via a settings flag. When the data is hid
 
 <br>
 
-A public-facing portal for students and parents to look up exam results by student ID or name.
+A public-facing portal for students and parents to look up student data and exam results by student ID or name. A single unified interface covers both data retrieval and score display.
 
 ---
 
@@ -889,17 +889,13 @@ After a successful save, the backend response includes a summary (grade, section
 
 ### 🔢 Bulk Score Broadcast
 
-The bulk score feature allows entering one score and applying it to all _present_ students in a single action. Students marked as absent (`غ` / `غائب`) are explicitly excluded from the bulk fill:
+The bulk score feature allows entering one score and applying it to all present students in a single action. Students marked as absent (`غ` / `غائب`) are explicitly excluded from the bulk fill. A **custom confirmation modal** (`customConfirm`) handles all destructive bulk operations (apply, clear all, absent all, present all) replacing the native browser `confirm()` dialog for consistent styling.
 
-```js
-for (let i = 0; i < allStudents.length; i++) {
-  if (allStudents[i].score !== "غ" && allStudents[i].score !== "غائب") {
-    allStudents[i].score = cleanedStr;
-  }
-}
-```
+---
 
-All bulk operations (apply, clear all, absent all, present all) go through the custom confirmation modal before executing.
+### 📊 Pagination with Rows Per Page Control
+
+The students table supports pagination with a configurable rows-per-page selector (10 / 20 / 30 / 40 / 50 / all). `renderTable()` slices `filteredStudents` by the current page and `rowsPerPage`. The Enter key navigation is pagination-aware: reaching the last input on a page automatically advances to the next page and focuses the first available input there.
 
 ---
 
@@ -1130,6 +1126,8 @@ A persistent notice below the leaderboard informs students and parents that resu
 
 **🛠️ Tech Used**
 `HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script`
+
+</details>
 
 ---
 
@@ -1457,8 +1455,8 @@ mosamirhelal.github.io/
 <a href="https://mosamirhelal.com" target="_blank">
   <img src="https://img.shields.io/badge/🌐 Website-mosamirhelal.com-2ea44f?style=for-the-badge" />
 </a>
-<a href="mailto:mosamirhelal@outlook.com" target="_blank">
-  <img src="https://img.shields.io/badge/📧 Email-mosamirhelal@outlook.com-0078D4?style=for-the-badge&logo=microsoft-outlook&logoColor=white" />
+<a href="mailto:contact@mosamirhelal.com" target="_blank">
+  <img src="https://img.shields.io/badge/📧 Email-contact@mosamirhelal.com-0078D4?style=for-the-badge&logo=microsoft-outlook&logoColor=white" />
 </a>
 </p>
 
