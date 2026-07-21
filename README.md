@@ -43,15 +43,17 @@ I enjoy building things that actually get used from student portals and school m
 
 ## 🗂️ Projects Overview
 
-| #   | Project                | Description                                                                     | Core Tech          | Live Demo                                                                          |
-| --- | ---------------------- | ------------------------------------------------------------------------------- | ------------------ | ---------------------------------------------------------------------------------- |
-| 1   | **Personal Website**   | Elegant placeholder with social drawer, dark/light mode & Arabic auto-detection | HTML · CSS · JS    | [mosamirhelal.com](https://mosamirhelal.com)                                       |
-| 2   | **MoTasks**            | Real-time study task tracker with Firebase sync                                 | JS · Firebase      | [mosamirhelal.com/motasks](https://mosamirhelal.com/motasks)                       |
-| 3   | **AudioMonitor**       | In-browser mic & system audio visualizer no server needed                       | Web Audio API · JS | [mosamirhelal.com/audiomonitor](https://mosamirhelal.com/audiomonitor)             |
-| 4   | **Al-Khateeb Landing** | Unified gateway to the school's three portals                                   | HTML · CSS · JS    | [mosamirhelal.com/alkhateeb](https://mosamirhelal.com/alkhateeb)                   |
-| 5   | **Al-Khateeb Results** | Student results portal with confetti & share-as-image                           | JS · Apps Script   | [mosamirhelal.com/alkhateeb-results](https://mosamirhelal.com/alkhateeb-results)   |
-| 6   | **Al-Khateeb Degrees** | Teacher grade-entry portal with auth & conflict protection                      | JS · Apps Script   | [mosamirhelal.com/alkhateeb-degrees](https://mosamirhelal.com/alkhateeb-degrees)   |
-| 7   | **Al-Khateeb HR**      | Staff attendance & leave management system                                      | JS · Apps Script   | [mosamirhelal.com/alkhateeb-teachers](https://mosamirhelal.com/alkhateeb-teachers) |
+| #   | Project                   | Description                                                                      | Core Tech          | Live Demo                                                                            |
+| --- | ------------------------- | -------------------------------------------------------------------------------- | ------------------ | ------------------------------------------------------------------------------------ |
+| 1   | **Personal Website**      | Elegant placeholder with social drawer, dark/light mode & Arabic auto-detection  | HTML · CSS · JS    | [mosamirhelal.com](https://mosamirhelal.com)                                         |
+| 2   | **MoTasks**               | Real-time study task tracker with Firebase sync                                  | JS · Firebase      | [mosamirhelal.com/motasks](https://mosamirhelal.com/motasks)                         |
+| 3   | **AudioMonitor**          | In-browser mic & system audio visualizer no server needed                        | Web Audio API · JS | [mosamirhelal.com/audiomonitor](https://mosamirhelal.com/audiomonitor)               |
+| 4   | **Al-Khateeb Landing**    | Unified gateway to the school's five portals                                     | HTML · CSS · JS    | [mosamirhelal.com/alkhateeb](https://mosamirhelal.com/alkhateeb)                     |
+| 5   | **Al-Khateeb Students**   | Student exam committee data & seat number lookup with share-as-image             | JS · Apps Script   | [mosamirhelal.com/alkhateeb-students](https://mosamirhelal.com/alkhateeb-students)   |
+| 6   | **Al-Khateeb Results**    | Student results portal with confetti & share-as-image                            | JS · Apps Script   | [mosamirhelal.com/alkhateeb-results](https://mosamirhelal.com/alkhateeb-results)     |
+| 7   | **Al-Khateeb Degrees**    | Teacher grade-entry portal with auth & conflict protection                       | JS · Apps Script   | [mosamirhelal.com/alkhateeb-degrees](https://mosamirhelal.com/alkhateeb-degrees)     |
+| 8   | **Al-Khateeb HR**         | Full staff HR system: attendance, leaves, registration & employee management     | JS · Apps Script   | [mosamirhelal.com/alkhateeb-hr](https://mosamirhelal.com/alkhateeb-hr)               |
+| 9   | **Al-Khateeb Stars**      | Animated top-10 students leaderboard with rank cards & shimmer effects           | JS · Apps Script   | [mosamirhelal.com/alkhateeb-stars](https://mosamirhelal.com/alkhateeb-stars)         |
 
 ---
 
@@ -546,7 +548,7 @@ A `null` return (silence) displays as `∞` in the UI rather than a meaningless 
 
 <br>
 
-The unified entry point for the school's digital system. Every detail from the floating ambient dots to the button ripple effect is implemented from scratch.
+The unified entry point for the school's digital system. Expanded over time to route to five separate portals. Every detail from the floating ambient dots to the button ripple effect is implemented from scratch.
 
 ---
 
@@ -607,7 +609,39 @@ window.addEventListener("pageshow", function (event) {
 ---
 
 <details>
-<summary><b>📊 5. Al-Khateeb Results /alkhateeb-results</b></summary>
+<summary><b>📚 5. Al-Khateeb Students /alkhateeb-students</b></summary>
+
+<br>
+
+A public portal for students and parents to look up exam committee assignments and seat numbers by student name or ID.
+
+---
+
+### 🔍 Smart Search with Dual Mode
+
+A single input field handles both ID and name searches. If the input is numeric, it performs a direct ID lookup; otherwise it runs a name search returning all matching students. Results render as styled cards with staggered slide-in animations.
+
+---
+
+### 📸 Share as Image
+
+Uses `html2canvas` at 2x scale to capture the student's data card as a PNG. On mobile with Web Share API support the image is shared as a `File` via `navigator.share()`. On desktop it falls back to a download link. School logos and a designer credit appear only in the exported image via hidden `export-header` and `export-footer` elements revealed in the `onclone` callback.
+
+---
+
+### 📰 Results Visibility Control
+
+The backend can globally suppress data via a settings flag. When the data is hidden the portal shows the student's name but replaces the committee table with a "data not available yet" message.
+
+**🛠️ Tech Used**
+`HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script` · `html2canvas`
+
+</details>
+
+---
+
+<details>
+<summary><b>📊 6. Al-Khateeb Results /alkhateeb-results</b></summary>
 
 <br>
 
@@ -734,7 +768,7 @@ The backend can globally hide results via a settings sheet. When `resultsHidden:
 ---
 
 <details>
-<summary><b>✏️ 6. Al-Khateeb Degrees /alkhateeb-degrees</b></summary>
+<summary><b>✏️ 7. Al-Khateeb Degrees /alkhateeb-degrees</b></summary>
 
 <br>
 
@@ -893,11 +927,11 @@ The logout button also checks for unsaved changes and shows the custom confirmat
 ---
 
 <details>
-<summary><b>👔 7. Al-Khateeb HR /alkhateeb-teachers</b></summary>
+<summary><b>👔 8. Al-Khateeb HR /alkhateeb-hr</b></summary>
 
 <br>
 
-A dual-role HR management system currently in active development with an Admin panel for recording and reviewing staff operations, and a Teacher panel for personal statistics.
+A full-featured staff HR management system with a dual-role architecture. Grew from a basic attendance logger into a comprehensive operations platform covering attendance, leaves, employee registration, profile management, and aggregated reporting.
 
 ---
 
@@ -1020,7 +1054,82 @@ The native `window.confirm()` is replaced entirely with `customConfirm(msg, call
 **🛠️ Tech Used**
 `HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script` · `Google Sheets`
 
+---
+
+### 📝 Public Employee Self-Registration
+
+Staff can submit a registration request through a full-page public form without needing admin credentials. The submitted data enters a review queue visible to admins. The admin review modal exposes all submitted fields as editable inputs, allowing corrections before approval. Approved entries are written directly to the employees sheet.
+
+---
+
+### 👥 Multi-Teacher Selection with Chips UI
+
+The admin can select multiple staff members simultaneously via a chips-based selector. Selected names appear as dismissible chips below the search input. All selected teachers can have the same operation applied in a single batch API call, which accepts an array of records rather than a single record.
+
+---
+
+### 📅 Multi-Day Checkbox Grid
+
+For absences and leaves the admin switches to "multiple days" mode. `generateCheckboxes()` builds a day-by-day grid for the selected date range (max 60 days), skipping weekends automatically. A master "Select All" checkbox syncs bidirectionally with individual checkboxes.
+
+---
+
+### 📊 CSV Export & Print Support
+
+The history table can be exported as a `.csv` file that opens directly in Excel/Sheets. A separate print mode strips the UI chrome and renders only the data table, formatted for A4 paper.
+
+---
+
+### ⏱️ Live Workdays Counter
+
+The admin dashboard shows a real-time counter of working days that has elapsed in the current month. Weekends are excluded from the count. The counter updates silently via a polling mechanism without requiring a full page reload.
+
+---
+
+### 🔒 Reset Password Feature
+
+Admins can issue a password reset for any teacher account. The reset flow validates the new password server-side and regenerates the token to invalidate all existing sessions for that user.
+
+**🛠️ Tech Used**
+`HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script` · `Google Sheets`
+
 </details>
+
+---
+
+<details>
+<summary><b>⭐ 9. Al-Khateeb Stars /alkhateeb-stars</b></summary>
+
+<br>
+
+A public leaderboard displaying the top-10 students per grade level. Built entirely for visual impact, with every rank card carrying layered animations, 3D hover transforms, and shimmer effects.
+
+---
+
+### 🏆 Animated Rank Cards
+
+Each student card uses CSS `perspective` and JavaScript mouse-tracking to produce a 3D tilt effect on hover. Cards for ranks 1, 2, and 3 carry distinct gold, silver, and bronze gradient themes with animated `goldShimmer` background sweeps. Decorative laurel SVG overlays frame the top-3 cards.
+
+---
+
+### ✨ Staggered Reveal Animations
+
+Cards load with a `popIn` keyframe (scale 0.85 → 1 with a slight overshoot at 70%) and a `rowIn` slide (translateX from -12px). Each card's delay is calculated from its rank index, creating a cascading reveal when the page loads.
+
+---
+
+### 🏦 Grade-Level Tabs
+
+A tab bar lets the user switch between grade levels without a page reload. The active tab updates the visible card grid while preserving scroll position. The backend returns all grades in one response; tab switching is purely client-side.
+
+---
+
+### 📰 Appeals Disclaimer
+
+A persistent notice below the leaderboard informs students and parents that results shown are preliminary and subject to official appeals review.
+
+**🛠️ Tech Used**
+`HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script`
 
 ---
 
@@ -1029,11 +1138,13 @@ The native `window.confirm()` is replaced entirely with `customConfirm(msg, call
 ```
 mosamirhelal.com/alkhateeb              ← Landing Page (Entry Point)
         │
-        ├──► /alkhateeb-results         ← Student Results Portal  ──┐
-        │                                                             │  Backend A
-        ├──► /alkhateeb-degrees         ← Teacher Grades Portal   ──┘  (Grades & Results)
+        ├──► /alkhateeb-students       ← Student Committee Data Portal ─┐
+        │                                                               │  Backend A
+        ├──► /alkhateeb-results         ← Student Results Portal  ────┤  (Grades & Results)
+        │                                                               │
+        ├──► /alkhateeb-degrees         ← Teacher Grades Portal   ────┘
         │         │
-        │         ▼
+        │         ↓
         │    ┌─────────────────────────────────┐
         │    │     Google Apps Script (A)      │
         │    │  Token Auth · LockService       │
@@ -1049,9 +1160,11 @@ mosamirhelal.com/alkhateeb              ← Landing Page (Entry Point)
         │    │  Users · Movement Audit Log     │
         │    └─────────────────────────────────┘
         │
-        └──► /alkhateeb-teachers        ← Staff HR Portal  ─── Backend B (HR System)
+        ├──► /alkhateeb-stars           ← Top-10 Leaderboard (no backend auth)
+        │
+        └──► /alkhateeb-hr              ← Staff HR Portal  ─── Backend B (HR System)
                   │
-                  ▼
+                  ↓
         ┌─────────────────────────────────┐
         │     Google Apps Script (B)      │
         │  Dual-Role Auth (Admin/Teacher) │
@@ -1170,7 +1283,7 @@ A time-based trigger runs every **6 hours**, scanning all `ScriptProperties` key
 
 <br>
 
-This backend powers the **Staff HR Portal** with a dual-role system, a rich attendance logging engine, and a pre-aggregated reporting layer built on live Google Sheets formulas.
+This backend powers the **Staff HR Portal** with a dual-role system, a rich attendance and leave logging engine, public employee registration, employee management, and a pre-aggregated reporting layer built on live Google Sheets formulas.
 
 ---
 
@@ -1299,6 +1412,12 @@ mosamirhelal.github.io/
 │   ├── logo_2.webp
 │   └── logo_3.webp
 │
+├── 📂 alkhateeb-students/               ← Student committee data portal
+│   ├── index.html
+│   ├── logo_1.webp
+│   ├── logo_2.webp
+│   └── logo_3.webp
+│
 ├── 📂 alkhateeb-results/                ← Student results portal
 │   ├── index.html
 │   ├── logo_1.webp
@@ -1311,7 +1430,13 @@ mosamirhelal.github.io/
 │   ├── logo_2.webp
 │   └── logo_3.webp
 │
-└── 📂 alkhateeb-teachers/               ← Staff HR portal
+├── 📂 alkhateeb-hr/                     ← Staff HR & attendance portal
+│   ├── index.html
+│   ├── logo_1.webp
+│   ├── logo_2.webp
+│   └── logo_3.webp
+│
+└── 📂 alkhateeb-stars/                  ← Top-10 students leaderboard
     ├── index.html
     ├── logo_1.webp
     ├── logo_2.webp
