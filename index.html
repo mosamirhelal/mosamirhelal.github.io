@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" dir="ltr">
   <head>
     <link rel="preconnect" href="https://kit.fontawesome.com" />
@@ -53,20 +53,23 @@
 
     <meta
       name="description"
-      content="The official portfolio of Mohammed Samir Helal (محمد سمير هلال), Dental Student at MUST University, Passionate Programmer, and Creative Designer based in Cairo, Egypt."
+      content="The official portfolio of Mohammed Samir Helal (محمد سمير هلال), Dental Student at MUST University, Software Developer, and Digital Designer based in Cairo, Egypt."
     />
     <meta
       name="keywords"
-      content="Mohammed Samir Helal, Mohamed Samir, Dental Student, Programmer, Graphic Designer, MUST University, Cairo, Egypt, محمد سمير هلال, طب أسنان, جامعة مصر للعلوم والتكنولوجيا, مبرمج"
+      content="Mohammed Samir Helal, Mohamed Samir, Dental Student, Software Developer, Digital Designer, MUST University, Cairo, Egypt, محمد سمير هلال, طب أسنان, جامعة مصر للعلوم والتكنولوجيا, مبرمج"
     />
     <meta name="author" content="Mohammed Samir Helal" />
 
     <meta property="og:title" content="Mohammed Samir Helal - محمد سمير هلال" />
     <meta
       property="og:description"
-      content="Dental Student at MUST, Passionate Programmer & Creative Designer."
+      content="Dental Student at MUST, Passionate Software Developer & Digital Designer."
     />
-    <meta property="og:image" content="https://mosamirhelal.com/profile.webp" />
+    <meta
+      property="og:image"
+      content="https://mosamirhelal.com/mosamirhelal.webp"
+    />
     <meta property="og:url" content="https://mosamirhelal.com" />
     <meta property="og:type" content="profile" />
 
@@ -77,7 +80,7 @@
     />
     <meta
       name="twitter:description"
-      content="Dental Student at MUST, Passionate Programmer & Creative Designer."
+      content="Dental Student at MUST, Passionate Software Developer & Digital Designer."
     />
     <meta
       name="twitter:image"
@@ -268,7 +271,8 @@
         font-size: 22px;
         cursor: pointer;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+        transition:
+          transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275),
           background-color 0.3s;
         z-index: 1000;
         animation: slideDownFade 0.8s ease-out 0.5s backwards;
@@ -373,7 +377,8 @@
         overflow: hidden;
         opacity: 0;
         transform: translateY(20px);
-        transition: max-height 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+        transition:
+          max-height 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
           opacity 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
           transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
           padding 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
@@ -398,7 +403,8 @@
         padding: 20px;
         transform: translateY(0);
         overflow: visible;
-        transition: max-height 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+        transition:
+          max-height 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
           opacity 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
           transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
           padding 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
@@ -429,7 +435,10 @@
         color: var(--text-dark);
         text-decoration: none;
         font-size: 18px;
-        transition: transform 0.2s, background-color 0.3s, color 0.3s;
+        transition:
+          transform 0.2s,
+          background-color 0.3s,
+          color 0.3s;
         box-shadow: 0 2px 5px var(--btn-shadow);
       }
 
@@ -526,7 +535,9 @@
         background-color: var(--tiktok);
         color: #fff;
         border-color: var(--tiktok);
-        box-shadow: 2px 2px 0 #25f4ee, -2px -2px 0 #fe2c55;
+        box-shadow:
+          2px 2px 0 #25f4ee,
+          -2px -2px 0 #fe2c55;
       }
       .social-btn.youtube:hover {
         background-color: var(--youtube);
@@ -641,7 +652,7 @@
         src="light.webp"
         class="responsive-center"
         id="light-image"
-        alt="Mohammed Samir Helal - Dental Student & Programmer"
+        alt="Mohammed Samir Helal - Dental Student & Software Developer"
         fetchpriority="high"
         width="1080"
         height="897"
@@ -651,7 +662,7 @@
         src="dark.webp"
         class="responsive-center"
         id="dark-image"
-        alt="Mohammed Samir Helal - Dental Student & Programmer"
+        alt="Mohammed Samir Helal - Dental Student & Software Developer"
         fetchpriority="high"
         width="1080"
         height="897"
@@ -861,7 +872,7 @@
           toggleBtn.textContent = isDark ? "☀️" : "🌙";
           toggleBtn.setAttribute(
             "aria-label",
-            isDark ? "Light Mode" : "Dark Mode"
+            isDark ? "Light Mode" : "Dark Mode",
           );
           const color = isDark ? "#000000" : "#ffffff";
           if (themeMetaTag) themeMetaTag.content = color;
@@ -869,7 +880,7 @@
 
         const savedTheme = localStorage.getItem("theme");
         const prefersDark = window.matchMedia(
-          "(prefers-color-scheme: dark)"
+          "(prefers-color-scheme: dark)",
         ).matches;
         applyTheme(savedTheme ? savedTheme : prefersDark ? "dark" : "light");
 
