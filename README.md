@@ -362,17 +362,17 @@ mosamirhelal.github.io/
 
 <div align="center">
 
-**Design & Development** — Mohammed Samir Helal
+**Design & Development** — <span style="color: #FFD700;">**Mohammed Samir Helal**</span>
 
-All projects in this repository — frontend interfaces, backend architecture, database schema, security systems, and UI/UX — were designed and built entirely by Mohammed Samir Helal.
+All projects in this repository — frontend interfaces, backend architecture, database schema, security systems, and UI/UX — were designed and built entirely by <span style="color: #FFD700;">**Mohammed Samir Helal**</span>.
 
 ---
 
-**Al-Khateeb System — Samir Helal, Principal of Al-Khateeb School**
+**Al-Khateeb System — <span style="color: #FFD700;">Samir Helal</span>, Principal of Al-Khateeb School**
 
-The school management system exists because of **Samir Helal** — principal of the school and the person who originally envisioned it. He defined what each portal should do, proposed every major feature, tested releases with real users, and kept pushing the system forward. This is his idea, built by his son. Thank you, Dad.
+The school management system exists because of <span style="color: #FFD700;">**Samir Helal**</span> — principal of the school and the person who originally envisioned it. He defined what each portal should do, proposed every major feature, tested releases with real users, and kept pushing the system forward. This is his idea, built by his son. Thank you, Dad.
 
-*Note: This school management system is solely owned and developed by me as an independent developer (Mohammed Samir Helal). The name "Al-Khateeb" is used currently because the system is deployed at the school managed by my father, but its branding and name are subject to change.*
+<span style="color: #888888;">*Note: This school management system is solely owned and developed by me as an independent developer (<span style="color: #FFD700;">Mohammed Samir Helal</span>). The name "Al-Khateeb" is used currently because the system is deployed at the school managed by my father, but its branding and name are subject to change.*</span>
 
 ---
 
