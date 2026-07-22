@@ -1,4 +1,4 @@
-<div align="center">
+﻿<div align="center">
 
 # 👋 Hello, I'm Mohammed Samir Helal
 
@@ -49,10 +49,10 @@ I enjoy building things that actually get used from student portals and school m
 | 2   | **MoTasks**             | Real-time study task tracker with Firebase sync                                 | JS · Firebase      | [mosamirhelal.com/motasks](https://mosamirhelal.com/motasks)                       |
 | 3   | **AudioMonitor**        | In-browser mic & system audio visualizer no server needed                       | Web Audio API · JS | [mosamirhelal.com/audiomonitor](https://mosamirhelal.com/audiomonitor)             |
 | 4   | **Al-Khateeb Landing**  | Unified gateway to the school's five portals                                    | HTML · CSS · JS    | [mosamirhelal.com/alkhateeb](https://mosamirhelal.com/alkhateeb)                   |
-| 5   | **Al-Khateeb Students** | Student exam committee data & seat number lookup with share-as-image            | JS · Apps Script   | [mosamirhelal.com/alkhateeb-students](https://mosamirhelal.com/alkhateeb-students) |
-| 6   | **Al-Khateeb Results**  | Student results portal with confetti & share-as-image                           | JS · Apps Script   | [mosamirhelal.com/alkhateeb-results](https://mosamirhelal.com/alkhateeb-results)   |
-| 7   | **Al-Khateeb Degrees**  | Teacher grade-entry portal with auth & conflict protection                      | JS · Apps Script   | [mosamirhelal.com/alkhateeb-degrees](https://mosamirhelal.com/alkhateeb-degrees)   |
-| 8   | **Al-Khateeb HR**       | Full staff HR system: attendance, leaves, registration & employee management    | JS · Apps Script   | [mosamirhelal.com/alkhateeb-hr](https://mosamirhelal.com/alkhateeb-hr)             |
+| 5   | **Al-Khateeb HR**       | Full staff HR system: attendance, leaves, registration & employee management    | JS · Apps Script   | [mosamirhelal.com/alkhateeb-hr](https://mosamirhelal.com/alkhateeb-hr)             |
+| 6   | **Al-Khateeb Students** | Student exam committee data & seat number lookup with share-as-image            | JS · Apps Script   | [mosamirhelal.com/alkhateeb-students](https://mosamirhelal.com/alkhateeb-students) |
+| 7   | **Al-Khateeb Results**  | Student results portal with confetti & share-as-image                           | JS · Apps Script   | [mosamirhelal.com/alkhateeb-results](https://mosamirhelal.com/alkhateeb-results)   |
+| 8   | **Al-Khateeb Degrees**  | Teacher grade-entry portal with auth & conflict protection                      | JS · Apps Script   | [mosamirhelal.com/alkhateeb-degrees](https://mosamirhelal.com/alkhateeb-degrees)   |
 | 9   | **Al-Khateeb Stars**    | Animated top-10 students leaderboard with rank cards & shimmer effects          | JS · Apps Script   | [mosamirhelal.com/alkhateeb-stars](https://mosamirhelal.com/alkhateeb-stars)       |
 
 ---
@@ -64,7 +64,16 @@ I enjoy building things that actually get used from student portals and school m
 
 <br>
 
-A carefully engineered personal placeholder page that goes far beyond a simple "coming soon." Every visual detail, performance hint, and interaction behavior is intentionally designed and hand-coded in pure HTML, CSS, and vanilla JavaScript zero dependencies.
+A personal placeholder page built entirely from scratch in pure HTML, CSS, and vanilla JavaScript. It handles Arabic visitors, dark/light theme preferences, social links, and performance hints with zero external dependencies.
+
+**Key Features:**
+
+- Auto-detects Arabic browsers and switches the page language, direction, and meta tags before the first paint
+- Three-layer theme system: saved preference → OS preference → live OS changes
+- Social drawer that expands to 21 platform links with CSS-only animations
+- CSS-only tooltips on every icon via `content: attr(aria-label)`
+- Visitor counter with a hidden `?stats` mode visible only to the admin
+- Full SEO: Schema.org JSON-LD, Open Graph, Twitter Cards, canonical URL, PWA manifest
 
 ---
 
@@ -164,7 +173,6 @@ The drawer uses a `max-height` animation trick to achieve a smooth slide-in with
   max-height: 600px;
   opacity: 1;
   overflow: visible;
-  /* overflow becomes visible AFTER the transition ends, not during */
   transition:
     ...,
     overflow 0s linear 0.5s;
@@ -268,6 +276,14 @@ fetch("https://api.counterapi.dev/v1/mosamirhelal/visits/up")
 <br>
 
 A real-time study task manager built on Firebase Firestore. The entire application state lives in a single Firestore document, serialized as raw `innerHTML` a pragmatic design that eliminates a schema layer entirely for a personal tool.
+
+**Key Features:**
+
+- Real-time sync across all open tabs via Firestore `onSnapshot`
+- Debounced auto-save: writes to Firestore only after the user pauses typing for 1 second
+- `contenteditable` table cells with correct checkbox persistence across reloads
+- Auto-dated new rows using `toLocaleDateString("en-GB")`
+- Four-state status badge: Connecting / Saving / Saved / Error
 
 ---
 
@@ -382,7 +398,17 @@ The status badge in the header cycles through four states with auto-reset:
 
 <br>
 
-A fully client-side, zero-upload audio monitoring tool. All signal processing happens inside the browser's Web Audio API no audio data ever leaves the device. The app supports simultaneous microphone and system audio monitoring with independent visualizers, settings, and color schemes.
+A fully client-side audio monitoring tool. All signal processing happens inside the browser's Web Audio API with no audio data leaving the device. The app supports simultaneous microphone and system audio monitoring with independent visualizers, settings, and color schemes.
+
+**Key Features:**
+
+- Monitor microphone and system audio simultaneously in real time
+- Three visualization modes: Bars, Waveform, Mirror
+- Six color schemes with a dynamic gradient engine per scheme
+- dB level meter calculated from RMS of the time-domain buffer
+- Full bilingual interface (English / Arabic) with font switching
+- All preferences (theme, layout, sensitivity, scheme) saved to `localStorage`
+- Keyboard shortcuts: `M` (microphone) and `S` (system audio)
 
 ---
 
@@ -548,7 +574,15 @@ A `null` return (silence) displays as `∞` in the UI rather than a meaningless 
 
 <br>
 
-The unified entry point for the school's digital system. Expanded over time to route to five separate portals. Every detail from the floating ambient dots to the button ripple effect is implemented from scratch.
+The unified entry point for the school's digital system. Routes visitors to five separate portals through a clean, animated interface.
+
+**Key Features:**
+
+- Single page listing all school portals with descriptive buttons
+- Ripple effect on every button click, supporting mouse, touch, and keyboard
+- Full-screen redirect overlay with a spinner and pulsing dots while navigating
+- Floating ambient background dots for visual depth
+- Safe back-navigation: overlay is removed on `pageshow` to handle browser cache restore
 
 ---
 
@@ -609,11 +643,189 @@ window.addEventListener("pageshow", function (event) {
 ---
 
 <details>
-<summary><b>📚 5. Al-Khateeb Students /alkhateeb-students</b></summary>
+<summary><b>👔 5. Al-Khateeb HR /alkhateeb-hr</b></summary>
+
+<br>
+
+The most comprehensive project in this repository. A full-featured staff HR management system with a dual-role architecture serving both administrators and teachers. Started as a basic attendance logger and grew into a complete operations platform.
+
+**What it does for administrators:**
+
+- Log attendance events for any staff member: absences, tardiness, early departures, and leave
+- Apply operations to multiple staff members simultaneously via a chips-based multi-select
+- Apply one operation across multiple days at once using a day-by-day checkbox grid
+- View and edit or delete any logged record from the full history table
+- Export all records as a `.csv` file ready for Excel or Sheets
+- Print the history table formatted for A4 paper
+- Register new employees through a built-in approval workflow
+- Reset passwords for any teacher account
+- Monitor a live counter of working days elapsed in the current month
+
+**What it does for teachers:**
+
+- View personal attendance summary with animated circular progress charts
+- Browse their full operation history with filters
+- See remaining annual leave and total late minutes at a glance
+
+---
+
+### 🔐 Authentication `sessionStorage`
+
+Unlike the Grades portal which uses `localStorage`, this system uses `sessionStorage`. The session is automatically invalidated when the browser tab is closed, which is appropriate for HR data. The teacher list is cached in `sessionStorage` to avoid re-fetching on every navigation:
+
+```js
+sessionStorage.setItem(
+  "alkhateeb_hr_auth",
+  JSON.stringify({ token, name, role }),
+);
+sessionStorage.setItem("alkhateeb_teachers", JSON.stringify(allTeachers));
+```
+
+---
+
+### 👥 Dual-Role Dashboard
+
+After login, the backend's response includes a `role` field. The frontend shows a completely different container based on this value `adminContainer` or `teacherContainer`. There is no client-side role logic beyond this routing; all privileged actions are validated server-side using the token.
+
+---
+
+### 🔎 Live Autocomplete Search with Keyboard Navigation
+
+The teacher search input uses a custom autocomplete implementation. Results are filtered in real time from the locally cached teacher list. The dropdown supports full keyboard navigation:
+
+```js
+document
+  .getElementById("adminSearchInput")
+  .addEventListener("keydown", function (e) {
+    if (e.key === "ArrowDown") {
+      currentSearchFocus++;
+      addActiveSearchItem(items);
+    }
+    if (e.key === "ArrowUp") {
+      currentSearchFocus--;
+      addActiveSearchItem(items);
+    }
+    if (e.key === "Enter") {
+      if (currentSearchFocus > -1) items[currentSearchFocus].click();
+      else if (items.length === 1) items[0].click(); // auto-select if only one result
+    }
+  });
+```
+
+A `document.addEventListener("click")` closes the dropdown when clicking anywhere outside the input.
+
+---
+
+### 👥 Multi-Teacher Selection with Chips UI
+
+The admin can select multiple staff members simultaneously via a chips-based selector. Selected names appear as dismissible chips below the search input. All selected teachers can have the same operation applied in a single batch API call, which accepts an array of records rather than a single record.
+
+---
+
+### ⏱️ Automatic Delay Calculation
+
+For time-based operations (morning tardiness, early departure, etc.), the form shows a time picker. When the time changes, `calculateDelay()` parses both the selected time and the teacher's scheduled start time (stored in the hidden `selectedTeacherStart` field) and computes the difference in minutes:
+
+```js
+let [eh, em] = expectedTime.split(":").map(Number);
+let [ah, am] = actualTime.split(":").map(Number);
+let diff = ah * 60 + am - (eh * 60 + em);
+```
+
+A "Now" button fills the time picker with the current system time and triggers the calculation immediately.
+
+---
+
+### 📅 Multi-Day Checkbox Grid
+
+For absences and leaves, the admin switches to "multiple days" mode. `generateCheckboxes()` builds a day-by-day grid for the selected date range (max 60 days). A master "Select All" checkbox syncs bidirectionally with individual checkboxes.
+
+---
+
+### 📊 Circular Chart Animations SVG `stroke-dasharray`
+
+The teacher dashboard uses three SVG circular progress charts. Animation is achieved by setting `stroke-dasharray` from `"0, 100"` to `"${percentage}, 100"` via JavaScript the CSS `transition` on the `circle` element animates the change:
+
+```js
+function animateCircle(circleId, textId, value, maxVal, suffix) {
+  let percentage = Math.min(100, (value / maxVal) * 100);
+  setTimeout(() => {
+    circle.setAttribute("stroke-dasharray", `${percentage}, 100`);
+    text.innerHTML = value + suffix;
+  }, 300);
+}
+```
+
+Three charts display: attendance rate (%), remaining annual leave (days), and total late minutes.
+
+---
+
+### 🗑️ Bulk Edit & Delete
+
+The history table supports row selection with checkboxes. When rows are selected, a bulk actions bar appears showing the count. Bulk delete runs as a sequential `async/await` loop, executing one API call per record and collecting errors:
+
+```js
+for (let i = 0; i < boxes.length; i++) {
+  const item = JSON.parse(decodeURIComponent(boxes[i].value));
+  let res  = await fetch(APPS_SCRIPT_URL, { ... action: "deleteRecord" ... });
+  let data = await res.json();
+  if (data.status !== "success") hasError = true;
+}
+```
+
+Row metadata (date, name, type, amount) is `JSON.stringify`-d and `encodeURIComponent`-d into each checkbox's `value` attribute eliminating the need for a separate data store.
+
+---
+
+### 📝 Public Employee Self-Registration
+
+Staff can submit a registration request through a full-page public form without needing admin credentials. The submitted data enters a review queue visible to admins. The admin review modal exposes all submitted fields as editable inputs, allowing corrections before approval. Approved entries are written directly to the employees sheet.
+
+---
+
+### 📊 CSV Export & Print Support
+
+The history table can be exported as a `.csv` file that opens directly in Excel or Google Sheets. A separate print mode strips the UI chrome and renders only the data table, formatted for A4 paper.
+
+---
+
+### ⏱️ Live Workdays Counter
+
+The admin dashboard shows a real-time counter of working days elapsed in the current month, excluding weekends. The counter updates without requiring a full page reload.
+
+---
+
+### 🔒 Reset Password
+
+Admins can issue a password reset for any teacher account. The reset flow validates the new password server-side and regenerates the token to invalidate all existing sessions for that user.
+
+---
+
+### 🔒 Custom Confirm Dialog
+
+The native `window.confirm()` is replaced entirely with `customConfirm(msg, callback)` a modal that accepts a callback function executed only when the user clicks "Confirm." This provides consistent styling and prevents the browser-default dialog from appearing.
+
+**🛠️ Tech Used**
+`HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script` · `Google Sheets`
+
+</details>
+
+---
+
+<details>
+<summary><b>📚 6. Al-Khateeb Students /alkhateeb-students</b></summary>
 
 <br>
 
 A public portal for students and parents to look up exam committee assignments and seat numbers by student name or ID.
+
+**Key Features:**
+
+- Search by student ID (numeric) or by name same input field, automatic mode detection
+- Results displayed as styled cards with staggered slide-in animations
+- Share the student data card as a PNG image, with mobile Web Share API support
+- School logos are added only to the exported image via hidden elements, not shown on the page
+- The backend can globally hide data without code changes, via a settings flag
 
 ---
 
@@ -641,11 +853,21 @@ The backend can globally suppress data via a settings flag. When the data is hid
 ---
 
 <details>
-<summary><b>📊 6. Al-Khateeb Results /alkhateeb-results</b></summary>
+<summary><b>📊 7. Al-Khateeb Results /alkhateeb-results</b></summary>
 
 <br>
 
 A public-facing portal for students and parents to look up student data and exam results by student ID or name. A single unified interface covers both data retrieval and score display.
+
+**Key Features:**
+
+- Search by student ID or name from a single input mode is detected automatically
+- Name search returns multiple matching students as animated cards, each with a "Show Result" button
+- Total score and percentage animate from 0 to their final values on display
+- Passing students (≥50%) trigger a confetti burst and falling emoji celebration
+- Share the full results card as a PNG image, optimized for mobile sharing
+- Inline feedback form for students to send messages to school administration
+- The backend can globally hide results without code changes, via a settings flag
 
 ---
 
@@ -768,11 +990,24 @@ The backend can globally hide results via a settings sheet. When `resultsHidden:
 ---
 
 <details>
-<summary><b>✏️ 7. Al-Khateeb Degrees /alkhateeb-degrees</b></summary>
+<summary><b>✏️ 8. Al-Khateeb Degrees /alkhateeb-degrees</b></summary>
 
 <br>
 
-A secure multi-step grade entry portal for teachers. Every interaction from login to save is engineered to prevent data loss and handle concurrent access.
+A secure grade entry portal for teachers. Handles login, session management, draft saving, and conflict-safe writes to the grade database.
+
+**Key Features:**
+
+- Login system with token-based auth stored in `localStorage` (8-hour session)
+- Full UI state is auto-saved as a draft to `localStorage` after every change and restored on reload
+- Multi-step selection: grade level → section → subject → evaluation type
+- Absent students are flagged with a checkbox and excluded from grade validation
+- Enter key moves focus to the next available input, crossing page boundaries automatically
+- Bulk score feature applies one value to all present students at once
+- Paginated table with configurable rows per page (10 to all)
+- Save sends only changed records (diff), not the full list
+- After a successful save, the interface resets and shows a summary of what was saved
+- Warns before leaving the page if there are unsaved changes
 
 ---
 
@@ -889,7 +1124,7 @@ After a successful save, the backend response includes a summary (grade, section
 
 ### 🔢 Bulk Score Broadcast
 
-The bulk score feature allows entering one score and applying it to all present students in a single action. Students marked as absent (`غ` / `غائب`) are explicitly excluded from the bulk fill. A **custom confirmation modal** (`customConfirm`) handles all destructive bulk operations (apply, clear all, absent all, present all) replacing the native browser `confirm()` dialog for consistent styling.
+The bulk score feature allows entering one score and applying it to all present students in a single action. Students marked as absent (`غ` / `غائب`) are explicitly excluded from the bulk fill. A custom confirmation modal handles all destructive bulk operations replacing the native browser `confirm()` dialog for consistent styling.
 
 ---
 
@@ -923,182 +1158,20 @@ The logout button also checks for unsaved changes and shows the custom confirmat
 ---
 
 <details>
-<summary><b>👔 8. Al-Khateeb HR /alkhateeb-hr</b></summary>
-
-<br>
-
-A full-featured staff HR management system with a dual-role architecture. Grew from a basic attendance logger into a comprehensive operations platform covering attendance, leaves, employee registration, profile management, and aggregated reporting.
-
----
-
-### 🔐 Authentication `sessionStorage` (not `localStorage`)
-
-Unlike the Degrees portal, this system uses `sessionStorage`. This means the session is automatically invalidated when the browser tab is closed more appropriate for HR data. The teacher list is also cached in `sessionStorage` to avoid re-fetching on every navigation:
-
-```js
-sessionStorage.setItem(
-  "alkhateeb_hr_auth",
-  JSON.stringify({ token, name, role }),
-);
-sessionStorage.setItem("alkhateeb_teachers", JSON.stringify(allTeachers));
-```
-
----
-
-### 👥 Dual-Role Dashboard
-
-After login, the backend's response includes a `role` field. The frontend shows a completely different container based on this value `adminContainer` or `teacherContainer`. There is no client-side role logic beyond this routing; all privileged actions are validated server-side using the token.
-
----
-
-### 🔎 Live Autocomplete Search with Keyboard Navigation
-
-The teacher search input uses a custom autocomplete implementation. Results are filtered in real time from the locally cached teacher list. The dropdown supports full keyboard navigation:
-
-```js
-document
-  .getElementById("adminSearchInput")
-  .addEventListener("keydown", function (e) {
-    if (e.key === "ArrowDown") {
-      currentSearchFocus++;
-      addActiveSearchItem(items);
-    }
-    if (e.key === "ArrowUp") {
-      currentSearchFocus--;
-      addActiveSearchItem(items);
-    }
-    if (e.key === "Enter") {
-      if (currentSearchFocus > -1) items[currentSearchFocus].click();
-      else if (items.length === 1) items[0].click(); // auto-select if only one result
-    }
-  });
-```
-
-A `document.addEventListener("click")` closes the dropdown when clicking anywhere outside the input.
-
----
-
-### ⏱️ Automatic Delay Calculation
-
-For time-based operations (morning tardiness, early departure, etc.), the form shows a time picker. When the time changes, `calculateDelay()` parses both the selected time and the teacher's scheduled start time (stored in the hidden `selectedTeacherStart` field) and computes the difference in minutes:
-
-```js
-let [eh, em] = expectedTime.split(":").map(Number);
-let [ah, am] = actualTime.split(":").map(Number);
-let diff = ah * 60 + am - (eh * 60 + em);
-```
-
-A "Now" button fills the time picker with the current system time and triggers the calculation immediately.
-
----
-
-### 📅 Multi-Day Checkbox Grid
-
-For non-time-based operations (absences, leaves), the admin can switch to "multiple days" mode. `generateCheckboxes()` builds a grid of checkboxes for every day in the selected range (max 60 days):
-
-```js
-for (let i = 0; i <= diffDays; i++) {
-  let currentDate = new Date(startDate);
-  currentDate.setDate(startDate.getDate() + i);
-  // creates a labeled checkbox: "الإثنين (12/5)"
-}
-```
-
-A "Select All" master checkbox syncs with individual checkboxes and updates when any individual box changes.
-
----
-
-### 📊 Circular Chart Animations SVG `stroke-dasharray`
-
-The teacher dashboard uses three SVG circular progress charts. Animation is achieved by setting `stroke-dasharray` from `"0, 100"` to `"${percentage}, 100"` via JavaScript the CSS `transition` on the `circle` element animates the change:
-
-```js
-function animateCircle(circleId, textId, value, maxVal, suffix) {
-  let percentage = Math.min(100, (value / maxVal) * 100);
-  setTimeout(() => {
-    circle.setAttribute("stroke-dasharray", `${percentage}, 100`);
-    text.innerHTML = value + suffix;
-  }, 300);
-}
-```
-
-Three charts display: attendance rate (%), remaining annual leave (days), and total late minutes.
-
----
-
-### 🗑️ Bulk Edit & Delete
-
-The history table supports row selection with checkboxes. When rows are selected, a bulk actions bar appears showing the count. Bulk delete runs as a sequential `async/await` loop, executing one API call per record and collecting errors:
-
-```js
-for (let i = 0; i < boxes.length; i++) {
-  const item = JSON.parse(decodeURIComponent(boxes[i].value));
-  let res  = await fetch(APPS_SCRIPT_URL, { ... action: "deleteRecord" ... });
-  let data = await res.json();
-  if (data.status !== "success") hasError = true;
-}
-```
-
-Row metadata (date, name, type, amount) is `JSON.stringify`-d and `encodeURIComponent`-d into each checkbox's `value` attribute eliminating the need for a separate data store.
-
----
-
-### 🔒 Custom Confirm Dialog
-
-The native `window.confirm()` is replaced entirely with `customConfirm(msg, callback)` a modal that accepts a callback function executed only when the user clicks "Confirm." This provides consistent styling and prevents the browser-default dialog from appearing.
-
-**🛠️ Tech Used**
-`HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script` · `Google Sheets`
-
----
-
-### 📝 Public Employee Self-Registration
-
-Staff can submit a registration request through a full-page public form without needing admin credentials. The submitted data enters a review queue visible to admins. The admin review modal exposes all submitted fields as editable inputs, allowing corrections before approval. Approved entries are written directly to the employees sheet.
-
----
-
-### 👥 Multi-Teacher Selection with Chips UI
-
-The admin can select multiple staff members simultaneously via a chips-based selector. Selected names appear as dismissible chips below the search input. All selected teachers can have the same operation applied in a single batch API call, which accepts an array of records rather than a single record.
-
----
-
-### 📅 Multi-Day Checkbox Grid
-
-For absences and leaves the admin switches to "multiple days" mode. `generateCheckboxes()` builds a day-by-day grid for the selected date range (max 60 days), skipping weekends automatically. A master "Select All" checkbox syncs bidirectionally with individual checkboxes.
-
----
-
-### 📊 CSV Export & Print Support
-
-The history table can be exported as a `.csv` file that opens directly in Excel/Sheets. A separate print mode strips the UI chrome and renders only the data table, formatted for A4 paper.
-
----
-
-### ⏱️ Live Workdays Counter
-
-The admin dashboard shows a real-time counter of working days that has elapsed in the current month. Weekends are excluded from the count. The counter updates silently via a polling mechanism without requiring a full page reload.
-
----
-
-### 🔒 Reset Password Feature
-
-Admins can issue a password reset for any teacher account. The reset flow validates the new password server-side and regenerates the token to invalidate all existing sessions for that user.
-
-**🛠️ Tech Used**
-`HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script` · `Google Sheets`
-
-</details>
-
----
-
-<details>
 <summary><b>⭐ 9. Al-Khateeb Stars /alkhateeb-stars</b></summary>
 
 <br>
 
-A public leaderboard displaying the top-10 students per grade level. Built entirely for visual impact, with every rank card carrying layered animations, 3D hover transforms, and shimmer effects.
+A public leaderboard displaying the top-10 students per grade level. Built for visual impact with 3D card effects, shimmer animations, and grade-level tabs.
+
+**Key Features:**
+
+- Top-10 students displayed per grade level with distinct gold, silver, and bronze rank themes
+- 3D tilt effect on each card using CSS `perspective` and JavaScript mouse-tracking
+- Staggered card reveal animation on page load (cascading by rank index)
+- Grade-level tab bar: switch between grades without a page reload, all data loaded in one request
+- Animated gold shimmer sweep on top-3 cards with decorative laurel SVG overlays
+- Persistent disclaimer informing visitors that results are preliminary and subject to review
 
 ---
 
@@ -1127,9 +1200,7 @@ A persistent notice below the leaderboard informs students and parents that resu
 **🛠️ Tech Used**
 `HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script`
 
-</details>
-
----
+## </details>
 
 ## 🏗️ Al-Khateeb System Architecture
 
@@ -1472,10 +1543,16 @@ mosamirhelal.github.io/
 
 **Design & Development** Mohammed Samir Helal
 
-_All projects in this repository frontend interfaces, backend architecture, database schema, security systems, and UI/UX were designed and built entirely by Mohammed Samir Helal._
+All projects in this repository frontend interfaces, backend architecture, database schema, security systems, and UI/UX were designed and built entirely by Mohammed Samir Helal.
 
 ---
 
-<sub>© 2026 Mohammed Samir Helal · All projects are live on GitHub Pages · Built with ❤️ in Cairo, Egypt</sub>
+**Al-Khateeb System Samir Helal, Principal of Al-Khateeb School**
+
+The Al-Khateeb system exists because of **Samir Helal** principal of the school and the person who originally envisioned it. He defined what each portal should do, proposed every major feature, tested releases with real users, and kept pushing the system forward. This is his idea, built by his son. Thank you, Dad.
+
+---
+
+<sub>© 2026 Mohammed Samir Helal · Built with ❤️ in Cairo, Egypt</sub>
 
 </div>

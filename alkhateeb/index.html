@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
@@ -56,7 +56,8 @@
         align-items: center;
         overflow-x: hidden;
         background-color: var(--bg);
-        background-image: radial-gradient(
+        background-image:
+          radial-gradient(
             ellipse at 20% 20%,
             rgba(0, 86, 179, 0.08) 0%,
             transparent 55%
@@ -226,6 +227,25 @@
         font-weight: 600;
         font-size: 15px;
       }
+      .section-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 12px;
+        font-weight: 800;
+        color: var(--text-sub);
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        margin-bottom: 2px;
+        margin-top: 4px;
+      }
+      .section-label::before,
+      .section-label::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+      }
       .buttons-grid {
         display: flex;
         flex-direction: column;
@@ -247,7 +267,9 @@
         margin: 0 auto;
         padding: 17px 22px;
         border-radius: 12px;
-        transition: transform 0.12s ease-out, box-shadow 0.12s ease-out;
+        transition:
+          transform 0.12s ease-out,
+          box-shadow 0.12s ease-out;
         position: relative;
         overflow: hidden;
         font-family: inherit;
@@ -273,7 +295,11 @@
         background: linear-gradient(135deg, #007a7a 0%, #00a3a3 100%);
         box-shadow: 0 4px 16px rgba(0, 122, 122, 0.25);
       }
-      .btn-teachers {
+      .btn-stars {
+        background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
+        box-shadow: 0 4px 16px rgba(184, 134, 11, 0.28);
+      }
+      .btn-hr {
         background: linear-gradient(135deg, #8f250c 0%, #bf3d18 100%);
         box-shadow: 0 4px 16px rgba(143, 37, 12, 0.25);
       }
@@ -294,7 +320,9 @@
         z-index: 2;
         opacity: 0.7;
         font-size: 16px;
-        transition: transform 0.2s ease, opacity 0.2s;
+        transition:
+          transform 0.2s ease,
+          opacity 0.2s;
       }
       .portal-btn:hover .btn-arrow {
         transform: translateX(4px);
@@ -498,6 +526,19 @@
         <h2>البوابة الإلكترونية</h2>
       </div>
       <div class="buttons-grid">
+        <div class="section-label">بوابات الطلاب وأولياء الأمور</div>
+        <a
+          href="../alkhateeb-results/"
+          class="portal-btn btn-results"
+          onclick="navigateWithRipple(event, this, '../alkhateeb-results/')"
+        >
+          <div class="btn-content">
+            <span class="btn-icon">📊</span>
+            <span>بوابة بيانات ونتائج الطلاب</span>
+          </div>
+          <span class="btn-arrow">&#8592;</span>
+          <div class="btn-shine"></div>
+        </a>
         <a
           href="../alkhateeb-students/"
           class="portal-btn btn-students"
@@ -511,17 +552,18 @@
           <div class="btn-shine"></div>
         </a>
         <a
-          href="../alkhateeb-results/"
-          class="portal-btn btn-results"
-          onclick="navigateWithRipple(event, this, '../alkhateeb-results/')"
+          href="../alkhateeb-stars/"
+          class="portal-btn btn-stars"
+          onclick="navigateWithRipple(event, this, '../alkhateeb-stars/')"
         >
           <div class="btn-content">
-            <span class="btn-icon">📊</span>
-            <span>بوابة نتائج الطلاب</span>
+            <span class="btn-icon">⭐</span>
+            <span>بوابة العشرة الأوائل</span>
           </div>
           <span class="btn-arrow">&#8592;</span>
           <div class="btn-shine"></div>
         </a>
+        <div class="section-label">بوابات المعلمين والإدارة</div>
         <a
           href="../alkhateeb-degrees/"
           class="portal-btn btn-degrees"
@@ -535,13 +577,13 @@
           <div class="btn-shine"></div>
         </a>
         <a
-          href="../alkhateeb-teachers/"
-          class="portal-btn btn-teachers"
-          onclick="navigateWithRipple(event, this, '../alkhateeb-teachers/')"
+          href="../alkhateeb-hr/"
+          class="portal-btn btn-hr"
+          onclick="navigateWithRipple(event, this, '../alkhateeb-hr/')"
         >
           <div class="btn-content">
             <span class="btn-icon">👨‍🏫</span>
-            <span>بوابة شؤون المعلمين</span>
+            <span>بوابة شؤون العاملين</span>
           </div>
           <span class="btn-arrow">&#8592;</span>
           <div class="btn-shine"></div>
