@@ -1,4 +1,4 @@
-﻿<div align="center">
+<div align="center">
 
 # 👋 Hello, I'm Mohammed Samir Helal
 
@@ -289,6 +289,7 @@ mosamirhelal.github.io/
 │
 ├── 📄 index.html                        ← Personal website (mosamirhelal.com)
 ├── 🌐 CNAME                             ← Custom domain configuration
+├── 📜 LICENSE                           ← MIT License
 ├── 📱 site.webmanifest                  ← PWA manifest
 ├── 🖼️ favicon.ico / .svg                ← Favicons
 ├── 🖼️ favicon-96x96.png                 ← Favicon (96px)

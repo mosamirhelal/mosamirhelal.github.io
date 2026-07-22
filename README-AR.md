@@ -289,6 +289,7 @@ mosamirhelal.github.io/
 │
 ├── 📄 index.html                        ← الموقع الشخصي (mosamirhelal.com)
 ├── 🌐 CNAME                             ← إعدادات الدومين المخصص
+├── 📜 LICENSE                           ← ترخيص MIT
 ├── 📱 site.webmanifest                  ← ملف تطبيق الويب (PWA)
 ├── 🖼️ favicon.ico / .svg                ← أيقونات الموقع
 ├── 🖼️ favicon-96x96.png                 ← أيقونة (96px)
