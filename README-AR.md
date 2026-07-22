@@ -1,6 +1,6 @@
 <div align="center">
 
-# 👋 مرحباً، أنا محمد سمير هلال
+# 👋 أهلاً، أنا محمد سمير هلال
 
 ### 🦷 طالب طب أسنان · 💻 مبرمج · 🎨 مصمم جرافيك
 
@@ -15,961 +15,196 @@
 
 <div align="center">
 
-> **النسخة الإنجليزية متاحة:** [اقرأ بالإنجليزية](README.md)
+> **English available:** [Read in English](README.md)
 
 </div>
-
-<div dir="rtl">
 
 ---
 
-## 👨‍💻 عن نفسي
+## 👨‍💻 نبذة عني
 
-أهلاً! أنا **محمد سمير هلال** — طالب طب أسنان في **جامعة مصر للعلوم والتكنولوجيا (MUST)**، ومبرمج بتعليم ذاتي شغوف بالبرمجة، ومصمم جرافيك مبدع، مقيم في القاهرة، مصر.
-
-أحب بناء أشياء تُستخدم فعلاً — من بوابات الطلاب وأنظمة إدارة المدارس إلى مرئيات الصوت والأدوات الشخصية. كل ما في هذا الـ repository هو في production الآن ويستخدمه أناس حقيقيون.
+أنا **محمد سمير هلال**، طالب طب أسنان في جامعة مصر للعلوم والتكنولوجيا (MUST)، ومبرمج بتعليم ذاتي، ومصمم جرافيك مقيم في القاهرة. أقوم ببناء مشاريع برمجية تُستخدم بالفعل في أرض الواقع، تشمل بوابات المدارس وأنظمة الإدارة وأدوات المعالجة الصوتية. جميع المشاريع هنا تعمل في بيئة الإنتاج الفعلية.
 
 | | |
-|---|---|
+| --- | --- |
 | 🎓 **التعليم** | طالب طب أسنان · جامعة مصر للعلوم والتكنولوجيا (MUST) |
 | 📍 **الموقع** | القاهرة، مصر |
 | 🌐 **الموقع الإلكتروني** | [mosamirhelal.com](https://mosamirhelal.com) |
-| 📱 **في كل مكان** | [@mosamirhelal](https://mosamirhelal.com) |
-| 🚀 **هذا الـ Repo** | المضيف الرسمي لموقعي الشخصي وجميع المشاريع الفرعية |
-
-<div align="center">
-  <blockquote>🚀 <strong>الرسالة:</strong> سد الفجوة بين الدقة الطبية والابتكار التقني.</blockquote>
-</div>
+| 🚀 **هذا المستودع** | الموقع الشخصي وجميع المشاريع الفرعية، مستضاف على GitHub Pages |
 
 ---
 
 ## 🗂️ نظرة عامة على المشاريع
 
-| # | المشروع | الوصف | التقنيات الأساسية | رابط مباشر |
-|---|---------|-------|-------------------|-----------|
-| 1 | **الموقع الشخصي** | صفحة شخصية أنيقة مع drawer للسوشيال ميديا، dark/light mode، وكشف تلقائي للغة العربية | HTML · CSS · JS | [mosamirhelal.com](https://mosamirhelal.com) |
-| 2 | **موتاسكس** | متتبع مهام دراسية بالوقت الفعلي مع مزامنة Firebase | JS · Firebase | [mosamirhelal.com/motasks](https://mosamirhelal.com/motasks) |
-| 3 | **مراقب الصوت** | مرئي صوتي للميكروفون وصوت النظام داخل المتصفح — بدون server | واجهة الصوت · JS | [mosamirhelal.com/audiomonitor](https://mosamirhelal.com/audiomonitor) |
-| 4 | **الخطيب - الصفحة الرئيسية** | بوابة موحدة لأنظمة المدرسة الثلاثة | HTML · CSS · JS | [mosamirhelal.com/alkhateeb](https://mosamirhelal.com/alkhateeb) |
-| 5 | **الخطيب - النتائج** | بوابة نتائج الطلاب مع confetti وخاصية المشاركة كصورة | JS · Apps Script | [mosamirhelal.com/alkhateeb-results](https://mosamirhelal.com/alkhateeb-results) |
-| 6 | **الخطيب - الدرجات** | بوابة إدخال درجات المعلمين مع المصادقة وحماية التعارض | JS · Apps Script | [mosamirhelal.com/alkhateeb-degrees](https://mosamirhelal.com/alkhateeb-degrees) |
-| 7 | **الخطيب - الموارد البشرية** | نظام إدارة حضور وإجازات الموظفين | JS · Apps Script | [mosamirhelal.com/alkhateeb-teachers](https://mosamirhelal.com/alkhateeb-teachers) |
+| # | المشروع | الوصف | التقنيات الأساسية | المعاينة المباشرة |
+| --- | --- | --- | --- | --- |
+| 1 | **الموقع الشخصي** | صفحة شخصية مع القائمة السريعة للروابط والتغيير التلقائي للغة والوضع المظلم | HTML · CSS · JS | [mosamirhelal.com](https://mosamirhelal.com) |
+| 2 | **MoTasks** | نظام تتبع المهام الدراسية في الوقت الفعلي مع مزامنة Firebase | JS · Firebase | [mosamirhelal.com/motasks](https://mosamirhelal.com/motasks) |
+| 3 | **AudioMonitor** | أداة تحليل ومعاينة الصوت للميكروفون والنظام داخل المتصفح بدون سيرفر | Web Audio API · JS | [mosamirhelal.com/audiomonitor](https://mosamirhelal.com/audiomonitor) |
+| 4 | **بوابة الخطيب** | البوابة الرئيسية الموحدة للوصول إلى كافة أنظمة المدرسة | HTML · CSS · JS | [mosamirhelal.com/alkhateeb](https://mosamirhelal.com/alkhateeb) |
+| 5 | **الخطيب HR** | نظام إدارة الموارد البشرية وشؤون العاملين والحضور والغياب والإجازات | JS · Apps Script | [mosamirhelal.com/alkhateeb-hr](https://mosamirhelal.com/alkhateeb-hr) |
+| 6 | **الخطيب للطلاب** | بوابة الاستعلام عن اللجان ورقم الجلوس للطلاب مع ميزة المشاركة كصورة | JS · Apps Script | [mosamirhelal.com/alkhateeb-students](https://mosamirhelal.com/alkhateeb-students) |
+| 7 | **الخطيب للنتائج** | بوابة عرض نتائج الامتحانات للطلاب مع المؤثرات ومشاركة النتيجة كصورة | JS · Apps Script | [mosamirhelal.com/alkhateeb-results](https://mosamirhelal.com/alkhateeb-results) |
+| 8 | **الخطيب للدرجات** | بوابة رصد درجات الطلاب للمعلمين مع نظام التحقق وحفظ المسودات | JS · Apps Script | [mosamirhelal.com/alkhateeb-degrees](https://mosamirhelal.com/alkhateeb-degrees) |
+| 9 | **نجوم الخطيب** | لوحة شرف الأوائل للطلاب مع بطاقات تفاعلية ثلاثية الأبعاد | JS · Apps Script | [mosamirhelal.com/alkhateeb-stars](https://mosamirhelal.com/alkhateeb-stars) |
 
 ---
 
-## 🔬 تفصيل المشاريع
+## 🔬 المشاريع
 
 <details>
-<summary><b>🌐 1. الموقع الشخصي — mosamirhelal.com</b></summary>
+<summary><b>🌐 1. الموقع الشخصي : mosamirhelal.com</b></summary>
 
 <br>
 
-صفحة شخصية مُصممة بعناية تفوق فكرة الـ "coming soon" البسيطة بمراحل. كل تفصيلة بصرية وكل hint للأداء وكل سلوك تفاعلي مدروس ومكتوب يدوياً بـ HTML وCSS وJavaScript خالص — بدون أي dependencies.
+مبني بالكامل باستخدام HTML و CSS و JavaScript بدون أي مكتبات خارجية. يكتشف متصفحات اللغة العربية عند التحميل الأول ويقوم بتحويل لغة الصفحة والاتجاه وعناصر SEO قبل بدء التحديث البصري. يعتمد المظهر المظلم والفاتح على تفضيل المستخدم المحفوظ، ثم إعدادات النظام، مع الاستجابة الحية للتغييرات. تحتوي القائمة السريعة على 21 منصة تواصل مع مؤثرات بصيرة تعتمد على CSS فقط.
 
----
+`HTML5` · `CSS3` · `Vanilla JavaScript` · `localStorage API` · `Schema.org JSON-LD`
 
-### 🌍 الكشف التلقائي للعربية — تبديل اللغة قبل الرسم
-
-أول script في الـ `<head>` — قبل أن يُرندر أي محتوى — يقرأ `navigator.language` ويتحقق إذا كانت تبدأ بـ `"ar"`. لو نعم، يعيد كتابة الصفحة فوراً قبل أن يرسم المتصفح أي بكسل:
-
-```js
-const userLang = navigator.language || navigator.userLanguage;
-const isArabic = userLang.startsWith("ar");
-if (isArabic) {
-  document.title = arabicTitle;
-  document.documentElement.lang = "ar";
-  document.documentElement.dir = "rtl";
-  // يُحدّث أيضاً: og:title, og:description, twitter:title, twitter:description, meta description
-}
-```
-
-يعني الزوار العرب لن يروا أي "وميض" إنجليزي. التبديل يحدث بشكل synchronous أثناء الـ parse، وليس بعد `DOMContentLoaded`. كلا الـ `lang` و`dir` على الـ `<html>` يُحدَّثان، مما يؤثر على rendering الخطوط واتجاه النص بشكل كامل.
-
----
-
-### 🌙 نظام الـ Theme — أولوية ثلاثية الطبقات
-
-محرك الـ theme يحدد أي theme يظهر عبر نظام أولوية من ثلاث طبقات:
-
-1. **اختيار المستخدم الصريح** — محفوظ في `localStorage` تحت المفتاح `"theme"`. لو موجود، هو دايماً الأولى.
-2. **تفضيل النظام** — يُقرأ `window.matchMedia("(prefers-color-scheme: dark)").matches` عند التحميل لو مفيش تفضيل محفوظ.
-3. **تغييرات النظام اللحظية** — `change` event listener على `prefers-color-scheme` media query يحدّث الـ theme في الوقت الفعلي *بس لو* المستخدم ما اختارش صراحةً.
-
-```js
-const savedTheme = localStorage.getItem("theme");
-const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-applyTheme(savedTheme ? savedTheme : prefersDark ? "dark" : "light");
-
-window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
-  if (!localStorage.getItem("theme")) {
-    applyTheme(e.matches ? "dark" : "light");
-  }
-});
-```
-
-دالة `applyTheme()` تبدّل class اسمه `dark-mode` على الـ `<body>`، تغيّر emoji الزرار (🌙 / ☀️)، تحدّث الـ `aria-label`، وتكتب ديناميكياً الـ `theme-color` meta tag (`#000000` أو `#ffffff`) — اللي بيتحكم في لون الـ browser chrome على الموبايل.
-
----
-
-### 🖼️ صورتان للـ Hero — تبديل مُدار بالـ CSS
-
-في الـ DOM عنصرا `<img>` منفصلان — `light.webp` و`dark.webp`. الاتنين متحملين مسبقاً في الـ `<head>` باستخدام `<link rel="preload">` مع attributes للـ `media` تتطابق مع theme الـ OS، عشان الصورة الصح تكون في الذاكرة قبل ما يشتغل الـ JS:
-
-```html
-<link rel="preload" as="image" href="light.webp" media="(prefers-color-scheme: light)" />
-<link rel="preload" as="image" href="dark.webp" media="(prefers-color-scheme: dark)" />
-```
-
-الإظهار والإخفاء بالـ CSS بالكامل — مفيش `src` بيتغير في الـ JS:
-
-```css
-body:not(.dark-mode) #light-image { display: block; }
-body.dark-mode       #dark-image  { display: block; }
-```
-
-الصورتان تحملان `fetchpriority="high"` وأبعاد `width`/`height` صريحة لمنع الـ layout shift. الـ transitions بتتم عبر `opacity` على عناصر الـ `img` و`background-color` على الـ `body`.
-
----
-
-### 🎪 الـ Social Drawer — حركة بالـ CSS خالص
-
-الـ drawer يستخدم حيلة `max-height` animation لتحقيق slide-in سلس بدون أن يقيس الـ JavaScript ارتفاع العناصر. الـ container يتحول من `max-height: 0` إلى `max-height: 600px`، مع `overflow: hidden` في حالة الإغلاق و`overflow: visible` في حالة الفتح (عشان الـ tooltips تقدر تخرج من الـ container):
-
-```css
-.social-icons-container {
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: max-height 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), ...;
-}
-.contact-wrapper.active .social-icons-container {
-  max-height: 600px;
-  opacity: 1;
-  overflow: visible;
-  /* overflow تبقى visible بعد انتهاء الـ transition مش أثناءه */
-  transition: ..., overflow 0s linear 0.5s;
-}
-```
-
-الـ `cubic-bezier(0.68, -0.55, 0.27, 1.55)` بيعمل "bounce" خفيف عند الفتح وsnap سريع عند الإغلاق — easing مختارة بعناية تخلّي الـ drawer يحس بأنه ماديّ. الـ JavaScript بس بيبدّل الـ `.active` class ويحدّث الـ `aria-expanded`.
-
----
-
-### 🎨 أيقونات 21 منصة — نظام ألوان الـ Brand
-
-كل ألوان المنصات الـ 21 معرّفة كـ CSS custom properties في الـ `:root`، وده بيخلي طبقة الـ JavaScript مستقلة تماماً عن الألوان. كل `.social-btn` بياخد style الـ hover من خلال rule CSS مخصصة:
-
-```css
-:root {
-  --whatsapp: #25d366;
-  --instagram: /* gradient */;
-  --tiktok: #000;
-  /* ... 18 منصة تانية */
-}
-.social-btn.tiktok:hover {
-  box-shadow: 2px 2px 0 #25f4ee, -2px -2px 0 #fe2c55; /* تأثير شعار TikTok ذو اللونين */
-}
-.social-btn.instagram:hover {
-  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-}
-```
-
-منصة GitHub عندها rule خاص للـ dark mode — خلفية بيضا مع أيقونة سودا — لأن الأسود الاعتيادي بيختفي على الخلفيات الداكنة.
-
----
-
-### 💬 الـ Tooltips — بالـ CSS فقط عبر `aria-label`
-
-كل زرار سوشيال وزرار الـ theme بيعرضوا tooltips عند الـ hover باستخدام `::before` pseudo-elements بتقرأ من الـ `aria-label` attribute عبر `content: attr(aria-label)`. بدون JavaScript، بدون HTML إضافي:
-
-```css
-.social-btn::before {
-  content: attr(aria-label);
-  opacity: 0;
-  transform: translateX(-50%) translateY(10px);
-  transition: all 0.2s ease;
-}
-.social-btn:hover::before {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-```
-
-ده بيخلّي الـ HTML نظيف ويضمن إن الـ tooltips دايماً متزامنة مع الـ accessible label.
-
----
-
-### 🔢 عداد الزيارات — وضع الإحصائيات المخفي
-
-عداد زيارات بيشتغل بصمت عند كل تحميل للصفحة عبر `counterapi.dev`. العدد بيظهر بس لو الـ URL فيه `?stats` — Easter egg مقصودة للوصول الإداري بدون إظهار العداد للزوار العاديين:
-
-```js
-fetch("https://api.counterapi.dev/v1/mosamirhelal/visits/up")
-  .then(res => res.json())
-  .then(data => {
-    if (window.location.search === "?stats") {
-      alert(`عدد زيارات الموقع : ${data.count.toLocaleString()}`);
-    }
-  })
-  .catch(() => {});
-```
-
----
-
-### ⚡ معمارية الأداء والـ SEO
-
-- `<link rel="preconnect">` لـ domains الـ FontAwesome وGoogle Tag Manager — يقلل زمن الـ DNS وTLS handshake
-- تحميل FontAwesome بـ `defer` — مبيوقفش الـ render أبداً
-- `<h1 class="sr-only">` فيه النسختين الإنجليزية والعربية لعنوان الصفحة للشاشات الصوتية ومحركات البحث، من غير ما تكون مرئية
-- بيانات `Schema.org` JSON-LD كاملة للشخص `Person` مع روابط `sameAs` لـ 7 منصات
-- وسوم Meta كاملة لـ Open Graph وTwitter Card
-- `<link rel="canonical">` للتعامل مع النسخ المكررة
-- جاهز للـ PWA: `site.webmanifest`، `apple-touch-icon`، صيغ متعددة للـ favicon
-
-**🛠️ التقنيات المستخدمة**
-`HTML5` · `CSS3` · `Vanilla JavaScript` · `localStorage API` · `prefers-color-scheme` · `Schema.org JSON-LD`
+[تفاصيل التنفيذ ←](docs/architecture.md#1-personal-website--mosamirhelalcom)
 
 </details>
 
 ---
 
 <details>
-<summary><b>✅ 2. موتاسكس — /motasks</b></summary>
+<summary><b>✅ 2. MoTasks : /motasks</b></summary>
 
 <br>
 
-مدير مهام دراسية بالوقت الفعلي مبني على Firebase Firestore. حالة التطبيق كلها محفوظة في document واحد على Firestore، مُسلسَل كـ `innerHTML` خام — تصميم عملي يُلغي طبقة الـ schema بالكامل لأداة شخصية.
+نظام إدارة وتنظيم المهام الدراسية اعتماداً على Firebase Firestore. تُحفظ حالة التطبيق بالكامل في مستند واحد داخل Firestore بدلاً من بناء جداول معقدة. يستخدم `onSnapshot` للمزامنة الفورية بين جميع التبويبات المفتوحة مع تأخير كتابة التغييرات لمدة ثانية واحدة لتوفير استهلاك البيانات. يمنع التطبيق تحديث الخلايا عند كتابة المستخدم فيها لتفادي تعارض البيانات.
 
----
-
-### 🔥 المزامنة الفورية — معمارية `onSnapshot`
-
-التطبيق يستخدم `onSnapshot` listener من Firestore بدل استدعاء `getDoc` لمرة واحدة. يعني كل تغيير على أي جهاز بيتبعت لكل التابات المفتوحة فوراً، بدون polling:
-
-```js
-onSnapshot(scheduleDocRef, (docSnap) => {
-  if (docSnap.exists() && docSnap.data().htmlContent) {
-    // Guard: حدّث بس لو المستخدم مش بيعدل في خلية حالياً
-    if (document.activeElement.tagName !== "TD") {
-      tableBody.innerHTML = docSnap.data().htmlContent;
-      reattachEvents();
-    }
-  }
-});
-```
-
-الـ active element guard (`document.activeElement.tagName !== "TD"`) بيمنع update قادم من جهاز تاني من إنه يمسح نص المستخدم اللي بيكتبه في نفس الوقت — آلية بسيطة وفعّالة لمنع تعارض الكتابة في أداة من مستخدم واحد.
-
----
-
-### 💾 الحفظ المؤجل — 1 ثانية تأخير للكتابة
-
-كل `oninput` event على خلية `contenteditable` بيصفّر timer الـ debounce المدته ثانية واحدة. الحفظ بيحصل بس لما المستخدم يوقف الكتابة:
-
-```js
-cell.oninput = () => {
-  clearTimeout(saveTimeout);
-  saveTimeout = setTimeout(saveToFirebase, 1000);
-};
-```
-
-ده بيمنع كتابة Firestore عند كل ضغطة، يحافظ على التكلفة منخفضة ويتجنب write-rate limits.
-
----
-
-### ☑️ تسلسل حالة الـ Checkbox
-
-الـ checkboxes في HTML عندها quirk: الـ property الـ `.checked` بتعكس الحالة في وقت التشغيل، لكن تسلسل الـ `innerHTML` بيلتقط بس الـ `checked` HTML *attribute*. عشان نحفظ الـ checkboxes صح، `saveToFirebase()` بيتزامن الـ attribute يدوياً قبل التسلسل:
-
-```js
-checkboxes.forEach(cb => {
-  if (cb.checked) cb.setAttribute("checked", "true");
-  else            cb.removeAttribute("checked");
-});
-await setDoc(scheduleDocRef, { htmlContent: tableBody.innerHTML });
-```
-
-بدون هذه الخطوة، كل الـ checkboxes هتبان غير محددة بعد كل reload.
-
----
-
-### 🔁 إعادة ربط الـ Events بعد إعادة بناء الـ DOM
-
-لأن آلية المزامنة بتستبدل `tableBody.innerHTML` بالكامل، كل الـ event listeners بتتدمر عند كل تحديث. `reattachEvents()` بتربط من جديد الأنواع الثلاثة بعد كل إعادة بناء للـ DOM:
-
-```js
-function reattachEvents() {
-  // 1. حفظ مؤجل عند كتابة contenteditable
-  tableBody.querySelectorAll("[contenteditable]").forEach(cell => {
-    cell.oninput = () => { clearTimeout(saveTimeout); saveTimeout = setTimeout(saveToFirebase, 1000); };
-  });
-  // 2. حفظ فوري عند تغيير checkbox
-  tableBody.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-    cb.onchange = saveToFirebase;
-  });
-  // 3. زرار الحذف مع dialog للتأكيد
-  tableBody.querySelectorAll(".delete-btn").forEach(btn => {
-    btn.onclick = function() {
-      if (confirm("Delete this task?")) {
-        this.closest("tr").remove();
-        saveToFirebase();
-      }
-    };
-  });
-}
-```
-
----
-
-### ➕ صف جديد — مع تاريخ تلقائي
-
-`addNewRow()` بتُضيف صف جاهز فيه تاريخ اليوم بصيغة `dd/mm/yyyy` باستخدام `toLocaleDateString("en-GB")`. بعد الإضافة، بتستدعي `reattachEvents()` على الصف الجديد وبتشغّل حفظ فوري.
-
----
-
-### 📡 شارة الحالة — ثلاث حالات وصفية
-
-شارة الحالة في الـ header بتدور على أربع حالات مع reset تلقائي:
-
-| الحالة | المُشغّل | إعادة الضبط تلقائياً |
-|--------|---------|-------------|
-| جارٍ الاتصال... | تحميل الصفحة لأول مرة | لا |
-| ⏳ جارٍ الحفظ... | قبل الكتابة على Firestore | لا |
-| ✅ تم الحفظ / متزامن | بعد كتابة/snapshot ناجح | بعد 3 ثواني |
-| ❌ خطأ في الاتصال | خطأ Firestore | لا |
-
-**🛠️ التقنيات المستخدمة**
 `HTML5` · `CSS3` · `Vanilla JavaScript` · `Firebase Firestore` · `Firebase SDK v11`
 
-</details>
-
----
-
-<details>
-<summary><b>🎧 3. مراقب الصوت — /audiomonitor</b></summary>
-
-<br>
-
-أداة مراقبة صوت client-side كاملة بدون أي رفع للبيانات. كل معالجة الإشارة بتحصل داخل واجهة الصوت للمتصفح — لا يغادر أي صوت الجهاز أبداً. التطبيق يدعم مراقبة الميكروفون وصوت النظام في نفس الوقت مع مرئيات وإعدادات وألوان مستقلة لكل منهما.
-
----
-
-### 🌍 محرك ثنائي اللغة الكامل — الكائن `T`
-
-كل نصوص الواجهة محفوظة في object اسمه `T` بمفتاحي `en` و`ar`، بما فيها نصوص رسائل الخطأ. `applyLang()` بتتكرر على كل العناصر بالـ ID، وتحدّث `document.documentElement.lang` وقيمة `dir`، وتبدّل الـ font family في الـ CSS بين `Inter` (لاتيني) و`Tajawal` (عربي):
-
-```js
-// الـ CSS بيتعامل مع تبديل الخط:
-html[lang="ar"] body { font-family: "Tajawal", system-ui, sans-serif; }
-html[lang="en"] body { font-family: "Inter",   system-ui, sans-serif; }
-```
-
-كل نصوص الأزرار بما فيها الحالات الديناميكية ("Start Monitoring" / "Stop") بتمر عبر `T[lang]` — مفيش نص إنجليزي hard-coded في أي مكان في طبقة الـ JavaScript.
-
----
-
-### 💾 التفضيلات الدائمة — كائن الحالة في `localStorage`
-
-كل تفضيلات المستخدم بتتسلسل كـ JSON object واحد وبتتحفظ في `localStorage` عند كل تغيير. `loadState()` بتستعيدها قبل أول render:
-
-```js
-// شكل الـ State:
-{ lang, isDark, layoutMode, cardVis: { mic, sys }, micCfg: { mode, sensitivity, smoothing, scheme }, sysCfg: { ... } }
-```
-
-يعني كل color scheme وwaveform mode ومستوى sensitivity وتفضيل الـ layout وكل card مخفية بتتذكّر عبر sessions المتصفح.
-
----
-
-### 🎨 ستة أنظمة للألوان — محرك تدرجات مُكاش
-
-الأنظمة الستة للألوان معرّفة كأزواج hue (`h1`، `h2`)، مش كألوان ثابتة. التدرج الفعلي بيتحسب وقت الرسم باستخدام الـ `createLinearGradient` API للـ canvas. كائن اسمه `gradCache` بيكاش كل gradient بمفتاح بيجمع الـ hue مع الارتفاع/العرض، عشان كل gradient فريدة تتحسب مرة واحدة بس:
-
-```js
-function getBarGrad(ctx, H, hue, id) {
-  const key = `${Math.round(hue)}-${H}`;
-  if (!gradCache[id][key]) {
-    const g = ctx.createLinearGradient(0, H, 0, 0);
-    g.addColorStop(0, `hsla(${hue},85%,45%,.9)`);
-    g.addColorStop(1, `hsla(${hue},90%,72%,1)`);
-    gradCache[id][key] = g;
-  }
-  return gradCache[id][key];
-}
-```
-
-الـ cache بيتمسح (`clearGradCache()`) كل ما يتغير الـ theme (dark/light بيأثر على لون الخلفية) أو لما يتغير حجم الـ canvas. الـ hue لكل bar بيتعمله interpolation خطي على المدى الترددي: `hue = h1 + (h2 - h1) * (i / NUM)` — بينتج تدرج hue سلس عبر الـ 56 bar.
-
----
-
-### 📐 تغيير حجم الـ Canvas تلقائياً — `ResizeObserver`
-
-بدلاً من حجم canvas ثابت، `ResizeObserver` بيراقب عنصر الـ container ويحدّث `canvas.width` و`canvas.height` عشان يتطابقوا مع أبعاد البكسل الدقيقة كل ما يتغير الـ viewport:
-
-```js
-const resizeObserver = new ResizeObserver((entries) => {
-  for (let entry of entries) {
-    const canvas = entry.target.querySelector("canvas");
-    canvas.width  = entry.contentRect.width;
-    canvas.height = entry.contentRect.height;
-    clearGradCache(); // الـ gradients المكاشة أصبح حجمها غلط
-  }
-});
-resizeObserver.observe(document.getElementById("mic-viz-wrap"));
-resizeObserver.observe(document.getElementById("sys-viz-wrap"));
-```
-
-ده بيضمن إن المرئي دايماً يملأ الـ container بالضبط — على الموبايل والتابلت والديسكتوب — بدون أي حسابات media queries.
-
----
-
-### 📊 ثلاثة أوضاع مرئية
-
-**وضع الأعمدة** — الوضع الافتراضي. 56 frequency bin بتتحدد من مصفوفة الـ FFT. ارتفاع كل عمود هو `freqData[i * step] / 255 * sensitivity`. نظام peak-hold بيحافظ على أعلى قيمة حديثة لكل bin. الـ peaks بتتآكل بمعدلين مختلفين: تآكل سريع للأعمدة المنخفضة الطاقة، وبطيء للمرتفعة:
-
-```js
-const decayRate = peaks[id][i] > 0.7 ? 0.008 : 0.018;
-peaks[id][i] = Math.max(peaks[id][i] - decayRate, v);
-```
-
-توهج صغير (`shadowBlur`) بيتضاف يتناسب مع ارتفاع العمود للأعمدة اللي بتتجاوز 6% amplitude.
-
-**وضع الموجة** — بيستخدم بيانات المجال الزمني (`getByteTimeDomainData`) بدلاً من بيانات التردد. بيرسم مسار مستمر عبر عرض الـ canvas كله. الـ amplitude بيتحجم بقيمة الـ sensitivity. تدرج أفقي (من اليسار لليمين عبر مدى الـ hue) بيتطبق على الـ stroke، مع توهج `shadowBlur` يتطابق مع الـ hue عند الحافة اليسرى.
-
-**وضع المرآة** — نفس منطق وضع الأعمدة، بس الأعمدة بتنمو للأعلى وللأسفل من المنتصف الرأسي. نقاط الـ peak بتظهر فوق الأعمدة العلوية وتحت السفلية بشكل متماثل.
-
----
-
-### 🎤 التقاط الميكروفون — `getUserMedia`
-
-```js
-micStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
-const actx  = await getAudioCtx();
-micAnalyser = actx.createAnalyser();
-micAnalyser.fftSize = 2048; // → 1024 frequency bin
-micAnalyser.smoothingTimeConstant = micCfg.smoothing;
-micSrc = actx.createMediaStreamSource(micStream);
-micSrc.connect(micAnalyser);
-```
-
-الـ `AudioContext` هو singleton (`globalAudioCtx`) مشترك بين الميكروفون وصوت النظام. لو موجود بس `"suspended"` (بسبب سياسة المتصفح)، بيتعمله `resume()` قبل الاستخدام. لو `"closed"`، بيتنشأ جديد ويتعمل reset للـ analysers الاتنين.
-
----
-
-### 🔊 التقاط صوت النظام — `getDisplayMedia`
-
-```js
-sysStream = await navigator.mediaDevices.getDisplayMedia({ audio: true, video: true });
-sysStream.getVideoTracks().forEach(t => t.stop()); // إلغاء الفيديو فوراً — محتاجين الصوت بس
-if (sysStream.getAudioTracks().length === 0) {
-  // المستخدم ما فعّلش "Share tab audio" — تنبيه وإلغاء
-}
-```
-
-الـ video tracks بيتطلبهم المتصفح (عشان تظهر نافذة المشاركة) لكن بتتوقف فوراً. التطبيق كمان بيستمع لـ `ended` event على الـ audio track — اللي بيتطلق لما المستخدم يضغط "Stop sharing" في المتصفح — عشان ينظف تلقائياً:
-
-```js
-sysStream.getAudioTracks()[0].addEventListener("ended", stopSys);
-```
-
----
-
-### 📉 حساب مستوى الـ dB
-
-عداد الـ dB بيستخدم RMS (Root Mean Square) لـ buffer المجال الزمني، محوّل لـ dB:
-
-```js
-function calcDb(timeArr) {
-  let s = 0;
-  for (let i = 0; i < timeArr.length; i++) {
-    const v = timeArr[i] / 128 - 1; // normalize من [0,255] إلى [-1,1]
-    s += v * v;
-  }
-  const rms = Math.sqrt(s / timeArr.length);
-  return rms < 0.0001 ? null : Math.round(20 * Math.log10(rms));
-}
-```
-
-الإرجاع بـ `null` (صمت) بيظهر كـ `∞` في الواجهة بدلاً من رقم سالب كبير وغير مفيد.
-
----
-
-### ⌨️ اختصارات لوحة المفاتيح
-
-`M` ← تبدّل الميكروفون. `S` ← تبدّل صوت النظام. الـ handler بيتجاهل لو الـ focus على `INPUT` أو `TEXTAREA`، وبيتجاهل المفاتيح المعدّلة (`Ctrl`، `Meta`، `Alt`).
-
-**🛠️ التقنيات المستخدمة**
-`Web Audio API` · `Canvas API` · `ResizeObserver` · `getDisplayMedia` · `localStorage API` · `Inter` · `Tajawal`
+[تفاصيل التنفيذ ←](docs/architecture.md#2-motasks--motasks)
 
 </details>
 
 ---
 
 <details>
-<summary><b>🏠 4. الخطيب - الصفحة الرئيسية — /alkhateeb</b></summary>
+<summary><b>🎧 3. AudioMonitor : /audiomonitor</b></summary>
 
 <br>
 
-نقطة الدخول الموحدة للنظام الرقمي للمدرسة. كل تفصيلة — من النقاط المحيطية العائمة لحتى تأثير موجة الضغط على الأزرار — مُنفّذة من الصفر.
+أداة معالجة وتحليل الصوت تعمل بالكامل داخل المتصفح دون إرسال أي بيانات صوتية للسيرفر. تدعم الاستماع للميكروفون وصوت النظام معاً في الوقت الفعلي مع واجهات عرض مستقلة لكل منهما. تتضمن ثلاثة أنماط عرض بصري، وستة مخططات ألوان، ومقياس مستويات الصوت بالديسيبل، وواجهة كاملة باللغتين العربية والإنجليزية.
+
+`Web Audio API` · `Canvas API` · `ResizeObserver` · `getDisplayMedia` · `localStorage API`
+
+[تفاصيل التنفيذ ←](docs/architecture.md#3-audiomonitor--audiomonitor)
+
+</details>
 
 ---
 
-### 🟣 النقاط المحيطية العائمة
+<details>
+<summary><b>🏠 4. بوابة الخطيب : /alkhateeb</b></summary>
 
-خمسة عناصر `<div class="dot">` موضوعة بشكل absolute عبر الصفحة باستخدام inline styles. لكل منها حجم وموقع و`animation-duration` / `animation-delay` مختلف. بتتحرك بـ `floatDot` — loop بسيط لـ translateY — وعندها `pointer-events: none` عشان ما تأثرش على الضغطات:
+<br>
 
-```css
-@keyframes floatDot {
-  0%, 100% { transform: translateY(0) scale(1);    }
-  50%       { transform: translateY(-15px) scale(1.02); }
-}
-```
+المدخل الرئيسي والواجهة الموحدة لأنظمة مدرسة الخطيب. توفر الوصول إلى جميع البوابات عبر صفحة واحدة تحتوي على مؤثرات عند الضغط وشاشة انتقال كاملة أثناء التحميل، مع معالجة حماية العودة في المتصفح لمنع التجميد البصري.
 
----
-
-### 💧 تأثير الموجة — دقة إحداثيات الضغطة
-
-دالة الموجة بتحسب موقع الضغطة بالضبط نسبةً لـ bounding box الزرار، وبتنشئ `<span>` بحجم يغطي الزرار كله، وتضيفه. بتتعامل مع ثلاثة أنواع input — ضغطة الماوس، اللمس، ولوحة المفاتيح (بترجع للمنتصف):
-
-```js
-function addRipple(e, btn) {
-  const rect = btn.getBoundingClientRect();
-  let x = e.clientX ? e.clientX - rect.left
-        : e.touches?.length ? e.touches[0].clientX - rect.left
-        : rect.width / 2;
-  // span بيتنشأ عند (x - size/2, y - size/2)، بحجم يغطي الزرار
-  // بيتحرك عبر @keyframes ripple: scale(0) → scale(3.5)، opacity 1 → 0
-}
-```
-
-الـ ripple span بيتشال من الـ DOM بعد 450ms.
-
----
-
-### 🔄 طبقة التنقل — آمن مع الـ Back Navigation
-
-لما زرار بوابة يتضغط، `navigateWithRipple()` بيشغّل الموجة، ينتظر 150ms، بعدين يعرض overlay ملء الشاشة مع spinner ونقاط نابضة قبل التنقل. في *الصفحة الوجهة*، `pageshow` event listener بيشيل أي overlay باقي — وده ضروري لأن المتصفحات ممكن تستعيد الـ overlay من الـ bfcache لما المستخدم يضغط Back:
-
-```js
-window.addEventListener("pageshow", function(event) {
-  document.querySelectorAll(".redirect-overlay").forEach(o => o.remove());
-});
-```
-
-**🛠️ التقنيات المستخدمة**
 `HTML5` · `CSS3` · `Vanilla JavaScript`
 
-</details>
-
----
-
-<details>
-<summary><b>📊 5. الخطيب - النتائج — /alkhateeb-results</b></summary>
-
-<br>
-
-بوابة عامة للطلاب وأولياء الأمور للاطلاع على نتائج الامتحانات عبر رقم الطالب أو الاسم.
-
----
-
-### 🔍 بحث ذكي موحد — كشف تلقائي للوضع
-
-حقل إدخال واحد يخدم الوضعين. `getGrade()` بتتحقق لو الإدخال أرقام فقط:
-
-```js
-const isNumeric = /^\d+$/.test(id.trim());
-if (!isNumeric) {
-  searchByName(id.trim()); // بحث بالاسم
-  return;
-}
-// وإلا: بحث بالرقم → fetch ?id=...
-```
-
-مفيش أزرار أو حقول منفصلة. وضع البحث غير مرئي للمستخدم.
-
----
-
-### 🃏 نتائج البحث بالاسم — حركة البطاقات المتدرجة
-
-لما بحث الاسم يرجع أكتر من طالب، كل نتيجة بتتعرض كـ card مع CSS animation delay بيتحسب من الـ index:
-
-```js
-data.results.forEach((student, index) => {
-  const delay = 0.08 * (index + 1);
-  html += `<div class="name-card" style="animation-delay: ${delay}s">...`;
-});
-```
-
-كل card بيعرض اسم الطالب والصف والفصل ورقم الطالب، مع زرار "عرض النتيجة" بيستدعي `selectStudentAndSearch(id)` — بيُدخل الرقم في تدفق البحث الرئيسي.
-
----
-
-### 🔢 حركة العد التصاعدي — تخفيف مكعّب
-
-كل أرقام الدرجات بتتحرك من 0 لقيمتها النهائية باستخدام loop `requestAnimationFrame` مع cubic ease-out (`1 - (1-p)^3`):
-
-```js
-function countUp(el, target, duration, suffix, decimals = 0) {
-  const start = performance.now();
-  function tick(now) {
-    const p    = Math.min((now - start) / duration, 1);
-    const eased = 1 - Math.pow(1 - p, 3);
-    el.innerText = (decimals > 0 ? (eased * target).toFixed(decimals) : Math.round(eased * target)) + (suffix || "");
-    if (p < 1) requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-}
-```
-
-المجموع والنسبة المئوية كل منهم بيشتغل عد تصاعدي مستقل بمدد مختلفة (1000ms و1200ms) لتأثير كشف متدرج.
-
----
-
-### 🎉 نظام الـ Confetti والـ Emoji المتساقطة
-
-الطلاب الناجحون (≥50%) بيشغّلوا `confetti()` من مكتبة `canvas-confetti` بـ 150 جسيم. الناجح والراسب كلاهما بيشغّل `showEmojis()` — اللي بتنزّل 15 emoji من مواقع أفقية عشوائية بتأخيرات متدرجة:
-
-```js
-function showEmojis(isSuccess) {
-  const happyEmojis = ["🥳", "😄", "👏", "🏆", "🎉", "😘"];
-  const sadEmojis   = ["😥", "😭", "☹️", "😣", "😓"];
-  for (let i = 0; i < 15; i++) {
-    setTimeout(() => {
-      const emoji = document.createElement("div");
-      emoji.style.left             = Math.random() * 100 + "vw";
-      emoji.style.animationDuration = Math.random() * 3 + 4 + "s";
-      // بتتحرك عبر @keyframes floatDown: translateY(0) → translateY(105vh)
-    }, i * 150);
-  }
-}
-```
-
----
-
-### 📸 المشاركة كصورة — `html2canvas` مع Clone Callback
-
-`shareResult()` بتستخدم `html2canvas` لتحويل الـ result card لصورة بضعف الدقة (2×). الـ `onclone` callback — اللي بيشتغل على DOM مستنسخ قبل الالتقاط — بيعمل أشياء حرجة كتير:
-
-```js
-onclone: function(clonedDoc) {
-  // 1. يُضيف style يوقف كل الـ animations ويجبر opacity:1 على كل شيء
-  //    (يمنع العناصر نص المتحركة من الظهور في منتصف حركتها في الصورة)
-  noAnimStyle.innerHTML = "* { animation: none !important; opacity: 1 !important; ... }";
-
-  // 2. يضبط عرض ثابت 800px على منطقة الالتقاط (يمنع screenshots بعرض الموبايل)
-  clonedArea.style.width = "800px";
-
-  // 3. يظهر export-header وexport-footer المخفيين
-  //    (شعارات المدرسة وتصميم المصمم — بتظهر بس في الصورة المُصدّرة)
-  clonedDoc.getElementById("export-header").style.display = "block";
-  clonedDoc.getElementById("export-footer").style.display = "block";
-}
-```
-
-على الموبايل اللي يدعم الـ Web Share API، الصورة بتتشارك كـ `File` object عبر `navigator.share({ files: [file] })`. على الديسكتوب (أو المتصفحات الغير داعمة)، بيرجع لرابط تحميل. متغير `shareCount` في `localStorage` بيضمن أن كل ملف مُصدَّر له اسم فريد.
-
----
-
-### 💬 نظام الملاحظات المُدمج
-
-بعد عرض النتيجة، الطلاب يقدروا يبعتوا ملاحظات. النموذج بيظهر في نفس الصفحة (بدون تنقل) ويبعت اسم الطالب والرقم والصف والفصل مع نص الملاحظة للـ backend — بيعطي إدارة المدرسة كل السياق عن المُرسِل. بعد الإرسال الناجح، النموذج بيتستبدل بزرار "ابحث عن طالب آخر".
-
----
-
-### 👁️ علامة إظهار النتائج
-
-الـ backend يقدر يخفي النتائج بشكل شامل عبر settings sheet. لما `resultsHidden: true` يُرجع، البوابة بتعرض اسم الطالب والصف بس وتستبدل جدول الدرجات برسالة "النتائج غير متاحة بعد" — بدون كشف أي درجات فعلية.
-
-**🛠️ التقنيات المستخدمة**
-`HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script` · `html2canvas` · `canvas-confetti`
+[تفاصيل التنفيذ ←](docs/architecture.md#4-al-khateeb-landing--alkhateeb)
 
 </details>
 
 ---
 
 <details>
-<summary><b>✏️ 6. الخطيب - الدرجات — /alkhateeb-degrees</b></summary>
+<summary><b>👔 5. الخطيب HR : /alkhateeb-hr</b></summary>
 
 <br>
 
-بوابة إدخال درجات متعددة الخطوات وآمنة للمعلمين. كل تفاعل من تسجيل الدخول للحفظ مُصمَّم لمنع فقدان البيانات والتعامل مع الوصول المتزامن.
+المشروع الأكبر في هذا المستودع. نظام متكامل لإدارة الموارد البشرية وشؤون العاملين في المدرسة يخدم الإدارة والمعلمين عبر صلاحيات متعددة.
 
----
+**صلاحيات الإدارة:** تسجيل الحضور والغياب والتأخير والإجازات، تطبيق العمليات الجماعية على عدة معلمين في وقت واحد، إضافة عمليات لعدة أيام دفعة واحدة، عرض وتعديل وحذف سجلات التاريخ، تصدير البيانات إلى ملف CSV أو طباعتها، تسجيل الموظفين الجدد، وإعادة ضبط كلمات المرور.
 
-### 🔐 المصادقة — تخزين التوكن في `localStorage`
+**صلاحيات المعلم:** عرض إحصائيات الحضور ورصيد الإجازات والدقائق المتبقية عبر رسوم بيانية تفاعلية، واستعراض سجل العمليات الشخصي.
 
-بعد تسجيل الدخول، السيرفر بيرجع token واسم المعلم. بيتحفظوا في `localStorage` كـ JSON object. في كل تحميل للصفحة، `checkAuth()` بتقرأ هذا الـ object وتقرر أي container تعرض:
+تتم إدارة الجلسات عبر `sessionStorage` وتُفحص جميع الصلاحيات في السيرفر.
 
-```js
-function checkAuth() {
-  const authData = localStorage.getItem("alkhateeb_auth");
-  if (authData) {
-    const auth = JSON.parse(authData);
-    // عرض الـ main container، وإظهار اسم المعلم، واستعادة المسودة
-  } else {
-    // عرض الـ login container
-  }
-}
-```
-
----
-
-### 📝 الحفظ التلقائي للمسودة — لقطة `localStorage` بصلاحية محدودة
-
-كل ما يغيّر المعلم درجة أو يتنقل بين الصفحات، `saveStateLocally()` بتكتب حالة التطبيق الكاملة في `localStorage`:
-
-```js
-const state = {
-  grade, section, subject, evaluation,
-  students: allStudents, // مصفوفة كاملة مع originalScore والدرجة الحالية
-  currentPage, rowsPerPage,
-  timestamp: Date.now()
-};
-localStorage.setItem("alkhateeb_grades_draft", JSON.stringify(state));
-```
-
-`restoreStateLocally()` بتقراها عند التحميل وتستعيد الواجهة الكاملة — الـ dropdowns والجدول وكل الدرجات غير المحفوظة. لو الـ `timestamp` المحفوظ أقدم من 8 ساعات، المسودة بتتحذف:
-
-```js
-const expirationTime = 8 * 60 * 60 * 1000;
-if (!state.timestamp || now - state.timestamp > expirationTime) {
-  localStorage.removeItem("alkhateeb_grades_draft");
-  return;
-}
-```
-
-يعني معلم أغلق المتصفح في منتصف الجلسة يقدر يفتحه ويكمل من نفس اللحظة — طالما رجع خلال نفس يوم العمل.
-
----
-
-### 🔢 تحويل الأرقام العربية
-
-المعلمون ممكن يكتبوا أرقاماً عربية هندية (٠١٢٣٤٥٦٧٨٩) من لوحات المفاتيح العربية. `convertToEnglishNumbers()` بتعوّض كل رقم عربي بمقابله ASCII، بعدين بتشيل أي حروف غير رقمية:
-
-```js
-function convertToEnglishNumbers(str) {
-  const arabicNumbers = ["٠","١","٢","٣","٤","٥","٦","٧","٨","٩"];
-  return String(str)
-    .replace(/[٠-٩]/g, w => arabicNumbers.indexOf(w))
-    .replace(/[^0-9.]/g, "");
-}
-```
-
-هذا التحويل بيشتغل عند كل ضغطة في `handleScoreInput()`، مما يجعل الـ input لا يهتم بصيغة الكتابة.
-
----
-
-### 🟩 تمييز الخلايا المُعدَّلة
-
-لما درجة تختلف عن `originalScore` (القيمة الراجعة من السيرفر)، الـ input بياخد border وخلفية خضرا عبر `checkModifiedState()`. لما الدرجة ترجع للقيمة الأصلية، التنسيق الأخضر بيتشال. علامة `suppressGreen` بتمنع نتائج العمليات الجماعية (زي "ضع كل الدرجات 90") من إنها تتلون خضرا فردياً، لأنها تغييرات bulk مش بتحتاج تأكيد بصري لكل خلية.
-
----
-
-### ⌨️ التنقل بـ Enter
-
-`handleEnter()` بتعترض مفتاح Enter على inputs الدرجات. بتلاقي index الـ input الحالي في الـ `.student-score` NodeList، بتتجاوز الـ inputs المعطّلة (الغائبون)، وتنتقل للـ input التالي المتاح. في آخر الصفحة الحالية، بتنتقل تلقائياً للصفحة التالية وتعمل focus على أول input متاح فيها:
-
-```js
-if (nextIndex < inputs.length) {
-  inputs[nextIndex].focus();
-  inputs[nextIndex].select();
-} else if (currentPage < totalPages) {
-  changePage(1);
-  setTimeout(() => { /* focus على أول مُفعَّل في الصفحة الجديدة */ }, 50);
-} else {
-  saveData(); // آخر طالب في آخر صفحة → حفظ تلقائي
-}
-```
-
----
-
-### 💾 الحفظ الذكي — تحقق وتمرير وفرق
-
-`saveData()` بتشتغل بثلاث مراحل قبل أي طلب للشبكة:
-
-1. **التحقق من المدخلات** — بتمسح `allStudents` بحثاً عن أي درجة فاضية. لو لقت، بتمسح فلتر البحث المباشر، وتلاقي صفحة الطالب، وتـscroll للـ input المشكلة، وتلوّنه أحمر.
-2. **المقارنة والتصفية** — بتفلتر `allStudents` للطلاب اللي `score !== originalScore` بس. بس هذه المجموعة بيتبعت للسيرفر.
-3. **النص الديناميكي لزرار الحفظ** — نص الزرار بيستخدم صياغة عربية صحيحة للجمع: "طالب واحد"، "طالبان"، "طلاب"، "N طالب".
-
-بعد الحفظ الناجح، الرد من الـ backend فيه ملخص (الصف والفصل والمادة والتقييم والعدد المحفوظ) بيتعرض كرسالة HTML مُنسَّقة.
-
----
-
-### 📊 قائمة مواد ديناميكية حسب الصف
-
-`subjectsConfig` بيعمل mapping لكل صف من الـ 6 مراحل لـ array من objects للمواد. لما المعلم يختار صف، `populateSubjects()` بتُعيد بناء الـ dropdown كلياً من هذا الـ map. يعني الـ frontend بيطبّق هيكل المنهج الصح بدون round-trip للـ backend.
-
----
-
-### 🔢 بث الدرجة الجماعية
-
-ميزة الدرجة الجماعية بتسمح بإدخال درجة واحدة وتطبيقها على *الحاضرين* كلهم في عملية واحدة. الطلاب المميّزون بـ غائب (`غ` / `غائب`) بيُستثنوا صراحةً من الإدخال الجماعي:
-
-```js
-for (let i = 0; i < allStudents.length; i++) {
-  if (allStudents[i].score !== "غ" && allStudents[i].score !== "غائب") {
-    allStudents[i].score = cleanedStr;
-  }
-}
-```
-
-كل العمليات الجماعية (تطبيق، مسح الكل، غياب الكل، حضور الكل) بتمر عبر نافذة التأكيد المخصصة قبل التنفيذ.
-
----
-
-### ⚠️ تحذير التغييرات غير المحفوظة
-
-`beforeunload` event listener بيتحقق لو أي طالب عنده `score !== originalScore`. لو نعم، نافذة المتصفح الأصلية "هتغادر الصفحة؟" بتتشغّل:
-
-```js
-window.addEventListener("beforeunload", function(e) {
-  const hasChanges = allStudents.some(s => s.score !== s.originalScore);
-  if (hasChanges) { e.preventDefault(); e.returnValue = ""; }
-});
-```
-
-زرار تسجيل الخروج برضو بيتحقق من التغييرات غير المحفوظة ويعرض نافذة التأكيد المخصصة لو فيه أي منها.
-
-**🛠️ التقنيات المستخدمة**
-`HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script` · `Google Sheets` · `LockService`
-
-</details>
-
----
-
-<details>
-<summary><b>👔 7. الخطيب - الموارد البشرية — /alkhateeb-teachers</b></summary>
-
-<br>
-
-نظام إدارة موارد بشرية بدورين — قيد التطوير النشط حالياً — مع لوحة مشرف لتسجيل ومراجعة عمليات الموظفين، ولوحة معلم للإحصائيات الشخصية.
-
----
-
-### 🔐 المصادقة — التخزين في `sessionStorage`
-
-بخلاف بوابة الدرجات، هذا النظام بيستخدم `sessionStorage`. يعني الجلسة بتنتهي تلقائياً لما التاب يُغلق — وده أنسب لبيانات الموارد البشرية. قائمة المعلمين برضو بتتكاش في `sessionStorage` لتجنب إعادة الجلب عند كل تنقل:
-
-```js
-sessionStorage.setItem("alkhateeb_hr_auth", JSON.stringify({ token, name, role }));
-sessionStorage.setItem("alkhateeb_teachers", JSON.stringify(allTeachers));
-```
-
----
-
-### 👥 لوحة تحكم بدورين
-
-بعد تسجيل الدخول، رد الـ backend فيه حقل `role`. الـ frontend بيعرض container مختلف تماماً بناءً على هذه القيمة — `adminContainer` أو `teacherContainer`. مفيش منطق دور على الـ client side غير هذا الـ routing؛ كل العمليات ذات الامتياز بتتحقق منها الـ server باستخدام الـ token.
-
----
-
-### 🔎 بحث بالإكمال التلقائي مع التنقل بلوحة المفاتيح
-
-حقل بحث المعلمين بيستخدم تنفيذ autocomplete مخصص. النتائج بتتفلتر في الوقت الفعلي من قائمة المعلمين المكاشة محلياً. القائمة المنسدلة تدعم التنقل الكامل بلوحة المفاتيح:
-
-```js
-document.getElementById("adminSearchInput").addEventListener("keydown", function(e) {
-  if (e.key === "ArrowDown") { currentSearchFocus++; addActiveSearchItem(items); }
-  if (e.key === "ArrowUp")   { currentSearchFocus--; addActiveSearchItem(items); }
-  if (e.key === "Enter") {
-    if (currentSearchFocus > -1) items[currentSearchFocus].click();
-    else if (items.length === 1)  items[0].click(); // اختيار تلقائي لو نتيجة واحدة بس
-  }
-});
-```
-
-`document.addEventListener("click")` بيغلق القائمة لما يضغط في أي مكان خارج حقل الإدخال.
-
----
-
-### ⏱️ حساب التأخير التلقائي
-
-للعمليات المرتبطة بالوقت (التأخير الصباحي والانصراف المبكر وغيره)، النموذج بيعرض منتقي الوقت. لما يتغير الوقت، `calculateDelay()` بتحلل كلاً من الوقت المختار ووقت بداية عمل المعلم المحدد (محفوظ في `selectedTeacherStart` المخفي) وتحسب الفرق بالدقائق:
-
-```js
-let [eh, em] = expectedTime.split(':').map(Number);
-let [ah, am] = actualTime.split(':').map(Number);
-let diff = (ah * 60 + am) - (eh * 60 + em);
-```
-
-زرار "الآن" بيملأ منتقي الوقت بالوقت الحالي للنظام ويشغّل الحساب فوراً.
-
----
-
-### 📅 شبكة اختيار متعدد الأيام
-
-للعمليات الغير مرتبطة بالوقت (الغيابات والإجازات)، المشرف يقدر يتحول لوضع "أيام متعددة". `generateCheckboxes()` بتبني شبكة checkboxes لكل يوم في النطاق المحدد (أقصاه 60 يوم):
-
-```js
-for (let i = 0; i <= diffDays; i++) {
-  let currentDate = new Date(startDate);
-  currentDate.setDate(startDate.getDate() + i);
-  // بينشئ checkbox مُسمّى: "الإثنين (12/5)"
-}
-```
-
-خانة اختيار "تحديد الكل" الرئيسية بتتزامن مع الخانات الفردية وتتحدّث لما أي خانة فردية تتغير.
-
----
-
-### 📊 حركة الدوائر التقدمية — `stroke-dasharray` في SVG
-
-لوحة المعلم بتستخدم ثلاث دوائر تقدم عبر SVG. الحركة بتتحقق بضبط `stroke-dasharray` من `"0, 100"` إلى `"${percentage}, 100"` عبر JavaScript — الـ CSS `transition` على عنصر `circle` بيحرّك التغيير:
-
-```js
-function animateCircle(circleId, textId, value, maxVal, suffix) {
-  let percentage = Math.min(100, (value / maxVal) * 100);
-  setTimeout(() => {
-    circle.setAttribute("stroke-dasharray", `${percentage}, 100`);
-    text.innerHTML = value + suffix;
-  }, 300);
-}
-```
-
-ثلاث دوائر بتعرض: معدل الحضور (%)، الإجازة السنوية المتبقية (أيام)، وإجمالي دقائق التأخر.
-
----
-
-### 🗑️ التعديل والحذف الجماعي
-
-جدول السجل يدعم تحديد الصفوف عبر خانات الاختيار. لما صفوف تتحدد، شريط الإجراءات الجماعية بيظهر مع العدد. الحذف الجماعي بيشتغل في loop `async/await` متسلسل، بينفّذ API call واحد لكل سجل ويجمع الأخطاء:
-
-```js
-for (let i = 0; i < boxes.length; i++) {
-  const item = JSON.parse(decodeURIComponent(boxes[i].value));
-  let res  = await fetch(APPS_SCRIPT_URL, { ... action: "deleteRecord" ... });
-  let data = await res.json();
-  if (data.status !== "success") hasError = true;
-}
-```
-
-بيانات الصف (التاريخ والاسم والنوع والمقدار) بتتضغط بـ `JSON.stringify` و`encodeURIComponent` في الـ `value` attribute لكل خانة اختيار — بيُلغي الحاجة لـ data store منفصل.
-
----
-
-### 🔒 نافذة تأكيد مخصصة
-
-`window.confirm()` الأصلي بيتستبدل كلياً بـ `customConfirm(msg, callback)` — نافذة بتقبل callback function بتشتغل بس لما المستخدم يضغط "تأكيد." ده بيوفر تنسيق موحد ويمنع ظهور نافذة المتصفح الافتراضية.
-
-**🛠️ التقنيات المستخدمة**
 `HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script` · `Google Sheets`
 
+[تفاصيل التنفيذ ←](docs/architecture.md#5-al-khateeb-hr--alkhateeb-hr)
+
 </details>
 
 ---
 
-## 🏗️ معمارية نظام الخطيب
+<details>
+<summary><b>📚 6. الخطيب للطلاب : /alkhateeb-students</b></summary>
 
-<div dir="ltr">
+<br>
+
+بوابة مخصصة للطلاب وأولياء الأمور لمعرفة لجان الامتحانات وأرقام الجلوس. يتم البحث برقم الجلوس أو باسم الطالب من نفس حقل المدخلات مع التعرف التلقائي على نوع البحث. تظهر النتائج في بطاقات تفاعلية مع ميزة تصدير بطاقة البيانات كصورة PNG ومشاركتها مباشرة. يتوفر مفتاح رئيسي في الباك اند لإخفاء البيانات وقت الحاجة.
+
+`HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script` · `html2canvas`
+
+[تفاصيل التنفيذ ←](docs/architecture.md#6-al-khateeb-students--alkhateeb-students)
+
+</details>
+
+---
+
+<details>
+<summary><b>📊 7. الخطيب للنتائج : /alkhateeb-results</b></summary>
+
+<br>
+
+بوابة الاستعلام عن نتائج امتحانات الطلاب. تعتمد نفس آلية البحث الثنائية برقم الجلوس أو الاسم. تعرض الدرجات والمجموع الكلي بمؤثرات تصاعدية، مع إطلاق مؤثرات الاحتفال للطلاب الناجحين. تتيح البوابة تصدير النتيجة كصورة ومشاركتها، وإرسال الملاحظات والآراء مباشرة لإدارة المدرسة.
+
+`HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script` · `html2canvas` · `canvas-confetti`
+
+[تفاصيل التنفيذ ←](docs/architecture.md#7-al-khateeb-results--alkhateeb-results)
+
+</details>
+
+---
+
+<details>
+<summary><b>✏️ 8. الخطيب للدرجات : /alkhateeb-degrees</b></summary>
+
+<br>
+
+بوابة رصد الدرجات المخصصة للمعلمين. تتميز بنظام تسجيل دخول آمن وحفظ تلقائي للمسودة في المتصفح لتفادي فقدان البيانات عند انقطاع الاتصال. تشمل رصد الدرجات، وتحديد الغياب، والتنقل السريع بين الحقول باستخدام زر Enter، وتطبيق الدرجات الجماعية، وحفظ التغييرات فقط لتوفير استهلاك السيرفر. تقوم البوابة بتحويل الأرقام العربية إلى إنجليزية تلقائياً أثناء الكتابة.
+
+`HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script` · `Google Sheets` · `LockService`
+
+[تفاصيل التنفيذ ←](docs/architecture.md#8-al-khateeb-degrees--alkhateeb-degrees)
+
+</details>
+
+---
+
+<details>
+<summary><b>⭐ 9. نجوم الخطيب : /alkhateeb-stars</b></summary>
+
+<br>
+
+لوحة شرف لعرض الطلاب الأوائل لكل مرحلة دراسية. تتميز البطاقات بتأثيرات حركة ثلاثية الأبعاد عند مرور الماوس، ومظاهر خاصة بالمراكز الثلاثة الأولى (الذهبي، الفضي، البرونزي). يتم التنقل بين الصفوف الدراسية دون إعادة تحميل الصفحة.
+
+`HTML5` · `CSS3` · `Vanilla JavaScript` · `Google Apps Script`
+
+[تفاصيل التنفيذ ←](docs/architecture.md#9-al-khateeb-stars--alkhateeb-stars)
+
+</details>
+
+---
+
+## 🏗️ بنية نظام الخطيب
 
 ```
-mosamirhelal.com/alkhateeb              ← الصفحة الرئيسية (نقطة الدخول)
+mosamirhelal.com/alkhateeb              ← Landing Page (Entry Point)
         │
-        ├──► /alkhateeb-results         ← بوابة نتائج الطلاب  ──┐
-        │                                                          │  النظام أ
-        ├──► /alkhateeb-degrees         ← بوابة درجات المعلمين ──┘  (الدرجات والنتائج)
+        ├──► /alkhateeb-students       ← Student Committee Data Portal ─┐
+        │                                                               │  Backend A
+        ├──► /alkhateeb-results        ← Student Results Portal     ────┤  (Grades & Results)
+        │                                                               │
+        ├──► /alkhateeb-degrees        ← Teacher Grades Portal      ────┘
         │         │
-        │         ▼
+        │         ↓
         │    ┌─────────────────────────────────┐
         │    │     Google Apps Script (A)      │
         │    │  Token Auth · LockService       │
@@ -985,9 +220,11 @@ mosamirhelal.com/alkhateeb              ← الصفحة الرئيسية (نق�
         │    │  Users · Movement Audit Log     │
         │    └─────────────────────────────────┘
         │
-        └──► /alkhateeb-teachers        ← بوابة الموارد البشرية  ─── النظام ب (نظام HR)
+        ├──► /alkhateeb-stars          ← Top-10 Leaderboard (no backend auth)
+        │
+        └──► /alkhateeb-hr             ← Staff HR Portal ── Backend B (HR System)
                   │
-                  ▼
+                  ↓
         ┌─────────────────────────────────┐
         │     Google Apps Script (B)      │
         │  Dual-Role Auth (Admin/Teacher) │
@@ -1003,168 +240,12 @@ mosamirhelal.com/alkhateeb              ← الصفحة الرئيسية (نق�
         │  System Audit Log               │
         └─────────────────────────────────┘
 ```
-</div>
+
+كود الباك اند غير منشور في هذا المستودع لأسباب أمنية. [توثيق الباك اند الكامل ←](docs/backend-architecture.md)
 
 ---
 
-## ⚙️ تعمق في الـ Backend
-
-> كلا النظامين **غير منشورين في هذا الـ repository** لأسباب أمنية. ما يلي تفصيل تقني لما يفعله كل نظام داخلياً.
-
----
-
-<details>
-<summary><b>🔧 النظام أ — نظام الدرجات والنتائج</b></summary>
-
-<br>
-
-هذا النظام يشغّل كلاً من **بوابة نتائج الطلاب** و**بوابة درجات المعلمين**. بيتعامل مع كل شيء من تهيئة قاعدة البيانات لحتى حفظ الدرجات مع حماية كاملة من التعارض.
-
----
-
-**📐 مخطط قاعدة البيانات — `setupDatabase()`**
-
-في أول تشغيل، النظام بيُنشئ هيكل قاعدة البيانات كاملاً من الصفر داخل Google Sheets. بيُعدّ sheets للدرجات لـ **6 مراحل دراسية** (الثالثة والرابعة والخامسة والسادسة ابتدائي، والأولى والثانية إعدادي)، كل منها بمجموعة مواد فريدة. رؤوس الأعمدة بتتولّد تلقائياً بجمع كل تركيبة من:
-
-- **الشهر** × **نوع الامتحان** × **المادة** → مثلاً `تقييم مارس - عربي`، `امتحان أبريل - رياضيات`
-
-أول 3 أعمدة في كل sheet مُجمّدة: اسم الطالب ورقم الطالب والفصل. كما بينشئ تلقائياً:
-- `المستخدمين` — حسابات المعلمين مع اسم المستخدم وكلمة المرور والاسم والحالة والمواد المسموحة
-- `سجل الحركات` — سجل audit كامل لكل عملية مع timestamp
-- `إعدادات النظام` — لوحة تحكم بـ **dropdown validations** لفلتر الشهر وفلتر نوع الامتحان ومرئية النتائج (إظهار/إخفاء) وعرض الدرجة القصوى في التقارير وفلتر حالة الاكتمال
-
----
-
-**🌍 تطبيع النص العربي — `normalizeArabic()`**
-
-قبل أي بحث قائم على الاسم، الـ query وكل الأسماء المحفوظة بتمر عبر pipeline للتطبيع:
-- كل أشكال الهمزة `أ إ آ` → موحَّدة كـ `ا`
-- التاء المربوطة `ة` → `ه`
-- الألف المقصورة `ى` → `ي`
-- كل التشكيل (علامات التنوين) → تُحذف كلياً
-
-يعني ولي الأمر اللي يبحث عن `محمد` هيلاقي `مُحَمَّد` صح — مش محتاج إملاء دقيق.
-
----
-
-**🔐 المصادقة والأمان — تدفق تسجيل الدخول في `doPost()`**
-
-1. النظام بيتحقق من أي **قفل نشط للحساب** محفوظ في `ScriptProperties` قبل معالجة أي credentials
-2. لو مقفول، بيحسب وقت القفل المتبقي بالدقائق ويُعيده في رسالة الخطأ
-3. عند credentials صحيحة، بيُولَّد UUID token ويُحفظ مع **timestamp انتهاء صلاحية 8 ساعات**
-4. كل محاولة فاشلة بتزيد عداد؛ عند **5 فشل**، الحساب يتقفل لـ **5 دقائق** والحدث يتكتب في سجل الـ audit
-5. بعد تسجيل الدخول الناجح، عداد المحاولات والقفل يتمسحوا
-6. الحسابات بحالة غير `نشط` بيتُرفض حتى مع credentials صحيحة
-
----
-
-**🎓 التفويض على مستوى المادة**
-
-كل API call محمي بيتحقق إن المواد المسموحة للمعلم المُصادق عليه تغطي المادة المطلوبة. محاولات الوصول غير المصرح به بتتسجّل في سجل الـ audit مع اسم المعلم والمادة اللي حاول الوصول إليها.
-
----
-
-**💾 حفظ الدرجات — مع `LockService`**
-
-1. **التحقق من المدخلات** — كل درجة بتتفحص: لازم تكون فاضية أو `غ` (غائب) أو رقم بين 0 و100
-2. **القفل المتزامن** — `LockService.getScriptLock()` بانتظار 15 ثانية بيتأمَّن قبل أي كتابة، بيمنع تعارض الكتابة المتزامنة
-3. **كشف التغيير** — النظام بيقرأ العمود الحالي ويكتب فقط **القيم اللي اتغيرت فعلاً**
-4. **الكتابة الجماعية** — القيم المُعدَّلة بتتكتب كعملية range واحدة (`setValues`) مش خلية خلية
-5. القفل **بيتحرر دايماً** في `finally` block
-
----
-
-**📊 بحث نتائج الطلاب — تدفق `doGet()`**
-
-وضعان بناءً على الـ URL parameter:
-
-**البحث بالرقم (`?id=...`):**
-- بيتحقق لو النتائج مرئية بشكل شامل عبر إعدادات النظام
-- بيقرأ **Max Scores sheet** لمعرفة الدرجات القصوى لكل مادة لكل فصل
-- بيطبّق فلترات الشهر ونوع الامتحان من إعدادات النظام
-- بيحسب المجموع والدرجة القصوى والنسبة — الغائب درجته بتحسب من القصوى
-
-**البحث بالاسم (`?name=...`):**
-- الـ query بيتطبّع عبر `normalizeArabic()` أولاً
-- بيرجع أقصاه 10 نتائج؛ أكتر من 10 بيطلب إدخال أدق (بيمنع الـ enumeration)
-
----
-
-**🔁 تنظيف التوكن التلقائي — `cleanExpiredTokens()`**
-
-مؤقت زمني بيشتغل كل **6 ساعات**، بيمسح كل مفاتيح `ScriptProperties` اللي بتبدأ بـ `token_` وصلاحيتها انتهت — بيمنع نمو store الـ properties بشكل غير محدود.
-
-</details>
-
----
-
-<details>
-<summary><b>🔧 النظام ب — نظام الموارد البشرية والحضور</b></summary>
-
-<br>
-
-هذا النظام يشغّل **بوابة الموارد البشرية** بنظام بدورين، ومحرك حضور غني، وطبقة تقارير مُجمَّعة مسبقاً مبنية على formulas حية في Google Sheets.
-
----
-
-**👥 مصادقة بدورين**
-
-دورين مختلفان بلوحتي تحكم مختلفتان كلياً:
-- **المشرف** — يقدر يشوف كل المعلمين ويسجّل العمليات ويحرّر/يحذف السجلات ويولّد التقارير
-- **المعلم** — يقدر يشوف إحصائياته الشخصية وسجله الشخصي بس
-
-صلاحية التوكن هنا **12 ساعة** (مقابل 8 ساعات في النظام أ)، لأن عمليات الموارد البشرية ممكن تمتد ليوم عمل كامل.
-
----
-
-**🗓️ تطبيع التاريخ — `forceStringDate()`**
-
-بيتعامل مع مشكلة timezone في Google Sheets:
-- كائنات `Date` في JavaScript بياخدوا **+12 ساعة** قبل الصياغة — تعويضاً للـ UTC midnight shift
-- تواريخ بصيغة string `dd/mm/yyyy` بتتحوّل لـ `yyyy-mm-dd` لترتيب ISO متسق
-
----
-
-**📝 تسجيل الحضور — الكتابة الجماعية**
-
-بتقبل **مصفوفة سجلات** في استدعاء واحد (لما المشرف يستخدم شبكة الـ checkbox متعددة الأيام). الرقم القومي بيتجلب من السيرفر عبر كود المعلم — مش بيتبعت من الـ frontend أبداً.
-
----
-
-**✏️ تعديل السجل — المطابقة من الأسفل للأعلى**
-
-إيجاد الصف الصح بدون كشف رقم الصف بيستخدم **بصمة متعددة الحقول**: النظام بيمسح operations sheet **من أسفل لفوق** ويطابق صف بيوم + شهر + سنة + اسم المعلم + نوع العملية + المقدار. بس `type` و`amount` و`notes` بيتحدثوا — التاريخ وحقول المشرف غير قابلة للتغيير.
-
----
-
-**📈 بناء التقارير المُجمَّعة — `setupAggregatedReports()`**
-
-بدلاً من حساب الإحصائيات وقت الاستعلام، هذه الدالة بتبني **formulas حية في الـ sheet** لمرة واحدة. لكل معلم، بتضيف صفوف بـ **SUMIFS formulas ديناميكية** لكل 9 أنواع عمليات. كل ما يتضاف سجل جديد لـ operations sheet، كل الأرقام المُجمَّعة بتتحدث فوراً عبر محرك formulas الأصلي في Google Sheets — بدون أي إعادة حساب من النظام.
-
-</details>
-
----
-
-## 🔒 معمارية الأمان
-
-| الميزة | النظام أ — الدرجات | النظام ب — الموارد البشرية |
-|--------|--------------------|-----------------------------|
-| **طريقة المصادقة** | توكن عبر UUID | توكن عبر UUID |
-| **انتهاء صلاحية التوكن** | 8 ساعات | 12 ساعة |
-| **التخزين على العميل** | `localStorage` | `sessionStorage` |
-| **الحماية من التخمين** | ✅ 5 محاولات → قفل 5 دقائق | — |
-| **نظام الصلاحيات** | على مستوى المادة لكل معلم | دور مشرف / معلم |
-| **حماية الكتابة المتزامنة** | ✅ LockService (انتظار 15 ثانية) | — |
-| **تسجيل الوصول غير المصرح** | ✅ سجل audit كامل | ✅ سجل audit كامل |
-| **التحكم في مرئية النتائج** | ✅ تشغيل/إيقاف عن بُعد عبر settings sheet | — |
-| **تنظيف التوكن التلقائي** | ✅ كل 6 ساعات عبر مؤقت | ✅ عند كل طلب |
-| **حجب طلبات GET** | جزئي (النتائج العامة عبر GET) | ✅ حجب كامل — يُعيد 403 |
-| **منع XSS** | ✅ `escapeHTML()` على كل محتوى المستخدم | ✅ `escapeHTML()` على كل محتوى المستخدم |
-| **كود المصدر منشور** | ❌ خاص (لأسباب أمنية) | ❌ خاص (لأسباب أمنية) |
-
----
-
-## 🤖 الـ Tech Stack والأدوات
+## 🤖 التقنيات والأدوات
 
 <div align="center">
 
@@ -1180,14 +261,14 @@ mosamirhelal.com/alkhateeb              ← الصفحة الرئيسية (نق�
 <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
 <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" />
 
-**واجهات برمجية ومتصفح**
+**واجهات المتصفح والمكتبات**
 
 <img src="https://img.shields.io/badge/Web_Audio_API-FF6B6B?style=for-the-badge&logo=googlechrome&logoColor=white" />
 <img src="https://img.shields.io/badge/Canvas_API-9B59B6?style=for-the-badge&logo=googlechrome&logoColor=white" />
 <img src="https://img.shields.io/badge/html2canvas-E67E22?style=for-the-badge&logo=html5&logoColor=white" />
 <img src="https://img.shields.io/badge/canvas--confetti-F1C40F?style=for-the-badge&logo=javascript&logoColor=black" />
 
-**الـ Backend والبيانات**
+**الخلفية وقواعد البيانات**
 
 <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black" />
 <img src="https://img.shields.io/badge/Google_Apps_Script-4285F4?style=for-the-badge&logo=google&logoColor=white" />
@@ -1200,58 +281,58 @@ mosamirhelal.com/alkhateeb              ← الصفحة الرئيسية (نق�
 </div>
 
 ---
-<div dir="ltr">
 
-## 📁 هيكل الـ Repository
+## 📁 هيكل المستودع
 
 ```
 mosamirhelal.github.io/
 │
 ├── 📄 index.html                        ← الموقع الشخصي (mosamirhelal.com)
-├── 🌐 CNAME                             ← إعداد الدومين المخصص
-├── 📱 site.webmanifest                  ← PWA manifest
-├── 🖼️ favicon.ico / .svg                ← Favicons
-├── 🖼️ favicon-96x96.png                 ← Favicon (96px)
-├── 🖼️ apple-touch-icon.png              ← أيقونة لمس iOS
-├── 🖼️ web-app-manifest-192x192.png      ← PWA icon (192px)
-├── 🖼️ web-app-manifest-512x512.png      ← PWA icon (512px)
-├── 🌙 dark.webp                         ← صورة الـ hero في الوضع الداكن
-├── ☀️ light.webp                        ← صورة الـ hero في الوضع الفاتح
-├── 👤 profile.webp                      ← صورة الملف الشخصي
+├── 🌐 CNAME                             ← إعدادات الدومين المخصص
+├── 📱 site.webmanifest                  ← ملف تطبيق الويب (PWA)
+├── 🖼️ favicon.ico / .svg                ← أيقونات الموقع
+├── 🖼️ favicon-96x96.png                 ← أيقونة (96px)
+├── 🖼️ apple-touch-icon.png              ← أيقونة أجهزة iOS
+├── 🖼️ web-app-manifest-192x192.png      ← أيقونة PWA (192px)
+├── 🖼️ web-app-manifest-512x512.png      ← أيقونة PWA (512px)
+├── 🌙 dark.webp                         ← صورة الوضع المظلم
+├── ☀️ light.webp                        ← صورة الوضع الفاتح
+├── 👤 profile.webp                      ← الصورة الشخصية
 │
-├── 📂 motasks/                          ← متتبع المهام الدراسية
+├── 📂 docs/                             ← التوثيق التقني
+│   ├── architecture.md                  ← تفاصيل الواجهات الأمامية
+│   └── backend-architecture.md          ← تفاصيل قواعد البيانات والباك اند
+│
+├── 📂 motasks/                          ← تطبيق المهام الدراسية
 │   └── index.html
 │
-├── 📂 audiomonitor/                     ← مراقب الصوت داخل المتصفح
+├── 📂 audiomonitor/                     ← أداة معالجة الصوت
 │   └── index.html
 │
-├── 📂 alkhateeb/                        ← الصفحة الرئيسية لنظام المدرسة
+├── 📂 alkhateeb/                        ← بوابة النظام المدرسي
 │   ├── index.html
-│   ├── logo_1.webp
-│   ├── logo_2.webp
-│   └── logo_3.webp
+│   └── logo_*.webp
 │
-├── 📂 alkhateeb-results/                ← بوابة نتائج الطلاب
+├── 📂 alkhateeb-students/               ← بوابة أرقام الجلوس واللجان
 │   ├── index.html
-│   ├── logo_1.webp
-│   ├── logo_2.webp
-│   └── logo_3.webp
+│   └── logo_*.webp
 │
-├── 📂 alkhateeb-degrees/                ← بوابة درجات المعلمين
+├── 📂 alkhateeb-results/                ← بوابة نتائج الامتحانات
 │   ├── index.html
-│   ├── logo_1.webp
-│   ├── logo_2.webp
-│   └── logo_3.webp
+│   └── logo_*.webp
 │
-└── 📂 alkhateeb-teachers/               ← بوابة الموارد البشرية
+├── 📂 alkhateeb-degrees/                ← بوابة رصد درجات المعلمين
+│   ├── index.html
+│   └── logo_*.webp
+│
+├── 📂 alkhateeb-hr/                     ← بوابة شؤون العاملين والموارد البشرية
+│   ├── index.html
+│   └── logo_*.webp
+│
+└── 📂 alkhateeb-stars/                  ← لوحة شرف الطلاب الأوائل
     ├── index.html
-    ├── logo_1.webp
-    ├── logo_2.webp
-    └── logo_3.webp
+    └── logo_*.webp
 ```
-</div>
-
-> **ملاحظة:** كود المصدر للنظامين الخلفيين لنظام الخطيب غير مُدرَج في هذا الـ repository عمداً لأسباب أمنية. كلا نظامي Google Apps Script منشوران كـ web apps خاصة.
 
 ---
 
@@ -1259,35 +340,39 @@ mosamirhelal.github.io/
 
 <div align="center">
 
-### `@mosamirhelal` — في كل مكان
+### `@mosamirhelal` في كل مكان
 
 <p>
 <a href="https://mosamirhelal.com" target="_blank">
   <img src="https://img.shields.io/badge/🌐 Website-mosamirhelal.com-2ea44f?style=for-the-badge" />
 </a>
-<a href="mailto:mosamirhelal@outlook.com" target="_blank">
-  <img src="https://img.shields.io/badge/📧 Email-mosamirhelal@outlook.com-0078D4?style=for-the-badge&logo=microsoft-outlook&logoColor=white" />
+<a href="mailto:contact@mosamirhelal.com" target="_blank">
+  <img src="https://img.shields.io/badge/📧 Email-contact@mosamirhelal.com-0078D4?style=for-the-badge&logo=microsoft-outlook&logoColor=white" />
 </a>
 </p>
 
-> جميع روابط السوشيال متاحة عبر الـ drawer في [**mosamirhelal.com**](https://mosamirhelal.com) — أكثر من 20 منصة في مكان واحد.
+> جميع روابط التواصل الاجتماعي متاحة من القائمة السريعة في [**mosamirhelal.com**](https://mosamirhelal.com) لأكثر من 20 منصة.
 
 </div>
 
 ---
 
-## 🏆 الفضل والتقدير
+## 🏆 التقدير والكريديت
 
 <div align="center">
 
-**التصميم والتطوير** — محمد سمير هلال
+**التصميم والتطوير:** محمد سمير هلال
 
-*كل المشاريع في هذا الـ repository — الواجهات الأمامية ومعمارية النظام الخلفي ومخطط قاعدة البيانات وأنظمة الأمان وتجربة المستخدم — صمّمها وبناها محمد سمير هلال بالكامل.*
+جميع المشاريع في هذا المستودع من واجهات، وبنية قواعد البيانات، والأنظمة الأمنية، وتجربة المستخدم تم تصميمها وبناؤها بالكامل بواسطة محمد سمير هلال.
 
 ---
 
-<sub>© 2026 محمد سمير هلال · جميع المشاريع تعمل على GitHub Pages · صُنع بـ ❤️ في القاهرة، مصر</sub>
+**نظام مدرسة الخطيب: أ. سمير هلال، مدير مدرسة الخطيب**
 
-</div>
+تم إنشاء وتطوير نظام الخطيب بناءً على رؤية وأفكار **أ. سمير هلال**، مدير المدرسة، والذي قام بتحديد متطلبات البوابات، واقتراح المميزات، واختبار النظام في بيئة العمل الفعالية مع المستخدمين، ومتابعة تطويره. هذه الفكرة كانت بمقترحاته وتطوير ابنه. شكراً يا أبي.
+
+---
+
+<sub>© 2026 Mohammed Samir Helal · Built with ❤️ in Cairo, Egypt</sub>
 
 </div>
