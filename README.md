@@ -1,4 +1,4 @@
-<div align="center">
+﻿<div align="center">
 
 # 👋 Hello, I'm Mohammed Samir Helal
 
@@ -200,9 +200,9 @@ mosamirhelal.com/alkhateeb              ← Landing Page (Entry Point)
         │
         ├──► /alkhateeb-students       ← Student Committee Data Portal ─┐
         │                                                               │  Backend A
-        ├──► /alkhateeb-results        ← Student Results Portal    ────┤  (Grades & Results)
+        ├──► /alkhateeb-results        ← Student Results Portal     ────┤  (Grades & Results)
         │                                                               │
-        ├──► /alkhateeb-degrees        ← Teacher Grades Portal     ────┘
+        ├──► /alkhateeb-degrees        ← Teacher Grades Portal      ────┘
         │         │
         │         ↓
         │    ┌─────────────────────────────────┐
@@ -373,6 +373,6 @@ The Al-Khateeb system exists because of **Samir Helal** — principal of the sch
 
 ---
 
-<sub>© 2026 Mohammed Samir Helal · All projects are live on GitHub Pages · Built with ❤️ in Cairo, Egypt</sub>
+<sub>© 2026 Mohammed Samir Helal · Built with ❤️ in Cairo, Egypt</sub>
 
 </div>
