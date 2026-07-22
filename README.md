@@ -1209,9 +1209,9 @@ mosamirhelal.com/alkhateeb              ← Landing Page (Entry Point)
         │
         ├──► /alkhateeb-students       ← Student Committee Data Portal ─┐
         │                                                               │  Backend A
-        ├──► /alkhateeb-results         ← Student Results Portal  ────┤  (Grades & Results)
+        ├──► /alkhateeb-results         ← Student Results Portal    ────┤  (Grades & Results)
         │                                                               │
-        ├──► /alkhateeb-degrees         ← Teacher Grades Portal   ────┘
+        ├──► /alkhateeb-degrees         ← Teacher Grades Portal     ────┘
         │         │
         │         ↓
         │    ┌─────────────────────────────────┐
