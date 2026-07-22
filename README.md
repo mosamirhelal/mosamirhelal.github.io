@@ -370,7 +370,9 @@ All projects in this repository — frontend interfaces, backend architecture, d
 
 **Al-Khateeb System — Samir Helal, Principal of Al-Khateeb School**
 
-The Al-Khateeb system exists because of **Samir Helal** — principal of the school and the person who originally envisioned it. He defined what each portal should do, proposed every major feature, tested releases with real users, and kept pushing the system forward. This is his idea, built by his son. Thank you, Dad.
+The school management system exists because of **Samir Helal** — principal of the school and the person who originally envisioned it. He defined what each portal should do, proposed every major feature, tested releases with real users, and kept pushing the system forward. This is his idea, built by his son. Thank you, Dad.
+
+*Note: This school management system is solely owned and developed by me as an independent developer (Mohammed Samir Helal). The name "Al-Khateeb" is used currently because the system is deployed at the school managed by my father, but its branding and name are subject to change.*
 
 ---
 
