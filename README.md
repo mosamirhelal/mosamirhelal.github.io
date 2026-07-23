@@ -25,12 +25,12 @@
 
 I'm **Mohammed Samir Helal** — dental student at MUST, self-taught programmer, and graphic designer based in Cairo. I build things that actually get used: school portals, management systems, audio tools. Everything here is live in production.
 
-|                   |                                                                    |
-| ----------------- | ------------------------------------------------------------------ |
-| 🎓 **Education**  | Dental Student · Misr University for Science and Technology (MUST) |
-| 📍 **Location**   | Cairo, Egypt                                                       |
-| 🌐 **Website**    | [mosamirhelal.com](https://mosamirhelal.com)                       |
-| 🚀 **This Repo**  | Personal website & all sub-projects, hosted on GitHub Pages        |
+|                  |                                                                    |
+| ---------------- | ------------------------------------------------------------------ |
+| 🎓 **Education** | Dental Student · Misr University for Science and Technology (MUST) |
+| 📍 **Location**  | Cairo, Egypt                                                       |
+| 🌐 **Website**   | [mosamirhelal.com](https://mosamirhelal.com)                       |
+| 🚀 **This Repo** | Personal website & all sub-projects, hosted on GitHub Pages        |
 
 ---
 
@@ -282,61 +282,6 @@ Backend source code is not published in this repository. [Full backend documenta
 
 ---
 
-## 📁 Repository Structure
-
-```
-mosamirhelal.github.io/
-│
-├── 📄 index.html                        ← Personal website (mosamirhelal.com)
-├── 🌐 CNAME                             ← Custom domain configuration
-├── 📜 LICENSE                           ← MIT License
-├── 📱 site.webmanifest                  ← PWA manifest
-├── 🖼️ favicon.ico / .svg                ← Favicons
-├── 🖼️ favicon-96x96.png                 ← Favicon (96px)
-├── 🖼️ apple-touch-icon.png              ← iOS touch icon
-├── 🖼️ web-app-manifest-192x192.png      ← PWA icon (192px)
-├── 🖼️ web-app-manifest-512x512.png      ← PWA icon (512px)
-├── 🌙 dark.webp                         ← Dark mode hero image
-├── ☀️ light.webp                        ← Light mode hero image
-├── 👤 profile.webp                      ← Profile image
-│
-├── 📂 docs/                             ← Technical documentation
-│   ├── architecture.md                  ← Frontend implementation details
-│   └── backend-architecture.md          ← Backend internals (abstracted)
-│
-├── 📂 motasks/                          ← Study task tracker
-│   └── index.html
-│
-├── 📂 audiomonitor/                     ← In-browser audio monitor
-│   └── index.html
-│
-├── 📂 alkhateeb/                        ← School system landing page
-│   ├── index.html
-│   └── logo_*.webp
-│
-├── 📂 alkhateeb-students/               ← Student committee data portal
-│   ├── index.html
-│   └── logo_*.webp
-│
-├── 📂 alkhateeb-results/                ← Student results portal
-│   ├── index.html
-│   └── logo_*.webp
-│
-├── 📂 alkhateeb-degrees/                ← Teacher grades portal
-│   ├── index.html
-│   └── logo_*.webp
-│
-├── 📂 alkhateeb-hr/                     ← Staff HR & attendance portal
-│   ├── index.html
-│   └── logo_*.webp
-│
-└── 📂 alkhateeb-stars/                  ← Top-10 students leaderboard
-    ├── index.html
-    └── logo_*.webp
-```
-
----
-
 ## 📬 Contact
 
 <div align="center">
@@ -374,7 +319,7 @@ The school management system exists because of **Samir Helal** — principal of 
 
 </div>
 
-> *This school management system is solely owned and developed by me as an independent developer (**Mohammed Samir Helal**). The name "Al-Khateeb" is used currently because the system is deployed at the school managed by my father, but its branding and name are subject to change.*
+> _This school management system is solely owned and developed by me as an independent developer (**Mohammed Samir Helal**). The name "Al-Khateeb" is used currently because the system is deployed at the school managed by my father, but its branding and name are subject to change._
 
 <div align="center">
 

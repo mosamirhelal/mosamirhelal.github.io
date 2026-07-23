@@ -25,28 +25,28 @@
 
 أنا **محمد سمير هلال**، طالب طب أسنان في جامعة مصر للعلوم والتكنولوجيا (MUST)، ومبرمج بتعليم ذاتي، ومصمم جرافيك مقيم في القاهرة. أقوم ببناء مشاريع برمجية تُستخدم بالفعل في أرض الواقع، تشمل بوابات المدارس وأنظمة الإدارة وأدوات المعالجة الصوتية. جميع المشاريع هنا تعمل في بيئة الإنتاج الفعلية.
 
-| | |
-| --- | --- |
-| 🎓 **التعليم** | طالب طب أسنان · جامعة مصر للعلوم والتكنولوجيا (MUST) |
-| 📍 **الموقع** | القاهرة، مصر |
-| 🌐 **الموقع الإلكتروني** | [mosamirhelal.com](https://mosamirhelal.com) |
-| 🚀 **هذا المستودع** | الموقع الشخصي وجميع المشاريع الفرعية، مستضاف على GitHub Pages |
+|                          |                                                               |
+| ------------------------ | ------------------------------------------------------------- |
+| 🎓 **التعليم**           | طالب طب أسنان · جامعة مصر للعلوم والتكنولوجيا (MUST)          |
+| 📍 **الموقع**            | القاهرة، مصر                                                  |
+| 🌐 **الموقع الإلكتروني** | [mosamirhelal.com](https://mosamirhelal.com)                  |
+| 🚀 **هذا المستودع**      | الموقع الشخصي وجميع المشاريع الفرعية، مستضاف على GitHub Pages |
 
 ---
 
 ## 🗂️ نظرة عامة على المشاريع
 
-| # | المشروع | الوصف | التقنيات الأساسية | المعاينة المباشرة |
-| --- | --- | --- | --- | --- |
-| 1 | **الموقع الشخصي** | صفحة شخصية مع القائمة السريعة للروابط والتغيير التلقائي للغة والوضع المظلم | HTML · CSS · JS | [mosamirhelal.com](https://mosamirhelal.com) |
-| 2 | **MoTasks** | نظام تتبع المهام الدراسية في الوقت الفعلي مع مزامنة Firebase | JS · Firebase | [mosamirhelal.com/motasks](https://mosamirhelal.com/motasks) |
-| 3 | **AudioMonitor** | أداة تحليل ومعاينة الصوت للميكروفون والنظام داخل المتصفح بدون سيرفر | Web Audio API · JS | [mosamirhelal.com/audiomonitor](https://mosamirhelal.com/audiomonitor) |
-| 4 | **بوابة الخطيب** | البوابة الرئيسية الموحدة للوصول إلى كافة أنظمة المدرسة | HTML · CSS · JS | [mosamirhelal.com/alkhateeb](https://mosamirhelal.com/alkhateeb) |
-| 5 | **الخطيب HR** | نظام إدارة الموارد البشرية وشؤون العاملين والحضور والغياب والإجازات | JS · Apps Script | [mosamirhelal.com/alkhateeb-hr](https://mosamirhelal.com/alkhateeb-hr) |
-| 6 | **الخطيب للطلاب** | بوابة الاستعلام عن اللجان ورقم الجلوس للطلاب مع ميزة المشاركة كصورة | JS · Apps Script | [mosamirhelal.com/alkhateeb-students](https://mosamirhelal.com/alkhateeb-students) |
-| 7 | **الخطيب للنتائج** | بوابة عرض نتائج الامتحانات للطلاب مع المؤثرات ومشاركة النتيجة كصورة | JS · Apps Script | [mosamirhelal.com/alkhateeb-results](https://mosamirhelal.com/alkhateeb-results) |
-| 8 | **الخطيب للدرجات** | بوابة رصد درجات الطلاب للمعلمين مع نظام التحقق وحفظ المسودات | JS · Apps Script | [mosamirhelal.com/alkhateeb-degrees](https://mosamirhelal.com/alkhateeb-degrees) |
-| 9 | **نجوم الخطيب** | لوحة شرف الأوائل للطلاب مع بطاقات تفاعلية ثلاثية الأبعاد | JS · Apps Script | [mosamirhelal.com/alkhateeb-stars](https://mosamirhelal.com/alkhateeb-stars) |
+| #   | المشروع            | الوصف                                                                      | التقنيات الأساسية  | المعاينة المباشرة                                                                  |
+| --- | ------------------ | -------------------------------------------------------------------------- | ------------------ | ---------------------------------------------------------------------------------- |
+| 1   | **الموقع الشخصي**  | صفحة شخصية مع القائمة السريعة للروابط والتغيير التلقائي للغة والوضع المظلم | HTML · CSS · JS    | [mosamirhelal.com](https://mosamirhelal.com)                                       |
+| 2   | **MoTasks**        | نظام تتبع المهام الدراسية في الوقت الفعلي مع مزامنة Firebase               | JS · Firebase      | [mosamirhelal.com/motasks](https://mosamirhelal.com/motasks)                       |
+| 3   | **AudioMonitor**   | أداة تحليل ومعاينة الصوت للميكروفون والنظام داخل المتصفح بدون سيرفر        | Web Audio API · JS | [mosamirhelal.com/audiomonitor](https://mosamirhelal.com/audiomonitor)             |
+| 4   | **بوابة الخطيب**   | البوابة الرئيسية الموحدة للوصول إلى كافة أنظمة المدرسة                     | HTML · CSS · JS    | [mosamirhelal.com/alkhateeb](https://mosamirhelal.com/alkhateeb)                   |
+| 5   | **الخطيب HR**      | نظام إدارة الموارد البشرية وشؤون العاملين والحضور والغياب والإجازات        | JS · Apps Script   | [mosamirhelal.com/alkhateeb-hr](https://mosamirhelal.com/alkhateeb-hr)             |
+| 6   | **الخطيب للطلاب**  | بوابة الاستعلام عن اللجان ورقم الجلوس للطلاب مع ميزة المشاركة كصورة        | JS · Apps Script   | [mosamirhelal.com/alkhateeb-students](https://mosamirhelal.com/alkhateeb-students) |
+| 7   | **الخطيب للنتائج** | بوابة عرض نتائج الامتحانات للطلاب مع المؤثرات ومشاركة النتيجة كصورة        | JS · Apps Script   | [mosamirhelal.com/alkhateeb-results](https://mosamirhelal.com/alkhateeb-results)   |
+| 8   | **الخطيب للدرجات** | بوابة رصد درجات الطلاب للمعلمين مع نظام التحقق وحفظ المسودات               | JS · Apps Script   | [mosamirhelal.com/alkhateeb-degrees](https://mosamirhelal.com/alkhateeb-degrees)   |
+| 9   | **نجوم الخطيب**    | لوحة شرف الأوائل للطلاب مع بطاقات تفاعلية ثلاثية الأبعاد                   | JS · Apps Script   | [mosamirhelal.com/alkhateeb-stars](https://mosamirhelal.com/alkhateeb-stars)       |
 
 ---
 
@@ -282,61 +282,6 @@ mosamirhelal.com/alkhateeb              ← Landing Page (Entry Point)
 
 ---
 
-## 📁 هيكل المستودع
-
-```
-mosamirhelal.github.io/
-│
-├── 📄 index.html                        ← الموقع الشخصي (mosamirhelal.com)
-├── 🌐 CNAME                             ← إعدادات الدومين المخصص
-├── 📜 LICENSE                           ← ترخيص MIT
-├── 📱 site.webmanifest                  ← ملف تطبيق الويب (PWA)
-├── 🖼️ favicon.ico / .svg                ← أيقونات الموقع
-├── 🖼️ favicon-96x96.png                 ← أيقونة (96px)
-├── 🖼️ apple-touch-icon.png              ← أيقونة أجهزة iOS
-├── 🖼️ web-app-manifest-192x192.png      ← أيقونة PWA (192px)
-├── 🖼️ web-app-manifest-512x512.png      ← أيقونة PWA (512px)
-├── 🌙 dark.webp                         ← صورة الوضع المظلم
-├── ☀️ light.webp                        ← صورة الوضع الفاتح
-├── 👤 profile.webp                      ← الصورة الشخصية
-│
-├── 📂 docs/                             ← التوثيق التقني
-│   ├── architecture.md                  ← تفاصيل الواجهات الأمامية
-│   └── backend-architecture.md          ← تفاصيل قواعد البيانات والباك اند
-│
-├── 📂 motasks/                          ← تطبيق المهام الدراسية
-│   └── index.html
-│
-├── 📂 audiomonitor/                     ← أداة معالجة الصوت
-│   └── index.html
-│
-├── 📂 alkhateeb/                        ← بوابة النظام المدرسي
-│   ├── index.html
-│   └── logo_*.webp
-│
-├── 📂 alkhateeb-students/               ← بوابة أرقام الجلوس واللجان
-│   ├── index.html
-│   └── logo_*.webp
-│
-├── 📂 alkhateeb-results/                ← بوابة نتائج الامتحانات
-│   ├── index.html
-│   └── logo_*.webp
-│
-├── 📂 alkhateeb-degrees/                ← بوابة رصد درجات المعلمين
-│   ├── index.html
-│   └── logo_*.webp
-│
-├── 📂 alkhateeb-hr/                     ← بوابة شؤون العاملين والموارد البشرية
-│   ├── index.html
-│   └── logo_*.webp
-│
-└── 📂 alkhateeb-stars/                  ← لوحة شرف الطلاب الأوائل
-    ├── index.html
-    └── logo_*.webp
-```
-
----
-
 ## 📬 التواصل
 
 <div align="center">
@@ -374,7 +319,7 @@ mosamirhelal.github.io/
 
 </div>
 
-> *هذا النظام المدرسي بالكامل مملوك برمجياً وفكرياً لي كمطور مستقل (**محمد سمير هلال**). يُستخدم اسم "الخطيب" حالياً كونه مُشغلاً في المدرسة التي يديرها والدي، واسم النظام وهويته قابلين للتغيير مستقبلاً.*
+> _هذا النظام المدرسي بالكامل مملوك برمجياً وفكرياً لي كمطور مستقل (**محمد سمير هلال**). يُستخدم اسم "الخطيب" حالياً كونه مُشغلاً في المدرسة التي يديرها والدي، واسم النظام وهويته قابلين للتغيير مستقبلاً._
 
 <div align="center">
 
