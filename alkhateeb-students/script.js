@@ -1,0 +1,574 @@
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbwBTXJdYieo6LWZCs-bNKkYpU_ASyifPdj9ZxXueL272ygjDQVcScwUl9L3WBboplfCCQ/exec";
+let shareCount = 0;
+let isSearching = false;
+
+function escapeHTML(str) {
+  if (str === null || str === undefined) return "";
+  return String(str).replace(/[&<>'"]/g, function (tag) {
+    const charsToReplace = {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "'": "&#39;",
+      '"': "&quot;",
+    };
+    return charsToReplace[tag] || tag;
+  });
+}
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = 15000) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+    clearTimeout(timeout);
+    return response;
+  } catch (err) {
+    clearTimeout(timeout);
+    if (err.name === "AbortError") {
+      throw new Error(
+        "انتهت مهلة الاتصال، يرجى التحقق من الإنترنت أو المحاولة لاحقاً",
+      );
+    }
+    throw err;
+  }
+}
+
+fetch("https://api.counterapi.dev/v1/alkhateeb_school/visits/up")
+  .then((res) => res.json())
+  .then((data) => {
+    document.getElementById("visitCount").innerText =
+      data.count.toLocaleString("ar-EG");
+  })
+  .catch(() => {
+    document.getElementById("visitCount").innerText = "-";
+  });
+
+document
+  .getElementById("studentIdInput")
+  .addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      addRipple(event, document.getElementById("searchBtn"));
+      getGrade();
+    }
+  });
+
+document
+  .getElementById("searchBtn")
+  .addEventListener("click", function (event) {
+    addRipple(event, this);
+    getGrade();
+  });
+
+function addRipple(e, btn) {
+  const rect = btn.getBoundingClientRect();
+  let x, y;
+  if (e.clientX !== undefined && e.clientX !== 0) {
+    x = e.clientX - rect.left;
+    y = e.clientY - rect.top;
+  } else if (e.touches && e.touches.length > 0) {
+    x = e.touches[0].clientX - rect.left;
+    y = e.touches[0].clientY - rect.top;
+  } else {
+    x = rect.width / 2;
+    y = rect.height / 2;
+  }
+  const size = Math.max(rect.width, rect.height);
+  const span = document.createElement("span");
+  span.className = "ripple-span";
+  span.style.width = span.style.height = size + "px";
+  span.style.left = x - size / 2 + "px";
+  span.style.top = y - size / 2 + "px";
+  btn.appendChild(span);
+  setTimeout(() => span.remove(), 600);
+}
+
+function toggleFeedbackForm(containerId, inputId, btnEl) {
+  btnEl.style.display = "none";
+  var formContainer = document.getElementById(containerId);
+  formContainer.style.display = "block";
+  formContainer.style.animation = "fadeIn 0.5s ease-out forwards";
+  setTimeout(() => {
+    formContainer.scrollIntoView({ behavior: "smooth", block: "center" });
+    document.getElementById(inputId).focus();
+  }, 100);
+}
+
+function resetSearch() {
+  document.getElementById("result").innerHTML = "";
+  document.getElementById("nameSearchResults").innerHTML = "";
+  var natIdInput = document.getElementById("studentIdInput");
+  natIdInput.value = "";
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  setTimeout(() => natIdInput.focus(), 500);
+}
+
+function sendFeedback(studentName, seatNumber, studentGrade, idx) {
+  var feedbackText = document.getElementById(`feedbackInput_${idx}`).value;
+  var btn = document.getElementById(`submitFeedbackBtn_${idx}`);
+  var btnText = btn.querySelector(".btn-text");
+  var statusMsg = document.getElementById(`feedbackStatus_${idx}`);
+  var feedbackTitle = document.getElementById(`feedbackTitle_${idx}`);
+
+  if (!feedbackText.trim()) {
+    statusMsg.innerHTML =
+      "<span style='color: red;'>الرجاء كتابة رسالتك أولاً.</span>";
+    return;
+  }
+
+  btn.disabled = true;
+  btnText.innerText = "⏳ جاري الإرسال...";
+  statusMsg.innerHTML = "";
+
+  var payload = {
+    action: "submitFeedback",
+    studentName: studentName,
+    seatNumber: seatNumber,
+    studentGrade: studentGrade,
+    feedbackText: feedbackText,
+  };
+
+  fetchWithTimeout(API_URL, {
+    method: "POST",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success") {
+        btnText.innerText = "✅ تم الإرسال بنجاح!";
+        statusMsg.innerHTML =
+          "<span style='color: green;'>شكراً لك! تم إرسال رسالتك للإدارة.</span>";
+        setTimeout(() => {
+          btn.style.display = "none";
+          feedbackTitle.style.display = "none";
+          document.getElementById(`feedbackInput_${idx}`).style.display =
+            "none";
+
+          statusMsg.innerHTML =
+            "<span style='color: green; display: block; margin-bottom: 15px;'>شكراً لك! تم إرسال رسالتك للإدارة.</span>";
+          var resetBtn = document.createElement("button");
+          resetBtn.className = "form-control";
+          resetBtn.style.backgroundColor = "#890620";
+          resetBtn.style.color = "white";
+          resetBtn.innerHTML =
+            "<span class='btn-text'>🔄 للبحث عن طالب آخر</span>";
+          resetBtn.addEventListener("click", function (e) {
+            addRipple(e, this);
+            resetSearch();
+          });
+          statusMsg.appendChild(resetBtn);
+        }, 1500);
+      } else {
+        throw new Error("فشل الحفظ");
+      }
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btnText.innerText = "📨 إرسال الرسالة";
+      statusMsg.innerHTML =
+        "<span style='color: red;'>حدث خطأ، يرجى المحاولة لاحقاً.</span>";
+    });
+}
+
+async function shareResult(studentName, captureAreaId, shareBtn, idx) {
+  var captureDiv = document.getElementById(captureAreaId);
+  var btnText = shareBtn.querySelector(".btn-text");
+  var originalText = btnText.innerText;
+
+  btnText.innerText = "⏳ جاري تحضير الصورة...";
+  shareBtn.disabled = true;
+
+  try {
+    const canvas = await html2canvas(captureDiv, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+      scrollY: -window.scrollY,
+      onclone: function (clonedDoc) {
+        var noAnimStyle = clonedDoc.createElement("style");
+        noAnimStyle.innerHTML =
+          "* { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; }";
+        clonedDoc.head.appendChild(noAnimStyle);
+        var clonedArea = clonedDoc.getElementById(captureAreaId);
+        clonedArea.style.width = "800px";
+        clonedArea.style.maxWidth = "none";
+        clonedArea.style.padding = "40px";
+        clonedArea.style.margin = "0 auto";
+        clonedArea.style.overflow = "visible";
+        clonedDoc.getElementById(`export-header_${idx}`).style.display =
+          "block";
+        clonedDoc.getElementById(`export-footer_${idx}`).style.display =
+          "block";
+      },
+    });
+
+    const blob = await new Promise((resolve) =>
+      canvas.toBlob(resolve, "image/png"),
+    );
+    shareCount++;
+    const fileName = `بيانات_${studentName}_${shareCount}.png`;
+    const file = new File([blob], fileName, { type: "image/png" });
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    if (
+      isMobile &&
+      navigator.canShare &&
+      navigator.canShare({ files: [file] })
+    ) {
+      try {
+        await navigator.share({
+          title: `بيانات ${studentName}`,
+          text: `بيانات ورقم جلوس الطالب ${studentName} - مدرسة الشهيد محمود علي الخطيب`,
+          files: [file],
+        });
+      } catch (err) {}
+      btnText.innerText = originalText;
+      shareBtn.disabled = false;
+    } else {
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      shareBtn.style.backgroundColor = "#28a745";
+      btnText.innerText = "✅ تم مشاركة الصورة بنجاح!";
+      setTimeout(() => {
+        shareBtn.style.backgroundColor = "";
+        btnText.innerText = originalText;
+        shareBtn.disabled = false;
+      }, 5000);
+    }
+  } catch (error) {
+    btnText.innerText = originalText;
+    shareBtn.disabled = false;
+    var errorDiv = document.createElement("div");
+    errorDiv.style.cssText = "color: red; margin-top: 10px; font-weight: bold;";
+    errorDiv.textContent = "حدث خطأ أثناء تحضير الصورة، يرجى المحاولة مرة أخرى";
+    shareBtn.parentNode.insertBefore(errorDiv, shareBtn.nextSibling);
+    setTimeout(() => errorDiv.remove(), 4000);
+  }
+}
+
+function selectStudentAndSearch(seatNum) {
+  var idInput = document.getElementById("studentIdInput");
+  idInput.value = seatNum;
+  getGrade();
+}
+
+function setSearchLoading(state) {
+  isSearching = state;
+  const loader = document.getElementById("loader");
+  const searchBtn = document.getElementById("searchBtn");
+  const searchBtnText = searchBtn.querySelector(".btn-text");
+  const idInput = document.getElementById("studentIdInput");
+
+  loader.style.display = state ? "block" : "none";
+  searchBtn.disabled = state;
+  idInput.disabled = state;
+
+  if (state) {
+    searchBtn.classList.remove("pulse-button");
+    searchBtnText.innerText = "⏳ جاري البحث...";
+  } else {
+    searchBtn.classList.add("pulse-button");
+    searchBtnText.innerText = "🔎 بحث";
+  }
+}
+
+function renderStudentCard(studentObj, idx, container) {
+  var safeStudentName = escapeHTML(studentObj.name);
+  var safeStudentGrade = escapeHTML(studentObj.grade);
+  var safeSeatNumber = escapeHTML(String(studentObj.seatNumber)) || "-";
+  var safeCommittee = escapeHTML(String(studentObj.committee)) || "-";
+  if (safeCommittee !== "-") safeCommittee = "رقم " + safeCommittee;
+  var safeFloor = escapeHTML(String(studentObj.floor)) || "-";
+  if (safeFloor !== "-") safeFloor = "الدور " + safeFloor;
+  var html = `
+          <div class="student-info-appear">
+            <div id="capture-area_${idx}" style="background-color: white; padding: 20px; border-radius: 10px; margin-bottom: 15px;">
+              <div id="export-header_${idx}" style="display: none;">
+                <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 25px; width: 100%; gap: 30px;">
+                  <img src="images/logo_2.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
+                  <img src="images/logo_1.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
+                </div>
+                <h4 style="color: #4a4e69; margin-top: 0; margin-bottom: 25px; border-bottom: 2px dashed #eee; padding-bottom: 15px; font-size: 22px;">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</h4>
+              </div>
+
+              <div class="id-card row-anim" style="animation-delay: 0.1s">
+                <div class="id-card-header-bar">بطاقة رقم الجلوس واللجنة</div>
+                <div class="id-card-body">
+                  <div class="id-card-name">${safeStudentName}</div>
+                  <div class="id-card-grade">الصف: ${safeStudentGrade}</div>
+                  <div class="id-details-list">
+                    <div class="id-detail-row">
+                      <span class="id-detail-label">رقم الجلوس</span>
+                      <span class="id-detail-value highlight-seat">${safeSeatNumber}</span>
+                    </div>
+                    <div class="id-detail-row">
+                      <span class="id-detail-label">اللجنة</span>
+                      <span class="id-detail-value highlight-comm">${safeCommittee}</span>
+                    </div>
+                    <div class="id-detail-row">
+                      <span class="id-detail-label">مكان اللجنة</span>
+                      <span class="id-detail-value">${safeFloor}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div id="export-footer_${idx}" style="display: none; margin-top: 30px; font-size: 16px; color: #4a4e69; text-align: center; font-weight: bold; border-top: 2px solid #eee; padding-top: 15px;">تصميم وتنفيذ : سمير هلال</div>
+            </div>
+
+            <button id="shareBtn_${idx}" class="form-control btn-share">
+              <span class="btn-text">📸 مشاركة البيانات كصورة</span>
+            </button>
+            <div id="warningMsg_${idx}" style="background-color: #fce4e4; color: #cc0000; border: 1px solid #f8b4b4; border-radius: 8px; padding: 10px; font-size: 14px; font-weight: 700; margin: 20px auto -10px auto; max-width: 350px; line-height: 1.5;">
+            ⚠️ يرجى التأكد من صحة اسم الطالب، وفي حال وجود خطأ أبلغنا عبر الزر أدناه.
+            </div>
+            <div class="feedback-section">
+              <button id="showFeedbackBtn_${idx}" class="form-control pulse-button">
+                <span class="btn-text">💬 تواصل مع إدارة المدرسة</span>
+              </button>
+              <div id="feedbackFormContainer_${idx}" style="display: none; text-align: center;">
+                <h4 id="feedbackTitle_${idx}" style="color: #333; margin-bottom: 15px; font-size: 18px;">تواصل معنا:</h4>
+                <textarea id="feedbackInput_${idx}" rows="3" placeholder="اكتب رسالتك هنا..." lang="ar" dir="rtl"></textarea>
+                <button id="submitFeedbackBtn_${idx}" class="form-control btn-success">
+                  <span class="btn-text">📨 إرسال الرسالة</span>
+                </button>
+                <div id="feedbackStatus_${idx}" style="margin-top: 10px; font-weight: bold; text-align: center;"></div>
+              </div>
+            </div>
+          </div>`;
+
+  container.innerHTML = html;
+
+  document
+    .getElementById(`shareBtn_${idx}`)
+    .addEventListener("click", function (e) {
+      addRipple(e, this);
+      shareResult(safeStudentName, `capture-area_${idx}`, this, idx);
+    });
+  document
+    .getElementById(`showFeedbackBtn_${idx}`)
+    .addEventListener("click", function (e) {
+      addRipple(e, this);
+      toggleFeedbackForm(
+        `feedbackFormContainer_${idx}`,
+        `feedbackInput_${idx}`,
+        this,
+      );
+    });
+  document
+    .getElementById(`submitFeedbackBtn_${idx}`)
+    .addEventListener("click", function (e) {
+      addRipple(e, this);
+      sendFeedback(safeStudentName, safeSeatNumber, safeStudentGrade, idx);
+    });
+}
+
+function searchByName(nameQuery) {
+  if (isSearching) return;
+  var resultDiv = document.getElementById("result");
+  var nameSearchResultsDiv = document.getElementById("nameSearchResults");
+
+  resultDiv.innerHTML = "";
+  nameSearchResultsDiv.innerHTML = "";
+  document.getElementById("studentIdInput").blur();
+  setSearchLoading(true);
+
+  var url = API_URL + "?name=" + encodeURIComponent(nameQuery);
+
+  fetchWithTimeout(url)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success") {
+        if (data.results.length === 1) {
+          setSearchLoading(false);
+          selectStudentAndSearch(data.results[0].seatNum);
+          return;
+        }
+
+        var html = "";
+        data.results.forEach((student, index) => {
+          var delay = 0.08 * (index + 1);
+          var safeName = escapeHTML(student.name);
+          var safeGrade = escapeHTML(student.grade);
+          var safeSeatNum = escapeHTML(student.seatNum);
+
+          html += `
+                <div class="name-card" style="animation-delay: ${delay}s">
+                  <p class="name-card-title">${safeName}</p>
+                  <p class="name-card-subtitle">الصف: ${safeGrade}</p>
+                  <p class="name-card-id">رقم الجلوس: ${safeSeatNum}</p>
+                  <button id="cardBtn_${index}" class="form-control name-card-btn" data-seat="${safeSeatNum}">
+                    <span class="btn-text">📊 عرض البيانات واللجنة</span>
+                  </button>
+                </div>
+              `;
+        });
+        nameSearchResultsDiv.innerHTML = html;
+
+        data.results.forEach((student, index) => {
+          const btn = document.getElementById(`cardBtn_${index}`);
+          if (btn) {
+            btn.addEventListener("click", function (e) {
+              addRipple(e, this);
+              selectStudentAndSearch(this.getAttribute("data-seat"));
+            });
+          }
+        });
+      } else {
+        nameSearchResultsDiv.innerHTML = `<div style='color:red; margin-top:15px; font-weight:bold;' class='student-info-appear'>${escapeHTML(
+          data.message,
+        )}</div>`;
+      }
+      setTimeout(() => {
+        if (data.results && data.results.length > 1) {
+          window.scrollTo({
+            top: nameSearchResultsDiv.offsetTop - 20,
+            behavior: "smooth",
+          });
+        }
+      }, 200);
+    })
+    .catch((err) => {
+      nameSearchResultsDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${escapeHTML(
+        err.message || "حدث خطأ في الاتصال بقاعدة البيانات.",
+      )}</div>`;
+    })
+    .finally(() => {
+      if (document.getElementById("studentIdInput").value === nameQuery) {
+        setSearchLoading(false);
+      }
+    });
+}
+
+function getGrade() {
+  if (isSearching) return;
+  var idInput = document.getElementById("studentIdInput");
+  var id = idInput.value;
+  var resultDiv = document.getElementById("result");
+  var nameSearchResultsDiv = document.getElementById("nameSearchResults");
+
+  resultDiv.innerHTML = "";
+  nameSearchResultsDiv.innerHTML = "";
+
+  if (!id) {
+    resultDiv.innerHTML =
+      "<div style='color:red; margin-top:15px;' class='student-info-appear'>الرجاء إدخال رقم الجلوس أو الاسم أولاً</div>";
+    return;
+  }
+
+  const isNumeric = /^\d+$/.test(id.trim());
+  if (!isNumeric) {
+    searchByName(id.trim());
+    return;
+  }
+
+  idInput.blur();
+  setSearchLoading(true);
+
+  var url = API_URL + "?id=" + encodeURIComponent(id);
+
+  fetchWithTimeout(url)
+    .then((response) => response.json())
+    .then((data) => {
+      setSearchLoading(false);
+
+      if (data.status === "success") {
+        if (data.resultsHidden === true) {
+          let hiddenHtml = "";
+          data.students.forEach((studentObj, idx) => {
+            hiddenHtml += `
+                  <div class="student-info-appear" style="margin-bottom: 20px;">
+                    <div id="capture-area_hidden_${idx}">
+                      <h3 class="student-name">الاسم: ${escapeHTML(
+                        studentObj.name,
+                      )}</h3>
+                      <div class="status-message fail-message" style="margin-top: 20px;">
+                        ⏳ ${escapeHTML(data.message)}
+                      </div>
+                    </div>
+                  </div>`;
+          });
+          resultDiv.innerHTML = hiddenHtml;
+          setTimeout(() => {
+            document
+              .getElementById(`capture-area_hidden_0`)
+              .scrollIntoView({ behavior: "smooth", block: "center" });
+          }, 200);
+          return;
+        }
+
+        if (data.students.length === 1) {
+          renderStudentCard(data.students[0], 0, resultDiv);
+          setTimeout(() => {
+            document
+              .getElementById("warningMsg_0")
+              .scrollIntoView({ behavior: "smooth", block: "center" });
+          }, 200);
+          return;
+        }
+
+        var html = "";
+        data.students.forEach((student, index) => {
+          var delay = 0.08 * (index + 1);
+          var safeName = escapeHTML(student.name);
+          var safeGrade = escapeHTML(student.grade);
+          var safeSeatNum = escapeHTML(String(student.seatNumber));
+
+          html += `
+                <div class="name-card" style="animation-delay: ${delay}s">
+                  <p class="name-card-title">${safeName}</p>
+                  <p class="name-card-subtitle">الصف: ${safeGrade}</p>
+                  <p class="name-card-id">رقم الجلوس: ${safeSeatNum}</p>
+                  <button id="dupBtn_${index}" class="form-control name-card-btn">
+                    <span class="btn-text">📊 عرض البيانات واللجنة</span>
+                  </button>
+                </div>
+              `;
+        });
+        nameSearchResultsDiv.innerHTML = html;
+
+        data.students.forEach((student, index) => {
+          document
+            .getElementById(`dupBtn_${index}`)
+            .addEventListener("click", function (e) {
+              addRipple(e, this);
+              nameSearchResultsDiv.innerHTML = "";
+              renderStudentCard(student, index, resultDiv);
+              setTimeout(() => {
+                document.getElementById(`warningMsg_${index}`).scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                });
+              }, 200);
+            });
+        });
+
+        setTimeout(() => {
+          window.scrollTo({
+            top: nameSearchResultsDiv.offsetTop - 20,
+            behavior: "smooth",
+          });
+        }, 200);
+      } else {
+        resultDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${escapeHTML(
+          data.message,
+        )}</div>`;
+      }
+    })
+    .catch((err) => {
+      setSearchLoading(false);
+      resultDiv.innerHTML = `<div style='color:red; margin-top:15px;' class='student-info-appear'>${escapeHTML(
+        err.message || "حدث خطأ في الاتصال بقاعدة البيانات.",
+      )}</div>`;
+    });
+}
