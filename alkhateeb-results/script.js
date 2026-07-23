@@ -440,8 +440,8 @@ function getGrade() {
                   <div id="capture-area">
                     <div id="export-header" style="display: none;">
                       <div style="display: flex; justify-content: center; align-items: center; margin-bottom: 25px; width: 100%; gap: 30px;">
-                        <img src="logo_2.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
-                        <img src="logo_1.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
+                        <img src="images/logo_2.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
+                        <img src="images/logo_1.webp" crossorigin="anonymous" style="height: 140px; width: auto; object-fit: contain;" />
                       </div>
                       <h4 style="color: #4a4e69; margin-top: 0; margin-bottom: 25px; border-bottom: 2px dashed #eee; padding-bottom: 15px; font-size: 22px;">مدرسة الشهيد محمود علي الخطيب الرسمية للغات</h4>
                     </div>
